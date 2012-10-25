@@ -1,6 +1,6 @@
 #include "Engine.h"
 #include <stdlib.h>
-#include "State/IntroState.h"
+#include "State/Gamestate.h"
  
 class CMyEngine: public CEngine
 {
@@ -44,7 +44,7 @@ int main(int argc, char* argv[])  // <- this must match exactly, since SDL rewri
 	
 	Engine.SetTitle( "Loading..." );
 	Engine.Init();
-	Engine.ChangeState(CIntroState::Instance());
+
 	Engine.SetTitle( "SDL Testing!" );
 	Engine.Start();
  
@@ -55,12 +55,12 @@ int main(int argc, char* argv[])  // <- this must match exactly, since SDL rewri
  
 void CMyEngine::AdditionalInit()
 {
+	ChangeState(State::Intro);
 	// Load up additional data
 }
  
 void CMyEngine::Think( const int& iElapsedTime )
 {
-
 	states.back()->Update(iElapsedTime);
 	// Do time-based calculations
 }
@@ -85,7 +85,7 @@ void CMyEngine::KeyDown(const int& iKeyEnum)
 		keys.up = true;
 		break;
     case SDLK_DOWN:
-		keys.up = true;
+		keys.down = true;
 		break;
 	case SDLK_RETURN:
 		keys.enter = true;
@@ -100,6 +100,7 @@ void CMyEngine::KeyDown(const int& iKeyEnum)
 		keys.x = true;
 		break;
     }
+	states.back()->CheckKeys(keys);
 }
  
  
@@ -117,7 +118,7 @@ void CMyEngine::KeyUp(const int& iKeyEnum)
 		keys.up = false;
 		break;
     case SDLK_DOWN:
-		keys.up = false;
+		keys.down = false;
 		break;
 	case SDLK_RETURN:
 		keys.enter = false;
@@ -132,6 +133,7 @@ void CMyEngine::KeyUp(const int& iKeyEnum)
 		keys.x = false;
 		break;
 	}
+	states.back()->CheckKeys(keys);
 }
  
 void CMyEngine::MouseMoved(const int& iButton, 

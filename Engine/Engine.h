@@ -2,30 +2,18 @@
 #ifndef ENGINE_H
 #define ENGINE_H
  
-#include "SDL.h"
-#include <sstream> 
+#include "Engine/Shared.h"
 #include <vector>
- 
+
 class CGameState;
 
-struct KeyStruct
-{
-	bool left;
-	bool right;
-	bool up;
-	bool down;
-	bool z;
-	bool x;
-	bool enter;
-	bool shift;
-};
+enum State;
 
+const double TIMESTEP = 5;
 /** The base engine class. **/
 class CEngine  
 {
 private:
-	/** Last iteration's tick value **/
-	long m_lLastTick;
  
 	/** Window width **/
 	int m_iWidth;
@@ -44,19 +32,11 @@ private:
 	/** Is the window minimized? **/
 	bool m_bMinimized;
  
-	/** Variables to calculate the frame rate **/
-	/** Tick counter. **/
-	int m_iFPSTickCounter;
- 
-	/** Frame rate counter. **/
-	int m_iFPSCounter;
- 
-	/** Stores the last calculated frame rate. **/
-	int m_iCurrentFPS;
-
+	Uint32 framestart, frametime;
 protected:
 	void DoThink();
 	void DoRender();
+	void DoRequests();
  
 	void SetSize(const int& iWidth, const int& iHeight);
  
@@ -72,8 +52,8 @@ public:
 	void Init();
 	void Start();
 
-	void ChangeState(CGameState* state);
-	void PushState(CGameState* state);
+	void ChangeState(State id);
+	void PushState(State id);
 	void PopState();
  
 	/** OVERLOADED - Data that should be initialized when the application starts. **/
@@ -155,7 +135,7 @@ public:
 	const char* 	GetTitle	();
  
 	SDL_Surface* 	GetSurface	();
- 
+	CGameState*		GetStateInstance(State id);
 	int 		GetFPS		();
 };
  

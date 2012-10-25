@@ -3,6 +3,7 @@
 #define INTROSTATE_H
 
 #include "Gamestate.h"
+#include "Engine/Timer.h"
 
 class Menu;
 
@@ -30,6 +31,8 @@ private:
     Menu* mainMenu;
 	SDL_Surface* bg;
 	int alpha;
+	Timer fade_timer;
+	float bgX; float bgX2;
 };
 
 #endif

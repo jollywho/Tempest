@@ -3,22 +3,20 @@
 #include "SDL_Mixer.h"
 #include <windows.h> // For the WaitMessage() function.
 #include "State/Gamestate.h"
+#include "State/Introstate.h"
+#include "State/Playstate.h"
  
 KeyStruct default_keys = { false, false, false, false, false, false, false, false };
 
 /** Default constructor. **/
 CEngine::CEngine()
 {
-	m_lLastTick		= 0;
 	m_iWidth		= 800;
 	m_iHeight		= 600;
 	m_czTitle		= 0;
  
 	m_pScreen		= 0;
- 
-	m_iFPSTickCounter	= 0;
-	m_iFPSCounter		= 0;
-	m_iCurrentFPS		= 0;
+
  
 	m_bMinimized		= false;
 
@@ -39,7 +37,7 @@ void CEngine::SetSize(const int& iWidth, const int& iHeight)
 {
 	m_iWidth  = iWidth;
 	m_iHeight = iHeight;
-	m_pScreen = SDL_SetVideoMode( iWidth, iHeight, 0, SDL_SWSURFACE );
+	m_pScreen = SDL_SetVideoMode( iWidth, iHeight, 0, SDL_SWSURFACE| SDL_DOUBLEBUF );
 }
  
 /** Initialize SDL, the window and the additional data. **/
@@ -78,28 +76,38 @@ void CEngine::Init()
 	AdditionalInit();
 }
 
-void CEngine::ChangeState(CGameState* state) 
+CGameState* CEngine::GetStateInstance(State id)
+{
+	switch(id)
+	{
+		case State::Intro:
+			return CIntroState::Instance();
+			break;
+		case State::Play:
+			return CPlayState::Instance();
+			break;
+		default:
+			return CIntroState::Instance();
+			break;
+	}
+}
+
+void CEngine::ChangeState(State id) 
 {
 	// cleanup the current state
 	if ( !states.empty() ) {
 		states.back()->Cleanup();
-		states.pop_back();
 	}
 
 	// store and init the new state
-	states.push_back(state);
+	states.push_back(GetStateInstance(id));
 	states.back()->Init();
 }
 
-void CEngine::PushState(CGameState* state)
+void CEngine::PushState(State id)
 {
-	// pause current state
-	if ( !states.empty() ) {
-		states.back()->Pause();
-	}
-
 	// store and init the new state
-	states.push_back(state);
+	states.push_back(GetStateInstance(id));
 	states.back()->Init();
 }
 
@@ -120,7 +128,6 @@ void CEngine::PopState()
 /** The main loop. **/
 void CEngine::Start()
 {
-	m_lLastTick = SDL_GetTicks();
 	m_bQuit = false;
  
 	// Main loop: loop forever.
@@ -128,16 +135,19 @@ void CEngine::Start()
 	{
 		// Handle mouse and keyboard input
 		HandleInput();
- 
+
 		if ( m_bMinimized ) {
 			// Release some system resources if the app. is minimized.
 			WaitMessage(); // pause the application until focus in regained
 		} else {
+
 			// Do some thinking
 			DoThink();
 			
 			// Render stuff
 			DoRender();
+
+			DoRequests();
 		}
 	}
  
@@ -219,25 +229,16 @@ void CEngine::HandleInput()
 /** Handles the updating routine. **/
 void CEngine::DoThink() 
 {
-	long iElapsedTicks = SDL_GetTicks() - m_lLastTick;
-	m_lLastTick = SDL_GetTicks();
- 
-	Think( iElapsedTicks );
- 
-	m_iFPSTickCounter += iElapsedTicks;
+	framestart = SDL_GetTicks();
+	Think( TIMESTEP );
+	frametime = SDL_GetTicks() - framestart;
+    if (frametime < 15)
+        SDL_Delay((int)(15 - frametime));
 }
  
 /** Handles the rendering and FPS calculations. **/
 void CEngine::DoRender()
 {
-	++m_iFPSCounter;
-	if ( m_iFPSTickCounter >= 1000 )
-	{
-		m_iCurrentFPS = m_iFPSCounter;
-		m_iFPSCounter = 0;
-		m_iFPSTickCounter = 0;
-	}
- 
 	SDL_FillRect( m_pScreen, 0, SDL_MapRGB( m_pScreen->format, 0, 0, 0 ) );
  
 	// Lock surface if needed
@@ -253,6 +254,12 @@ void CEngine::DoRender()
  
 	// Tell SDL to update the whole gScreen
 	SDL_Flip( m_pScreen );
+}
+
+void CEngine::DoRequests()
+{
+	if (states.back()->ChangeRequired())
+		ChangeState(states.back()->GetRequestedState());
 }
  
 /** Sets the title of the window 
@@ -288,5 +295,6 @@ SDL_Surface* CEngine::GetSurface()
 **/
 int CEngine::GetFPS()
 {
-	return m_iCurrentFPS;
+	return 0;
+	//return m_iCurrentFPS;
 }

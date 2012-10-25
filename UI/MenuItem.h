@@ -9,7 +9,7 @@ class MenuItem
 private:
 	TTF_Font* font;
     SDL_Surface* surface;
-    SDL_Surface* innerSurface;
+    SDL_Surface* inner_surface;
     SDL_Rect offset;
     Timer clip_Timer;
     bool selected;

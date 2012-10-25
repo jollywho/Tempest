@@ -25,6 +25,26 @@ const int _WMAX_TOTEMS = 4;
 
 const float DEG_TO_RAD_f = 0.017453292519943295769236907684886f;
 
+struct Point
+{
+  int x;
+  int y;
+  Point(){}
+  Point(int ax, int ay): x(ax), y(ax) {}
+};
+
+struct KeyStruct
+{
+	bool left;
+	bool right;
+	bool up;
+	bool down;
+	bool z;
+	bool x;
+	bool enter;
+	bool shift;
+};
+
 class Shared
 {
 public:

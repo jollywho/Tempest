@@ -11,7 +11,7 @@ MenuItem::~MenuItem()
 {
     printf("Menu item del\n");
     SDL_FreeSurface(surface);
-    SDL_FreeSurface(innerSurface);
+    SDL_FreeSurface(inner_surface);
 }
 
 MenuItem::MenuItem(int indx, int x, int y, char* msg, TTF_Font* Font)
@@ -21,12 +21,13 @@ MenuItem::MenuItem(int indx, int x, int y, char* msg, TTF_Font* Font)
     TTF_SetFontOutline(font, 1);
     surface = TTF_RenderText_Blended(font, msg, color);
     TTF_SetFontOutline(font, 0);
-    innerSurface = TTF_RenderText_Blended(font, msg, color2);
+    inner_surface = TTF_RenderText_Blended(font, msg, color2);
 
-    offset.x = x; offset.y = y;
 	int w = 0; int h = 0;
 	TTF_SizeText(font, text, &w, &h);
 	offset.w = w; offset.h = h;
+	offset.x = x-w/2; offset.y = y-h/2;
+
     selected = false;
     index = indx; //static counter increment each time
     prev = 0;
@@ -41,29 +42,29 @@ void MenuItem::Update(Uint32 deltaTicks, int alpha, int indx)
         if (index == indx)
         {
             SDL_FreeSurface(surface);
-            SDL_FreeSurface(innerSurface);
+            SDL_FreeSurface(inner_surface);
             TTF_SetFontOutline(font, 1);
             surface = TTF_RenderText_Blended(font, text, color);
             TTF_SetFontOutline(font, 0);
-            innerSurface = TTF_RenderText_Blended(font, text, selColor);
+            inner_surface = TTF_RenderText_Blended(font, text, selColor);
         }
         else
         {
             SDL_FreeSurface(surface);
-            SDL_FreeSurface(innerSurface);
+            SDL_FreeSurface(inner_surface);
             TTF_SetFontOutline(font, 1);
             surface = TTF_RenderText_Blended(font, text, color);
             TTF_SetFontOutline(font, 0);
-            innerSurface = TTF_RenderText_Blended(font, text, color2);
+            inner_surface = TTF_RenderText_Blended(font, text, color2);
         }
     }
 
     SDL_SetAlpha(surface, SDL_SRCALPHA, alpha);
-    SDL_SetAlpha(innerSurface, SDL_SRCALPHA, alpha);
+    SDL_SetAlpha(inner_surface, SDL_SRCALPHA, alpha);
 }
 
 void MenuItem::Draw(SDL_Surface *dest)
 {
 	Shared::apply_surface(offset.x, offset.y, surface, dest);
-	Shared::apply_surface(offset.x, offset.y, innerSurface, dest);
+	Shared::apply_surface(offset.x, offset.y, inner_surface, dest);
 }
