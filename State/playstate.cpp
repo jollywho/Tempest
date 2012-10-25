@@ -1,4 +1,6 @@
 #include "playstate.h"
+#include "Level/Level01.h"
+#include "Game/Camera.h"
 
 CPlayState CPlayState::m_PlayState;
 bool CPlayState::m_Exit = false;
@@ -11,7 +13,7 @@ void CPlayState::Init()
 	
     stage = 1;
 	player = new Player();
-
+	level = new Level01();
 }
 
 void CPlayState::Cleanup()
@@ -64,10 +66,13 @@ void CPlayState::CheckKeys(const KeyStruct& keys)
 
 void CPlayState::Update(const int& iElapsedTime)
 {
+	Camera::Update(player->GetOuterBounds().x, iElapsedTime);
+	level->Update(iElapsedTime);
 	player->Update(iElapsedTime);
 }
 
 void CPlayState::Draw(SDL_Surface* dest)
 {
+	level->Draw(dest);
 	player->Draw(dest);
 }

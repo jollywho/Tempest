@@ -27,15 +27,15 @@ private:
 	int moveSpeed;
     float mov;
 	int left, right, up, down;
-	bool shift; bool attack;
+	bool shift; bool attack; bool bomb;
     static const int SPEED_NORMAL = 700;
     static const int SPEED_SLOW = 400;
     static const int FRAME_SPEED_NORMAL = 200;
     static const int FRAME_SPEED_SLOW = 450;
 
-	Point boost_pos;
-	Timer boost_timer;
-    int boost_clip;
+	Point booster_pos;
+	Timer booster_timer;
+    int booster_clip;
 
 	Point hitbox_pos;
 	Timer hitbox_timer;

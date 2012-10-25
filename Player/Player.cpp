@@ -20,7 +20,7 @@ Player::Player()
 	booster = &SpriteResource::RequestResource("Player", "booster.png");
 	zone = &SpriteResource::RequestResource("Player", "zone.png");
 
-	clip = 0; zone_clip = 0; hitbox_clip = 0; boost_clip = 0;
+	clip = 0; zone_clip = 0; hitbox_clip = 0; booster_clip = 0;
 
 	moveSpeed = SPEED_NORMAL;
     mov = 0;
@@ -28,7 +28,7 @@ Player::Player()
 	shift = false; attack = false;
     zone_timer.start();
     hitbox_timer.start();
-    boost_timer.start();
+    booster_timer.start();
 	clip_timer.start();
 
     xVal = _G_LEVEL_WIDTH/2 + 192/2;
@@ -51,14 +51,21 @@ void Player::CheckKeys(const KeyStruct& keys)
 	else left = 0;
 	if (keys.right) right = 1;
 	else right = 0;
+	if (keys.shift) shift = true;
+	else shift = false;
+	if (keys.z) attack = true;
+	else attack = false;
+	if (keys.x) bomb = true;
+	else bomb = false;
 }
 
 void Player::HandleMovement(const int& iElapsedTime)
 {
+	if (shift && moveSpeed > SPEED_SLOW) moveSpeed-=10;
+	if (!shift && moveSpeed < SPEED_NORMAL) moveSpeed+=10;
 	//todo: normalize movement
-	//todo: slow movement over time from shift/unshift
-	xVal += ((left + right) * 600) * (iElapsedTime/1000.f);
-	yVal += ((up + down) * 600) * (iElapsedTime/1000.f);
+	xVal += ((left + right) * moveSpeed) * (iElapsedTime/1000.f);
+	yVal += ((up + down) * moveSpeed) * (iElapsedTime/1000.f);
 
 	if (xVal < _G_BANNER_WIDTH) xVal = _G_BANNER_WIDTH;
 	if (xVal + angel->width > _G_BOUNDS_WIDTH) xVal = _G_BOUNDS_WIDTH - angel->width;
@@ -69,7 +76,16 @@ void Player::HandleMovement(const int& iElapsedTime)
 void Player::Update(const int& iElapsedTime)
 {
 	Shared::CheckClip(clip_timer, clip, angel->interval, angel->clip_count, 0);
+	Shared::CheckClip(booster_timer, booster_clip, booster->interval, booster->clip_count, 0);
+	Shared::CheckClip(hitbox_timer, hitbox_clip, hitbox->interval, hitbox->clip_count, 0);
+	Shared::CheckClip(zone_timer, zone_clip, zone->interval, zone->clip_count, 0);
 	HandleMovement(iElapsedTime);
+	booster_pos.x = xVal + angel->width/2 - booster->width/2;
+	booster_pos.y = yVal + angel->height - booster->height/2;
+	hitbox_pos.x = xVal + angel->width/2 - hitbox->width/2;
+	hitbox_pos.y = yVal + angel->height - hitbox->height*2;
+	zone_pos.x = xVal + angel->width/2 - zone->width/2;
+	zone_pos.y = yVal + angel->height/2 - zone->height/2;
 }
 
 void Player::Draw(SDL_Surface *dest)
@@ -78,8 +94,11 @@ void Player::Draw(SDL_Surface *dest)
      //   bomb->show(dest);
 
 	//move to separate function for draw order
-	//if (shift)
+	if (shift)
+		Shared::apply_surface(zone_pos.x, zone_pos.y, zone->surface, dest, &zone->clips[zone_clip]);
+	Shared::apply_surface(booster_pos.x, booster_pos.y, booster->surface, dest, &booster->clips[booster_clip]);
 	Shared::apply_surface(xVal, yVal, angel->surface, dest, &angel->clips[clip]);
+	Shared::apply_surface(hitbox_pos.x, hitbox_pos.y, hitbox->surface, dest, &hitbox->clips[hitbox_clip]);
 }
 
 SDL_Rect Player::GetBounds()

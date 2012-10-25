@@ -5,6 +5,8 @@
 #include <list>
 #include "Player/Player.h"
 
+class Level;
+
 class CPlayState : public CGameState
 {
 public:
@@ -34,6 +36,7 @@ public:
 	//std::list<Item*> item_list;
 	//explosionlist
 	Player* player;
+	Level* level;
 protected:
 	CPlayState() { }
     ~CPlayState();
