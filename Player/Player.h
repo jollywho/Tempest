@@ -35,10 +35,8 @@ private:
     float mov;
 	int left, right, up, down;
 	bool shift; bool attack; bool bomb;
-    static const int SPEED_NORMAL = 1000;
-    static const int SPEED_SLOW = 400;
-    static const int FRAME_SPEED_NORMAL = 200;
-    static const int FRAME_SPEED_SLOW = 450;
+    static const int SPEED_NORMAL = 400;
+    static const int SPEED_SLOW = 200;
 
 	Point booster_pos;
 	Timer booster_timer;

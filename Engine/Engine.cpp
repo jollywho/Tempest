@@ -128,6 +128,9 @@ void CEngine::Start()
 {
 	m_bQuit = false;
  
+	prevTime = 0;
+	prevTime = SDL_GetTicks();
+	
 	// Main loop: loop forever.
 	while ( !m_bQuit )
 	{
@@ -137,18 +140,16 @@ void CEngine::Start()
 		if ( m_bMinimized ) {
 			// Release some system resources if the app. is minimized.
 			WaitMessage(); // pause the application until focus in regained
-		} else {
-
-			// Do some thinking
+		} 
+		else 
+		{
 			DoThink();
-			
-			// Render stuff
-			DoRender();
 
+			DoRender();
+				
 			DoRequests();
 		}
 	}
- 
 	End();
 }
  
@@ -227,11 +228,17 @@ void CEngine::HandleInput()
 /** Handles the updating routine. **/
 void CEngine::DoThink() 
 {
-	framestart = SDL_GetTicks();
-	Think( TIMESTEP );
-	frametime = SDL_GetTicks() - framestart;
-    if (frametime < 15)
-        SDL_Delay((int)(15 - frametime));
+	int currTime = SDL_GetTicks();
+	int timeElapsed = currTime - prevTime;
+	if(timeElapsed < 5)
+	{
+		// Not enough time has elapsed. Let's limit the frame rate
+		SDL_Delay(5 - timeElapsed);
+		currTime = SDL_GetTicks();
+		timeElapsed = currTime - prevTime;
+	}
+	prevTime = currTime;
+	Think( timeElapsed );
 }
  
 /** Handles the rendering and FPS calculations. **/

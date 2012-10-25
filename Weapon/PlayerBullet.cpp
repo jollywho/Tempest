@@ -21,8 +21,8 @@ PlayerBullet::PlayerBullet(float x, float y, int angl, int rots)
 	angle = (angle + rots - 1) / rots * rots;
 	if (angle > 360)
 		angle = 360;
-    xVel = sin(angle * M_PI/180) * 2500; 
-    yVel = cos(angle * M_PI/180) * 2500;
+    xVel = sin(angle * M_PI/180) * 1600; 
+    yVel = cos(angle * M_PI/180) * 1600;
 	
     clip_timer.start();
 }

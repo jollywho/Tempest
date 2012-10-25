@@ -41,20 +41,18 @@ void Totem::Update(const int& iElapsedTime, int x, int y, bool animate)
     float dy = (dest.y) - (yVal) + y;
 	double Length = sqrt(pow(dx, 2) + pow(dy, 2));
 
-	if (Length > 10)
-	{
-		float spd = 10;
-		if (Length > 50) spd = 500;
-		float xa = dx / Length;
-		float ya = dy / Length;
-		xVal += (xa * (spd * (iElapsedTime / 1000.f)));
-		yVal += (ya * (spd * (iElapsedTime / 1000.f)));
-	}
+	float spd = Length * 5;
+	
+	float xa = dx / Length;
+	float ya = dy / Length;
+	xVal += (xa * (spd * (iElapsedTime / 1000.f)));
+	yVal += (ya * (spd * (iElapsedTime / 1000.f)));
+	
 }
 
 void Totem::Draw(SDL_Surface *dest)
 {
-	Shared::apply_surface(xVal, yVal, inner->surface, dest, &inner->clips[clip]);
+	Shared::apply_surface(xVal+15, yVal+5, inner->surface, dest, &inner->clips[clip]);
     Shared::apply_surface(xVal, yVal, outer->surface, dest);
 }
 
@@ -65,5 +63,5 @@ float Totem::GetMiddle()
 
 float Totem::GetVertical()
 {
-    return yVal + outer->height/2;
+    return yVal;
 }

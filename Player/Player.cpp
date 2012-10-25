@@ -71,8 +71,8 @@ void Player::CheckKeys(const KeyStruct& keys)
 
 void Player::HandleMovement(const int& iElapsedTime)
 {
-	if (shift && moveSpeed > SPEED_SLOW) moveSpeed-=50;
-	if (!shift && moveSpeed < SPEED_NORMAL) moveSpeed+=50;
+	if (shift && moveSpeed > SPEED_SLOW) moveSpeed-=iElapsedTime;
+	if (!shift && moveSpeed < SPEED_NORMAL) moveSpeed+=iElapsedTime;
 	//todo: normalize movement
 	xVal += ((left + right) * moveSpeed) * (iElapsedTime/1000.f);
 	yVal += ((up + down) * moveSpeed) * (iElapsedTime/1000.f);

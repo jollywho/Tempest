@@ -8,7 +8,6 @@
 class CGameState;
 enum State;
 
-const int TIMESTEP = 5;
 /** The base engine class. **/
 class CEngine  
 {
@@ -30,8 +29,9 @@ private:
  
 	/** Is the window minimized? **/
 	bool m_bMinimized;
- 
-	Uint32 framestart, frametime;
+
+	int prevTime;
+
 protected:
 	void DoThink();
 	void DoRender();
