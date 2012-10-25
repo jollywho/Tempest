@@ -84,6 +84,6 @@ void Camera::DrawSurface( int x, int y, SDL_Surface* source, SDL_Surface* destin
 {
     SDL_Rect offset;
     offset.x = x - (Sint16)xVal;
-    offset.y = y - (Sint16)CameraY2;
+    offset.y = y - (Sint16)yVal2;
     SDL_BlitSurface( source, clip, destination, &offset );
 }

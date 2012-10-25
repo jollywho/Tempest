@@ -3,6 +3,7 @@
 #define PLAYER_H
 
 #include "Engine/Shared.h"
+#include "Weapon/Weapon.h"
 
 struct SpriteInfo;
 
@@ -16,19 +17,25 @@ public:
     void ReSpawn();
 
 	void HandleMovement(const int& iElapsedTime);
+	void HandleAttacks(const int& iElapsedTime);
     void Update( const int& iElapsedTime);
 
     void Draw(SDL_Surface *dest);
 
     SDL_Rect GetBounds();
     SDL_Rect GetOuterBounds();
+	Point GetCenter();
 	void TakeHit();
+
+	static void SetWeaponType(WeaponType type);
+
 private:
+	static Weapon* wpn;
 	int moveSpeed;
     float mov;
 	int left, right, up, down;
 	bool shift; bool attack; bool bomb;
-    static const int SPEED_NORMAL = 700;
+    static const int SPEED_NORMAL = 1000;
     static const int SPEED_SLOW = 400;
     static const int FRAME_SPEED_NORMAL = 200;
     static const int FRAME_SPEED_SLOW = 450;

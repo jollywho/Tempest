@@ -1,28 +1,35 @@
 #ifndef WEAPON_H
 #define WEAPON_H
 
+#include "Engine/Shared.h"
+#include "PlayerBullet.h"
+#include <list>
+
+enum WeaponType
+{
+	M_type,
+	S_type,
+	R_type,
+};
+
 class Weapon 
 {
-private:
-	Timer wpnTimer;
-	int minorSpeed;
-	int majorSpeed;
-	bool swap;
-	bool IsShift;
 public:
-	Weapon();
-	~Weapon();
-	static PlayerBullet::WeaponType wpn;
-	static PlayerBullet::AmmoType ammo;
-	static void Init();
-    static void CleanUp();
-	void Update(Uint32 deltaTicks);
-	void Draw(SDL_Surface *dest);
-	void MajorAttack();
-	void MinorAttack();
-	void StopAttack();
-	void Shift();
-	void Unshift();
+	virtual void Update(const int& iElapsedTime) = 0;
+	virtual void Draw(SDL_Surface *dest) = 0;
+	virtual void MajorAttack(std::list<PlayerBullet*>& pl_bulletlist) = 0;
+	virtual void MinorAttack(std::list<PlayerBullet*>& pl_bulletlist) = 0;
+	virtual void StopAttack() = 0;
+	virtual void Shift() = 0;
+	virtual void Unshift() = 0;
+	virtual void SetPos(int x, int y, int mv) = 0;
+protected:
+	Timer wpn_timer;
+	int minor_speed;
+	int major_speed;
+	bool is_shift;
+	int level;
+	int rot_divs;
 };
 
 #endif

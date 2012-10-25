@@ -52,9 +52,15 @@ void SFX::AddSoundResource(std::string filename)
 	filename.insert(0, "SFX/");
 	if (sound_files.find(filename) == sound_files.end())
 	{
-		printf("Added: %s\n", filename.c_str());
-		fx_count++;
-		sound_files.insert(std::make_pair(filename, std::make_pair(fx_count, Mix_LoadWAV(filename.c_str()))));
+		Mix_Chunk* sound = Mix_LoadWAV(filename.c_str());
+		if (sound == NULL)
+			printf("***Error Opening: %s***\n", filename.c_str());
+		else
+		{
+			printf("Added: %s\n", filename.c_str());
+			fx_count++;
+			sound_files.insert(std::make_pair(filename, std::make_pair(fx_count, sound)));
+		}
 	}
 }
 

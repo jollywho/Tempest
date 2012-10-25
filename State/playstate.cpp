@@ -22,7 +22,10 @@ void CPlayState::Cleanup()
 {
 	printf("CPlayState Cleanup\n");
     ClearObjects();
-
+	for (auto it = pl_bulletlist.begin(); it != pl_bulletlist.end();) {
+		delete (*it);
+		it++; }
+	pl_bulletlist.clear();
 }
 
 CPlayState::~CPlayState()
@@ -72,12 +75,33 @@ void CPlayState::Update(const int& iElapsedTime)
 	level->Update(iElapsedTime);
 	player->Update(iElapsedTime);
 
+
+	for (auto it = pl_bulletlist.begin(); it != pl_bulletlist.end();)
+	{
+		(*it)->Update(iElapsedTime);
+		if ((*it)->RequestDelete())
+		{
+			delete (*it);
+			it = pl_bulletlist.erase(it);	
+		}
+		else
+		{
+			it++;
+		}
+	}
+
 	ui->Update(iElapsedTime);
 }
 
 void CPlayState::Draw(SDL_Surface* dest)
 {
 	level->Draw(dest);
+
+	for (auto it = pl_bulletlist.begin(); it != pl_bulletlist.end(); it++)
+	{
+		(*it)->Draw(dest);
+	}
+
 	player->Draw(dest);
 
 	ui->Draw(dest);

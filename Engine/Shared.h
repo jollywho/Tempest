@@ -21,7 +21,7 @@ const int _G_BOUNDS_WIDTH = _G_BANNER_WIDTH + _GSCREEN_WIDTH;
 const int _G_BOUNDS_HEIGHT = 600;
 const int _G_BULLET_SAFE_ZONE = 350;
 
-const int _WMAX_TOTEMS = 4;
+const int MAX_TOTEMS = 4;
 
 const float DEG_TO_RAD_f = 0.017453292519943295769236907684886f;
 

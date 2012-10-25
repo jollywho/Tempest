@@ -1,9 +1,10 @@
 #ifndef PLAYSTATE_H
 #define PLAYSTATE_H
 
-#include "Gamestate.h"
+#include "State/Gamestate.h"
 #include <list>
 #include "Player/Player.h"
+#include "Weapon/PlayerBullet.h"
 
 class Level;
 class Interface;
@@ -32,7 +33,7 @@ public:
     static bool m_Exit;
 
     //std::list<EnemyBullet*> en_bulletlist;
-	//std::list<PlayerBullet*> pl_bulletlist
+	std::list<PlayerBullet*> pl_bulletlist;
 	//std::list<Enemy*> enemy_list;
 	//std::list<Item*> item_list;
 	//explosionlist

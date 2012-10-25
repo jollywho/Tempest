@@ -1,6 +1,6 @@
 #include "Engine.h"
 #include "SDL_ttf.h"
-#include "SDL_Mixer.h"
+#include "Engine/SFX.h"
 #include <windows.h> // For the WaitMessage() function.
 #include "State/Gamestate.h"
 #include "State/Introstate.h"
@@ -69,11 +69,7 @@ void CEngine::Init()
 		fprintf( stderr, "Unable to init TTF: %s\n", SDL_GetError() );
 		exit( 1 );
 	}
-	if (Mix_OpenAudio( 22050, MIX_DEFAULT_FORMAT, 2, 4096 ) == -1)
-	{
-		fprintf( stderr, "Unable to init Mixer: %s\n", SDL_GetError() );
-		exit( 1 );
-	}
+	SFX::Init_SFX();
  
 	AdditionalInit();
 }
