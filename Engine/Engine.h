@@ -6,10 +6,9 @@
 #include <vector>
 
 class CGameState;
-
 enum State;
 
-const double TIMESTEP = 5;
+const int TIMESTEP = 5;
 /** The base engine class. **/
 class CEngine  
 {

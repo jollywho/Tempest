@@ -48,8 +48,8 @@ void CIntroState::CheckKeys(const KeyStruct& keys)
 	if (keys.z)
 		{
 			mainMenu->Select(); 
-			if (mainMenu->GetIndex() == 1) RequestState(State::Play);
-			if (mainMenu->GetIndex() == 4) RequestState(State::Option);
+			if (mainMenu->GetIndex() == 1) RequestState(Play);
+			if (mainMenu->GetIndex() == 4) RequestState(Option);
 		}
 	if (keys.down) mainMenu->SetIndex(1);
 	else if (keys.up) mainMenu->SetIndex(-1);
@@ -73,8 +73,8 @@ void CIntroState::Update(const int& iElapsedTime)
 
 void CIntroState::Draw(SDL_Surface* dest) 
 {
-	Shared::apply_surface(bgX,0,bg,dest);
-	Shared::apply_surface(bgX2,0,bg,dest);
+	Shared::apply_surface((int)bgX,0,bg,dest);
+	Shared::apply_surface((int)bgX2,0,bg,dest);
 	mainMenu->Draw(dest);
 
 	if ( alpha > 0 )

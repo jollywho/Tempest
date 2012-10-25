@@ -83,7 +83,7 @@ void Camera::Update(int playerX, Uint32 deltaTicks)
 void Camera::DrawSurface( int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip )
 {
     SDL_Rect offset;
-    offset.x = x - (int)xVal;
-    offset.y = y - (int)CameraY2;
+    offset.x = x - (Sint16)xVal;
+    offset.y = y - (Sint16)CameraY2;
     SDL_BlitSurface( source, clip, destination, &offset );
 }

@@ -35,6 +35,8 @@ CEngine::~CEngine()
 **/
 void CEngine::SetSize(const int& iWidth, const int& iHeight)
 {
+	SDL_WM_SetIcon(IMG_Load("icon.png"), NULL);
+
 	m_iWidth  = iWidth;
 	m_iHeight = iHeight;
 	m_pScreen = SDL_SetVideoMode( iWidth, iHeight, 0, SDL_SWSURFACE| SDL_DOUBLEBUF );
@@ -80,10 +82,10 @@ CGameState* CEngine::GetStateInstance(State id)
 {
 	switch(id)
 	{
-		case State::Intro:
+		case Intro:
 			return CIntroState::Instance();
 			break;
-		case State::Play:
+		case Play:
 			return CPlayState::Instance();
 			break;
 		default:

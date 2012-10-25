@@ -30,7 +30,7 @@ public:
 	static void SetNewScore(std::string mode, int stage, unsigned long long value, std::string name);
 	static void GenerateDefaults();
 };
-}
+} //namespace SCOREIO
 std::ostream& operator << ( std::ostream& ins, const ScoreIO::ScoreData& data );
 std::istream& operator >> (std::istream& is, ScoreIO::ScoreData& data);
 

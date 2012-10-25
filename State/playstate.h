@@ -6,6 +6,7 @@
 #include "Player/Player.h"
 
 class Level;
+class Interface;
 
 class CPlayState : public CGameState
 {
@@ -37,6 +38,7 @@ public:
 	//explosionlist
 	Player* player;
 	Level* level;
+	Interface* ui;
 protected:
 	CPlayState() { }
     ~CPlayState();

@@ -1,6 +1,7 @@
 #include "Engine.h"
 #include <stdlib.h>
 #include "State/Gamestate.h"
+#include "Game/Savescore.h"
  
 class CMyEngine: public CEngine
 {
@@ -55,7 +56,8 @@ int main(int argc, char* argv[])  // <- this must match exactly, since SDL rewri
  
 void CMyEngine::AdditionalInit()
 {
-	ChangeState(State::Intro);
+	ScoreIO::SaveScore::LoadScores();
+	ChangeState(Intro);
 	// Load up additional data
 }
  
