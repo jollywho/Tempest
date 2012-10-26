@@ -8,6 +8,7 @@
 
 class Level;
 class Interface;
+class Enemy;
 
 class CPlayState : public CGameState
 {
@@ -34,7 +35,7 @@ public:
 
     //std::list<EnemyBullet*> en_bulletlist;
 	std::list<PlayerBullet*> pl_bulletlist;
-	//std::list<Enemy*> enemy_list;
+	std::list<Enemy*> enemy_list;
 	//std::list<Item*> item_list;
 	//explosionlist
 	Player* player;
@@ -43,6 +44,12 @@ public:
 protected:
 	CPlayState() { }
     ~CPlayState();
+
+	template <class T>
+	void UpdateList(std::list<T>& lst, const int& iElapsedTime);
+
+	template <class T>
+	void DrawList(std::list<T>& lst, SDL_Surface* dest);
 private:
 	static CPlayState m_PlayState;
 };

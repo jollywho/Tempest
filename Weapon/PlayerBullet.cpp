@@ -1,8 +1,7 @@
 #include "PlayerBullet.h"
 #include "State/playstate.h"
 #include "Engine/SpriteResource.h"
-//#include "Enemy.h"
-//#include "Player.h"
+#include "Enemy/Enemy.h"
 
 Point PlayerBullet::min_bounds;
 Point PlayerBullet::max_bounds;
@@ -29,10 +28,9 @@ PlayerBullet::PlayerBullet(float x, float y, int angl, int rots)
 
 void PlayerBullet::CheckCollision(int expW, int expH)
 {
-	/* todo: link enemy list
-    for (auto it = CPlayState::Instance()->enemyList.begin(); it != CPlayState::Instance()->enemyList.end();)
+    for (auto it = CPlayState::Instance()->enemy_list.begin(); it != CPlayState::Instance()->enemy_list.end(); it++)
     {
-		if ((*it)->active && !(*it)->exploding)
+		if ((*it)->IsActive() && !(*it)->IsExploding())
 		{
         SDL_Rect enemybounds = (*it)->GetBounds();
 
@@ -42,16 +40,14 @@ void PlayerBullet::CheckCollision(int expW, int expH)
             enemybounds.y<offset.y+offset.h)
             { 
                 (*it)->TakeHit(1);
-                frame_Timer.start();
+                clip_timer.start();
                 exploding = true;
                 offset.x = offset.x + (offset.w/2 - expW/2);
                 offset.y = offset.y + (offset.h/2 - expH/2);
                 break;
 			}
 		}
-        it++;
     }
-	*/
 }
 
 void PlayerBullet::CheckBounds(Point camera_pos)

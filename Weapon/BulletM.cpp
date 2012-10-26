@@ -1,7 +1,6 @@
 #include "BulletM.h"
 #include "State/playstate.h"
 #include "Engine/SpriteResource.h"
-//#include "Enemy.h"
 #include "Player/Player.h"
 #include "Game/Camera.h"
 
@@ -17,11 +16,6 @@ BulletM::BulletM(float x, float y, int angl, int rots) :
     yVal = y - _info->height/2 + Camera::CameraY2();
     offset.x = xVal;
     offset.y = yVal;
-}
-
-BulletM::~BulletM()
-{
-
 }
 
 void BulletM::Init(std::string id, std::string expId)

@@ -14,7 +14,6 @@ private:
 	static SpriteInfo* _expInfo;
 public:
 	BulletM(float x, float y, int angl, int rots);
-	~BulletM();
 
 	static void Init(std::string id, std::string expId);
 

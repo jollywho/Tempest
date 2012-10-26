@@ -56,7 +56,7 @@ void Camera::JumpToEnd()
 
 void Camera::Update(int playerX, Uint32 deltaTicks)
 {
-	yVal += camera_speed;
+	yVal += 100 * deltaTicks/1000.f;
 	span_Timer.start();
 	if (accel && camera_speed < CAMERA_FAST) 
 		camera_speed += .05f;

@@ -14,10 +14,10 @@ MType::MType()
 	level = MAX_TOTEMS;
 	SpriteResource::AddResource("Player", "TotemInner.png", 32, 32, 60, 4);
 	SpriteResource::AddResource("Player", "Totem.png", 62, 53, 50, 1);
-	totem_list[0] = new Totem(40,50,10,-65);
-	totem_list[1] = new Totem(-40,50,-10,-65);
-	totem_list[2] = new Totem(80,40,30,-60);
-	totem_list[3] = new Totem(-80,40,-30,-60);
+	totem_list[0] = new Totem(40,90, 40,-50);
+	totem_list[1] = new Totem(-40,90,-40,-50);
+	totem_list[2] = new Totem(80,80, 10,-60);
+	totem_list[3] = new Totem(-80,80,-10,-60);
 	SpriteResource::AddResource("Player", "Shot.png", 60, 32, 33, 3);
 	shotanim = &SpriteResource::RequestResource("Player", "Shot.png");
 	rot_divs = 2;
