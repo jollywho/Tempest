@@ -20,32 +20,33 @@ PlayerBullet::PlayerBullet(float x, float y, int angl, int rots)
 	angle = (angle + rots - 1) / rots * rots;
 	if (angle > 360)
 		angle = 360;
-    xVel = sin(angle * M_PI/180) * 1600; 
-    yVel = cos(angle * M_PI/180) * 1600;
+    xVel = sinf(angle * (float)(M_PI/180)) * 1600; 
+    yVel = cosf(angle * (float)(M_PI/180)) * 1600;
 	
     clip_timer.start();
 }
 
 void PlayerBullet::CheckCollision(int expW, int expH)
 {
+	return;
     for (auto it = CPlayState::Instance()->enemy_list.begin(); it != CPlayState::Instance()->enemy_list.end(); it++)
     {
 		if ((*it)->IsActive() && !(*it)->IsExploding())
 		{
-        SDL_Rect enemybounds = (*it)->GetBounds();
+			SDL_Rect enemybounds = (*it)->GetBounds();
 
-        if (enemybounds.x+enemybounds.w>offset.x  && 
-            enemybounds.x<offset.x+offset.w  && 
-            enemybounds.y+enemybounds.h>offset.y && 
-            enemybounds.y<offset.y+offset.h)
-            { 
-                (*it)->TakeHit(1);
-                clip_timer.start();
-                exploding = true;
-                offset.x = offset.x + (offset.w/2 - expW/2);
-                offset.y = offset.y + (offset.h/2 - expH/2);
-                break;
-			}
+			if (enemybounds.x+enemybounds.w>offset.x  && 
+				enemybounds.x<offset.x+offset.w  && 
+				enemybounds.y+enemybounds.h>offset.y && 
+				enemybounds.y<offset.y+offset.h)
+				{ 
+					(*it)->TakeHit(1);
+					clip_timer.start();
+					exploding = true;
+					offset.x = offset.x + (offset.w/2 - expW/2);
+					offset.y = offset.y + (offset.h/2 - expH/2);
+					break;
+				}
 		}
     }
 }

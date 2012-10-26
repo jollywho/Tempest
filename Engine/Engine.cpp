@@ -228,12 +228,12 @@ void CEngine::HandleInput()
 /** Handles the updating routine. **/
 void CEngine::DoThink() 
 {
-	int currTime = SDL_GetTicks();
-	int timeElapsed = currTime - prevTime;
-	if(timeElapsed < 5)
+	Uint32 currTime = SDL_GetTicks();
+	Uint32 timeElapsed = currTime - prevTime;
+	if(timeElapsed < 15)
 	{
 		// Not enough time has elapsed. Let's limit the frame rate
-		SDL_Delay(5 - timeElapsed);
+		SDL_Delay(15 - timeElapsed);
 		currTime = SDL_GetTicks();
 		timeElapsed = currTime - prevTime;
 	}

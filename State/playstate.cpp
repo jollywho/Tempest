@@ -17,6 +17,8 @@ void CPlayState::Init()
 	player = new Player();
 	level = new Level01();
 	ui = new Interface();
+
+	level->LoadEnemies(enemy_list);
 }
 
 void CPlayState::Cleanup()

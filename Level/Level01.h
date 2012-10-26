@@ -9,6 +9,7 @@ public:
     ~Level01();
 	void Update(const int& iElapsedTime);
 	void Draw(SDL_Surface *dest);
+	void LoadEnemies(std::list<Enemy*>& lst);
 private:
 	SDL_Surface* top_surface;
 	SDL_Rect bounds;

@@ -64,7 +64,7 @@ void CIntroState::Update(const int& iElapsedTime)
 			alpha-=2;
 			fade_timer.start(); } }
 
-	bgX += 10 * iElapsedTime/100.f; bgX2 += 10 * iElapsedTime/100.f;
+	bgX += 100 * iElapsedTime/1000.f; bgX2 += 100 * iElapsedTime/1000.f;
 	if (bgX > _WSCREEN_WIDTH) 
 		bgX = bgX2 - 1280;
 	if (bgX2 > _WSCREEN_WIDTH) 

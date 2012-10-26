@@ -30,7 +30,7 @@ private:
 	/** Is the window minimized? **/
 	bool m_bMinimized;
 
-	int prevTime;
+	Uint32 prevTime;
 
 protected:
 	void DoThink();

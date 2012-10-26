@@ -13,7 +13,6 @@ protected:
 
     SDL_Rect hitbox;
 
-    static SDL_Surface* explo_surface;
     static SDL_Surface* hit_surface;
     SDL_Surface* copy_surface;
 	static SDL_Color hitColor;
@@ -24,6 +23,7 @@ protected:
     int clip;
 	int health;
 
+	bool bullet_wipe;
     bool exploding;
 	bool m_delete;
 	bool active;
@@ -33,10 +33,10 @@ protected:
 
 	bool CheckBounds(float x, float y, float h);
 	bool Explode(bool del);
-	bool MonitorHealth();
+	bool CheckHealth();
 	void DetectCollisions();
 public:
-    explicit Enemy(float x, float y, int hp, std::string id);
+    explicit Enemy(int x, int y, int hp, std::string id);
 	
     static void Init();
     static void CleanUp();

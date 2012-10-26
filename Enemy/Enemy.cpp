@@ -4,15 +4,15 @@
 #include "Player/Player.h"
 #include "State/Playstate.h"
 
-SDL_Surface* Enemy::explo_surface;
 SDL_Surface* Enemy::hit_surface;
 SDL_Color Enemy::hitColor = { 255, 0, 0 };
 
-Enemy::Enemy(float x, float y, int hp, std::string id)
+Enemy::Enemy(int x, int y, int hp, std::string id)
 {
 	printf("Enemy Created\n");
 
-	info = &SpriteResource::RequestResource("Enemy", id);
+	info = &SpriteResource::RequestResource("Enemies", id);
+	clip_timer.start();
 
 	active = false;
     m_delete = false;
@@ -21,20 +21,19 @@ Enemy::Enemy(float x, float y, int hp, std::string id)
 	clip = 0;
 	xVal = x - info->width/2; 
 	yVal = y - info->height/2;
-	hitbox.x = xVal; hitbox.y = yVal;
+	hitbox.x = xVal; 
+	hitbox.y = yVal;
 	hitbox.w = info->width; hitbox.h = info->height;
 	health = hp;
 }
 
 void Enemy::Init()
 {
-    explo_surface = Shared::load_image("Image/Enemies/En_Explo.png");
     hit_surface = Shared::load_image("Image/Enemies/HitColor.png");
 }
 
 void Enemy::CleanUp()
 {
-    SDL_FreeSurface(explo_surface);
     SDL_FreeSurface(hit_surface);
 }
 
@@ -63,10 +62,10 @@ void Enemy::FlashClear()
 
 bool Enemy::CheckBounds(float x, float y, float h)
 {
-	if( y - Camera::CameraY() > 0 && yVal + h >= Camera::CameraY())
-		return false;
-	else
+	if( y + h - Camera::CameraY2() > 0 )
 		return true;
+	else
+		return false;
 }
 
 bool Enemy::Explode(bool del)
@@ -76,8 +75,9 @@ bool Enemy::Explode(bool del)
 	//todo: connect with explosion manager.
 }
 
-bool Enemy::MonitorHealth()
+bool Enemy::CheckHealth()
 {
+	FlashClear();
 	if (health <= 0)
 		exploding = true;
 	//todo: request explosion

@@ -2,31 +2,32 @@
 #include "Layer.h"
 #include "Level01.h"
 #include "Game/Camera.h"
+#include "State/playstate.h"
+#include "Enemy/Enemy.h"
+#include "Enemy/Zown.h"
 
 Level01::Level01()
 {
     printf("Level01 Init\n");
 
 	/* Init enemies used for this level */
-    //Enemy::Init();
-    //Gulm::Init();
-    //Fazzle::Init();
-    //Bat::Init();
-    //Flamelord::Init();
-    //CharDrgn::Init();
+	Enemy::Init();
+	Zown::Init();
 
-	//create layers
-
-	//#include enemy spawns in file...??
+	/* Create layers used for this level */
 	bg = Shared::load_image("Image/Levels/level02.png");
 	top_surface = Shared::load_image("Image/Levels/fog.png");
-	
 	top = new Layer(top_surface, 600, 0);
 	top->Start();
-	//bg = new Layer(bg_surface, 6400, );
+
 	levelend = 6400;
 	Camera::Reset();
-	
+}
+
+void Level01::LoadEnemies(std::list<Enemy*>& lst)
+{
+	for (int i=levelend; i>0; i-=50)
+		lst.push_back(new Zown(_G_LEVEL_WIDTH/2,i));
 }
 
 Level01::~Level01()

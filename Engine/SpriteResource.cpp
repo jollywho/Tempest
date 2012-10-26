@@ -24,11 +24,15 @@ void SpriteResource::AddResource(std::string dirname, std::string filename,
 SpriteInfo& SpriteResource::RequestResource(std::string dirname, std::string filename)
 {
 	auto temp = resources.find(std::make_pair(dirname, filename));
+	if (temp->second == NULL)
+		printf("***Error Opening: %s***\n", filename.c_str());
 	return *temp->second;
 }
 RotationInfo& SpriteResource::RequestRotationResource(std::string dirname, std::string filename)
 {
 	auto temp = rot_resources.find(std::make_pair(dirname, filename));
+	if (temp->second == NULL)
+		printf("***Error Opening: %s***\n", filename.c_str());
 	return *temp->second;
 }
 

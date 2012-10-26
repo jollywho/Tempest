@@ -3,7 +3,6 @@
 #include "State/Playstate.h"
 
 SDL_Rect Camera::camera;
-Timer Camera::span_Timer;
 float Camera::camera_speed = 0;
 float Camera::xVal = 0;
 float Camera::yVal = 0;
@@ -31,7 +30,6 @@ void Camera::Reset()
 {
 	camera_speed = CAMERA_NORMAL;
 	accel = false;
-	span_Timer.start();
 }
 
 void Camera::MoveFast()
@@ -56,8 +54,7 @@ void Camera::JumpToEnd()
 
 void Camera::Update(int playerX, Uint32 deltaTicks)
 {
-	yVal += 100 * deltaTicks/1000.f;
-	span_Timer.start();
+	yVal += camera_speed * deltaTicks/1000.f;
 	if (accel && camera_speed < CAMERA_FAST) 
 		camera_speed += .05f;
 
