@@ -26,27 +26,25 @@ PlayerBullet::PlayerBullet(float x, float y, int angl, int rots)
     clip_timer.start();
 }
 
-void PlayerBullet::CheckCollision(int expW, int expH)
+void PlayerBullet::CheckCollision()
 {
-	return;
     for (auto it = CPlayState::Instance()->enemy_list.begin(); it != CPlayState::Instance()->enemy_list.end(); it++)
     {
-		if ((*it)->IsActive() && !(*it)->IsExploding())
+		if (!(*it)->IsExploding())
 		{
 			SDL_Rect enemybounds = (*it)->GetBounds();
 
-			if (enemybounds.x+enemybounds.w>offset.x  && 
-				enemybounds.x<offset.x+offset.w  && 
-				enemybounds.y+enemybounds.h>offset.y && 
-				enemybounds.y<offset.y+offset.h)
-				{ 
+			int dx = (enemybounds.x + enemybounds.w/2) - (offset.x  + offset.w/2);
+			int dy = (enemybounds.y + enemybounds.h/2) - (offset.y  + offset.h/2);
+
+			int radii = enemybounds.w/2 + offset.w/4;
+			if ( ( dx * dx )  + ( dy * dy ) < radii * radii ) 
+			{
 					(*it)->TakeHit(1);
 					clip_timer.start();
 					exploding = true;
-					offset.x = offset.x + (offset.w/2 - expW/2);
-					offset.y = offset.y + (offset.h/2 - expH/2);
-					break;
-				}
+					return;
+			}
 		}
     }
 }
@@ -65,7 +63,7 @@ void PlayerBullet::CheckBounds(Point camera_pos)
 	{
 		m_delete = true;
 	}
-	else if( offset.y - offset.h - camera_pos.y > max_bounds.y )
+	else if( offset.y - camera_pos.y > max_bounds.y )
 	{
 		m_delete = true;
 	}

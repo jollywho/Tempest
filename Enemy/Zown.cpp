@@ -16,22 +16,19 @@ Zown::~Zown()
 {
     if (hit)
         SDL_FreeSurface(copy_surface);
+
 }
 
 void Zown::TakeHit(int dmg)
 {
-    if (active)
-    {
-        health -= dmg;
-        FlashRed(info->surface, &info->clips[clip]);
-    }
+    health -= dmg;
+    FlashRed(info->surface, &info->clips[clip]);
 }
 
 void Zown::Init()
 {
 	printf("Zown Init\n");
-	SpriteResource::AddResource("Enemies", "zown.png", 96, 48, 60, 3);
-
+	SpriteResource::AddResource("Enemies", "zown.png", 64, 64, 60, 3);
 	//todo: relink
 	//Explosion::AddExplosionInfo("Zown", "Exp_ThinImplode.png", 5, 0);
 }
@@ -70,11 +67,9 @@ void Zown::Attack()
 
 void Zown::Update(Uint32 deltaTicks)
 {
-	active = CheckBounds(xVal, yVal, info->height);
-	if (!active) return;
-	//if (Explode(true)) return;
-	//if (CheckHealth()) return;
-	//DetectCollisions();
+	if (Explode(true)) return;
+	if (CheckHealth()) return;
+	DetectCollisions();
 
     if (attack_Timer.get_ticks() > 80)
         Attack();
@@ -86,7 +81,7 @@ void Zown::Update(Uint32 deltaTicks)
 
 void Zown::Draw(SDL_Surface *dest)
 {
-	if (!active || exploding) return;
+	if (exploding) return;
 
     if (hit)
         Camera::DrawSurface(hitbox.x, hitbox.y,

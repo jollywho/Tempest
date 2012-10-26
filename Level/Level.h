@@ -16,8 +16,8 @@ public:
 
 	/* Create enemies used for this level */
 	virtual void LoadEnemies(std::list<Enemy*>& lst) = 0;
-	//DrawTopLayer
 protected:
+	std::list<Enemy*> enemy_cache;
 	Layer* end;
 	Layer* top;
 	int levelend;

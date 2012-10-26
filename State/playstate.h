@@ -52,6 +52,7 @@ protected:
 	void DrawList(std::list<T>& lst, SDL_Surface* dest);
 private:
 	static CPlayState m_PlayState;
+	Timer scan_timer;
 };
 
 #endif

@@ -3,6 +3,7 @@
 #include "Game/Interface.h"
 #include "Level/Level01.h"
 #include "Enemy/Enemy.h"
+#include "ENemy/Zown.h"
 
 CPlayState CPlayState::m_PlayState;
 bool CPlayState::m_Exit = false;
@@ -12,13 +13,16 @@ void CPlayState::Init()
 {
 	printf("CPlayState Init\n");
     m_Exit = false;
+
+	Enemy::Init();
+	//item init
 	
     stage = 1;
 	player = new Player();
 	level = new Level01();
 	ui = new Interface();
 
-	level->LoadEnemies(enemy_list);
+	scan_timer.start();
 }
 
 void CPlayState::Cleanup()
@@ -76,7 +80,6 @@ void CPlayState::UpdateList(std::list<T>& lst, const int& iElapsedTime)
 {
 	for (auto it = lst.begin(); it != lst.end();)
 	{
-		(*it)->Update(iElapsedTime);
 		if ((*it)->RequestDelete())
 		{
 			delete (*it);
@@ -84,6 +87,7 @@ void CPlayState::UpdateList(std::list<T>& lst, const int& iElapsedTime)
 		}
 		else
 		{
+			(*it)->Update(iElapsedTime);
 			it++;
 		}
 	}
@@ -93,8 +97,17 @@ void CPlayState::Update(const int& iElapsedTime)
 {
 	Camera::Update(player->GetOuterBounds().x, iElapsedTime);
 	level->Update(iElapsedTime);
+	level->LoadEnemies(enemy_list);
 	player->Update(iElapsedTime);
 
+	if (scan_timer.get_ticks() > 50)
+	{
+		for (auto it = pl_bulletlist.begin(); it != pl_bulletlist.end(); it++)
+		{
+			(*it)->CheckCollision();
+		}
+		scan_timer.start();
+	}
 	UpdateList(pl_bulletlist, iElapsedTime);
 	UpdateList(enemy_list, iElapsedTime);
 

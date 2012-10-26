@@ -26,7 +26,7 @@ MType::MType()
 	SpriteResource::AddResource("Player", "Laser.png", 10, 620, 60, 5);
 	SpriteResource::AddResource("Player", "Head.png", 36, 37, 20, 4);
 	BulletM::Init("MType.png", "Conc_Explode.png");
-	minor_speed = 75; major_speed = 75;
+	minor_speed = 90; major_speed = 90;
 	shotanim_clip = 0;
 	mov = 0;
 	SFX::AddSoundResource("attack.wav");

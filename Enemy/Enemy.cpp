@@ -14,7 +14,6 @@ Enemy::Enemy(int x, int y, int hp, std::string id)
 	info = &SpriteResource::RequestResource("Enemies", id);
 	clip_timer.start();
 
-	active = false;
     m_delete = false;
     exploding = false;
     hit = false;
@@ -39,8 +38,7 @@ void Enemy::CleanUp()
 
 void Enemy::FlashRed(SDL_Surface* en_surface, SDL_Rect* targetClip)
 {
-	if (!hit_timer.is_started()) hit_timer.start();
-    if (!hit && hit_timer.get_ticks() > 45)
+    if (!hit)
     {
 		hit = true;
 		hit_timer.start();
@@ -51,25 +49,28 @@ void Enemy::FlashRed(SDL_Surface* en_surface, SDL_Rect* targetClip)
 
 void Enemy::FlashClear()
 {
-	if (hit && hit_timer.get_ticks() > 45)
+	if (hit && hit_timer.get_ticks() > 30)
 	{
 		hit = false;
-		hit_timer.start();
 		SDL_FreeSurface(copy_surface);
 	}
 }
 
-
-bool Enemy::CheckBounds(float x, float y, float h)
+bool Enemy::CheckBounds()
 {
-	if( y + h - Camera::CameraY2() > 0 )
+	if( yVal + info->height - Camera::CameraY2() > 0 )
+	{
 		return true;
+	}
 	else
+	{
 		return false;
+	}
 }
 
 bool Enemy::Explode(bool del)
 {
+	//m_delete = true;
 	return false;
 
 	//todo: connect with explosion manager.
@@ -86,6 +87,12 @@ bool Enemy::CheckHealth()
 
 void Enemy::DetectCollisions()
 {
+	if( yVal - Camera::CameraY2() > _G_BOUNDS_HEIGHT)
+	{
+		m_delete = true;
+		return;
+	}
+
 	SDL_Rect pl = CPlayState::Instance()->player->GetBounds();
 
 	if (hitbox.x+hitbox.w>pl.x  && 

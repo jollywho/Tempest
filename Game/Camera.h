@@ -3,8 +3,8 @@
 #define CAMERA_H
 
 #include "Engine/Shared.h"
-const float CAMERA_NORMAL = 150.f;
-const float CAMERA_FAST = 300.f;
+const float CAMERA_NORMAL = 100.f;
+const float CAMERA_FAST = 250.f;
 
 class Camera
 {

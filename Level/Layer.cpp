@@ -47,9 +47,9 @@ void Layer::Update(Uint32 deltaTicks, float spd)
 	{
 		yVal += spd * deltaTicks/1000.f;
 		yVal2 += spd * deltaTicks/1000.f;
-		if (yVal > _G_BOUNDS_HEIGHT)
+		if (yVal >= _G_BOUNDS_HEIGHT)
 			yVal = yVal2-height;
-		if (yVal2 > _G_BOUNDS_HEIGHT)
+		if (yVal2 >= _G_BOUNDS_HEIGHT)
 			yVal2 = yVal-height;
 		bounds.y = 0;
 		bounds.x = (int)Camera::CameraX();

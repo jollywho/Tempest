@@ -35,7 +35,7 @@ void BulletM::Update(const int& iElapsedTime)
 		Shared::CheckClip(clip_timer, clip, _info->interval, _info->clip_count,0);
 		yVal += (yVel * ( iElapsedTime / 1000.f ));
 		xVal += (xVel * ( iElapsedTime / 1000.f ));
-		CheckCollision(_expInfo->width, _expInfo->height);
+		//CheckCollision(_expInfo->width, _expInfo->height);
 		CheckBounds(Point(Camera::CameraX(), Camera::CameraY2()));
     }
     else

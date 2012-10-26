@@ -31,6 +31,7 @@ private:
 	bool m_bMinimized;
 
 	Uint32 prevTime;
+	Timer delta;
 
 protected:
 	void DoThink();

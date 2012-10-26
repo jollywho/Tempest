@@ -76,6 +76,7 @@ void CEngine::Init()
 
 CGameState* CEngine::GetStateInstance(State id)
 {
+	printf("--STATE ChANGE--\n");
 	switch(id)
 	{
 		case Intro:
@@ -136,7 +137,7 @@ void CEngine::Start()
 	{
 		// Handle mouse and keyboard input
 		HandleInput();
-
+		DoRequests();
 		if ( m_bMinimized ) {
 			// Release some system resources if the app. is minimized.
 			WaitMessage(); // pause the application until focus in regained
@@ -146,8 +147,17 @@ void CEngine::Start()
 			DoThink();
 
 			DoRender();
-				
-			DoRequests();
+
+			Uint32 currTime = SDL_GetTicks();
+			Uint32 timeElapsed = currTime - prevTime;
+			if(timeElapsed < 15)
+			{
+				// Not enough time has elapsed. Let's limit the frame rate
+				SDL_Delay(15 - timeElapsed);
+				currTime = SDL_GetTicks();
+				timeElapsed = currTime - prevTime;
+			}
+			prevTime = currTime;
 		}
 	}
 	End();
@@ -228,17 +238,8 @@ void CEngine::HandleInput()
 /** Handles the updating routine. **/
 void CEngine::DoThink() 
 {
-	Uint32 currTime = SDL_GetTicks();
-	Uint32 timeElapsed = currTime - prevTime;
-	if(timeElapsed < 15)
-	{
-		// Not enough time has elapsed. Let's limit the frame rate
-		SDL_Delay(15 - timeElapsed);
-		currTime = SDL_GetTicks();
-		timeElapsed = currTime - prevTime;
-	}
-	prevTime = currTime;
-	Think( timeElapsed );
+	Think( delta.get_ticks() );
+	delta.start();
 }
  
 /** Handles the rendering and FPS calculations. **/

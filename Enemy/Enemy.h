@@ -26,23 +26,23 @@ protected:
 	bool bullet_wipe;
     bool exploding;
 	bool m_delete;
-	bool active;
 	bool air;
 	bool hit;
 	float xVal; float yVal;
 
-	bool CheckBounds(float x, float y, float h);
+	
 	bool Explode(bool del);
 	bool CheckHealth();
 	void DetectCollisions();
 public:
     explicit Enemy(int x, int y, int hp, std::string id);
-	
+	virtual ~Enemy() {};
+
     static void Init();
     static void CleanUp();
 
     bool RequestDelete() { return m_delete; };
-    virtual ~Enemy() {};
+    
 
     virtual void Update(Uint32 deltaTicks) = 0;
     virtual void Draw(SDL_Surface *dest) = 0;
@@ -50,8 +50,8 @@ public:
     void FlashRed(SDL_Surface* en_surface, SDL_Rect* targetClip);
     void FlashClear();
 
+	bool CheckBounds();
 	bool IsExploding() { return exploding; }
-	bool IsActive() { return active; }
 	bool IsAir() { return air; }
 	bool IsHit() { return hit; }
 	SDL_Rect GetBounds() { return hitbox; };
