@@ -8,6 +8,7 @@ enum State
 {
 	Intro,
 	Play,
+	Score,
 	Option,
 	Poll,
 	Name,

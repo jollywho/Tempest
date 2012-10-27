@@ -12,7 +12,6 @@ Menu::Menu()
 	info = &SpriteResource::RequestResource("UI", "selector.png");
 	font = TTF_OpenFont("Font/plantc.ttf", 24);
 	clip = 0;
-	reset = false;
 	click = false;
 	clip_timer.start();
 }
@@ -37,7 +36,7 @@ void Menu::AddItem(int x, int y, char* msg)
 void Menu::Update(Uint32 deltaTicks, int alpha)
 {
 	if (click)
-		Shared::CheckClip(clip_timer, clip, info->interval, info->clip_count, 0);
+		Shared::CheckClip(clip_timer, clip, info->interval, info->clip_count, info->clip_count-1);
     SDL_SetAlpha(info->surface, SDL_SRCALPHA, alpha);
     for (auto it = menuList.begin(); it != menuList.end(); it++)
     {
@@ -62,22 +61,22 @@ void Menu::Draw(SDL_Surface *dest)
     SDL_BlitSurface(info->surface, &info->clips[clip], dest, &selectorOffset);
 }
 
-void Menu::Release()
+void Menu::Reset()
 {
-	reset = false;
+	click = false;
+	clip = 0;
+	selectedindex = 1;
 }
 
 void Menu::Select()
 {
 	click = true;
-	reset = true;
 }
 
 void Menu::SetIndex(int direction)
 {
-	if (!reset && !click)
+	if (!click)
 	{
-		reset = true;
 		selectedindex += direction;
 		if (selectedindex < 1) selectedindex = maxItems;
 		if (selectedindex > maxItems) selectedindex = 1;

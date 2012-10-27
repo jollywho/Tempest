@@ -19,7 +19,6 @@ private:
 	SpriteInfo* info;
 	Timer clip_timer;
 	int clip;
-	bool reset;
 	bool click;
 	void MoveSelector(SDL_Rect* bounds);
 public:
@@ -29,7 +28,7 @@ public:
     void Update(Uint32 deltaTicks, int alpha);
     void Draw(SDL_Surface *dest);
 	
-	void Release();
+	void Reset();
 	void Select();
 
 	void SetIndex(int direction);

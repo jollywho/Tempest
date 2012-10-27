@@ -58,9 +58,7 @@ void CIntroState::Cleanup()
 void CIntroState::Return()
 {
 	printf("CIntroState Return\n");
-	entering = true;
-	alpha = 255;
-	//todo: reset menu index
+	mainMenu->Reset();
 }
 
 void CIntroState::CheckKeys(const KeyStruct& keys)
@@ -69,22 +67,20 @@ void CIntroState::CheckKeys(const KeyStruct& keys)
 	if (keys.z)
 	{
 		mainMenu->Select();
-		entering = false;
 		exiting = true;
 		if (mainMenu->GetIndex() == 1) { span = true; fadeout = true; }
-		if (mainMenu->GetIndex() == 2) { fadeout = true; }
+		if (mainMenu->GetIndex() == 2) { fadeout = false; }
 		if (mainMenu->GetIndex() == 4) { fadeout = true; }
 	}
 	if (keys.down) mainMenu->SetIndex(1);
 	else if (keys.up) mainMenu->SetIndex(-1);
-	else mainMenu->Release();	
 }
 
 void CIntroState::MenuAction()
 {
 	if (mainMenu->GetIndex() == 1) ChangeState(Play);
 	//if (mainMenu->GetIndex() == 2) RequestState(Poll);
-	if (mainMenu->GetIndex() == 2) { PushMenu(Play); exiting = false; }
+	if (mainMenu->GetIndex() == 2) { PushMenu(Score); exiting = false; }
 	if (mainMenu->GetIndex() == 4) ChangeState(Option);
 }
 
