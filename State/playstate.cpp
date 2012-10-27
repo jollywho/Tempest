@@ -76,6 +76,18 @@ void CPlayState::Pause()
 void CPlayState::Resume()
 {
 	printf("CPlayState Resume\n");
+	if (m_Exit)
+	{
+		m_Exit = false;
+		alpha = 255;
+		m_Enter = true;
+	}
+}
+
+void CPlayState::Return()
+{
+	printf("CPlayState Return\n");
+
 }
 
 void CPlayState::NewLevel()
@@ -111,11 +123,11 @@ void CPlayState::Update(const int& iElapsedTime)
 {
 	if (m_Enter)
 	{
-		if (alpha > 2) 
+		if (alpha > 0) 
 		{
 			if (fade_timer.get_ticks() > 10) 
 			{
-				alpha-=2;
+				alpha-=5;
 				fade_timer.start(); 
 			} 
 		}
@@ -128,17 +140,12 @@ void CPlayState::Update(const int& iElapsedTime)
 		{
 			if (fade_timer.get_ticks() > 10) 
 			{
-				alpha+=2;
+				alpha+=5;
 				fade_timer.start(); 
 			} 
 		}
 		else
-		{
-			m_Exit = false;
-			m_Enter = true;
-			alpha = 255;
 			PushState(Poll);
-		}
 	}
 	Camera::Update(player->GetOuterBounds().x, iElapsedTime);
 	level->Update(iElapsedTime);
@@ -179,9 +186,9 @@ void CPlayState::Draw(SDL_Surface* dest)
 	DrawList(pl_bulletlist, dest);
 	
 	if (m_Exit)
-		SPG_RectFilledBlend(dest,_G_BANNER_WIDTH,0,_G_BOUNDS_WIDTH,_WSCREEN_HEIGHT, 0, alpha);
-	if (m_Enter)
 		SPG_RectFilledBlend(dest,_G_BANNER_WIDTH,0,_G_BOUNDS_WIDTH,_WSCREEN_HEIGHT, 16777215, alpha);
+	if (m_Enter)
+		SPG_RectFilledBlend(dest,_G_BANNER_WIDTH,0,_G_BOUNDS_WIDTH,_WSCREEN_HEIGHT, 0, alpha);
 
 	player->Draw(dest);
 

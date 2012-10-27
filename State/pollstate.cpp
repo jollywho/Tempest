@@ -72,11 +72,11 @@ void CPollState::Update(const int& iElapsedTime)
 {
 	if (entering)
 	{
-		if (alpha > 2) 
+		if (alpha > 0) 
 		{
 			if (fade_timer.get_ticks() > 10) 
 			{
-				alpha-=2;
+				alpha-=5;
 				fade_timer.start(); 
 			} 
 		}
@@ -95,8 +95,17 @@ void CPollState::Update(const int& iElapsedTime)
 			
 	}
 	else if (exiting)
-	{
-		PopState();
+	{		
+		if (alpha < 255) 
+		{
+			if (fade_timer.get_ticks() > 10) 
+			{
+				alpha+=5;
+				fade_timer.start(); 
+			} 
+		}
+		else
+			PopState();
 	}
 
 	CPlayState::Instance()->ui->Update(iElapsedTime);
@@ -113,7 +122,7 @@ void CPollState::Update(const int& iElapsedTime)
 
 void CPollState::Draw(SDL_Surface* dest) 
 {
-	//Shared::apply_surface(0,0,bg,dest);
+	Shared::apply_surface(0,0,bg,dest);
 
 	Shared::apply_surface(banner_left_pos.x, banner_left_pos.y, banner_side, dest);
 	Shared::apply_surface(banner_right_pos.x, banner_right_pos.y, banner_side, dest);

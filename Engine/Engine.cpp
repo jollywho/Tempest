@@ -126,7 +126,7 @@ void CEngine::PopState()
 
     // resume previous state
     if ( !states.empty() ) {
-            states.back()->Resume();
+        states.back()->Resume();
     }
 }
 
@@ -135,6 +135,13 @@ void CEngine::PushMenu(State id)
 	//create top level menu state
 	menustate = GetStateInstance(id);
 	menustate->Init();
+}
+
+void CEngine::PopMenu()
+{
+	 menustate->Cleanup(); 
+	 menustate = NULL; 
+	 states.back()->Return();
 }
 
 void CEngine::DoRequests()
@@ -158,10 +165,8 @@ void CEngine::DoRequests()
 		states.back()->ClearRequest();
 	}
 
-	if (menustate != NULL)
-	{
-		if (menustate->MenuPop()) { menustate->Cleanup(); menustate = NULL; }
-	}
+	if (menustate != NULL) { 
+		if (menustate->MenuPop()) { PopMenu(); } }
 }
  
 /** The main loop. **/
@@ -177,7 +182,7 @@ void CEngine::Start()
 	{
 		// Handle mouse and keyboard input
 		HandleInput();
-		DoRequests();
+		
 		if ( m_bMinimized ) {
 			// Release some system resources if the app. is minimized.
 			WaitMessage(); // pause the application until focus in regained
@@ -185,7 +190,7 @@ void CEngine::Start()
 		else 
 		{
 			DoThink();
-
+			DoRequests();
 			DoRender();
 
 			Uint32 currTime = SDL_GetTicks();
@@ -215,12 +220,6 @@ void CEngine::HandleInput()
 		switch ( event.type ) 
 		{
 		case SDL_KEYDOWN:
-			// If escape is pressed set the Quit-flag
-			if (event.key.keysym.sym == SDLK_ESCAPE)
-			{
-				m_bQuit = true;
-				break;
-			}
  
 			KeyDown( event.key.keysym.sym );
 			break;

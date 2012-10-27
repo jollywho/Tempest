@@ -22,6 +22,7 @@ public:
 
 	virtual void Pause() = 0;
 	virtual void Resume() = 0;
+	virtual void Return() = 0;
 
 	virtual void CheckKeys(const KeyStruct& keys) = 0;
 	virtual void Update(const int& iElapsedTime) = 0;

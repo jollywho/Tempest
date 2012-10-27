@@ -21,6 +21,7 @@ public:
 
 	void Pause();
 	void Resume();
+	void Return();
 
 	void CheckKeys(const KeyStruct& keys);
 	void Update(const int& iElapsedTime);

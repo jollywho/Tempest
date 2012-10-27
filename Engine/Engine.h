@@ -57,6 +57,7 @@ public:
 	void PushState(State id);
 	void PopState();
 	void PushMenu(State id);
+	void PopMenu();
  
 	/** OVERLOADED - Data that should be initialized when the application starts. **/
 	virtual void AdditionalInit	() {}

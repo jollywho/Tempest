@@ -55,14 +55,12 @@ void CIntroState::Cleanup()
 	SDL_FreeSurface(border_right);
 }
 
-void CIntroState::Pause()
+void CIntroState::Return()
 {
-	printf("CIntroState Pause\n");
-}
-
-void CIntroState::Resume()
-{
-	printf("CIntroState Resume\n");
+	printf("CIntroState Return\n");
+	entering = true;
+	alpha = 255;
+	//todo: reset menu index
 }
 
 void CIntroState::CheckKeys(const KeyStruct& keys)
@@ -86,7 +84,7 @@ void CIntroState::MenuAction()
 {
 	if (mainMenu->GetIndex() == 1) ChangeState(Play);
 	//if (mainMenu->GetIndex() == 2) RequestState(Poll);
-	if (mainMenu->GetIndex() == 2) { PushMenu(Poll); exiting = false; }
+	if (mainMenu->GetIndex() == 2) { PushMenu(Play); exiting = false; }
 	if (mainMenu->GetIndex() == 4) ChangeState(Option);
 }
 
@@ -102,6 +100,24 @@ void CIntroState::Update(const int& iElapsedTime)
 	if (bgX2 > _WSCREEN_WIDTH) 
 		bgX2 = bgX - 1280;
 
+	if (entering)
+	{
+		if (border_top_y < 0)
+		{
+			border_top_y+=2;
+			border_bot_y-=2;
+		}
+		else if (alpha > 0) 
+		{
+			if (fade_timer.get_ticks() > 10) 
+			{
+				alpha-=5;
+				fade_timer.start(); 
+			} 
+		}
+		else
+			entering = false;
+	}
 	if (exiting)
 	{
 		if (span && border_left_x < 0)
@@ -115,30 +131,12 @@ void CIntroState::Update(const int& iElapsedTime)
 		{
 			if (fade_timer.get_ticks() > 10) 
 			{
-				alpha+=2;
+				alpha+=5;
 				fade_timer.start(); 
 			} 
 		}
 		else
 			MenuAction();
-	}
-	if (entering)
-	{
-		if (border_top_y < 0)
-		{
-			border_top_y+=2;
-			border_bot_y-=2;
-		}
-		else if (alpha >= 2) 
-		{
-			if (fade_timer.get_ticks() > 10) 
-			{
-				alpha-=2;
-				fade_timer.start(); 
-			} 
-		}
-		else
-			entering = false;
 	}
 }
 
