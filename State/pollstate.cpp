@@ -13,14 +13,15 @@ void CPollState::Init()
 	ClearRequest();
 	bg =  Shared::load_image("Image/UI/poll.bmp");
 
-	banner_middle = Shared::load_image("Image/UI/poll_banner_side.png");
-	banner_side = Shared::load_image("Image/UI/poll_banner_middle.png");
+	banner_middle = Shared::load_image("Image/UI/poll_banner_middle.png");
+	banner_side = Shared::load_image("Image/UI/poll_banner_side.png");
 
 	//todo: nsprites
 
 	//todo: load scores
 
 	alpha = 255;
+	banner_speed = 12;
 	//
 
 	banner_middle_pos.x = _WSCREEN_WIDTH/2 - 112/2;
@@ -78,17 +79,19 @@ void CPollState::Update(const int& iElapsedTime)
 				fade_timer.start(); 
 			} 
 		}
-		else if (banner_middle_pos.y < 0)
+		if (banner_middle_pos.y > 50)
 		{
-			banner_middle_pos.y+=2;
+			banner_middle_pos.y-=banner_speed;
 		}
-		else if (banner_left_pos.x < banner_middle_pos.x)
+		if (banner_left_pos.x < banner_middle_pos.x - 102) //offset to overlap
 		{
-			banner_left_pos.x+=2;
-			banner_right_pos.x-=2;
+			banner_left_pos.x+=banner_speed/4;
+			banner_right_pos.x-=banner_speed/4;
 		}
 		else
-			entering = false;
+			if (alpha <= 0 )
+				entering = false;
+			
 	}
 	else if (exiting)
 	{

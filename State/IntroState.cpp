@@ -36,7 +36,7 @@ void CIntroState::Init()
 	border_top_y = -42; border_bot_y = _WSCREEN_HEIGHT;
 	border_left_x = -160; border_right_x = _WSCREEN_WIDTH;
 
-	exiting = false; entering = true; fadeout = false;
+	exiting = false; entering = true; fadeout = false; span = false;
 
 	fade_timer.start();
 }
@@ -69,14 +69,25 @@ void CIntroState::CheckKeys(const KeyStruct& keys)
 {
 	if (exiting) return;
 	if (keys.z)
-		{
-			mainMenu->Select(); 
-			if (mainMenu->GetIndex() == 1) { exiting = true; entering = false; }
-			if (mainMenu->GetIndex() == 4) RequestState(Option);
-		}
+	{
+		mainMenu->Select();
+		entering = false;
+		exiting = true;
+		if (mainMenu->GetIndex() == 1) { span = true; fadeout = true; }
+		if (mainMenu->GetIndex() == 2) { fadeout = true; }
+		if (mainMenu->GetIndex() == 4) { fadeout = true; }
+	}
 	if (keys.down) mainMenu->SetIndex(1);
 	else if (keys.up) mainMenu->SetIndex(-1);
 	else mainMenu->Release();	
+}
+
+void CIntroState::MenuAction()
+{
+	if (mainMenu->GetIndex() == 1) RequestState(Play);
+	if (mainMenu->GetIndex() == 2) RequestState(Poll);
+	if (mainMenu->GetIndex() == 4) RequestState(Option);
+
 }
 
 void CIntroState::Update(const int& iElapsedTime) 
@@ -93,14 +104,14 @@ void CIntroState::Update(const int& iElapsedTime)
 
 	if (exiting)
 	{
-		if (border_left_x < 0)
+		if (span && border_left_x < 0)
 		{
 			border_left_x+=2;
 			border_right_x-=2;
 			border_top_y-=2;
 			border_bot_y+=2;
 		}
-		else if (alpha < 255) 
+		else if (fadeout && alpha < 255) 
 		{
 			if (fade_timer.get_ticks() > 10) 
 			{
@@ -109,7 +120,7 @@ void CIntroState::Update(const int& iElapsedTime)
 			} 
 		}
 		else
-			RequestState(Play);
+			MenuAction();
 	}
 	if (entering)
 	{

@@ -35,7 +35,7 @@ private:
 
 	SDL_Surface* banner_middle;
 	SDL_Surface* banner_side;
-
+	float banner_speed;
 	bool exiting; bool entering; bool fadeout;
 };
 

@@ -5,6 +5,7 @@
 #include "State/Gamestate.h"
 #include "State/Introstate.h"
 #include "State/Playstate.h"
+#include "State/Pollstate.h"
  
 KeyStruct default_keys = { false, false, false, false, false, false, false, false };
 
@@ -84,6 +85,9 @@ CGameState* CEngine::GetStateInstance(State id)
 			break;
 		case Play:
 			return CPlayState::Instance();
+			break;
+		case Poll:
+			return CPollState::Instance();
 			break;
 		default:
 			return CIntroState::Instance();
