@@ -1,34 +1,34 @@
-#include "Bomb.h"
+#include "Bombup.h"
 #include "Engine/SpriteResource.h"
 #include "State/playstate.h"
 #include "Game/GameScore.h"
 #include "Game/Camera.h"
 #include "Player/Player.h"
 
-Bomb::Bomb(int x, int y, int value) : Item(x, y, value, "Bomb.png")
+Bombup::Bombup(int x, int y, int value) : Item(x, y, value, "bombup.png")
 {
-	_received = &SpriteResource::RequestResource("Items", "Bomb_Received.png");
+	_received = &SpriteResource::RequestResource("Items", "Bombup_Received.png");
 	Air = true;
     m_delete = false;
 	yVel = 200 * ((rand() % 2) == 1 ? -1 : 1);
 	xVel = 200 * ((rand() % 2) == 1 ? -1 : 1);
 }
 
-Bomb::~Bomb() 
+Bombup::~Bombup() 
 {
 }
 
-void Bomb::Update(Uint32 deltaTicks)
+void Bombup::Update(Uint32 deltaTicks)
 {
 	if (pickedup)
 	{
 		Shared::CheckClip(clip_Timer, clip, _received->interval, _received->clip_count, _received->clip_count-1);
 		if (!received) 
 		{
-			SFX::PlaySoundResource("bomb_pickup.wav");
+			SFX::PlaySoundResource("Bombup_pickup.wav");
 			received = true;
 			duration_Timer.start(); 
-			GameScore::Instance()->IncreaseBombs();
+			GameScore::Instance()->IncreaseBombups();
 			yVel = -100;
 			xVel = 0;
 		}
@@ -49,7 +49,7 @@ void Bomb::Update(Uint32 deltaTicks)
     offset.y = yVal;
 }
 
-void Bomb::Draw(SDL_Surface *dest)
+void Bombup::Draw(SDL_Surface *dest)
 {
 	if (pickedup) {
 		Camera::DrawSurface(offset.x - 50, offset.y + Camera::CameraY2() - 25,

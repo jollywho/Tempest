@@ -34,7 +34,7 @@ void Item::Init()
 	printf("Item Init!\n");
 	SpriteResource::AddResource("Items", "Gem.png", 32, 32, 60, 8);
 	SpriteResource::AddResource("Items", "Coin.png", 32, 32, 60, 6);
-	SpriteResource::AddResource("Items", "Bomb.png", 48, 48, 60, 5);
+	SpriteResource::AddResource("Items", "bombup.png", 48, 48, 60, 5);
 	SpriteResource::AddResource("Items", "Powerup.png", 64, 64, 60, 4);
 	SpriteResource::AddResource("Items", "Chest.png", 34, 40, 160, 4);
 	SpriteResource::AddResource("Items", "Quartz.png", 32, 44, 30, 7);

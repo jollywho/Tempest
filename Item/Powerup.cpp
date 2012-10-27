@@ -24,7 +24,7 @@ void Powerup::Update(Uint32 deltaTicks)
 {
 	if (pickedup)
 	{
-		Shared::CheckClip(clip_Timer, clip, _received->interval, _received->clip_count, _received->clip_count-1);
+		Shared::CheckClip(clip_Timer, clip, _received->interval, _received->clip_count, 0);
 		if (!received) 
 		{
 			SFX::PlaySoundResource("powerup_pickup.wav");

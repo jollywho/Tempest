@@ -3,7 +3,8 @@
 #include "State/playstate.h"
 #include "Weapon/MType.h"
 
-Weapon* Player::wpn;
+Bomb* Player::_bomb;
+Weapon* Player::_wpn;
 
 void Player::ReSpawn()
 {
@@ -28,7 +29,7 @@ Player::Player()
 	moveSpeed = SPEED_NORMAL;
     mov = 0;
 	left = 0; right = 0; up = 0; down = 0;
-	shift = false; attack = false;
+	shift_quest = false; attack_request = false; bomb_request = false;
     zone_timer.start();
     hitbox_timer.start();
     booster_timer.start();
@@ -44,12 +45,14 @@ Player::Player()
 
 void Player::SetWeaponType(WeaponType type)
 {
-	if (type == M_type) wpn = new MType();
+	if (type == M_type)_wpn = new MType();
+
+	_bomb = new Bomb();
 }
 
 void Player::WeaponLevelUp()
 {
-	wpn->LevelUp();
+	_wpn->LevelUp();
 }
 
 Player::~Player()
@@ -68,18 +71,18 @@ void Player::CheckKeys(const KeyStruct& keys)
 	else left = 0;
 	if (keys.right) right = 1;
 	else right = 0;
-	if (keys.shift) shift = true;
-	else shift = false;
-	if (keys.z) attack = true;
-	else attack = false;
-	if (keys.x) bomb = true;
-	else bomb = false;
+	if (keys.shift) shift_quest = true;
+	else shift_quest = false;
+	if (keys.z) attack_request = true;
+	else attack_request = false;
+	if (keys.x) bomb_request = true;
+	else bomb_request = false;
 }
 
 void Player::HandleMovement(const int& iElapsedTime)
 {
-	if (shift && moveSpeed > SPEED_SLOW) moveSpeed-=iElapsedTime;
-	if (!shift && moveSpeed < SPEED_NORMAL) moveSpeed+=iElapsedTime;
+	if (shift_quest && moveSpeed > SPEED_SLOW) moveSpeed-=iElapsedTime;
+	if (!shift_quest && moveSpeed < SPEED_NORMAL) moveSpeed+=iElapsedTime;
 	//todo: normalize movement
 	xVal += ((left + right) * moveSpeed) * (iElapsedTime/1000.f);
 	yVal += ((up + down) * moveSpeed) * (iElapsedTime/1000.f);
@@ -92,21 +95,22 @@ void Player::HandleMovement(const int& iElapsedTime)
 
 void Player::HandleAttacks(const int& iElapsedTime)
 {
-	wpn->SetPos(xVal + angel->width/2, yVal, 0);
-	if (attack)
+	_wpn->SetPos(xVal + angel->width/2, yVal, 0);
+	if (attack_request)
 	{
-		if (shift)	wpn->MajorAttack(CPlayState::Instance()->pl_bulletlist);
-		else		wpn->MinorAttack(CPlayState::Instance()->pl_bulletlist);
+		if (shift_quest)	_wpn->MajorAttack(CPlayState::Instance()->pl_bulletlist);
+		else		_wpn->MinorAttack(CPlayState::Instance()->pl_bulletlist);
 	}
 	else
-		wpn->StopAttack();
+		_wpn->StopAttack();
 
-	if (shift) wpn->Shift();
-	else wpn->Unshift();
+	if (shift_quest)_wpn->Shift();
+	else _wpn->Unshift();
 
-	//bombattack
+	if (bomb_request && !_bomb->IsActive()) _bomb->Start(xVal + angel->width/2, yVal);
 
-	wpn->Update(iElapsedTime);
+	_wpn->Update(iElapsedTime);
+	_bomb->Update(iElapsedTime);
 }
 
 void Player::Update(const int& iElapsedTime)
@@ -130,13 +134,11 @@ void Player::Update(const int& iElapsedTime)
 
 void Player::Draw(SDL_Surface *dest)
 {
-    //if (bomb->IsActive())
-     //   bomb->show(dest);
-
 	//move to separate function for draw order?
-	if (shift)
+	if (shift_quest)
 		Shared::apply_surface(zone_pos.x, zone_pos.y, zone->surface, dest, &zone->clips[zone_clip]);
-	wpn->Draw(dest);
+	_wpn->Draw(dest);
+	_bomb->Draw(dest);
 	Shared::apply_surface(booster_pos.x, booster_pos.y, booster->surface, dest, &booster->clips[booster_clip]);
 	Shared::apply_surface(xVal, yVal, angel->surface, dest, &angel->clips[clip]);
 	Shared::apply_surface(hitbox_pos.x, hitbox_pos.y, hitbox->surface, dest, &hitbox->clips[hitbox_clip]);

@@ -22,6 +22,7 @@ protected:
 
     int clip;
 	int health;
+	int max_health;
 
 	bool bullet_wipe;
     bool exploding;

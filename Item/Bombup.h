@@ -1,15 +1,15 @@
-#ifndef BOMB_H
-#define BOMB_H
+#ifndef BOMBUP_H
+#define BOMBUP_H
 
 #include "Item.h"
 
-class Bomb : public Item
+class Bombup : public Item
 {
 private:
 	SpriteInfo* _received;
 public:
-	Bomb(int x, int y, int value);
-    ~Bomb();
+	Bombup(int x, int y, int value);
+    ~Bombup();
     void Update(Uint32 deltaTicks);
     void Draw(SDL_Surface *dest);
 };

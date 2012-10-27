@@ -20,7 +20,7 @@ void GameScore::IncreaseLives()
 		g_lives++;
 }
 
-void GameScore::IncreaseBombs()
+void GameScore::IncreaseBombups()
 {
 	if (g_bombs < MAX_BOMBS) {
 		g_bombs++; t_bomb++; }
@@ -28,7 +28,7 @@ void GameScore::IncreaseBombs()
 		IncreaseScore(5000);
 }
 
-bool GameScore::DecreaseBombs()
+bool GameScore::DecreaseBombups()
 {
 	if (g_bombs > 0) {
 		g_bombs--;

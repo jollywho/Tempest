@@ -25,6 +25,7 @@ Enemy::Enemy(int x, int y, int hp, std::string id)
 	hitbox.y = yVal;
 	hitbox.w = info->width; hitbox.h = info->height;
 	health = hp;
+	max_health = hp;
 }
 
 void Enemy::Init()
@@ -87,7 +88,9 @@ bool Enemy::CheckHealth()
 	FlashClear();
 	if (health <= 0)
 	{
-		CPlayState::Instance()->item_list.push_back(new Gem(xVal, yVal, 25));
+		for (int i=0; i<=max_health; i+=25)
+			CPlayState::Instance()->item_list.push_back(
+			new Gem(xVal + rand() % info->width, yVal + info->height/2, 25));
 		exploding = true;
 	}
 	//todo: request explosion

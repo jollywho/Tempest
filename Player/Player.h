@@ -4,8 +4,10 @@
 
 #include "Engine/Shared.h"
 #include "Weapon/Weapon.h"
+#include "Bomb.h"
 
 struct SpriteInfo;
+class Bomb;
 
 class Player 
 {
@@ -33,11 +35,12 @@ public:
 	void WeaponLevelUp();
 
 private:
-	static Weapon* wpn;
+	static Weapon* _wpn;
+	static Bomb* _bomb;
 	int moveSpeed;
     float mov;
 	int left, right, up, down;
-	bool shift; bool attack; bool bomb;
+	bool shift_quest; bool attack_request; bool bomb_request;
     static const int SPEED_NORMAL = 350;
     static const int SPEED_SLOW = 180;
 

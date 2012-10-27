@@ -20,8 +20,8 @@ public:
 	unsigned long long GetScore() { return g_score; }
 	
 	int GetBombs() { return g_bombs; }
-	void IncreaseBombs();
-	bool DecreaseBombs();
+	void IncreaseBombups();
+	bool DecreaseBombups();
 
 	void DecreaseCounter(int val, int type);
 
