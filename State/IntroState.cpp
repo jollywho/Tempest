@@ -9,6 +9,7 @@ CIntroState CIntroState::m_IntroState;
 
 void CIntroState::Init()
 {
+	printf("CIntroState Init\n");
 	ClearRequest();
 	bg =  Shared::load_image("Image/UI/IntroBG.png");
 	SpriteResource::AddResource("UI", "decor.png", 48,48,100,8);
@@ -38,7 +39,6 @@ void CIntroState::Init()
 	exiting = false; entering = true; fadeout = false;
 
 	fade_timer.start();
-	printf("CIntroState Init\n");
 }
 
 void CIntroState::Cleanup()
