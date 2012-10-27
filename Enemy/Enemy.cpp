@@ -3,6 +3,7 @@
 #include "Engine/SpriteResource.h"
 #include "Player/Player.h"
 #include "State/Playstate.h"
+#include "Item/Gem.h"
 
 SDL_Surface* Enemy::hit_surface;
 SDL_Color Enemy::hitColor = { 255, 0, 0 };
@@ -85,7 +86,10 @@ bool Enemy::CheckHealth()
 {
 	FlashClear();
 	if (health <= 0)
+	{
+		CPlayState::Instance()->item_list.push_back(new Gem(xVal, yVal, 25));
 		exploding = true;
+	}
 	//todo: request explosion
 	return false;
 }

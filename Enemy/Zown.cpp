@@ -4,7 +4,7 @@
 #include "Game/Camera.h"
 #include "Pattern/ERotBullet.h"
 
-Zown::Zown(int x, int y) : Enemy(x, y, 150, "zown.png")
+Zown::Zown(int x, int y) : Enemy(x, y, 50, "zown.png")
 {
 	air = false;
 	bullet_wipe = true;

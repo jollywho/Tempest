@@ -28,6 +28,7 @@ PlayerBullet::PlayerBullet(float x, float y, int angl, int rots)
 
 void PlayerBullet::DetectCollision()
 {
+	if (exploding) return;
     for (auto it = CPlayState::Instance()->enemy_list.begin(); it != CPlayState::Instance()->enemy_list.end(); it++)
     {
 		if (!(*it)->IsExploding())
@@ -41,6 +42,7 @@ void PlayerBullet::DetectCollision()
 			if ( ( dx * dx )  + ( dy * dy ) < radii * radii ) 
 			{
 					(*it)->TakeHit(1);
+					clip = 0;
 					clip_timer.start();
 					exploding = true;
 					return;

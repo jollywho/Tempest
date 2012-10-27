@@ -29,6 +29,9 @@ public:
 
 	static void SetWeaponType(WeaponType type);
 
+	bool IsExploding() { return exploding; }
+	void WeaponLevelUp();
+
 private:
 	static Weapon* wpn;
 	int moveSpeed;
@@ -37,6 +40,8 @@ private:
 	bool shift; bool attack; bool bomb;
     static const int SPEED_NORMAL = 350;
     static const int SPEED_SLOW = 180;
+
+	bool exploding;
 
 	Point booster_pos;
 	Timer booster_timer;

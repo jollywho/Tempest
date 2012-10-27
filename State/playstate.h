@@ -10,6 +10,8 @@ class Interface;
 class Enemy;
 class PlayerBullet;
 class EnemyBullet;
+class Item;
+class ScoreMSG;
 
 class CPlayState : public CGameState
 {
@@ -37,7 +39,8 @@ public:
     std::list<EnemyBullet*> en_bulletlist;
 	std::list<PlayerBullet*> pl_bulletlist;
 	std::list<Enemy*> enemy_list;
-	//std::list<Item*> item_list;
+	std::list<Item*> item_list;
+	std::list<ScoreMSG*> score_list;
 	//explosionlist
 	Player* player;
 	Level* level;

@@ -7,7 +7,7 @@ Weapon* Player::wpn;
 
 void Player::ReSpawn()
 {
-	//set below screen
+	exploding = false;
 }
 
 Player::Player() 
@@ -38,11 +38,18 @@ Player::Player()
     yVal = _G_BOUNDS_HEIGHT/2 + 192/4;
 
 	SetWeaponType(M_type);
+
+	ReSpawn();
 }
 
 void Player::SetWeaponType(WeaponType type)
 {
 	if (type == M_type) wpn = new MType();
+}
+
+void Player::WeaponLevelUp()
+{
+	wpn->LevelUp();
 }
 
 Player::~Player()

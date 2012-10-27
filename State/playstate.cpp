@@ -3,6 +3,8 @@
 #include "Game/Interface.h"
 #include "Level/Level01.h"
 #include "Enemy/Enemy.h"
+#include "UI/ScoreMSG.h"
+#include "Item/Item.h"
 #include "Weapon/PlayerBullet.h"
 #include "Pattern/EnemyBullet.h"
 #include "ENemy/Zown.h"
@@ -18,7 +20,8 @@ void CPlayState::Init()
 
 	Enemy::Init();
 	EnemyBullet::Init();
-	//item init
+	Item::Init();
+	ScoreMSG::Init();
 	
     stage = 1;
 	player = new Player();
@@ -107,7 +110,7 @@ void CPlayState::Update(const int& iElapsedTime)
 	level->LoadEnemies(enemy_list);
 	player->Update(iElapsedTime);
 
-	if (scan_timer.get_ticks() > 50)
+	if (scan_timer.get_ticks() > 30)
 	{
 		for (auto it = pl_bulletlist.begin(); it != pl_bulletlist.end(); it++)
 		{
@@ -118,6 +121,8 @@ void CPlayState::Update(const int& iElapsedTime)
 	UpdateList(pl_bulletlist, iElapsedTime);
 	UpdateList(en_bulletlist, iElapsedTime);
 	UpdateList(enemy_list, iElapsedTime);
+	UpdateList(item_list, iElapsedTime);
+	UpdateList(score_list, iElapsedTime);
 
 	ui->Update(iElapsedTime);
 }
@@ -141,6 +146,8 @@ void CPlayState::Draw(SDL_Surface* dest)
 	player->Draw(dest);
 
 	DrawList(en_bulletlist, dest);
+	DrawList(item_list, dest);
+	DrawList(score_list, dest);
 
 	ui->Draw(dest);
 }
