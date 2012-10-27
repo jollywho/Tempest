@@ -33,7 +33,7 @@ protected:
 	
 	bool Explode(bool del);
 	bool CheckHealth();
-	void DetectCollisions();
+	void DetectCollision();
 public:
     explicit Enemy(int x, int y, int hp, std::string id);
 	virtual ~Enemy() {};

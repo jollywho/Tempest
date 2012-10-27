@@ -13,7 +13,7 @@ public:
 	virtual void Draw(SDL_Surface *dest) = 0;
     
 	bool RequestDelete() { return m_delete; };
-    void CheckCollision();
+    void DetectCollision();
 	void CheckBounds(Point camera_pos);
 protected:
 	SDL_Rect offset;

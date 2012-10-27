@@ -104,7 +104,7 @@ void CPlayState::Update(const int& iElapsedTime)
 	{
 		for (auto it = pl_bulletlist.begin(); it != pl_bulletlist.end(); it++)
 		{
-			(*it)->CheckCollision();
+			(*it)->DetectCollision();
 		}
 		scan_timer.start();
 	}

@@ -26,7 +26,7 @@ PlayerBullet::PlayerBullet(float x, float y, int angl, int rots)
     clip_timer.start();
 }
 
-void PlayerBullet::CheckCollision()
+void PlayerBullet::DetectCollision()
 {
     for (auto it = CPlayState::Instance()->enemy_list.begin(); it != CPlayState::Instance()->enemy_list.end(); it++)
     {

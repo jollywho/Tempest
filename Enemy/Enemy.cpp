@@ -85,7 +85,7 @@ bool Enemy::CheckHealth()
 	return false;
 }
 
-void Enemy::DetectCollisions()
+void Enemy::DetectCollision()
 {
 	if( yVal - Camera::CameraY2() > _G_BOUNDS_HEIGHT)
 	{

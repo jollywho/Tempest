@@ -69,7 +69,7 @@ void Zown::Update(Uint32 deltaTicks)
 {
 	if (Explode(true)) return;
 	if (CheckHealth()) return;
-	DetectCollisions();
+	DetectCollision();
 
     if (attack_Timer.get_ticks() > 80)
         Attack();
