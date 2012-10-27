@@ -34,7 +34,19 @@ private:
 	int alpha;
 	Timer fade_timer;
 	float bgX; float bgX2;
+	float border_top_y;
+	float border_bot_y;
+	float border_left_x;
+	float border_right_x;
+
+	SDL_Surface* border_top;
+	SDL_Surface* border_bot;
+	SDL_Surface* border_left;
+	SDL_Surface* border_right;
+
 	Decor* decor_list[50];
+
+	bool exiting; bool entering; bool fadeout;
 };
 
 #endif
