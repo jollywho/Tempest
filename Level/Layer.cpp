@@ -45,8 +45,8 @@ void Layer::Update(Uint32 deltaTicks, float spd)
 	
 	if (started)
 	{
-		yVal += spd * deltaTicks/1000.f;
-		yVal2 += spd * deltaTicks/1000.f;
+		yVal += spd;
+		yVal2 += spd;
 		if (yVal >= _G_BOUNDS_HEIGHT)
 			yVal = yVal2-height;
 		if (yVal2 >= _G_BOUNDS_HEIGHT)

@@ -66,5 +66,5 @@ void Level01::Draw(SDL_Surface *dest)
 {
 	Shared::apply_surface(_G_BANNER_WIDTH, 0, bg, dest, &bounds);
 
-	//top->Draw(dest);
+	top->Draw(dest);
 }

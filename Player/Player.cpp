@@ -8,6 +8,8 @@ Weapon* Player::_wpn;
 
 void Player::ReSpawn()
 {
+	//todo: invuln wings
+	//todo: spawn offscreen and move upward
 	exploding = false;
 }
 
@@ -170,5 +172,10 @@ Point Player::GetCenter()
 
 void Player::TakeHit()
 {
-	//die
+	//todo: die animation and respawn timer
+}
+
+bool Player::IsBombActive()
+{
+	return _bomb->IsActive();
 }

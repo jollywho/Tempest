@@ -32,6 +32,7 @@ public:
 	static void SetWeaponType(WeaponType type);
 
 	bool IsExploding() { return exploding; }
+	bool IsBombActive();
 	void WeaponLevelUp();
 
 private:

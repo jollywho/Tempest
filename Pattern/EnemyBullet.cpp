@@ -10,7 +10,8 @@ EnemyBullet::EnemyBullet()
 	clip = 0;
 	clip_timer.start();
 	m_delete = false;
-	exploding = false;
+
+	exploding = CPlayState::Instance()->player->IsBombActive();
 }
 
 void EnemyBullet::Init()
@@ -23,6 +24,7 @@ void EnemyBullet::Init()
 
 void EnemyBullet::DetectCollision()
 {
+	//todo: player->IsInvuln/Exploding
     SDL_Rect playerbox = CPlayState::Instance()->player->GetBounds();
     float dx = (playerbox.x + playerbox.w/2) - (xVal - Camera::CameraX()  + info->width/2);
     float dy = (playerbox.y + playerbox.h/2) - (yVal - Camera::CameraY2() + info->height/2);

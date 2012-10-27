@@ -6,6 +6,7 @@
 #include "Engine/Timer.h"
 
 class Menu;
+class Decor;
 
 class CIntroState : public CGameState
 {
@@ -33,6 +34,7 @@ private:
 	int alpha;
 	Timer fade_timer;
 	float bgX; float bgX2;
+	Decor* decor_list[50];
 };
 
 #endif

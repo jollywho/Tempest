@@ -2,6 +2,8 @@
 #include "Engine/Shared.h"
 #include "UI/Menu.h"
 #include "Sprig.h"
+#include "Engine/SpriteResource.h"
+#include "UI/Decor.h"
 
 CIntroState CIntroState::m_IntroState;
 
@@ -9,8 +11,11 @@ void CIntroState::Init()
 {
 	ClearRequest();
 	bg =  Shared::load_image("Image/UI/IntroBG.png");
-	
+	SpriteResource::AddResource("UI", "decor.png", 48,48,100,8);
 	alpha = 255;
+
+	for(int i=0; i<50; i++)
+		decor_list[i] = new Decor("decor.png");
 
     mainMenu = new Menu();
 	//
@@ -30,6 +35,8 @@ void CIntroState::Cleanup()
 {
 	printf("CIntroState Cleanup\n");
     delete mainMenu;
+	for(int i=0; i<50; i++)
+		delete decor_list[i];
 	SDL_FreeSurface(bg);
 }
 
@@ -59,12 +66,14 @@ void CIntroState::CheckKeys(const KeyStruct& keys)
 void CIntroState::Update(const int& iElapsedTime) 
 {
 	mainMenu->Update(iElapsedTime, alpha);
+	for(int i=0; i<50; i++)
+		decor_list[i]->Update(iElapsedTime);
 	if (alpha > 0) {
 		if (fade_timer.get_ticks() > 10) {
 			alpha-=2;
 			fade_timer.start(); } }
 
-	bgX += 100 * iElapsedTime/1000.f; bgX2 += 100 * iElapsedTime/1000.f;
+	bgX += 1; bgX2 += 1;
 	if (bgX > _WSCREEN_WIDTH) 
 		bgX = bgX2 - 1280;
 	if (bgX2 > _WSCREEN_WIDTH) 
@@ -75,6 +84,10 @@ void CIntroState::Draw(SDL_Surface* dest)
 {
 	Shared::apply_surface((int)bgX,0,bg,dest);
 	Shared::apply_surface((int)bgX2,0,bg,dest);
+
+	for(int i=0; i<50; i++)
+		decor_list[i]->Draw(dest);
+
 	mainMenu->Draw(dest);
 
 	if ( alpha > 0 )
