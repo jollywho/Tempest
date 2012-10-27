@@ -10,17 +10,17 @@ ERotBullet::ERotBullet(float x, float y, int angl, std::string id) : EnemyBullet
 		angle = angle + 360;
 	}
 	angle = (angle + 10 - 1) / 10 * 10;
-	if (angle >= 360)
+	if (angle > 360)
 		angle = 350;
-    xVel = sin(angle * M_PI/180) * 100; 
-    yVel = cos(angle * M_PI/180) * 100;
-    clip_timer.start();
-	info = &SpriteResource::RequestRotationResource("Attacks",id);
+    xVel = sin(angle * M_PI/180) * 200; 
+    yVel = cos(angle * M_PI/180) * 200;
+    
+	info = &SpriteResource::RequestRotationResource("Attacks", id);
     xVal = x - info->width/2;
     yVal = y - info->height/2;
 }
 
-void ERotBullet::Update( Uint32 deltaTicks )
+void ERotBullet::Update( const int& iElapsedTime )
 {
     if (!exploding)
     {
@@ -32,8 +32,8 @@ void ERotBullet::Update( Uint32 deltaTicks )
 		if (clip == expinfo->clip_count - 1) m_delete = true;
 		Shared::CheckClip(clip_timer, clip, expinfo->interval, expinfo->clip_count,0);
 	}
-	yVal += (yVel * ( deltaTicks / 1000.f ));
-    xVal += (xVel * ( deltaTicks / 1000.f ));
+	xVal += (xVel * ( iElapsedTime / 1000.f ));
+	yVal += (yVel * ( iElapsedTime / 1000.f ));
 
     CheckBounds();
 }
@@ -43,11 +43,11 @@ void ERotBullet::Draw(SDL_Surface *dest)
     if (!exploding)
     {
         Camera::DrawSurface(xVal - info->width/2, yVal - info->height/2,
-		info->rot_surface[clip][angle], dest, NULL);
+			info->rot_surface[clip][angle], dest, NULL);
     }
     else
     {
-        Camera::DrawSurface(xVal + (info->width/4 - expinfo->width/4), xVal + (info->height/4 - expinfo->height/4), 
-		expinfo->surface, dest, &expinfo->clips[clip]);
+        Camera::DrawSurface(xVal + (info->width/4 - expinfo->width/4), yVal + (info->height/4 - expinfo->height/4), 
+			expinfo->surface, dest, &expinfo->clips[clip]);
     }
 }

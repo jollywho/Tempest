@@ -2,6 +2,7 @@
 #include "State/playstate.h"
 #include "Engine/SpriteResource.h"
 #include "Game/Camera.h"
+#include "Pattern/ERotBullet.h"
 
 Zown::Zown(int x, int y) : Enemy(x, y, 150, "zown.png")
 {
@@ -40,6 +41,8 @@ void Zown::CleanUp()
 
 void Zown::Attack()
 {
+	CPlayState::Instance()->en_bulletlist.push_back(new ERotBullet(xVal + info->width/2, yVal + info->height, 0, "Arrow.png"));
+	attack_Timer.start();
 	/*
 	attackCount++;
 	
@@ -71,7 +74,7 @@ void Zown::Update(Uint32 deltaTicks)
 	if (CheckHealth()) return;
 	DetectCollision();
 
-    if (attack_Timer.get_ticks() > 80)
+    if (attack_Timer.get_ticks() > 480)
         Attack();
 	Shared::CheckClip(clip_timer, clip, info->interval, info->clip_count, 0);
 	

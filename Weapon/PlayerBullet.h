@@ -9,13 +9,14 @@ public:
     explicit PlayerBullet(float x, float y, int angl, int rots);
 	virtual ~PlayerBullet(){}
 
+	static void Init();
 	virtual void Update(const int& iElapsedTime) = 0;
 	virtual void Draw(SDL_Surface *dest) = 0;
     
-	bool RequestDelete() { return m_delete; };
     void DetectCollision();
 	void CheckBounds(Point camera_pos);
 protected:
+	
 	SDL_Rect offset;
 	float xVel, yVel;
     float xVal, yVal;

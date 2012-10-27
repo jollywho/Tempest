@@ -35,7 +35,6 @@ void BulletM::Update(const int& iElapsedTime)
 		Shared::CheckClip(clip_timer, clip, _info->interval, _info->clip_count,0);
 		yVal += (yVel * ( iElapsedTime / 1000.f ));
 		xVal += (xVel * ( iElapsedTime / 1000.f ));
-		//CheckCollision(_expInfo->width, _expInfo->height);
 		CheckBounds(Point(Camera::CameraX(), Camera::CameraY2()));
     }
     else
@@ -57,7 +56,7 @@ void BulletM::Draw(SDL_Surface *dest)
     }
     else
     {
-        Shared::apply_surface(offset.x + (offset.w/4 - _expInfo->width/4), offset.y + (offset.h/4 - _expInfo->height/4), 
+        Camera::DrawSurface(offset.x + (offset.w/4 - _expInfo->width/4), offset.y + (offset.h/4 - _expInfo->height/4), 
 			_expInfo->surface, dest, &_expInfo->clips[clip]);
     }
 }

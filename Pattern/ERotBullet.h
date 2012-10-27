@@ -7,14 +7,14 @@
 
 class ERotBullet : public EnemyBullet
 {
+public:
+	ERotBullet(float x, float y, int angl, std::string id);
+	~ERotBullet() {}
+	void Update( const int& iElapsedTime );
+    void Draw(SDL_Surface *dest);
 private:
 	float xVel2; float yVel2;
 	int angle;
-public:
-	~ERotBullet() {};
-	ERotBullet(float x, float y, int angl, std::string id);
-	void Update( Uint32 deltaTicks );
-    void Draw(SDL_Surface *dest);
 };
 
 #endif

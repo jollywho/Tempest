@@ -70,8 +70,13 @@ bool Enemy::CheckBounds()
 
 bool Enemy::Explode(bool del)
 {
-	//m_delete = true;
-	return false;
+	if (exploding)
+	{
+		m_delete = del;
+		return true;
+	}
+	else
+		return false;
 
 	//todo: connect with explosion manager.
 }

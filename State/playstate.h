@@ -4,11 +4,12 @@
 #include "State/Gamestate.h"
 #include <list>
 #include "Player/Player.h"
-#include "Weapon/PlayerBullet.h"
 
 class Level;
 class Interface;
 class Enemy;
+class PlayerBullet;
+class EnemyBullet;
 
 class CPlayState : public CGameState
 {
@@ -33,7 +34,7 @@ public:
     int stage;
     static bool m_Exit;
 
-    //std::list<EnemyBullet*> en_bulletlist;
+    std::list<EnemyBullet*> en_bulletlist;
 	std::list<PlayerBullet*> pl_bulletlist;
 	std::list<Enemy*> enemy_list;
 	//std::list<Item*> item_list;

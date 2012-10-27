@@ -3,6 +3,8 @@
 #include "Game/Interface.h"
 #include "Level/Level01.h"
 #include "Enemy/Enemy.h"
+#include "Weapon/PlayerBullet.h"
+#include "Pattern/EnemyBullet.h"
 #include "ENemy/Zown.h"
 
 CPlayState CPlayState::m_PlayState;
@@ -15,6 +17,7 @@ void CPlayState::Init()
     m_Exit = false;
 
 	Enemy::Init();
+	EnemyBullet::Init();
 	//item init
 	
     stage = 1;
@@ -47,11 +50,15 @@ void CPlayState::ClearObjects()
 	for (auto it = pl_bulletlist.begin(); it != pl_bulletlist.end();) {
 		delete (*it);
 		it++; }
+	for (auto it = en_bulletlist.begin(); it != en_bulletlist.end();) {
+		delete (*it);
+		it++; }
     //for (auto it = coinList.begin(); it != coinList.end();) {
     //    delete (*it);
     //    it++; }
     enemy_list.clear();
 	pl_bulletlist.clear();
+	en_bulletlist.clear();
     //coinList.clear();
 }
 
@@ -109,6 +116,7 @@ void CPlayState::Update(const int& iElapsedTime)
 		scan_timer.start();
 	}
 	UpdateList(pl_bulletlist, iElapsedTime);
+	UpdateList(en_bulletlist, iElapsedTime);
 	UpdateList(enemy_list, iElapsedTime);
 
 	ui->Update(iElapsedTime);
@@ -131,6 +139,8 @@ void CPlayState::Draw(SDL_Surface* dest)
 	DrawList(pl_bulletlist, dest);
 
 	player->Draw(dest);
+
+	DrawList(en_bulletlist, dest);
 
 	ui->Draw(dest);
 }
