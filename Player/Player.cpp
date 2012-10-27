@@ -83,9 +83,16 @@ void Player::HandleMovement(const int& iElapsedTime)
 {
 	if (shift_quest && moveSpeed > SPEED_SLOW) moveSpeed-=iElapsedTime;
 	if (!shift_quest && moveSpeed < SPEED_NORMAL) moveSpeed+=iElapsedTime;
-	//todo: normalize movement
-	xVal += ((left + right) * moveSpeed) * (iElapsedTime/1000.f);
-	yVal += ((up + down) * moveSpeed) * (iElapsedTime/1000.f);
+
+	float vx = left + right; float vy = up + down;
+	float length = sqrtf((vx * vx) + (vy * vy));
+	if (length>0.0f)
+	{
+		vx=(left+right)/length;
+		vy=(up+down)/length;
+	}
+	xVal += (vx * moveSpeed) * (iElapsedTime/1000.f);
+	yVal += (vy * moveSpeed) * (iElapsedTime/1000.f);
 
 	if (xVal < _G_BANNER_WIDTH) xVal = _G_BANNER_WIDTH;
 	if (xVal + angel->width > _G_BOUNDS_WIDTH) xVal = _G_BOUNDS_WIDTH - angel->width;
