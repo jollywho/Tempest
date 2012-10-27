@@ -140,7 +140,10 @@ void CMyEngine::KeyUp(const int& iKeyEnum)
 		keys.x = false;
 		break;
 	}
-	states.back()->CheckKeys(keys);
+	if (menustate != NULL)
+		menustate->CheckKeys(keys);
+	else
+		states.back()->CheckKeys(keys);
 }
  
 void CMyEngine::MouseMoved(const int& iButton, 

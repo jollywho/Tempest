@@ -84,10 +84,10 @@ void CIntroState::CheckKeys(const KeyStruct& keys)
 
 void CIntroState::MenuAction()
 {
-	if (mainMenu->GetIndex() == 1) RequestState(Play);
+	if (mainMenu->GetIndex() == 1) ChangeState(Play);
 	//if (mainMenu->GetIndex() == 2) RequestState(Poll);
-	if (mainMenu->GetIndex() == 2) { PushState(Poll); exiting = false; }
-	if (mainMenu->GetIndex() == 4) RequestState(Option);
+	if (mainMenu->GetIndex() == 2) { PushMenu(Poll); exiting = false; }
+	if (mainMenu->GetIndex() == 4) ChangeState(Option);
 }
 
 void CIntroState::Update(const int& iElapsedTime) 

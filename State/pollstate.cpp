@@ -1,9 +1,9 @@
 #include "Pollstate.h"
 #include "Engine/Shared.h"
-#include "UI/Menu.h"
+#include "Game/Interface.h"
 #include "Sprig.h"
 #include "Engine/SpriteResource.h"
-#include "UI/Decor.h"
+#include "playstate.h"
 
 CPollState CPollState::m_IntroState;
 
@@ -62,7 +62,7 @@ void CPollState::CheckKeys(const KeyStruct& keys)
 	if (exiting) return;
 	if (keys.z)
 	{
-		PopState();
+		exiting = true;
 		//todo: skip
 		//todo: if skip | ready => change state
 	}
@@ -72,7 +72,7 @@ void CPollState::Update(const int& iElapsedTime)
 {
 	if (entering)
 	{
-		if (alpha >= 2) 
+		if (alpha > 2) 
 		{
 			if (fade_timer.get_ticks() > 10) 
 			{
@@ -90,23 +90,16 @@ void CPollState::Update(const int& iElapsedTime)
 			banner_right_pos.x-=banner_speed/4;
 		}
 		else
-			if (alpha <= 0 )
+			if (alpha <= 2 )
 				entering = false;
 			
 	}
 	else if (exiting)
 	{
-		if (alpha < 255) 
-		{
-			if (fade_timer.get_ticks() > 10) 
-			{
-				alpha+=2;
-				fade_timer.start(); 
-			} 
-		}
-		else
-			RequestState(Play);
+		PopState();
 	}
+
+	CPlayState::Instance()->ui->Update(iElapsedTime);
 
 	/*
 	todo: ELSE {}
@@ -129,7 +122,8 @@ void CPollState::Draw(SDL_Surface* dest)
 	//todo: draw nsprite
 
 	//fadeout area based on sub state
-	SPG_RectFilledBlend(dest,_G_BANNER_WIDTH,0,_G_BOUNDS_WIDTH,_WSCREEN_HEIGHT, 0, alpha);
+	SPG_RectFilledBlend(dest,_G_BANNER_WIDTH,0,_G_BOUNDS_WIDTH,_WSCREEN_HEIGHT, 16777215, alpha);
 
+	CPlayState::Instance()->ui->Draw(dest);
 	//todo: draw game/ui
 }

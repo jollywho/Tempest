@@ -34,7 +34,8 @@ public:
 
     void NewLevel();
     int stage;
-    static bool m_Exit;
+	bool m_Exit;
+	bool m_Enter;
 
     std::list<EnemyBullet*> en_bulletlist;
 	std::list<PlayerBullet*> pl_bulletlist;
@@ -57,6 +58,8 @@ protected:
 private:
 	static CPlayState m_PlayState;
 	Timer scan_timer;
+	int alpha;
+	Timer fade_timer;
 };
 
 #endif

@@ -27,42 +27,48 @@ public:
 	virtual void Update(const int& iElapsedTime) = 0;
 	virtual void Draw(SDL_Surface* dest) = 0;
 
-	void PopState()
-	{
-		pop_required = true;
-	}
+	void PopState()	{ state_pop = true; }
 
-	void PushState(State id)
-	{
+	void PushState(State id) {
 		request_state = id;
-		push_required = true;
+		state_push = true;
 	}
 
-	void RequestState(State id) 
-	{
+	void ChangeState(State id) {
 		request_state = id;
-		change_required = true;
+		state_change = true;
 	}
 
-	bool PopRequired() { return pop_required; }
+	void PushMenu(State id) {
+		request_state = id;
+		menu_push = true;
+	}
 
-	bool ChangeRequired() { return change_required; }
-	State GetRequestedState() { return request_state; }
+	void PopMenu()	{ menu_pop = true; }
 
-	bool PushRequired() { return push_required; }
-	State GetAddedState() { return request_state; }
+	bool PopRequired() { return state_pop; }
+	bool PushRequired() { return state_push; }
+	bool StateRequired() { return state_change; }
+	bool MenuPush() { return menu_push; }
+	bool MenuPop()	{ return menu_pop; }
+
+	State GetState() { return request_state; }
 
 	void ClearRequest() { 
-		change_required = false; 
-		pop_required = false;
-		push_required = false;
+		state_change = false; 
+		state_pop = false;
+		state_push = false;
+		menu_pop = false;
+		menu_push = false;
 	}
 protected:
    	CGameState() { }
 private:
-	bool change_required;
-	bool push_required;
-	bool pop_required;
+	bool state_change;
+	bool state_pop;
+	bool state_push;
+	bool menu_pop;
+	bool menu_push;
 	State request_state;
 };
 

@@ -1,4 +1,5 @@
 #include "playstate.h"
+#include <sprig.h>
 #include "Game/Camera.h"
 #include "Game/Interface.h"
 #include "Level/Level01.h"
@@ -10,13 +11,14 @@
 #include "ENemy/Zown.h"
 
 CPlayState CPlayState::m_PlayState;
-bool CPlayState::m_Exit = false;
 
 #pragma region INIT
 void CPlayState::Init()
 {
 	printf("CPlayState Init\n");
     m_Exit = false;
+	m_Enter = true;
+	alpha = 255;
 
 	Enemy::Init();
 	EnemyBullet::Init();
@@ -29,6 +31,7 @@ void CPlayState::Init()
 	ui = new Interface();
 
 	scan_timer.start();
+	fade_timer.start();
 }
 
 void CPlayState::Cleanup()
@@ -83,6 +86,7 @@ void CPlayState::NewLevel()
 void CPlayState::CheckKeys(const KeyStruct& keys)
 {
 	player->CheckKeys(keys);
+	if (keys.enter) m_Exit = true;
 }
 
 template <class T>
@@ -105,6 +109,37 @@ void CPlayState::UpdateList(std::list<T>& lst, const int& iElapsedTime)
 
 void CPlayState::Update(const int& iElapsedTime)
 {
+	if (m_Enter)
+	{
+		if (alpha > 2) 
+		{
+			if (fade_timer.get_ticks() > 10) 
+			{
+				alpha-=2;
+				fade_timer.start(); 
+			} 
+		}
+		else
+			m_Enter = false;
+	}
+	if (m_Exit)
+	{
+		if (alpha < 255) 
+		{
+			if (fade_timer.get_ticks() > 10) 
+			{
+				alpha+=2;
+				fade_timer.start(); 
+			} 
+		}
+		else
+		{
+			m_Exit = false;
+			m_Enter = true;
+			alpha = 255;
+			PushState(Poll);
+		}
+	}
 	Camera::Update(player->GetOuterBounds().x, iElapsedTime);
 	level->Update(iElapsedTime);
 	level->LoadEnemies(enemy_list);
@@ -142,6 +177,11 @@ void CPlayState::Draw(SDL_Surface* dest)
 
 	DrawList(enemy_list, dest);
 	DrawList(pl_bulletlist, dest);
+	
+	if (m_Exit)
+		SPG_RectFilledBlend(dest,_G_BANNER_WIDTH,0,_G_BOUNDS_WIDTH,_WSCREEN_HEIGHT, 0, alpha);
+	if (m_Enter)
+		SPG_RectFilledBlend(dest,_G_BANNER_WIDTH,0,_G_BOUNDS_WIDTH,_WSCREEN_HEIGHT, 16777215, alpha);
 
 	player->Draw(dest);
 
@@ -150,4 +190,5 @@ void CPlayState::Draw(SDL_Surface* dest)
 	DrawList(score_list, dest);
 
 	ui->Draw(dest);
+	
 }

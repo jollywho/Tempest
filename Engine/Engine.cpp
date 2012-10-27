@@ -98,9 +98,10 @@ CGameState* CEngine::GetStateInstance(State id)
 
 void CEngine::ChangeState(State id) 
 {
-	// cleanup the current state
-	if ( !states.empty() ) {
-		states.back()->Cleanup();
+	// cleanup all states
+	for (auto it = states.begin(); it != states.end();) {
+		(*it)->Cleanup();
+		it = states.erase(it);
 	}
 
 	// store and init the new state
@@ -110,16 +111,57 @@ void CEngine::ChangeState(State id)
 
 void CEngine::PushState(State id)
 {
-	//create top level state
-	menustate = GetStateInstance(id);
-	menustate->Init();
+	// store and init the new state
+	states.push_back(GetStateInstance(id));
+    states.back()->Init();
 }
 
 void CEngine::PopState()
 {
-	// cleanup the top level state
-	menustate->Cleanup();
-	menustate = NULL;
+    // cleanup the current state
+    if ( !states.empty() ) {
+        states.back()->Cleanup();
+        states.pop_back();
+    }
+
+    // resume previous state
+    if ( !states.empty() ) {
+            states.back()->Resume();
+    }
+}
+
+void CEngine::PushMenu(State id)
+{
+	//create top level menu state
+	menustate = GetStateInstance(id);
+	menustate->Init();
+}
+
+void CEngine::DoRequests()
+{
+	if (states.back()->StateRequired())
+		ChangeState(states.back()->GetState());
+
+	if (states.back()->PushRequired())
+	{
+		PushState(states.back()->GetState());
+		states.back()->ClearRequest();
+	}
+	if (states.back()->PopRequired())
+	{
+		PopState();
+		states.back()->ClearRequest();
+	}
+	if (states.back()->MenuPush())
+	{
+		PushMenu(states.back()->GetState());
+		states.back()->ClearRequest();
+	}
+
+	if (menustate != NULL)
+	{
+		if (menustate->MenuPop()) { menustate->Cleanup(); menustate = NULL; }
+	}
 }
  
 /** The main loop. **/
@@ -243,35 +285,12 @@ void CEngine::DoThink()
 /** Handles the rendering and FPS calculations. **/
 void CEngine::DoRender()
 {
-	SDL_FillRect( m_pScreen, 0, SDL_MapRGB( m_pScreen->format, 0, 0, 0 ) );
- 
-	// Lock surface if needed
-	if ( SDL_MUSTLOCK( m_pScreen ) )
-		if ( SDL_LockSurface( m_pScreen ) < 0 )
-			return;
- 
+	//SDL_FillRect( m_pScreen, 0, SDL_MapRGB( m_pScreen->format, 0, 0, 0 ) );
+
 	Render( GetSurface() );
- 
-	// Unlock if needed
-	if ( SDL_MUSTLOCK( m_pScreen ) ) 
-		SDL_UnlockSurface( m_pScreen );
  
 	// Tell SDL to update the whole gScreen
 	SDL_Flip( m_pScreen );
-}
-
-void CEngine::DoRequests()
-{
-	if (states.back()->ChangeRequired())
-		ChangeState(states.back()->GetRequestedState());
-	if (states.back()->PushRequired())
-	{
-		PushState(states.back()->GetAddedState());
-		states.back()->ClearRequest();
-	}
-	if (menustate != NULL)
-		if (menustate->PopRequired())
-			PopState();
 }
  
 /** Sets the title of the window 
