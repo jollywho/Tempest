@@ -46,7 +46,7 @@ int main(int argc, char* argv[])  // <- this must match exactly, since SDL rewri
 	Engine.SetTitle( "Loading..." );
 	Engine.Init();
 
-	Engine.SetTitle( "SDL Testing!" );
+	Engine.SetTitle( "Tempest" );
 	Engine.Start();
  
 	Engine.SetTitle( "Quitting..." );
@@ -56,21 +56,23 @@ int main(int argc, char* argv[])  // <- this must match exactly, since SDL rewri
  
 void CMyEngine::AdditionalInit()
 {
+	// Load up additional data
 	ScoreIO::SaveScore::LoadScores();
 	ChangeState(Intro);
-	// Load up additional data
 }
  
 void CMyEngine::Think( const int& iElapsedTime )
 {
 	states.back()->Update(iElapsedTime);
-	// Do time-based calculations
+	if (menustate != NULL)
+		menustate->Update(iElapsedTime);
 }
  
 void CMyEngine::Render( SDL_Surface* pDestSurface )
 {
-	// Display slick graphics on screen
 	states.back()->Draw(pDestSurface);
+	if (menustate != NULL)
+		menustate->Draw(pDestSurface);
 }
  
 void CMyEngine::KeyDown(const int& iKeyEnum)
@@ -102,7 +104,10 @@ void CMyEngine::KeyDown(const int& iKeyEnum)
 		keys.x = true;
 		break;
     }
-	states.back()->CheckKeys(keys);
+	if (menustate != NULL)
+		menustate->CheckKeys(keys);
+	else
+		states.back()->CheckKeys(keys);
 }
  
  

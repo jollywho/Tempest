@@ -27,17 +27,42 @@ public:
 	virtual void Update(const int& iElapsedTime) = 0;
 	virtual void Draw(SDL_Surface* dest) = 0;
 
-	void RequestState(State id) {
+	void PopState()
+	{
+		pop_required = true;
+	}
+
+	void PushState(State id)
+	{
+		request_state = id;
+		push_required = true;
+	}
+
+	void RequestState(State id) 
+	{
 		request_state = id;
 		change_required = true;
 	}
+
+	bool PopRequired() { return pop_required; }
+
 	bool ChangeRequired() { return change_required; }
 	State GetRequestedState() { return request_state; }
-	void ClearRequest() { change_required = false; }
+
+	bool PushRequired() { return push_required; }
+	State GetAddedState() { return request_state; }
+
+	void ClearRequest() { 
+		change_required = false; 
+		pop_required = false;
+		push_required = false;
+	}
 protected:
    	CGameState() { }
 private:
 	bool change_required;
+	bool push_required;
+	bool pop_required;
 	State request_state;
 };
 

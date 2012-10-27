@@ -62,6 +62,7 @@ void CPollState::CheckKeys(const KeyStruct& keys)
 	if (exiting) return;
 	if (keys.z)
 	{
+		PopState();
 		//todo: skip
 		//todo: if skip | ready => change state
 	}
@@ -119,14 +120,16 @@ void CPollState::Update(const int& iElapsedTime)
 
 void CPollState::Draw(SDL_Surface* dest) 
 {
-	Shared::apply_surface(0,0,bg,dest);
+	//Shared::apply_surface(0,0,bg,dest);
 
 	Shared::apply_surface(banner_left_pos.x, banner_left_pos.y, banner_side, dest);
 	Shared::apply_surface(banner_right_pos.x, banner_right_pos.y, banner_side, dest);
 	Shared::apply_surface(banner_middle_pos.x, banner_middle_pos.y, banner_middle, dest);
 
-	//todo: draw game/ui
 	//todo: draw nsprite
 
-	SPG_RectFilledBlend(dest,0,0,_WSCREEN_WIDTH,_WSCREEN_HEIGHT, 0, alpha);
+	//fadeout area based on sub state
+	SPG_RectFilledBlend(dest,_G_BANNER_WIDTH,0,_G_BOUNDS_WIDTH,_WSCREEN_HEIGHT, 0, alpha);
+
+	//todo: draw game/ui
 }

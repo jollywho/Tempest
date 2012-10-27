@@ -42,6 +42,7 @@ protected:
  
 	void HandleInput();
 	std::vector<CGameState*> states;
+	CGameState* menustate;
 
 	/* Tracked keys*/
 	KeyStruct keys;

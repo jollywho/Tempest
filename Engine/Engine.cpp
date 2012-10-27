@@ -22,6 +22,7 @@ CEngine::CEngine()
 	m_bMinimized		= false;
 
 	keys = default_keys;
+	menustate = NULL;
 }
  
 /** Destructor. **/
@@ -77,7 +78,7 @@ void CEngine::Init()
 
 CGameState* CEngine::GetStateInstance(State id)
 {
-	printf("--STATE ChANGE--\n");
+	printf("--STATE CHANGE--\n");
 	switch(id)
 	{
 		case Intro:
@@ -109,23 +110,16 @@ void CEngine::ChangeState(State id)
 
 void CEngine::PushState(State id)
 {
-	// store and init the new state
-	states.push_back(GetStateInstance(id));
-	states.back()->Init();
+	//create top level state
+	menustate = GetStateInstance(id);
+	menustate->Init();
 }
 
 void CEngine::PopState()
 {
-	// cleanup the current state
-	if ( !states.empty() ) {
-		states.back()->Cleanup();
-		states.pop_back();
-	}
-
-	// resume previous state
-	if ( !states.empty() ) {
-		states.back()->Resume();
-	}
+	// cleanup the top level state
+	menustate->Cleanup();
+	menustate = NULL;
 }
  
 /** The main loop. **/
@@ -270,6 +264,14 @@ void CEngine::DoRequests()
 {
 	if (states.back()->ChangeRequired())
 		ChangeState(states.back()->GetRequestedState());
+	if (states.back()->PushRequired())
+	{
+		PushState(states.back()->GetAddedState());
+		states.back()->ClearRequest();
+	}
+	if (menustate != NULL)
+		if (menustate->PopRequired())
+			PopState();
 }
  
 /** Sets the title of the window 
