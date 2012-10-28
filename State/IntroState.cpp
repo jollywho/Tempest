@@ -37,6 +37,7 @@ void CIntroState::Init()
 	border_left_x = -160; border_right_x = _WSCREEN_WIDTH;
 
 	exiting = false; entering = true; fadeout = false; span = false;
+	submenu = false;
 
 	fade_timer.start();
 }
@@ -55,10 +56,17 @@ void CIntroState::Cleanup()
 	SDL_FreeSurface(border_right);
 }
 
+void CIntroState::OpenSubMenu()
+{
+	exiting = false; 
+	submenu = true;
+	mainMenu->Reset();
+}
+
 void CIntroState::Return()
 {
 	printf("CIntroState Return\n");
-	mainMenu->Reset();
+	submenu = false;
 }
 
 void CIntroState::CheckKeys(const KeyStruct& keys)
@@ -80,7 +88,7 @@ void CIntroState::MenuAction()
 {
 	if (mainMenu->GetIndex() == 1) ChangeState(Play);
 	//if (mainMenu->GetIndex() == 2) RequestState(Poll);
-	if (mainMenu->GetIndex() == 2) { PushMenu(Score); exiting = false; }
+	if (mainMenu->GetIndex() == 2) { PushMenu(Score); OpenSubMenu(); }
 	if (mainMenu->GetIndex() == 4) ChangeState(Option);
 }
 
@@ -144,7 +152,8 @@ void CIntroState::Draw(SDL_Surface* dest)
 	for(int i=0; i<50; i++)
 		decor_list[i]->Draw(dest);
 
-	mainMenu->Draw(dest);
+	if (!submenu) mainMenu->Draw(dest);
+	
 	SPG_RectFilledBlend(dest,0,0,_WSCREEN_WIDTH,_WSCREEN_HEIGHT, 0, alpha);
 
 	Shared::apply_surface(0, border_top_y, border_top, dest);

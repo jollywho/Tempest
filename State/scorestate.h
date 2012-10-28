@@ -54,11 +54,11 @@ private:
 	SDL_Surface* font_surface;
 	SDL_Surface* score_font_surface;
 	SDL_Surface* banner;
-	SDL_Surface* bg;
 	int selChange;
 	float mov; int middle; int right;
 	bool exit; bool enter;
-	ScoreBanner bannerList[5];
+	int dir;
+	ScoreBanner bannerList[4];
 	Timer mov_timer;
 };
 

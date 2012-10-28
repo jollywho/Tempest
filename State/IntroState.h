@@ -28,6 +28,7 @@ public:
 protected:
 	CIntroState() { }
 	void MenuAction();
+	void OpenSubMenu();
 private:
 	static CIntroState m_IntroState;
     Menu* mainMenu;
@@ -48,6 +49,7 @@ private:
 	Decor* decor_list[50];
 
 	bool exiting; bool entering; bool fadeout; bool span;
+	bool submenu;
 };
 
 #endif
