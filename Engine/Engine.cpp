@@ -8,6 +8,7 @@
 #include "State/Pollstate.h"
 #include "State/Scorestate.h"
 #include "State/Pausestate.h"
+#include "STate/Optionstate.h"
  
 KeyStruct default_keys = { false, false, false, false, false, false, false, false };
 
@@ -97,6 +98,9 @@ CGameState* CEngine::GetStateInstance(State id)
 			break;
 		case S_PAUSE:
 			return CPauseState::Instance();
+			break;
+		case S_OPTION:
+			return COptionState::Instance();
 			break;
 		default:
 			return CIntroState::Instance();

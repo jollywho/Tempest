@@ -79,7 +79,7 @@ void CIntroState::CheckKeys(const KeyStruct& keys)
 		alpha = 0;
 		if (main_menu->GetIndex() == 1) { span = true; fadeout = true; }
 		if (main_menu->GetIndex() == 3) { fadeout = false; }
-		if (main_menu->GetIndex() == 4) { fadeout = true; }
+		if (main_menu->GetIndex() == 4) { fadeout = false; }
 	}
 	if (keys.down) main_menu->SetIndex(1);
 	else if (keys.up) main_menu->SetIndex(-1);
@@ -90,7 +90,7 @@ void CIntroState::MenuAction()
 	if (main_menu->GetIndex() == 1) ChangeState(S_PLAY);
 	//if (main_menu->GetIndex() == 2) RequestState(Poll);
 	if (main_menu->GetIndex() == 3) { PushMenu(S_SCORE); OpenSubMenu(); }
-	if (main_menu->GetIndex() == 4) ChangeState(S_OPTION);
+	if (main_menu->GetIndex() == 4) { PushMenu(S_OPTION); OpenSubMenu(); }
 }
 
 void CIntroState::Update(const int& iElapsedTime) 

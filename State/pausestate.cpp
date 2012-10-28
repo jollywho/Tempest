@@ -22,7 +22,7 @@ void CPauseState::Init()
     main_menu->AddItem(_WSCREEN_WIDTH/2, 440, "Exit Game");
 
 
-	exiting = false; entering = true; fadeout = false; span = false;
+	entering = true; fadeout = false; span = false;
 	submenu = false;
 
 	fade_timer.start();
@@ -49,20 +49,20 @@ void CPauseState::Resume()
 void CPauseState::Return()
 {
 	printf("CPauseState Return\n");
+	submenu = false;
 }
 
 void CPauseState::CheckKeys(const KeyStruct& keys)
 {
-	if (exiting) return;
 	if (keys.esc) PopState();
 	if (keys.z)
 	{
 		main_menu->Select();
-		exiting = true;
 		alpha = 0;
 		if (main_menu->GetIndex() == 1) { PopState(); }
+		if (main_menu->GetIndex() == 2) { PushMenu(S_OPTION); submenu = true; main_menu->Reset(); }
 		if (main_menu->GetIndex() == 3) { ChangeState(S_INTRO); }
-		if (main_menu->GetIndex() == 4) { fadeout = true; }
+		if (main_menu->GetIndex() == 4) { SDL_Quit(); } //todo: are you sure?
 	}
 	if (keys.down) main_menu->SetIndex(1);
 	else if (keys.up) main_menu->SetIndex(-1);
@@ -76,5 +76,5 @@ void CPauseState::Update(const int& iElapsedTime)
 void CPauseState::Draw(SDL_Surface* dest)
 {
 	Shared::apply_surface(_G_BANNER_WIDTH, 0, bg, dest);
-	main_menu->Draw(dest);
+	if (!submenu) main_menu->Draw(dest);
 }

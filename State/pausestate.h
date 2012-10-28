@@ -35,7 +35,7 @@ private:
     Menu* main_menu;
 	Timer fade_timer;
 
-	bool exiting; bool entering; bool fadeout; bool span;
+	bool entering; bool fadeout; bool span;
 	bool submenu;
 
 };

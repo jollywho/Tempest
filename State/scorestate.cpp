@@ -112,7 +112,6 @@ void CScoreState::Draw(SDL_Surface* dest)
 		DrawMsg(bannerList[i].stageX(), bannerList[i].stageY(), temp.stage);
 	}
 	font->draw(0, 0, GameScore::GetModeEquivalent(modeSelection + selChange, true).c_str());
-	SDL_UpdateRect(dest, 0, 0, 0, 0);
 }
 
 void CScoreState::DrawMsg(int centerX, int centerY, int value)
