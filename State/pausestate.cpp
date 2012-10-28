@@ -9,30 +9,32 @@ void CPauseState::Init()
 	printf("CPauseState Init\n");
 
 	ClearRequest();
-	bg =  Shared::load_image("Image/UI/pause.png");
-	SDL_SetAlpha(bg,0,20);
+	screen = SDL_DisplayFormatAlpha(SPG_CopySurface(SDL_GetVideoSurface()));
 
-	alpha = 255;
+	screen_bounds.x = _G_BANNER_WIDTH;
+	screen_bounds.y = 0;
+	screen_bounds.w = _GSCREEN_WIDTH;
+	screen_bounds.h = _GSCREEN_HEIGHT;
+
+	alpha = 0;
 
     main_menu = new Menu();
 	//
     main_menu->AddItem(_WSCREEN_WIDTH/2, 200, "Return");
     main_menu->AddItem(_WSCREEN_WIDTH/2, 260, "Options");
 	main_menu->AddItem(_WSCREEN_WIDTH/2, 320, "Quit to Menu");
-    main_menu->AddItem(_WSCREEN_WIDTH/2, 440, "Exit Game");
-
+    main_menu->AddItem(_WSCREEN_WIDTH/2, 380, "Exit Game");
 
 	entering = true; fadeout = false; span = false;
 	submenu = false;
 
 	fade_timer.start();
-	
 }
 
 void CPauseState::Cleanup()
 {
 	printf("CPauseState Cleanup\n");
-	SDL_FreeSurface(bg);
+	SDL_FreeSurface(screen);
 	delete main_menu;
 }
 
@@ -58,7 +60,6 @@ void CPauseState::CheckKeys(const KeyStruct& keys)
 	if (keys.z)
 	{
 		main_menu->Select();
-		alpha = 0;
 		if (main_menu->GetIndex() == 1) { PopState(); }
 		if (main_menu->GetIndex() == 2) { PushMenu(S_OPTION); submenu = true; main_menu->Reset(); }
 		if (main_menu->GetIndex() == 3) { ChangeState(S_INTRO); }
@@ -71,10 +72,16 @@ void CPauseState::CheckKeys(const KeyStruct& keys)
 void CPauseState::Update(const int& iElapsedTime)
 {
 	main_menu->Update(iElapsedTime, alpha);
+	if (fade_timer.get_ticks() > 10)
+	{
+		if (alpha < 100) alpha+=5;
+		fade_timer.start();
+	}
 }
 
 void CPauseState::Draw(SDL_Surface* dest)
 {
-	Shared::apply_surface(_G_BANNER_WIDTH, 0, bg, dest);
+	Shared::apply_surface(_G_BANNER_WIDTH, 0, screen, dest, &screen_bounds);
+	SPG_RectFilledBlend(dest, _G_BANNER_WIDTH, 0, _G_BOUNDS_WIDTH, _G_BOUNDS_HEIGHT, 0, alpha);
 	if (!submenu) main_menu->Draw(dest);
 }

@@ -31,10 +31,10 @@ protected:
 private:
 	static CPauseState m_PauseState;
     int alpha;
-	SDL_Surface* bg;
     Menu* main_menu;
 	Timer fade_timer;
-
+	SDL_Surface* screen;
+	SDL_Rect screen_bounds;
 	bool entering; bool fadeout; bool span;
 	bool submenu;
 

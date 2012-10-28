@@ -57,7 +57,7 @@ Level01::~Level01()
 
 void Level01::Update(const int& iElapsedTime)
 {
-	top->Update(iElapsedTime, Camera::CameraSpeed()*2);
+	top->Update(iElapsedTime, Camera::CameraSpeed()*3);
 	bounds.x = Camera::CameraX();
 	bounds.y = Camera::CameraY2() - _WSCREEN_HEIGHT;
 }

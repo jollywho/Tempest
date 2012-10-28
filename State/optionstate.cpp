@@ -4,6 +4,7 @@
 #include "Engine/SpriteResource.h"
 #include "Game/SaveScore.h"
 #include "Game/GameScore.h"
+#include "Engine/SFX.h"
 
 COptionState COptionState::m_OptionState;
 
@@ -12,7 +13,10 @@ void COptionState::Init()
 	printf("COptionState Init\n");
 	ClearRequest();
 	SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
-	banner = Shared::load_image("Image/UI/ScoreBanner.png");
+	selector_surface = Shared::load_image("Image/UI/SoundSelector.png");
+	frame_surface = Shared::load_image("Image/UI/SoundFrame.png");
+
+
 	font_surface = Shared::load_image("Font/GoldMistral.png");
 	score_font_surface = Shared::load_image("Font/BlueHigh.png");
 	font = new NFont(SDL_GetVideoSurface(), font_surface);
@@ -22,6 +26,17 @@ void COptionState::Init()
 	int w = font->getWidth("BGM");
 	int menuheight = _WSCREEN_HEIGHT/2 - (h * 6)/2 - 84; //offset by top and bottom banners
 	align_x = _WSCREEN_WIDTH/2 - w*2.5;
+
+	bgm_frame.x = align_x + w*2;
+	bgm_frame.y = 140 - ( FRAME_HEIGHT/2);
+	fx_frame.x = align_x + w*2;
+	fx_frame.y = 200 - ( FRAME_HEIGHT/2);
+
+	bgm_selector.y = bgm_frame.y + (FRAME_HEIGHT/2 - SELECTOR_HEIGHT/2);
+	fx_selector.y = fx_frame.y + (FRAME_HEIGHT/2 - SELECTOR_HEIGHT/2);
+
+	bgm_selector.x = bgm_frame.x + (((double)SFX::SetBGM(0)/MIX_MAX_VOLUME)*235);
+	fx_selector.x = fx_frame.x + (((double)SFX::SetFX(0)/MIX_MAX_VOLUME)*235);
 
 	main_menu = new Menu();
 	main_menu->AddItem(align_x, 140, "BGM");
@@ -38,7 +53,8 @@ void COptionState::Cleanup()
 	SDL_EnableKeyRepeat(0, 0);
 	SDL_FreeSurface(font_surface);
 	SDL_FreeSurface(score_font_surface);
-	SDL_FreeSurface(banner);
+	SDL_FreeSurface(selector_surface);
+	SDL_FreeSurface(frame_surface);
 	delete font;
 	delete score_font;
 }
@@ -68,4 +84,10 @@ void COptionState::Update(const int& iElapsedTime)
 void COptionState::Draw(SDL_Surface* dest) 
 {
 	main_menu->Draw(dest);
+
+	Shared::apply_surface(bgm_frame.x,bgm_frame.y,frame_surface,dest);
+	Shared::apply_surface(bgm_selector.x,bgm_selector.y,selector_surface,dest);
+
+	Shared::apply_surface(fx_frame.x,fx_frame.y,frame_surface,dest);
+	Shared::apply_surface(fx_selector.x,fx_selector.y,selector_surface,dest);
 }
