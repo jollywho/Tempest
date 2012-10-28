@@ -6,13 +6,14 @@
 
 enum State
 {
-	Intro,
-	Play,
-	Score,
-	Option,
-	Poll,
-	Name,
-	GameOver,
+	S_INTRO,
+	S_PLAY,
+	S_SCORE,
+	S_OPTION,
+	S_POLL,
+	S_NAME,
+	S_PAUSE,
+	S_GAMEOVER,
 };
 
 class CGameState

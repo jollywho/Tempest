@@ -2,7 +2,7 @@
 #ifndef INTROSTATE_H
 #define INTROSTATE_H
 
-#include "Gamestate.h"
+#include "gamestate.h"
 #include "Engine/Timer.h"
 
 class Menu;
@@ -31,7 +31,7 @@ protected:
 	void OpenSubMenu();
 private:
 	static CIntroState m_IntroState;
-    Menu* mainMenu;
+    Menu* main_menu;
 	SDL_Surface* bg;
 	int alpha;
 	Timer fade_timer;

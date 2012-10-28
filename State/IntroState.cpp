@@ -1,4 +1,4 @@
-#include "IntroState.h"
+#include "intostate.h"
 #include "Engine/Shared.h"
 #include "UI/Menu.h"
 #include "Sprig.h"
@@ -24,13 +24,13 @@ void CIntroState::Init()
 	for(int i=0; i<50; i++)
 		decor_list[i] = new Decor("decor.png");
 
-    mainMenu = new Menu();
+    main_menu = new Menu();
 	//
-    mainMenu->AddItem(_WSCREEN_WIDTH/2, 200, "New Game");
-    mainMenu->AddItem(_WSCREEN_WIDTH/2, 260, "Stage Jump");
-	mainMenu->AddItem(_WSCREEN_WIDTH/2, 320, "Results");
-    mainMenu->AddItem(_WSCREEN_WIDTH/2, 380, "Options");
-    mainMenu->AddItem(_WSCREEN_WIDTH/2, 440, "Exit");
+    main_menu->AddItem(_WSCREEN_WIDTH/2, 200, "New Game");
+    main_menu->AddItem(_WSCREEN_WIDTH/2, 260, "Stage Jump");
+	main_menu->AddItem(_WSCREEN_WIDTH/2, 320, "Results");
+    main_menu->AddItem(_WSCREEN_WIDTH/2, 380, "Options");
+    main_menu->AddItem(_WSCREEN_WIDTH/2, 440, "Exit");
 
 	bgX = 0; bgX2 = -1280;
 	border_top_y = -42; border_bot_y = _WSCREEN_HEIGHT;
@@ -45,7 +45,7 @@ void CIntroState::Init()
 void CIntroState::Cleanup()
 {
 	printf("CIntroState Cleanup\n");
-    delete mainMenu;
+    delete main_menu;
 	for(int i=0; i<50; i++)
 		delete decor_list[i];
 	SDL_FreeSurface(bg);
@@ -60,7 +60,7 @@ void CIntroState::OpenSubMenu()
 {
 	exiting = false; 
 	submenu = true;
-	mainMenu->Reset();
+	main_menu->Reset();
 }
 
 void CIntroState::Return()
@@ -74,28 +74,28 @@ void CIntroState::CheckKeys(const KeyStruct& keys)
 	if (exiting) return;
 	if (keys.z)
 	{
-		mainMenu->Select();
+		main_menu->Select();
 		exiting = true;
 		alpha = 0;
-		if (mainMenu->GetIndex() == 1) { span = true; fadeout = true; }
-		if (mainMenu->GetIndex() == 3) { fadeout = false; }
-		if (mainMenu->GetIndex() == 4) { fadeout = true; }
+		if (main_menu->GetIndex() == 1) { span = true; fadeout = true; }
+		if (main_menu->GetIndex() == 3) { fadeout = false; }
+		if (main_menu->GetIndex() == 4) { fadeout = true; }
 	}
-	if (keys.down) mainMenu->SetIndex(1);
-	else if (keys.up) mainMenu->SetIndex(-1);
+	if (keys.down) main_menu->SetIndex(1);
+	else if (keys.up) main_menu->SetIndex(-1);
 }
 
 void CIntroState::MenuAction()
 {
-	if (mainMenu->GetIndex() == 1) ChangeState(Play);
-	//if (mainMenu->GetIndex() == 2) RequestState(Poll);
-	if (mainMenu->GetIndex() == 3) { PushMenu(Score); OpenSubMenu(); }
-	if (mainMenu->GetIndex() == 4) ChangeState(Option);
+	if (main_menu->GetIndex() == 1) ChangeState(S_PLAY);
+	//if (main_menu->GetIndex() == 2) RequestState(Poll);
+	if (main_menu->GetIndex() == 3) { PushMenu(S_SCORE); OpenSubMenu(); }
+	if (main_menu->GetIndex() == 4) ChangeState(S_OPTION);
 }
 
 void CIntroState::Update(const int& iElapsedTime) 
 {
-	mainMenu->Update(iElapsedTime, alpha);
+	main_menu->Update(iElapsedTime, alpha);
 	for(int i=0; i<50; i++)
 		decor_list[i]->Update(iElapsedTime);
 
@@ -153,7 +153,7 @@ void CIntroState::Draw(SDL_Surface* dest)
 	for(int i=0; i<50; i++)
 		decor_list[i]->Draw(dest);
 
-	if (!submenu) mainMenu->Draw(dest);
+	if (!submenu) main_menu->Draw(dest);
 	
 	SPG_RectFilledBlend(dest,0,0,_WSCREEN_WIDTH,_WSCREEN_HEIGHT, 0, alpha);
 

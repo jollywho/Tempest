@@ -1,7 +1,7 @@
 #ifndef PLAYSTATE_H
 #define PLAYSTATE_H
 
-#include "State/Gamestate.h"
+#include "gamestate.h"
 #include <list>
 #include "Player/Player.h"
 

@@ -12,10 +12,10 @@
 
 CPlayState CPlayState::m_PlayState;
 
-#pragma region INIT
 void CPlayState::Init()
 {
 	printf("CPlayState Init\n");
+	ClearRequest();
     m_Exit = false;
 	m_Enter = true;
 	alpha = 255;
@@ -99,6 +99,7 @@ void CPlayState::CheckKeys(const KeyStruct& keys)
 {
 	player->CheckKeys(keys);
 	if (keys.enter) m_Exit = true;
+	if (keys.esc) PushState(S_PAUSE);
 }
 
 template <class T>
@@ -145,7 +146,7 @@ void CPlayState::Update(const int& iElapsedTime)
 			} 
 		}
 		else
-			PushState(Poll);
+			PushState(S_POLL);
 	}
 	Camera::Update(player->GetOuterBounds().x, iElapsedTime);
 	level->Update(iElapsedTime);

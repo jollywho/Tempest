@@ -58,7 +58,7 @@ void CMyEngine::AdditionalInit()
 {
 	// Load up additional data
 	ScoreIO::SaveScore::LoadScores();
-	ChangeState(Intro);
+	ChangeState(S_INTRO);
 }
  
 void CMyEngine::Think( const int& iElapsedTime )
@@ -79,6 +79,9 @@ void CMyEngine::KeyDown(const int& iKeyEnum)
 {        
     switch (iKeyEnum)
     {
+	case SDLK_ESCAPE:
+		keys.esc = true;
+		break;
     case SDLK_LEFT:
 		keys.left = true;
 		break;
@@ -109,12 +112,14 @@ void CMyEngine::KeyDown(const int& iKeyEnum)
 	else
 		states.back()->CheckKeys(keys);
 }
- 
- 
+
 void CMyEngine::KeyUp(const int& iKeyEnum)
 {
 	switch (iKeyEnum)
 	{
+	case SDLK_ESCAPE:
+		keys.esc = false;
+		break;
     case SDLK_LEFT:
 		keys.left = false;
 		break;

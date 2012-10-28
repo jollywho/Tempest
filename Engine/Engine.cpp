@@ -3,10 +3,11 @@
 #include "Engine/SFX.h"
 #include <windows.h> // For the WaitMessage() function.
 #include "State/Gamestate.h"
-#include "State/Introstate.h"
+#include "State/intostate.h"
 #include "State/Playstate.h"
 #include "State/Pollstate.h"
 #include "State/Scorestate.h"
+#include "State/Pausestate.h"
  
 KeyStruct default_keys = { false, false, false, false, false, false, false, false };
 
@@ -82,17 +83,20 @@ CGameState* CEngine::GetStateInstance(State id)
 	printf("--STATE CHANGE--\n");
 	switch(id)
 	{
-		case Intro:
+		case S_INTRO:
 			return CIntroState::Instance();
 			break;
-		case Play:
+		case S_PLAY:
 			return CPlayState::Instance();
 			break;
-		case Poll:
+		case S_POLL:
 			return CPollState::Instance();
 			break;
-		case Score:
+		case S_SCORE:
 			return CScoreState::Instance();
+			break;
+		case S_PAUSE:
+			return CPauseState::Instance();
 			break;
 		default:
 			return CIntroState::Instance();
@@ -104,6 +108,7 @@ void CEngine::ChangeState(State id)
 {
 	// cleanup all states
 	for (auto it = states.begin(); it != states.end();) {
+
 		(*it)->Cleanup();
 		it = states.erase(it);
 	}
@@ -156,21 +161,20 @@ void CEngine::DoRequests()
 	if (states.back()->PushRequired())
 	{
 		PushState(states.back()->GetState());
-		states.back()->ClearRequest();
 	}
 	if (states.back()->PopRequired())
 	{
 		PopState();
-		states.back()->ClearRequest();
 	}
 	if (states.back()->MenuPush())
 	{
 		PushMenu(states.back()->GetState());
-		states.back()->ClearRequest();
 	}
 
 	if (menustate != NULL) { 
 		if (menustate->MenuPop()) { PopMenu(); } }
+
+	states.back()->ClearRequest();
 }
  
 /** The main loop. **/

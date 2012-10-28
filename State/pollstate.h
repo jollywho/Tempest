@@ -2,7 +2,7 @@
 #ifndef POLLSTATE_H
 #define POLLSTATE_H
 
-#include "Gamestate.h"
+#include "gamestate.h"
 #include "Engine/Timer.h"
 
 class CPollState : public CGameState

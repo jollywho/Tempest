@@ -114,20 +114,18 @@ void Interface::UpdateHealthBar()
 
 void Interface::UpdateIcons()
 {
-	for (int i=0; i<5; i++)
-	{
+	for (int i=0; i<GameScore::Instance()->GetLives(); i++)
 		lives[i]->Update();
+	for (int i=0; i<GameScore::Instance()->GetBombs(); i++)
 		bombs[i]->Update();
-	}
 }
 
 void Interface::DrawIcons(SDL_Surface *dest)
 {
-	for (int i=0; i<5; i++)
-	{
+	for (int i=0; i<GameScore::Instance()->GetLives(); i++)
 		lives[i]->Draw(dest);
+	for (int i=0; i<GameScore::Instance()->GetBombs(); i++)
 		bombs[i]->Draw(dest);
-	}
 }
 
 void Interface::DrawHealthBar(SDL_Surface *dest)

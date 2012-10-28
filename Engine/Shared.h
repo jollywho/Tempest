@@ -43,6 +43,7 @@ struct KeyStruct
 	bool x;
 	bool enter;
 	bool shift;
+	bool esc;
 };
 
 class Shared
