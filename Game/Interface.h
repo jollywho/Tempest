@@ -19,9 +19,26 @@ private:
 	SDL_Surface* green_surface;
 	SDL_Surface* red_surface;
 
+
+	/* Messages */
+	Point score_title_pos;
+	Point hiscore_title_pos;
+	Point mode_title_pos;
+	Point score_pos;
+	Point hiscore_pos;
+	int score_origin;
+	int gem_origin;
+	Point gem_pos;
+	Point coin_pos;
+	//gem
+	//star
+
+	std::string str_mode;
     std::stringstream str_score;
 	std::stringstream str_hiscore;
     std::stringstream str_bulletCount;
+	std::stringstream str_gemcount;
+	std::stringstream str_coincount;
 
 	/* Healthbar */
 	static const int MAX_BAR_WIDTH = 475;

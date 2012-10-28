@@ -76,8 +76,9 @@ void CIntroState::CheckKeys(const KeyStruct& keys)
 	{
 		mainMenu->Select();
 		exiting = true;
+		alpha = 0;
 		if (mainMenu->GetIndex() == 1) { span = true; fadeout = true; }
-		if (mainMenu->GetIndex() == 2) { fadeout = false; }
+		if (mainMenu->GetIndex() == 3) { fadeout = false; }
 		if (mainMenu->GetIndex() == 4) { fadeout = true; }
 	}
 	if (keys.down) mainMenu->SetIndex(1);
@@ -88,7 +89,7 @@ void CIntroState::MenuAction()
 {
 	if (mainMenu->GetIndex() == 1) ChangeState(Play);
 	//if (mainMenu->GetIndex() == 2) RequestState(Poll);
-	if (mainMenu->GetIndex() == 2) { PushMenu(Score); OpenSubMenu(); }
+	if (mainMenu->GetIndex() == 3) { PushMenu(Score); OpenSubMenu(); }
 	if (mainMenu->GetIndex() == 4) ChangeState(Option);
 }
 
@@ -106,7 +107,7 @@ void CIntroState::Update(const int& iElapsedTime)
 
 	if (entering)
 	{
-		if (border_top_y < 0)
+		if (!span && border_top_y < 0)
 		{
 			border_top_y+=2;
 			border_bot_y-=2;

@@ -106,18 +106,18 @@ namespace ScoreIO
 
 	void SaveScore::GenerateDefaults()
 	{
-		ScoreData normal_default =	{"Normal", 1, 6, 30000, "AAAAAAAA"};
-		ScoreData ultra_default =	{"Ultra", 1, 6, 50000, "BBBBBBBB"};
-		ScoreData insane_default =	{"Insane", 1, 3, 90000, "CCCCCCCC"};
+		ScoreData normal_default =	{"Normal", 1, 6, 300000, "AAAAAAAA"};
+		ScoreData ultra_default =	{"Ultra", 1, 5, 500000, "BBBBBBBB"};
+		ScoreData insane_default =	{"Insane", 1, 4, 900000, "CCCCCCCC"};
 
 		for (int i=0; i < 5; i++)
 		{
 			scores.insert(std::make_pair(std::make_pair(normal_default.mode, normal_default.rank), normal_default));
 			scores.insert(std::make_pair(std::make_pair(ultra_default.mode, ultra_default.rank), ultra_default));
 			scores.insert(std::make_pair(std::make_pair(insane_default.mode, insane_default.rank), insane_default));
-			normal_default.rank++; normal_default.value -= 1000;
-			ultra_default.rank++; ultra_default.value -= 1000;
-			insane_default.rank++; insane_default.value -= 1000;
+			normal_default.rank++; normal_default.value -= 1999;
+			ultra_default.rank++; ultra_default.value -= 2999;
+			insane_default.rank++; insane_default.value -= 4999;
 		}
 	}
 }

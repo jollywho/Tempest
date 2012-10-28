@@ -1,5 +1,6 @@
 #include "Interface.h"
 #include "Engine/Spriteresource.h"
+#include "Savescore.h"
 #include "Gamescore.h"
 
 Interface::Interface() 
@@ -32,9 +33,22 @@ Interface::Interface()
 	banner_bottom_pos.x = _G_BANNER_WIDTH;
 	banner_bottom_pos.y = _G_UI_BOTTOM;
 
-    str_score.str("");
-	str_score << GameScore::Instance()->GetScore();
-
+	score_title_pos.x = _WSCREEN_WIDTH/3 - font_green->getWidth("PLAYER")/2;
+	score_title_pos.y = 5;
+	hiscore_title_pos.x = _WSCREEN_WIDTH/2 - font_green->getWidth("HIGH SCORE")/2;
+	hiscore_title_pos.y = 5;
+	str_mode = GameScore::Instance()->GetMode(true);
+	mode_title_pos.x = _WSCREEN_WIDTH/1.5 - font_green->getWidth(str_mode.c_str())/2;
+	mode_title_pos.y = 5;
+	score_pos.y = font_green->getHeight("99") + 8;
+	score_origin = _WSCREEN_WIDTH/3 + font_green->getWidth("123456789")/2;
+	//todo: use gamescore::getmode() NONVERBOSE
+	str_hiscore << ScoreIO::SaveScore::GetScores("Normal", 1).value;
+	hiscore_pos.x = _WSCREEN_WIDTH/2 + font_green->getWidth("123456789")/2 - font_green->getWidth(str_hiscore.str().c_str());
+	hiscore_pos.y = font_green->getHeight("99") + 8;
+	gem_origin = font_green->getHeight("99")*2 + 14;
+	gem_pos.x = _G_BANNER_WIDTH + 20; gem_pos.y = gem_origin;
+	coin_pos.x = _G_BANNER_WIDTH + 20; coin_pos.y = gem_origin + font_green->getHeight("99") + 3;
 }
 
 Interface::~Interface() 
@@ -59,10 +73,27 @@ void Interface::Update(const int& iElapsedTime)
 {
 	UpdateIcons();
 	if (hpbar_active) UpdateHealthBar();
+
+	str_score.str("");
+	str_score << GameScore::Instance()->GetScore();
+	score_pos.x = score_origin - font_green->getWidth(str_score.str().c_str());
+
+	str_gemcount.str("");
+	str_gemcount << GameScore::Instance()->GetGemCount();
+	str_coincount.str("");
+	str_coincount << GameScore::Instance()->GetCoinCount();
 }
 
 void Interface::Draw(SDL_Surface *dest)
 {
+	font_green->draw(score_title_pos.x, score_title_pos.y, "PLAYER");
+	font_red->draw(hiscore_title_pos.x, hiscore_title_pos.y, "HIGH SCORE");
+	font_green->draw(mode_title_pos.x, mode_title_pos.y, str_mode.c_str());
+	font_red->draw(score_pos.x, score_pos.y, str_score.str().c_str());
+	font_green->draw(hiscore_pos.x, hiscore_pos.y, str_hiscore.str().c_str());
+	font_green->draw(gem_pos.x, gem_pos.y, str_gemcount.str().c_str());
+	font_green->draw(coin_pos.x, coin_pos.y, str_coincount.str().c_str());
+
 	Shared::apply_surface(banner_bottom_pos.x,banner_bottom_pos.y,banner_bottom_surface,dest);
     DrawIcons(dest);
 	Shared::apply_surface(banner_bottom_pos.x,banner_bottom_pos.y,banner_bottom2_surface,dest);
