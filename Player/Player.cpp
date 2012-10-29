@@ -7,13 +7,6 @@
 Bomb* Player::mspBomb;
 Weapon* Player::mspWpn;
 
-void Player::ReSpawn()
-{
-	//todo: invuln wings
-	//todo: spawn offscreen and move upward
-	mExplode = false;
-}
-
 Player::Player() 
 {
 	printf("Player Created\n");
@@ -41,8 +34,6 @@ Player::Player()
     mY = GAME_BOUNDS_HEIGHT/2 + 192/4;
 
 	SetWeaponType(M_type);
-
-	ReSpawn();
 }
 
 void Player::SetWeaponType(WeaponType type)
@@ -120,7 +111,12 @@ void Player::HandleAttacks(const int& rDeltaTime)
 	if (mShift)mspWpn->Shift();
 	else mspWpn->Unshift();
 
-	if (mBomb && !mspBomb->IsActive()) mspBomb->Start(mX + ANGEL_SIZE/2, mY);
+	if (mBomb && !mspBomb->IsActive()) 
+	{
+		mspBomb->Start(mX + ANGEL_SIZE/2, mY);
+		mInvuln = true;
+		mInvulnTimer.Start();
+	}
 
 	mspWpn->Update(rDeltaTime);
 	mspBomb->Update(rDeltaTime);

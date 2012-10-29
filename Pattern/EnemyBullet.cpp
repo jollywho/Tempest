@@ -2,6 +2,7 @@
 #include "Engine/SpriteResource.h"
 #include "State/Playstate.h"
 #include "Game/Camera.h"
+#include "Item/Coin.h"
 
 SpriteInfo* EnemyBullet::mspExpInfo;
 
@@ -43,7 +44,7 @@ void EnemyBullet::Destroy()
 {
 	//only active bullets when bombed spawn coins
     if (!mExplode)
-        //spawn coins
+        CPlayState::Instance()->item_list.push_back(new Coin(mX + mpRotInfo->width/2, mY + mpRotInfo->height/2, 25));
      mExplode = true;
 }
 

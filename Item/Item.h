@@ -8,19 +8,6 @@ struct SpriteInfo;
 
 class Item
 {
-protected:
-    int mClip;
-    SDL_Rect mOffset;
-    Timer mClipTimer;
-	Timer mDurationTimer;
-    float mX; float mY;
-    float xvel; float yvel;
-	bool pickedup; bool received;
-    int val;
-	bool mAir;
-	SpriteInfo* mpInfo;
-	int mSpawnSide;
-	static SDL_Surface* smpPickupFrameInfo;
 public:
     Item(int x, int y, int value, char* id);
     virtual ~Item();
@@ -35,6 +22,19 @@ public:
 	bool CheckOffscreen(double x, double y, double h);
 	static void SetBonus(int val);
 	bool Air() { return mAir; }
+protected:
+    int mClip;
+    SDL_Rect mOffset;
+    Timer mClipTimer;
+	Timer mDurationTimer;
+    float mX; float mY;
+    float xvel; float yvel;
+	bool pickedup; bool received;
+    int val;
+	bool mAir;
+	SpriteInfo* mpInfo;
+	int mSpawnSide;
+	static SDL_Surface* smpPickupFrameInfo;
 };
 #endif
 
