@@ -5,7 +5,7 @@
 #include "Game/Camera.h"
 #include "Player/Player.h"
 
-SDL_Surface* Item::received_frame;
+SDL_Surface* Item::smpPickupFrameInfo;
 
 Item::Item(int x, int y, int value, char* id)
 {
@@ -41,7 +41,7 @@ void Item::Init()
 
 	SpriteResource::AddResource("Items", "Bomb_Received.png", 70, 15, 60, 5, true);
 	SpriteResource::AddResource("Items", "Powerup_Received.png", 86, 15, 60, 6, true);
-	received_frame = Shared::LoadImage("Image/Items/Receive_Frame.png");
+	smpPickupFrameInfo = Shared::LoadImage("Image/Items/Receive_Frame.png");
 
 	SFX::AddSoundResource("damage.wav");
 	SFX::AddSoundResource("pickup.wav");
@@ -56,7 +56,7 @@ void Item::Cleanup()
 {
 	printf("Item CleanUp!\n");
 	SpriteResource::ClearResourceDir("Items");
-	SDL_FreeSurface(received_frame);
+	SDL_FreeSurface(smpPickupFrameInfo);
 }
 
 void Item::CheckCollision()

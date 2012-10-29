@@ -7,7 +7,7 @@
 
 Bombup::Bombup(int x, int y, int value) : Item(x, y, value, "bombup.png")
 {
-	_received = &SpriteResource::RequestResource("Items", "Bombup_Received.png");
+	mpPickup = &SpriteResource::RequestResource("Items", "Bombup_Received.png");
 	mAir = true;
     mDelete = false;
 	yvel = 200 * ((rand() % 2) == 1 ? -1 : 1);
@@ -22,7 +22,7 @@ void Bombup::Update(Uint32 deltaTicks)
 {
 	if (pickedup)
 	{
-		Shared::CheckClip(mClipTimer, mClip, _received->interval, _received->maxClips, _received->maxClips-1);
+		Shared::CheckClip(mClipTimer, mClip, mpPickup->interval, mpPickup->maxClips, mpPickup->maxClips-1);
 		if (!received) 
 		{
 			SFX::PlaySoundResource("Bombup_pickup.wav");
@@ -53,9 +53,9 @@ void Bombup::Draw(SDL_Surface *pDest)
 {
 	if (pickedup) {
 		Camera::DrawSurface(mOffset.x - 50, mOffset.y + Camera::CameraY2() - 25,
-			received_frame, pDest, NULL);
+			smpPickupFrameInfo, pDest, NULL);
 		Camera::DrawSurface(mOffset.x, mOffset.y + Camera::CameraY2(),
-			_received->pSurface, pDest, &_received->pClips[mClip]);
+			mpPickup->pSurface, pDest, &mpPickup->pClips[mClip]);
 	}
 	else
 		Camera::DrawSurface(mOffset.x, mOffset.y + Camera::CameraY2(),

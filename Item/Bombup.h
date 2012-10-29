@@ -6,7 +6,7 @@
 class Bombup : public Item
 {
 private:
-	SpriteInfo* _received;
+	SpriteInfo* mpPickup;
 public:
 	Bombup(int x, int y, int value);
     ~Bombup();

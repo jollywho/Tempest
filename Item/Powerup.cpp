@@ -9,7 +9,7 @@
 Powerup::Powerup(int x, int y, int value) : Item(x, y, value, "Powerup.png")
 {
 	mAir = true;
-	_received = &SpriteResource::RequestResource("Items", "Powerup_Received.png");
+	mpPickup = &SpriteResource::RequestResource("Items", "Powerup_Received.png");
     mDelete = false;
 	yvel = 200 * ((rand() % 2) == 1 ? -1 : 1);
 	xvel = 200 * ((rand() % 2) == 1 ? -1 : 1);
@@ -24,7 +24,7 @@ void Powerup::Update(Uint32 deltaTicks)
 {
 	if (pickedup)
 	{
-		Shared::CheckClip(mClipTimer, mClip, _received->interval, _received->maxClips, 0);
+		Shared::CheckClip(mClipTimer, mClip, mpPickup->interval, mpPickup->maxClips, 0);
 		if (!received) 
 		{
 			SFX::PlaySoundResource("powerup_pickup.wav");
@@ -55,9 +55,9 @@ void Powerup::Draw(SDL_Surface *pDest)
 {
 	if (pickedup) {
 		Camera::DrawSurface(mOffset.x - 40, mOffset.y + Camera::CameraY2() - 25,
-			received_frame, pDest, NULL);
+			smpPickupFrameInfo, pDest, NULL);
 		Camera::DrawSurface(mOffset.x, mOffset.y + Camera::CameraY2(),
-			_received->pSurface, pDest, &_received->pClips[mClip]);
+			mpPickup->pSurface, pDest, &mpPickup->pClips[mClip]);
 	}
 	else
 		Camera::DrawSurface(mOffset.x, mOffset.y + Camera::CameraY2(),

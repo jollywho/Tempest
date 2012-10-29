@@ -20,7 +20,7 @@ protected:
 	bool mAir;
 	SpriteInfo* mpInfo;
 	int mSpawnSide;
-	static SDL_Surface* received_frame;
+	static SDL_Surface* smpPickupFrameInfo;
 public:
     Item(int x, int y, int value, char* id);
     virtual ~Item();

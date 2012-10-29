@@ -6,7 +6,7 @@
 class Powerup : public Item
 {
 private:
-	SpriteInfo* _received;
+	SpriteInfo* mpPickup;
 public:
 	Powerup(int x, int y, int value);
     ~Powerup();
