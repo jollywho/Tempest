@@ -10,18 +10,18 @@ public:
 	virtual ~PlayerBullet(){}
 
 	static void Init();
-	virtual void Update(const int& iElapsedTime) = 0;
-	virtual void Draw(SDL_Surface *dest) = 0;
+	virtual void Update(const int& rDeltaTime) = 0;
+	virtual void Draw(SDL_Surface *pDest) = 0;
     
     void DetectCollision();
 	void CheckBounds(Point camera_pos);
 protected:
 	
-	SDL_Rect offset;
-	float xVel, yVel;
-    float xVal, yVal;
-    Timer clip_timer;
-	int angle;
+	SDL_Rect mOffset;
+	float xvel, yvel;
+    float mX, mY;
+    Timer mClipTimer;
+	int mAngle;
 
 	static Point min_bounds;
 	static Point max_bounds;

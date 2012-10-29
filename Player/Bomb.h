@@ -10,17 +10,17 @@ class Bomb
 public:
     Bomb();
     ~Bomb();
-    void Update(const int& iElapsedTime);
+    void Update(const int& rDeltaTime);
 	void Draw(SDL_Surface* dest);
-    bool IsActive() { return active; };
+    bool IsActive() { return mActive; };
 	void Start(int x, int y);
 private:
     Timer dps_timer;
-	Timer clip_timer;
-	bool active;
-	static SpriteInfo* sprite;
-	int clip;
-	int xVal; int yVal;
+	Timer mClipTimer;
+	bool mActive;
+	static SpriteInfo* mpSprite;
+	int mClip;
+	int mX; int mY;
 
 };
 

@@ -5,139 +5,150 @@
 #include "Engine/SpriteResource.h"
 #include "UI/Decor.h"
 
-CIntroState CIntroState::m_IntroState;
+CIntroState CIntroState::mIntroState;
 
 void CIntroState::Init()
 {
-	printf("CIntroState Init\n");
+	printf("CIntroState initialize\n");
 	ClearRequest();
-	bg =  Shared::load_image("Image/UI/IntroBG.png");
+	mpBackgroundSurface =  Shared::LoadImage("Image/UI/IntroBG.png");
 	SpriteResource::AddResource("UI", "decor.png", 48,48,100,8);
 
-	border_top = Shared::load_image("Image/UI/intro_border_top.png");
-	border_bot = Shared::load_image("Image/UI/intro_border_bot.png");
-	border_left = Shared::load_image("Image/UI/ui_border_left.png");
-	border_right = Shared::load_image("Image/UI/ui_border_right.png");
+	mpBorderTop = Shared::LoadImage("Image/UI/intro_border_top.png");
+	mpBorderBot =  Shared::LoadImage("Image/UI/intro_border_bot.png");
+	mpBorderLeft = Shared::LoadImage("Image/UI/ui_border_left.png");
+	mpBorderRight = Shared::LoadImage("Image/UI/ui_border_right.png");
 
-	alpha = 255;
+	mAlpha = 255;
 
 	for(int i=0; i<50; i++)
-		decor_list[i] = new Decor("decor.png");
+		mpDecorList[i] = new Decor("decor.png");
 
-    main_menu = new Menu();
+    mpMenu = new Menu();
 	//
-    main_menu->AddItem(_WSCREEN_WIDTH/2, 200, "New Game");
-    main_menu->AddItem(_WSCREEN_WIDTH/2, 260, "Stage Jump");
-	main_menu->AddItem(_WSCREEN_WIDTH/2, 320, "Results");
-    main_menu->AddItem(_WSCREEN_WIDTH/2, 380, "Options");
-    main_menu->AddItem(_WSCREEN_WIDTH/2, 440, "Exit");
+    mpMenu->AddItem(WINDOW_WIDTH/2, 200, "New Game");
+    mpMenu->AddItem(WINDOW_WIDTH/2, 260, "Stage Jump");
+	mpMenu->AddItem(WINDOW_WIDTH/2, 320, "Results");
+    mpMenu->AddItem(WINDOW_WIDTH/2, 380, "Options");
+    mpMenu->AddItem(WINDOW_WIDTH/2, 440, "Exit");
 
-	bgX = 0; bgX2 = -1280;
-	border_top_y = -42; border_bot_y = _WSCREEN_HEIGHT;
-	border_left_x = -160; border_right_x = _WSCREEN_WIDTH;
+	mBackground.x = 0; mBackground2.x = -1280;
+	mBorderTop = -42; mBorderBot = WINDOW_HEIGHT;
+	mBorderLeft = -160; mBorderRight = WINDOW_WIDTH;
 
-	exiting = false; entering = true; fadeout = false; span = false;
-	submenu = false;
+	mExit = false; 
+	mEnter = true; 
+	mFadeout = false; 
+	mSpan = false;
+	mSubmenu = false;
 
-	fade_timer.start();
+	mFadeTimer.Start();
 }
 
 void CIntroState::Cleanup()
 {
 	printf("CIntroState Cleanup\n");
-    delete main_menu;
+    delete mpMenu;
 	for(int i=0; i<50; i++)
-		delete decor_list[i];
-	SDL_FreeSurface(bg);
+		delete mpDecorList[i];
+	SDL_FreeSurface(mpBackgroundSurface);
 
-	SDL_FreeSurface(border_top);
-	SDL_FreeSurface(border_bot);
-	SDL_FreeSurface(border_left);
-	SDL_FreeSurface(border_right);
+	SDL_FreeSurface(mpBorderTop);
+	SDL_FreeSurface(mpBorderBot);
+	SDL_FreeSurface(mpBorderLeft);
+	SDL_FreeSurface(mpBorderRight);
 }
 
 void CIntroState::OpenSubMenu()
 {
-	exiting = false; 
-	submenu = true;
-	main_menu->Reset();
+	mExit = false; 
+	mSubmenu = true;
+	mpMenu->Reset();
 }
 
-void CIntroState::Return()
+void CIntroState::Back()
 {
 	printf("CIntroState Return\n");
-	submenu = false;
+	mSubmenu = false;
 }
 
-void CIntroState::CheckKeys(const KeyStruct& keys)
+void CIntroState::KeyInput(const KeyStruct& rKeys)
 {
-	if (exiting) return;
-	if (keys.z)
+	if (mExit) return;
+	if (rKeys.esc)
 	{
-		main_menu->Select();
-		exiting = true;
-		alpha = 0;
-		if (main_menu->GetIndex() == 1) { span = true; fadeout = true; }
-		if (main_menu->GetIndex() == 3) { fadeout = false; }
-		if (main_menu->GetIndex() == 4) { fadeout = false; }
+		if (mpMenu->GetIndex() == mpMenu->Count()) 
+			SDL_Quit();
+		else  
+			mpMenu->SetIndex(mpMenu->Count());
 	}
-	if (keys.down) main_menu->SetIndex(1);
-	else if (keys.up) main_menu->SetIndex(-1);
+	if (rKeys.z)
+	{
+		mpMenu->Select();
+		mExit = true;
+		mAlpha = 0;
+		if (mpMenu->GetIndex() == 1) { mSpan = true; mFadeout = true; }
+		if (mpMenu->GetIndex() == 3) { mFadeout = false; }
+		if (mpMenu->GetIndex() == 4) { mFadeout = false; }
+		if (mpMenu->GetIndex() == 5) { SDL_Quit; }
+	}
+	if (rKeys.down) mpMenu->MoveIndex(1);
+	else if (rKeys.up) mpMenu->MoveIndex(-1);
 }
 
 void CIntroState::MenuAction()
 {
-	if (main_menu->GetIndex() == 1) ChangeState(S_PLAY);
+	if (mpMenu->GetIndex() == 1) ChangeState(State::Play);
 	//if (main_menu->GetIndex() == 2) RequestState(Poll);
-	if (main_menu->GetIndex() == 3) { PushMenu(S_SCORE); OpenSubMenu(); }
-	if (main_menu->GetIndex() == 4) { PushMenu(S_OPTION); OpenSubMenu(); }
+	if (mpMenu->GetIndex() == 3) { PushMenu(State::Score); OpenSubMenu(); }
+	if (mpMenu->GetIndex() == 4) { PushMenu(State::Option); OpenSubMenu(); }
 }
 
-void CIntroState::Update(const int& iElapsedTime) 
+void CIntroState::Update(const int& rDeltaTime) 
 {
-	main_menu->Update(iElapsedTime, alpha);
+	mpMenu->Update(rDeltaTime, mAlpha);
 	for(int i=0; i<50; i++)
-		decor_list[i]->Update(iElapsedTime);
+		mpDecorList[i]->Update(rDeltaTime);
 
-	bgX += 1; bgX2 += 1;
-	if (bgX > _WSCREEN_WIDTH) 
-		bgX = bgX2 - 1280;
-	if (bgX2 > _WSCREEN_WIDTH) 
-		bgX2 = bgX - 1280;
+	mBackground.x += 1; mBackground2.x += 1;
+	if (mBackground.x > WINDOW_WIDTH) 
+		mBackground.x = mBackground2.x - 1280;
+	if (mBackground2.x > WINDOW_WIDTH) 
+		mBackground2.x = mBackground.x - 1280;
 
-	if (entering)
+	if (mEnter)
 	{
-		if (!span && border_top_y < 0)
+		if (!mSpan && mBorderTop < 0)
 		{
-			border_top_y+=2;
-			border_bot_y-=2;
+			mBorderTop+=2;
+			mBorderBot-=2;
 		}
-		else if (alpha > 0) 
+		else if (mAlpha > 0) 
 		{
-			if (fade_timer.get_ticks() > 10) 
+			if (mFadeTimer.GetTicks() > 10) 
 			{
-				alpha-=5;
-				fade_timer.start(); 
+				mAlpha-=5;
+				mFadeTimer.Start(); 
 			} 
 		}
 		else
-			entering = false;
+			mEnter = false;
 	}
-	if (exiting)
+	if (mExit)
 	{
-		if (span && border_left_x < 0)
+		if (mSpan && mBorderLeft < 0)
 		{
-			border_left_x+=2;
-			border_right_x-=2;
-			border_top_y-=2;
-			border_bot_y+=2;
+			mBorderLeft+=2;
+			mBorderRight-=2;
+			mBorderTop-=2;
+			mBorderBot+=2;
 		}
-		else if (fadeout && alpha < 255) 
+		else if (mFadeout && mAlpha < 255) 
 		{
-			if (fade_timer.get_ticks() > 10) 
+			if (mFadeTimer.GetTicks() > 10) 
 			{
-				alpha+=5;
-				fade_timer.start(); 
+				mAlpha+=5;
+				mFadeTimer.Start(); 
 			} 
 		}
 		else
@@ -145,21 +156,21 @@ void CIntroState::Update(const int& iElapsedTime)
 	}
 }
 
-void CIntroState::Draw(SDL_Surface* dest) 
+void CIntroState::Draw(SDL_Surface* pDest) 
 {
-	Shared::apply_surface((int)bgX,0,bg,dest);
-	Shared::apply_surface((int)bgX2,0,bg,dest);
+	Shared::DrawSurface(mBackground.x, 0, mpBackgroundSurface, pDest);
+	Shared::DrawSurface(mBackground2.x, 0, mpBackgroundSurface, pDest);
 
 	for(int i=0; i<50; i++)
-		decor_list[i]->Draw(dest);
+		mpDecorList[i]->Draw(pDest);
 
-	if (!submenu) main_menu->Draw(dest);
+	if (!mSubmenu) mpMenu->Draw(pDest);
 	
-	SPG_RectFilledBlend(dest,0,0,_WSCREEN_WIDTH,_WSCREEN_HEIGHT, 0, alpha);
+	SPG_RectFilledBlend(pDest,0,0,WINDOW_WIDTH,WINDOW_HEIGHT, 0, mAlpha);
 
-	Shared::apply_surface(0, border_top_y, border_top, dest);
-	Shared::apply_surface(0, border_bot_y, border_bot, dest);
+	Shared::DrawSurface(0, mBorderTop, mpBorderTop, pDest);
+	Shared::DrawSurface(0, mBorderBot, mpBorderBot, pDest);
 
-	Shared::apply_surface(border_left_x, 0, border_left, dest);
-	Shared::apply_surface(border_right_x, 0, border_right, dest);
+	Shared::DrawSurface(mBorderLeft, 0, mpBorderLeft, pDest);
+	Shared::DrawSurface(mBorderRight, 0, mpBorderRight, pDest);
 }

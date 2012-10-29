@@ -5,40 +5,40 @@
 #include "Player/Player.h"
 #include "Game/Gamescore.h"
 
-SDL_Surface* ScoreMSG::surfaceFade[4];
-NFont ScoreMSG::fontFade[4];
-Timer ScoreMSG::tallyTimer;
-int ScoreMSG::tallyTotal = 0;
-int ScoreMSG::extend = 0;
+SDL_Surface* ScoreMSG::mspSurfaceFade[4];
+NFont ScoreMSG::msFontFade[4];
+Timer ScoreMSG::msTallyTimer;
+int ScoreMSG::msTallyTotal = 0;
+int ScoreMSG::msExtend = 0;
 
 ScoreMSG::ScoreMSG(int x, int y, int xDir, int value)
 {
-	clip = 0;
+	mClip = 0;
 
-	if (tallyTimer.get_ticks() < 50 && extend < 2000)
+	if (msTallyTimer.GetTicks() < 50 && msExtend < 2000)
 	{
-		m_delete = true;
-		tallyTotal += value;
-		extend += 50;
+		mDelete = true;
+		msTallyTotal += value;
+		msExtend += 50;
 		GameScore::Instance()->IncreaseScore(value);
 	}
 	else
 	{
-		extend = 0;
-		tallyTotal = value;
-		m_delete = false;
-		val = value;
-		msg << "+" << val;
+		msExtend = 0;
+		msTallyTotal = value;
+		mDelete = false;
+		mValue = value;
+		mMsg << "+" << mValue;
 		GameScore::Instance()->IncreaseScore(value);
-		xVal = x + (rand() % 20)-40; 
-		yVal = y - (rand() % 20)+40;
+		mX = x + (rand() % 20)-40; 
+		mY = y - (rand() % 20)+40;
 
-		xVel = (xDir * 50);
-		yVel = -50;
-		duration_Timer.start();
-		clip_Timer.start();
+		xvel = (xDir * 50);
+		yvel = -50;
+		mDurationTimer.Start();
+		mClipTimer.Start();
 	}
-	tallyTimer.start();
+	msTallyTimer.Start();
 }
 
 ScoreMSG::~ScoreMSG()
@@ -51,31 +51,31 @@ void ScoreMSG::Init()
 	{
 		std::stringstream ss;
 		ss << "Font/GoldNoonFade"<< i << ".png";
-		surfaceFade[i] = Shared::load_image(ss.str());
-		fontFade[i].load(SDL_GetVideoSurface(), surfaceFade[i]);
+		mspSurfaceFade[i] = Shared::LoadImage(ss.str());
+		msFontFade[i].load(SDL_GetVideoSurface(), mspSurfaceFade[i]);
 	}
-	tallyTimer.start();
+	msTallyTimer.Start();
 }
 
-void ScoreMSG::CleanUp()
+void ScoreMSG::Cleanup()
 {
 	for (int i=0; i<4; i++)
-		SDL_FreeSurface(surfaceFade[i]);
+		SDL_FreeSurface(mspSurfaceFade[i]);
 }
 
 void ScoreMSG::Update(Uint32 deltaTicks)
 {
-	Shared::CheckClip(clip_Timer, clip, 300 + extend, 3, 3);
-	xVal += xVel * (deltaTicks/1000.f);
-	yVal += yVel * (deltaTicks/1000.f);
-	if (duration_Timer.get_ticks() > 800 + extend) { m_delete = true; }
-	if (val < tallyTotal)
-		val++;
-	msg.str("");
-	msg << "+" << val;
+	Shared::CheckClip(mClipTimer, mClip, 300 + msExtend, 3, 3);
+	mX += xvel * (deltaTicks/1000.f);
+	mY += yvel * (deltaTicks/1000.f);
+	if (mDurationTimer.GetTicks() > 800 + msExtend) { mDelete = true; }
+	if (mValue < msTallyTotal)
+		mValue++;
+	mMsg.str("");
+	mMsg << "+" << mValue;
 }
 
-void ScoreMSG::Draw(SDL_Surface *dest)
+void ScoreMSG::Draw(SDL_Surface *pDest)
 {
-	fontFade[clip].draw(xVal-Camera::CameraX(),yVal,msg.str().c_str());
+	msFontFade[mClip].draw(mX-Camera::CameraX(), mY, mMsg.str().c_str());
 }

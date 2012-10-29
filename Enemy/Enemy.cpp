@@ -5,62 +5,63 @@
 #include "State/Playstate.h"
 #include "Item/Gem.h"
 
-SDL_Surface* Enemy::hit_surface;
-SDL_Color Enemy::hitColor = { 255, 0, 0 };
+SDL_Surface* Enemy::mspHitSurface;
+SDL_Color Enemy::msHitColor = { 255, 0, 0 };
 
 Enemy::Enemy(int x, int y, int hp, std::string id)
 {
 	printf("Enemy Created\n");
 
-	info = &SpriteResource::RequestResource("Enemies", id);
-	clip_timer.start();
+	mpInfo = &SpriteResource::RequestResource("Enemies", id);
+	mClipTimer.Start();
 
-    m_delete = false;
-    exploding = false;
-    hit = false;
-	clip = 0;
-	xVal = x - info->width/2; 
-	yVal = y - info->height/2;
-	hitbox.x = xVal; 
-	hitbox.y = yVal;
-	hitbox.w = info->width; hitbox.h = info->height;
-	health = hp;
-	max_health = hp;
+    mDelete = false;
+    mExplode = false;
+    mHit = false;
+	mClip = 0;
+	mX = x - mpInfo->width/2; 
+	mY = y - mpInfo->height/2;
+	mHitbox.x = mX; 
+	mHitbox.y = mY;
+	mHitbox.w = mpInfo->width; 
+	mHitbox.h = mpInfo->height;
+	mHealth = hp;
+	mMaxHealth = hp;
 }
 
 void Enemy::Init()
 {
-    hit_surface = Shared::load_image("Image/Enemies/HitColor.png");
+    mspHitSurface = Shared::LoadImage("Image/Enemies/HitColor.png");
 }
 
-void Enemy::CleanUp()
+void Enemy::Cleanup()
 {
-    SDL_FreeSurface(hit_surface);
+    SDL_FreeSurface(mspHitSurface);
 }
 
 void Enemy::FlashRed(SDL_Surface* en_surface, SDL_Rect* targetClip)
 {
-    if (!hit)
+    if (!mHit)
     {
-		hit = true;
-		hit_timer.start();
-		copy_surface = SDL_ConvertSurface(en_surface, en_surface->format, SDL_SWSURFACE);
-		Shared::apply_surface(targetClip->x, targetClip->y, hit_surface, copy_surface, NULL);
+		mHit = true;
+		mHitTimer.Start();
+		mpCopySurface = SDL_ConvertSurface(en_surface, en_surface->format, SDL_SWSURFACE);
+		Shared::DrawSurface(targetClip->x, targetClip->y, mspHitSurface, mpCopySurface, NULL);
     }
 }
 
 void Enemy::FlashClear()
 {
-	if (hit && hit_timer.get_ticks() > 30)
+	if (mHit && mHitTimer.GetTicks() > 30)
 	{
-		hit = false;
-		SDL_FreeSurface(copy_surface);
+		mHit = false;
+		SDL_FreeSurface(mpCopySurface);
 	}
 }
 
 bool Enemy::CheckBounds()
 {
-	if( yVal + info->height - Camera::CameraY2() > 0 )
+	if( mY + mpInfo->height - Camera::CameraY2() > 0 )
 	{
 		return true;
 	}
@@ -72,9 +73,9 @@ bool Enemy::CheckBounds()
 
 bool Enemy::Explode(bool del)
 {
-	if (exploding)
+	if (mExplode)
 	{
-		m_delete = del;
+		mDelete = del;
 		return true;
 	}
 	else
@@ -86,12 +87,12 @@ bool Enemy::Explode(bool del)
 bool Enemy::CheckHealth()
 {
 	FlashClear();
-	if (health <= 0)
+	if (mHealth <= 0)
 	{
-		for (int i=0; i<=max_health; i+=25)
+		for (int i=0; i<=mMaxHealth; i+=25)
 			CPlayState::Instance()->item_list.push_back(
-			new Gem(xVal + rand() % info->width, yVal + info->height/2, 25));
-		exploding = true;
+			new Gem(mX + rand() % mpInfo->width, mY + mpInfo->height/2, 25));
+		mExplode = true;
 	}
 	//todo: request explosion
 	return false;
@@ -99,20 +100,20 @@ bool Enemy::CheckHealth()
 
 void Enemy::DetectCollision()
 {
-	if( yVal - Camera::CameraY2() > _G_BOUNDS_HEIGHT)
+	if( mY - Camera::CameraY2() > GAME_BOUNDS_HEIGHT)
 	{
-		m_delete = true;
+		mDelete = true;
 		return;
 	}
 
-	SDL_Rect pl = CPlayState::Instance()->player->GetBounds();
+	SDL_Rect pl_mpHitbox = CPlayState::Instance()->mpPlayer->GetBounds();
 
-	if (hitbox.x+hitbox.w>pl.x  && 
-        hitbox.x<pl.x+pl.w  && 
-        hitbox.y+hitbox.h>pl.y && 
-        hitbox.y<pl.y+pl.h)
+	if (mHitbox.x + mHitbox.w > pl_mpHitbox.x  && 
+        mHitbox.x < pl_mpHitbox.x + pl_mpHitbox.w  && 
+        mHitbox.y + mHitbox.h > pl_mpHitbox.y && 
+        mHitbox.y < pl_mpHitbox.y + pl_mpHitbox.h)
         { 
             TakeHit(1);
-			CPlayState::Instance()->player->TakeHit();
+			CPlayState::Instance()->mpPlayer->TakeHit();
 		}
 }

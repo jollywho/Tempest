@@ -9,13 +9,13 @@ struct SpriteInfo;
 class LayerObjbect
 {
 private:
-	SpriteInfo* info;
+	SpriteInfo* mpInfo;
 	float xVal; float yVal;
-	bool m_delete;
+	bool mDelete;
 public:
 	LayerObjbect(int x, int y);
-    void Draw(SDL_Surface *dest);
-	bool RequestDelete() { return m_delete; };
+    void Draw(SDL_Surface *pDest);
+	bool RequestDelete() { return mDelete; };
 };
 
 

@@ -8,13 +8,13 @@
 class ERotBullet : public EnemyBullet
 {
 public:
-	ERotBullet(float x, float y, int angl, std::string id);
+	ERotBullet(float x, float y, int angle, std::string id);
 	~ERotBullet() {}
-	void Update( const int& iElapsedTime );
-    void Draw(SDL_Surface *dest);
+	void Update( const int& rDeltaTime );
+    void Draw(SDL_Surface* pDest);
 private:
-	float xVel2; float yVel2;
-	int angle;
+	float xvel2; float yvel2;
+	int mAngle;
 };
 
 #endif

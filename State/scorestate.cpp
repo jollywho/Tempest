@@ -8,26 +8,26 @@ CScoreState CScoreState::m_SelectState;
 
 void CScoreState::Init()
 {
-	printf("CScoreState Init\n");
+	printf("CScoreState initialize\n");
 	ClearRequest();
 	SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
-	banner = Shared::load_image("Image/UI/ScoreBanner.png");
-	font_surface = Shared::load_image("Font/GoldMistral.png");
-	score_font_surface = Shared::load_image("Font/BlueHigh.png");
+	banner = Shared::LoadImage("Image/UI/ScoreBanner.png");
+	font_surface = Shared::LoadImage("Font/GoldMistral.png");
+	score_font_surface = Shared::LoadImage("Font/BlueHigh.png");
 	font = new NFont(SDL_GetVideoSurface(), font_surface);
 	score_font = new NFont(SDL_GetVideoSurface(), score_font_surface);
 	modeSelection = 1; selChange = 0;
-	right = _WSCREEN_WIDTH + 50;
+	right = WINDOW_WIDTH + 50;
 	exit = false; enter = true; mov = right;
-	middle = _WSCREEN_WIDTH/2 - 451/2;
-	int spacer = _WSCREEN_HEIGHT/2 - (113*4)/2;
+	middle = WINDOW_WIDTH/2 - 451/2;
+	int spacer = WINDOW_HEIGHT/2 - (113*4)/2;
 	dir = -20;
 	for (int i=0; i<=4; i++)
 	{
 		bannerList[i].x = right;
 		bannerList[i].y = spacer + (i * 113);
 	}
-	mov_timer.start();
+	mov_timer.Start();
 }
 
 void CScoreState::Cleanup()
@@ -41,9 +41,9 @@ void CScoreState::Cleanup()
 	delete score_font;
 }
 
-void CScoreState::CheckKeys(const KeyStruct& keys)
+void CScoreState::KeyInput(const KeyStruct& rKeys)
 {
-	if (keys.left)
+	if (rKeys.left)
 	{
 		exit = true; 
 		selChange = -1;
@@ -51,7 +51,7 @@ void CScoreState::CheckKeys(const KeyStruct& keys)
 		if (modeSelection - 1 < 1) selChange = +2;
 		if (modeSelection - 1 > 3) selChange = -2;	
 	}
-	if (keys.right)
+	if (rKeys.right)
 	{
 		exit = true;
 		selChange = 1;
@@ -59,23 +59,23 @@ void CScoreState::CheckKeys(const KeyStruct& keys)
 		if (modeSelection + 1 < 1) selChange = +2;
 		if (modeSelection + 1 > 3) selChange = -2;
 	}
-	if (keys.z)
+	if (rKeys.z)
 		PopMenu();
 }
 
-void CScoreState::Update(const int& iElapsedTime) 
+void CScoreState::Update(const int& rDeltaTime) 
 {
 	if (exit)
 	{
-		if (mov_timer.get_ticks() > 10)
+		if (mov_timer.GetTicks() > 10)
 		{
 			mov += dir;
-			mov_timer.start();
+			mov_timer.Start();
 		}
-		if ((dir < 0 && mov < -451) || (dir > 0 && mov > _WSCREEN_WIDTH) ) 
+		if ((dir < 0 && mov < -451) || (dir > 0 && mov > WINDOW_WIDTH) ) 
 		{
 			if (dir > 0) mov = -451;
-			if (dir < 0) mov = _WSCREEN_WIDTH + 50;
+			if (dir < 0) mov = WINDOW_WIDTH + 50;
 			modeSelection += selChange;
 			selChange = 0;
 			exit = false; enter = true;
@@ -85,12 +85,12 @@ void CScoreState::Update(const int& iElapsedTime)
 	}
 	if (enter)
 	{
-		if (mov_timer.get_ticks() > 10)
+		if (mov_timer.GetTicks() > 10)
 		{
 			mov += dir;
-			mov_timer.start();
+			mov_timer.Start();
 		}
-		if ((dir > 0 && mov > _WSCREEN_WIDTH/2 - 451/2) || (dir < 0 && mov < _WSCREEN_WIDTH/2 - 451/2))
+		if ((dir > 0 && mov > WINDOW_WIDTH/2 - 451/2) || (dir < 0 && mov < WINDOW_WIDTH/2 - 451/2))
 		{
 			enter = false;
 			mov = middle;
@@ -104,7 +104,7 @@ void CScoreState::Draw(SDL_Surface* dest)
 {
 	for (int i=0; i<4; i++)
 	{
-		Shared::apply_surface(bannerList[i].x, bannerList[i].y, banner, dest);
+		Shared::DrawSurface(bannerList[i].x, bannerList[i].y, banner, dest);
 		ScoreIO::ScoreData temp = ScoreIO::SaveScore::GetScores(GameScore::GetModeEquivalent(modeSelection), i+1);
 		DrawMsg(bannerList[i].scoreX(), bannerList[i].scoreY(), temp.value);
 		DrawMsg(bannerList[i].rankX(), bannerList[i].rankY(), temp.rank);

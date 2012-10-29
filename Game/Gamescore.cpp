@@ -22,16 +22,16 @@ void GameScore::IncreaseLives()
 
 void GameScore::IncreaseBombups()
 {
-	if (g_bombs < MAX_BOMBS) {
-		g_bombs++; t_bomb++; }
+	if (mBombs < MAX_BOMBS) {
+		mBombs++; }
 	else
 		IncreaseScore(5000);
 }
 
 bool GameScore::DecreaseBombups()
 {
-	if (g_bombs > 0) {
-		g_bombs--;
+	if (mBombs > 0) {
+		mBombs--;
 		return true; 
 	}
 	else
@@ -101,7 +101,7 @@ std::string GameScore::GetModeEquivalent(int mode, bool verbose)
 
 void GameScore::DecreaseLives()
 {
-	t_lives++;
+	mLives++;
 	if (g_lives > 0)
 		g_lives--;
 
@@ -116,9 +116,9 @@ void GameScore::DecreaseContinues()
 {
 	g_continues--;
 	g_score = 0;
-	t_coin = 0;
-	t_gem = 0;
-	t_quartz = 0;
+	mCoins = 0;
+	mGems = 0;
+	mQuartz = 0;
 	ResetLevel();
 	ResetSpawn();
 	//todo: relink
@@ -131,21 +131,21 @@ void GameScore::DecreaseCounter(int val, int counter)
 	switch(counter)
 	{
 	case 1:
-		t_gem -= val;
+		mGems -= val;
 		break;
 	case 2:
-		t_coin -= val;
+		mCoins -= val;
 		break;
 	case 3:
-		t_quartz -= val;
+		mQuartz -= val;
 		break;
 	}
 	
 }
 
-void GameScore::IncreaseCoinCount() { if (t_coin < 9999) t_coin++; }
-void GameScore::IncreaseQuartzCount() { t_quartz++; }
-void GameScore::IncreaseGemCount() { t_gem++; }
+void GameScore::IncreaseCoinCount() { if (mCoins < 9999) mCoins++; }
+void GameScore::IncreaseQuartzCount() { mQuartz++; }
+void GameScore::IncreaseGemCount() { mGems++; }
 
 void GameScore::ResetGame()
 {
@@ -155,21 +155,21 @@ void GameScore::ResetGame()
 	//todo: relink
 	//CPlayState::m_Continue = false;
 	//CPlayState::m_GameOver = false;
-	//CPlayState::m_Exit = false;
+	//CPlayState::mExit = false;
 }
 
 void GameScore::ResetLevel()
 {
-	t_gem = 0;
-	t_coin = 0;
-	t_bomb = 0;
-	t_lives = 0;
-	t_quartz = 0;
+	mGems = 0;
+	mCoins = 0;
+	mBombs = 0;
+	mLives = 0;
+	mQuartz = 0;
 }
 
 void GameScore::ResetSpawn()
 {
-	g_bombs = MAX_BOMBS;
+	mBombs = MAX_BOMBS;
 	g_lives = MAX_LIVES;
 	g_bonus = 0;
 }

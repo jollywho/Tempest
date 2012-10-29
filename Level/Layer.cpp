@@ -1,73 +1,72 @@
 #include "Layer.h"
 #include "Game/Camera.h"
 
-Layer::Layer(SDL_Surface* src, int height, int startPos)
+Layer::Layer(SDL_Surface* pSrc, int height, int startPos)
 {
 	printf("Layer Created!\n");
-	this->surface = src;
-	this->height = height;
-	this->start = startPos;
-	this->xoffset = 0;
-	yVal = 0; yVal2 = yVal - height;
-	fixed = false; done = false;
-	started = false;
+	mpSurface = pSrc;
+	mHeight = height;
+	mStartY = startPos;
+	mOffset = 0;
+	mY = 0; mY2 = mY - height;
+	mFixed = false; mDone = false;
+	mStarted = false;
 }
 
-Layer::Layer(SDL_Surface* src, int height, int startPos, int xoffset)
+Layer::Layer(SDL_Surface* pSrc, int height, int startPos, int horizontalOffset)
 {
 	printf("Layer Created!\n");
-	this->surface = src;
-	this->height = height;
-	this->start = startPos;
-	this->xoffset = xoffset;
-	yVal = 0; yVal2 = yVal - height;
-	fixed = true; done = false;
-	started = false;
+	mpSurface = pSrc;
+	mHeight = height;
+	mStartY = startPos;
+	mOffset = horizontalOffset;
+	mY = 0; mY2 = mY - height;
+	mFixed = true; mDone = false;
+	mStarted = false;
 }
 
 Layer::~Layer()
 {
     printf("Layer Deleted\n");
-	SDL_FreeSurface(surface);
 }
 
 void Layer::Start()
 {
-	if (!started)
+	if (!mStarted)
 	{
-		started = true;
+		mStarted = true;
 	}
 }
 
 void Layer::Update(Uint32 deltaTicks, float spd)
 {
-	if (done) return;
+	if (mDone) return;
 	
-	if (started)
+	if (mStarted)
 	{
-		yVal += spd;
-		yVal2 += spd;
-		if (yVal >= _G_BOUNDS_HEIGHT)
-			yVal = yVal2-height;
-		if (yVal2 >= _G_BOUNDS_HEIGHT)
-			yVal2 = yVal-height;
-		bounds.y = 0;
-		bounds.x = (int)Camera::CameraX();
+		mY += spd;
+		mY2 += spd;
+		if (mY >= GAME_BOUNDS_HEIGHT)
+			mY = mY2-mHeight;
+		if (mY2 >= GAME_BOUNDS_HEIGHT)
+			mY2 = mY-mHeight;
+		mBounds.y = 0;
+		mBounds.x = (int)Camera::CameraX();
 	}
-	if (Camera::CameraY() >= start && !fixed) Start();
+	if (Camera::CameraY() >= mStartY && !mFixed) Start();
 }
 
-void Layer::Draw(SDL_Surface *dest)
+void Layer::Draw(SDL_Surface *pDest)
 {
-	if (done || !started) return;
-	if (!fixed)
+	if (mDone || !mStarted) return;
+	if (!mFixed)
 	{
-	Shared::apply_surface(_G_BANNER_WIDTH, (int)yVal, surface, dest, &bounds);
-	Shared::apply_surface(_G_BANNER_WIDTH, (int)yVal2, surface, dest, &bounds);
+	Shared::DrawSurface(GAME_BANNER_WIDTH, (int)mY, mpSurface, pDest, &mBounds);
+	Shared::DrawSurface(GAME_BANNER_WIDTH, (int)mY2, mpSurface, pDest, &mBounds);
 	}
 	else
 	{
-	Shared::apply_surface(_G_BANNER_WIDTH + xoffset, (int)yVal, surface, dest, NULL);
-	Shared::apply_surface(_G_BANNER_WIDTH + xoffset, (int)yVal2, surface, dest, NULL);
+	Shared::DrawSurface(GAME_BANNER_WIDTH + mOffset, (int)mY, mpSurface, pDest, NULL);
+	Shared::DrawSurface(GAME_BANNER_WIDTH + mOffset, (int)mY2, mpSurface, pDest, NULL);
 	}
 }

@@ -7,12 +7,9 @@ class Level01 : public Level
 public:
     Level01();
     ~Level01();
-	void Update(const int& iElapsedTime);
-	void Draw(SDL_Surface *dest);
-	void LoadEnemies(std::list<Enemy*>& lst);
-private:
-	SDL_Surface* top_surface;
-	SDL_Rect bounds;
+	void Update(const int& rDeltaTime);
+	void Draw(SDL_Surface *pDest);
+	void LoadEnemies(std::list<Enemy*>& rList);
 };
 
 #endif

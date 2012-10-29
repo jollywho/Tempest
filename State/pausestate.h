@@ -15,28 +15,30 @@ public:
 
 	void Pause();
 	void Resume();
-	void Return();
+	void Back();
 
-	void CheckKeys(const KeyStruct& keys);
-	void Update(const int& iElapsedTime);
-	void Draw(SDL_Surface* dest);
+	void KeyInput(const KeyStruct& rKeys);
+	void Update(const int& rDeltaTime);
+	void Draw(SDL_Surface* pDest);
 
 	static CPauseState* Instance() {
-		return &m_PauseState;
+		return &mPauseState;
 	}
 
 protected:
 	CPauseState() { }
 
 private:
-	static CPauseState m_PauseState;
-    int alpha;
-    Menu* main_menu;
-	Timer fade_timer;
-	SDL_Surface* screen;
-	SDL_Rect screen_bounds;
-	bool entering; bool fadeout; bool span;
-	bool submenu;
+	static CPauseState mPauseState;
+    int mAlpha;
+    Menu* mpMenu;
+	Timer mFadeTimer;
+	SDL_Surface* mpScreen;
+	SDL_Rect mScreenBounds;
+	bool mEnter; 
+	bool mFadeout; 
+	bool mSpan;
+	bool mSubmenu;
 
 };
 

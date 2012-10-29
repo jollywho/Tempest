@@ -2,7 +2,7 @@
 #ifndef INTROSTATE_H
 #define INTROSTATE_H
 
-#include "gamestate.h"
+#include "Gamestate.h"
 #include "Engine/Timer.h"
 
 class Menu;
@@ -16,40 +16,45 @@ public:
 
 	void Pause() {}
 	void Resume() {}
-	void Return();
+	void Back();
 
-	void CheckKeys(const KeyStruct& keys);
-	void Update(const int& iElapsedTime);
-	void Draw(SDL_Surface* dest);
+	void KeyInput(const KeyStruct& rKeys);
+	void Update(const int& rDeltaTime);
+	void Draw(SDL_Surface* pDest);
 
 	static CIntroState* Instance() {
-		return &m_IntroState;
+		return &mIntroState;
 	}
 protected:
 	CIntroState() { }
 	void MenuAction();
 	void OpenSubMenu();
 private:
-	static CIntroState m_IntroState;
-    Menu* main_menu;
-	SDL_Surface* bg;
-	int alpha;
-	Timer fade_timer;
-	float bgX; float bgX2;
-	float border_top_y;
-	float border_bot_y;
-	float border_left_x;
-	float border_right_x;
+	static CIntroState mIntroState;
+    Menu* mpMenu;
+	SDL_Surface* mpBackgroundSurface;
+	int mAlpha;
+	Timer mFadeTimer;
+	Point mBackground;
+	Point mBackground2;
 
-	SDL_Surface* border_top;
-	SDL_Surface* border_bot;
-	SDL_Surface* border_left;
-	SDL_Surface* border_right;
+	float mBorderTop;
+	float mBorderBot;
+	float mBorderLeft;
+	float mBorderRight;
 
-	Decor* decor_list[50];
+	SDL_Surface* mpBorderTop;
+	SDL_Surface* mpBorderBot;
+	SDL_Surface* mpBorderLeft;
+	SDL_Surface* mpBorderRight;
 
-	bool exiting; bool entering; bool fadeout; bool span;
-	bool submenu;
+	Decor* mpDecorList[50];
+
+	bool mEnter; 
+	bool mExit; 
+	bool mFadeout; 
+	bool mSpan;
+	bool mSubmenu;
 };
 
 #endif

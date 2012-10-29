@@ -15,14 +15,14 @@ public:
     Player();
     ~Player();
 
-    void CheckKeys(const KeyStruct& keys);
+    void KeyInput(const KeyStruct& rKeys);
     void ReSpawn();
 
-	void HandleMovement(const int& iElapsedTime);
-	void HandleAttacks(const int& iElapsedTime);
-    void Update( const int& iElapsedTime);
+	void HandleMovement(const int& rDeltaTime);
+	void HandleAttacks(const int& rDeltaTime);
+    void Update( const int& rDeltaTime);
 
-    void Draw(SDL_Surface *dest);
+    void Draw(SDL_Surface *pDest);
 
     SDL_Rect GetBounds();
     SDL_Rect GetOuterBounds();
@@ -31,42 +31,42 @@ public:
 
 	static void SetWeaponType(WeaponType type);
 
-	bool IsExploding() { return exploding; }
+	bool IsExploding() { return mExplode; }
 	bool IsBombActive();
 	void WeaponLevelUp();
 
 private:
-	static Weapon* _wpn;
-	static Bomb* _bomb;
-	int moveSpeed;
+	static Weapon* mspWpn;
+	static Bomb* mspBomb;
+	int mSpeed;
     float mov;
 	int left, right, up, down;
-	bool shift_quest; bool attack_request; bool bomb_request;
+	bool mShift; bool mAttack; bool mBomb;
     static const int SPEED_NORMAL = 350;
     static const int SPEED_SLOW = 180;
 
-	bool exploding;
+	bool mExplode;
 
-	Point booster_pos;
-	Timer booster_timer;
-    int booster_clip;
+	Point mBooster;
+	Timer mBoosterTimer;
+    int mBoosterClip;
 
-	Point hitbox_pos;
-	Timer hitbox_timer;
-    int hitbox_clip;
+	Point mHitbox;
+	Timer mHitboxTimer;
+    int mHitboxClip;
 
-    Point zone_pos;
-    Timer zone_timer;
-    int zone_clip;
+    Point mZone;
+    Timer mZoneTimer;
+    int mZoneClip;
 
-    float xVal; float yVal;
-    Timer clip_timer;
-	int clip;
+    float mX; float mY;
+    Timer mClipTimer;
+	int mClip;
 
-	SpriteInfo* angel;
-	SpriteInfo* booster;
-	SpriteInfo* hitbox;
-	SpriteInfo* zone;
+	SpriteInfo* mpAngel;
+	SpriteInfo* mpBooster;
+	SpriteInfo* mpHitbox;
+	SpriteInfo* mpZone;
 };
 
 #endif

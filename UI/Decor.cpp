@@ -3,32 +3,32 @@
 
 Decor::Decor(std::string filename)
 {
-	info = &SpriteResource::RequestResource("UI", filename);
-	xVal = rand() % _WSCREEN_WIDTH;
-	yVal = rand() % _WSCREEN_WIDTH;
+	mpInfo = &SpriteResource::RequestResource("UI", filename);
+	mX = rand() % WINDOW_WIDTH;
+	mY = rand() % WINDOW_WIDTH;
 	
-	clip = rand() % info->clip_count-1;
-	if (clip == 0) show = true;
+	mClip = rand() % mpInfo->maxClips-1;
+	if (mClip == 0) show = true;
 	else show = false;
-	clipTimer.start();
+	mClipTimer.Start();
 }
 
 void Decor::Update(int deltaTicks)
 {
-	Shared::CheckClip(clipTimer, clip, info->interval + rand() % 50, info->clip_count, 0);
-	if (clip >= info->clip_count-1)
+	Shared::CheckClip(mClipTimer, mClip, mpInfo->interval + rand() % 50, mpInfo->maxClips, 0);
+	if (mClip >= mpInfo->maxClips-1)
 	{
-		xVal = rand() % _WSCREEN_WIDTH;
-		yVal = rand() % _WSCREEN_WIDTH;
-		clip = rand() % 2;
-		if (clip == 0) show = true;
+		mX = rand() % WINDOW_WIDTH;
+		mY = rand() % WINDOW_WIDTH;
+		mClip = rand() % 2;
+		if (mClip == 0) show = true;
 		else show = false;
 	}
-	yVal += 50 * (deltaTicks/1000.f);
+	mY += 50 * (deltaTicks/1000.f);
 }
 
-void Decor::Draw(SDL_Surface *dest)
+void Decor::Draw(SDL_Surface *pDest)
 {
 	if (show)
-		Shared::apply_surface(xVal, yVal, info->surface, dest, &info->clips[clip]);
+		Shared::DrawSurface(mX, mY, mpInfo->pSurface, pDest, &mpInfo->pClips[mClip]);
 }

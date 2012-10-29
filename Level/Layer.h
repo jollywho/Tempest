@@ -5,21 +5,23 @@
 
 class Layer
 {
-private:
-	SDL_Rect bounds;
-    SDL_Surface* surface;
-	float yVal; float yVal2;
-	int start;
-	int height; int xoffset;
-	bool fixed; bool done; bool started;
 public:
     Layer(SDL_Surface* src, int height, int startPos);
 	Layer(SDL_Surface* src, int height, int startPos, int xoffset);
     ~Layer();
-    void Draw(SDL_Surface *dest);
+    void Draw(SDL_Surface *pDest);
 	void Update(Uint32 deltaTicks, float spd);
 	void Start();
-	bool IsDone() { return done; }
+	bool IsDone() { return mDone; }
+private:
+	SDL_Rect mBounds;
+    SDL_Surface* mpSurface;
+	float mY; float mY2;
+	int mStartY;
+	int mHeight; int mOffset;
+	bool mFixed; 
+	bool mDone; 
+	bool mStarted;
 };
 
 #endif

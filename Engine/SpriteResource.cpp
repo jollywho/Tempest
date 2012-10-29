@@ -1,36 +1,36 @@
 #include "SpriteResource.h"
 
-std::map<std::pair<std::string, std::string>, SpriteInfo*> SpriteResource::resources;
-std::map<std::pair<std::string, std::string>, RotationInfo*> SpriteResource::rot_resources;
+std::map<std::pair<std::string, std::string>, SpriteInfo*> SpriteResource::mResources;
+std::map<std::pair<std::string, std::string>, RotationInfo*> SpriteResource::mRotResources;
 
 void SpriteResource::AddResource(std::string dirname, std::string filename,
-	int width, int height, int interval, int clip_count, bool vert)
+	int width, int height, int interval, int maxClips, bool vert)
 {
-	if (resources.find(std::make_pair(dirname, filename)) == resources.end())
+	if (mResources.find(std::make_pair(dirname, filename)) == mResources.end())
 	{
 		SpriteInfo* temp = new SpriteInfo();
-		temp->surface = Shared::load_image("Image/" + dirname + "/" + filename);
+		temp->pSurface = Shared::LoadImage("Image/" + dirname + "/" + filename);
 		temp->width = width;
 		temp->height = height;
 		temp->interval = interval;
-		temp->clip_count = clip_count;
-		temp->clips = new SDL_Rect[clip_count];
-		if (!vert)Shared::setFrames(temp->clips, clip_count, width, height, 0);
-		else Shared::setVertFrames(temp->clips, clip_count, width, height);
-		resources.insert(std::make_pair(std::make_pair(dirname, filename), temp));
+		temp->maxClips = maxClips;
+		temp->pClips = new SDL_Rect[maxClips];
+		if (!vert)Shared::SetFrames(temp->pClips, maxClips, width, height, 0);
+		else Shared::SetVertFrames(temp->pClips, maxClips, width, height);
+		mResources.insert(std::make_pair(std::make_pair(dirname, filename), temp));
 	}
 }
 
 SpriteInfo& SpriteResource::RequestResource(std::string dirname, std::string filename)
 {
-	auto temp = resources.find(std::make_pair(dirname, filename));
+	auto temp = mResources.find(std::make_pair(dirname, filename));
 	if (temp->second == NULL)
 		printf("***Error Opening: %s***\n", filename.c_str());
 	return *temp->second;
 }
 RotationInfo& SpriteResource::RequestRotationResource(std::string dirname, std::string filename)
 {
-	auto temp = rot_resources.find(std::make_pair(dirname, filename));
+	auto temp = mRotResources.find(std::make_pair(dirname, filename));
 	if (temp->second == NULL)
 		printf("***Error Opening: %s***\n", filename.c_str());
 	return *temp->second;
@@ -38,22 +38,22 @@ RotationInfo& SpriteResource::RequestRotationResource(std::string dirname, std::
 
 void SpriteResource::ClearResourceDir(std::string dirname)
 {
-	for (auto it = resources.begin(); it != resources.end();) 
+	for (auto it = mResources.begin(); it != mResources.end();) 
 	{
 		if ((it)->first.first == dirname)
 		{
 			delete (*it).second;
-			it = resources.erase(it);
+			it = mResources.erase(it);
 		}
 		else
 			it++;
 	}
-	for (auto it = rot_resources.begin(); it != rot_resources.end();) 
+	for (auto it = mRotResources.begin(); it != mRotResources.end();) 
 	{
 		if ((it)->first.first == dirname)
 		{
 			delete (*it).second;
-			it = rot_resources.erase(it);
+			it = mRotResources.erase(it);
 		}
 		else
 			it++;
@@ -62,40 +62,40 @@ void SpriteResource::ClearResourceDir(std::string dirname)
 
 void SpriteResource::ClearAllResources()
 {
-	for (auto it = resources.begin(); it != resources.end();) 
+	for (auto it = mResources.begin(); it != mResources.end();) 
 	{
         delete (*it).second;
-		it = resources.erase(it);
+		it = mResources.erase(it);
 	}
-	for (auto it = rot_resources.begin(); it != rot_resources.end();) 
+	for (auto it = mRotResources.begin(); it != mRotResources.end();) 
 	{
         delete (*it).second;
-		it = rot_resources.erase(it);
+		it = mRotResources.erase(it);
 	}
 }
 
 void SpriteResource::AddRotationResource(std::string dirname, std::string filename, 
-	int width, int height, int interval, int clip_count, 
+	int width, int height, int interval, int maxClips, 
 	int start, int end, int destWidth, int destHeight, 
 	int pivotX, int pivotY, int rotInterval)
 {
-	if (rot_resources.find(std::make_pair(dirname, filename)) == rot_resources.end())
+	if (mRotResources.find(std::make_pair(dirname, filename)) == mRotResources.end())
 	{
 		RotationInfo* temp = new RotationInfo();
 		temp->width = width;
 		temp->height = height;
 		temp->interval = interval;
-		temp->clip_count = clip_count;
-		temp->clips = new SDL_Rect[clip_count];
+		temp->maxClips = maxClips;
+		temp->pClips = new SDL_Rect[maxClips];
 		temp->start = start;
 		temp->end = end;
 		temp->rotInterval = rotInterval;
-		Shared::setFrames(temp->clips, clip_count, width, height, 0);
-		temp->rot_surface = new SDL_Surface**[temp->clip_count];
-		Shared::setRotationFrames(temp->clips,
-			Shared::load_image("Image/" + dirname + "/" + filename),
-			temp->clip_count,temp->width,temp->height,
-			temp->rot_surface,start, end, destWidth, destHeight, pivotX, pivotY, rotInterval);
-		rot_resources.insert(std::make_pair(std::make_pair(dirname, filename), temp));
+		Shared::SetFrames(temp->pClips, maxClips, width, height, 0);
+		temp->pSurface = new SDL_Surface**[temp->maxClips];
+		Shared::SetRotationFrames(temp->pClips,
+			Shared::LoadImage("Image/" + dirname + "/" + filename),
+			temp->maxClips,temp->width,temp->height,
+			temp->pSurface,start, end, destWidth, destHeight, pivotX, pivotY, rotInterval);
+		mRotResources.insert(std::make_pair(std::make_pair(dirname, filename), temp));
 	}
 }

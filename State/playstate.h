@@ -21,22 +21,22 @@ public:
 
 	void Pause();
 	void Resume();
-	void Return();
+	void Back();
 
-	void CheckKeys(const KeyStruct& keys);
-	void Update(const int& iElapsedTime);
+	void KeyInput(const KeyStruct& rKeys);
+	void Update(const int& rDeltaTime);
 	void Draw(SDL_Surface* dest);
 
     void ClearObjects();
 
+	void NewLevel();
+
 	static CPlayState* Instance() {
-		return &m_PlayState;
+		return &mPlayState;
 	}
 
-    void NewLevel();
-    int stage;
-	bool m_Exit;
-	bool m_Enter;
+	bool mExit;
+	bool mEnter;
 
     std::list<EnemyBullet*> en_bulletlist;
 	std::list<PlayerBullet*> pl_bulletlist;
@@ -44,23 +44,23 @@ public:
 	std::list<Item*> item_list;
 	std::list<ScoreMSG*> score_list;
 	//explosionlist
-	Player* player;
-	Level* level;
-	Interface* ui;
+	Player* mpPlayer;
+	Level* mpLevel;
+	Interface* mpInterface;
 protected:
 	CPlayState() { }
     ~CPlayState();
 
 	template <class T>
-	void UpdateList(std::list<T>& lst, const int& iElapsedTime);
+	void UpdateList(std::list<T>& rList, const int& rDeltaTime);
 
 	template <class T>
-	void DrawList(std::list<T>& lst, SDL_Surface* dest);
+	void DrawList(std::list<T>& rList, SDL_Surface* dest);
 private:
-	static CPlayState m_PlayState;
-	Timer scan_timer;
-	int alpha;
-	Timer fade_timer;
+	static CPlayState mPlayState;
+	Timer mScanTimer;
+	int mAlpha;
+	Timer mFadeTimer;
 };
 
 #endif

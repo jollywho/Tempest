@@ -5,43 +5,43 @@
 #include "Engine/SpriteResource.h"
 #include "playstate.h"
 
-CPollState CPollState::m_IntroState;
+CPollState CPollState::mIntroState;
 
 void CPollState::Init()
 {
-	printf("CPollState Init\n");
+	printf("CPollState initialize\n");
 	ClearRequest();
-	bg =  Shared::load_image("Image/UI/poll.bmp");
+	mpBackground =  Shared::LoadImage("Image/UI/poll.bmp");
 
-	banner_middle = Shared::load_image("Image/UI/poll_banner_middle.png");
-	banner_side = Shared::load_image("Image/UI/poll_banner_side.png");
+	banner_middle = Shared::LoadImage("Image/UI/poll_banner_middle.png");
+	banner_side = Shared::LoadImage("Image/UI/poll_banner_side.png");
 
 	//todo: nsprites
 
 	//todo: load scores
 
-	alpha = 255;
+	mAlpha = 255;
 	banner_speed = 12;
 	//
 
-	banner_middle_pos.x = _WSCREEN_WIDTH/2 - 112/2;
-	banner_middle_pos.y = _WSCREEN_HEIGHT;
+	banner_middle_pos.x = WINDOW_WIDTH/2 - 112/2;
+	banner_middle_pos.y = WINDOW_HEIGHT;
 
-	banner_left_pos.x = _G_BANNER_WIDTH - 116;
-	banner_left_pos.y = _WSCREEN_HEIGHT/2 - 412/2;
+	banner_left_pos.x = GAME_BANNER_WIDTH - 116;
+	banner_left_pos.y = WINDOW_HEIGHT/2 - 412/2;
 
-	banner_right_pos.x = _G_BOUNDS_WIDTH;
-	banner_right_pos.y = _WSCREEN_HEIGHT/2 - 412/2;
+	banner_right_pos.x = GAME_BOUNDS_WIDTH;
+	banner_right_pos.y = WINDOW_HEIGHT/2 - 412/2;
 
-	exiting = false; entering = true; fadeout = false;
+	mExit = false; mEnter = true; mFadeout = false;
 
-	fade_timer.start();
+	mFadeTimer.Start();
 }
 
 void CPollState::Cleanup()
 {
 	printf("CPollState Cleanup\n");
-	SDL_FreeSurface(bg);
+	SDL_FreeSurface(mpBackground);
 
 	SDL_FreeSurface(banner_middle);
 	SDL_FreeSurface(banner_side);
@@ -57,27 +57,27 @@ void CPollState::Resume()
 	printf("CPollState Resume\n");
 }
 
-void CPollState::CheckKeys(const KeyStruct& keys)
+void CPollState::KeyInput(const KeyStruct& rKeys)
 {
-	if (exiting) return;
-	if (keys.z)
+	if (mExit) return;
+	if (rKeys.z)
 	{
-		exiting = true;
+		mExit = true;
 		//todo: skip
 		//todo: if skip | ready => change state
 	}
 }
 
-void CPollState::Update(const int& iElapsedTime) 
+void CPollState::Update(const int& rDeltaTime) 
 {
-	if (entering)
+	if (mEnter)
 	{
-		if (alpha > 0) 
+		if (mAlpha > 0) 
 		{
-			if (fade_timer.get_ticks() > 10) 
+			if (mFadeTimer.GetTicks() > 10) 
 			{
-				alpha-=5;
-				fade_timer.start(); 
+				mAlpha-=5;
+				mFadeTimer.Start(); 
 			} 
 		}
 		if (banner_middle_pos.y > 50)
@@ -90,25 +90,25 @@ void CPollState::Update(const int& iElapsedTime)
 			banner_right_pos.x-=banner_speed/4;
 		}
 		else
-			if (alpha <= 2 )
-				entering = false;
+			if (mAlpha <= 2 )
+				mEnter = false;
 			
 	}
-	else if (exiting)
+	else if (mExit)
 	{		
-		if (alpha < 255) 
+		if (mAlpha < 255) 
 		{
-			if (fade_timer.get_ticks() > 10) 
+			if (mFadeTimer.GetTicks() > 10) 
 			{
-				alpha+=5;
-				fade_timer.start(); 
+				mAlpha+=5;
+				mFadeTimer.Start(); 
 			} 
 		}
 		else
 			PopState();
 	}
 
-	CPlayState::Instance()->ui->Update(iElapsedTime);
+	CPlayState::Instance()->mpInterface->Update(rDeltaTime);
 
 	/*
 	todo: ELSE {}
@@ -120,19 +120,19 @@ void CPollState::Update(const int& iElapsedTime)
 	*/
 }
 
-void CPollState::Draw(SDL_Surface* dest) 
+void CPollState::Draw(SDL_Surface* pDest) 
 {
-	Shared::apply_surface(0,0,bg,dest);
+	Shared::DrawSurface(0, 0, mpBackground, pDest);
 
-	Shared::apply_surface(banner_left_pos.x, banner_left_pos.y, banner_side, dest);
-	Shared::apply_surface(banner_right_pos.x, banner_right_pos.y, banner_side, dest);
-	Shared::apply_surface(banner_middle_pos.x, banner_middle_pos.y, banner_middle, dest);
+	Shared::DrawSurface(banner_left_pos.x, banner_left_pos.y, banner_side, pDest);
+	Shared::DrawSurface(banner_right_pos.x, banner_right_pos.y, banner_side, pDest);
+	Shared::DrawSurface(banner_middle_pos.x, banner_middle_pos.y, banner_middle, pDest);
 
 	//todo: draw nsprite
 
 	//fadeout area based on sub state
-	SPG_RectFilledBlend(dest,_G_BANNER_WIDTH,0,_G_BOUNDS_WIDTH,_WSCREEN_HEIGHT, 16777215, alpha);
+	SPG_RectFilledBlend(pDest, GAME_BANNER_WIDTH, 0, GAME_BOUNDS_WIDTH, WINDOW_HEIGHT, 16777215, mAlpha);
 
-	CPlayState::Instance()->ui->Draw(dest);
+	CPlayState::Instance()->mpInterface->Draw(pDest);
 	//todo: draw game/ui
 }

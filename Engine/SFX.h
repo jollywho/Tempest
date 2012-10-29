@@ -6,17 +6,20 @@
 #include <string>
 #include "SDL_mixer.h"
 
+/*
+Static sound interface class.
+*/
 class SFX
 {
 private:
-	static std::map<std::string, Mix_Music*> music_files;
-	static std::map<std::string, std::pair<int, Mix_Chunk*>> sound_files;
-	static int bgm_volume;
-	static int fx_volume;
-	static int fx_count;
+	static std::map<std::string, Mix_Music*> msMusicFiles;
+	static std::map<std::string, std::pair<int, Mix_Chunk*>> msSoundFiles;
+	static int msBgmVolume;
+	static int msSfxVolume;
+	static int msSoundCount;
 public:
-	static int SetBGM(int vol);
-	static int SetFX(int vol);
+	static int BgmVolume(int vol);
+	static int SfxVolume(int vol);
 
 	static void AddMusicResource(std::string filename);
 	static void AddSoundResource(std::string filename);
@@ -28,7 +31,7 @@ public:
 
 	static void PauseSoundResource(std::string filename);
 
-	static void Init_SFX();
+	static void Init();
 	static void ClearAllResources();
 };
 

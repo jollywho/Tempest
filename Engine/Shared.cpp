@@ -3,15 +3,7 @@
 #include <cmath>
 #include <iostream>
 
-void Shared::apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip )
-{
-    SDL_Rect offset;
-    offset.x = x;
-    offset.y = y;
-    SDL_BlitSurface( source, clip, destination, &offset );
-}
-
-SDL_Surface* Shared::load_image( std::string filename, bool key)
+SDL_Surface* Shared::LoadImage( std::string filename, bool key)
 {
     //Temporary storage for the image that's loaded
     SDL_Surface* loadedImage = NULL;
@@ -41,9 +33,29 @@ SDL_Surface* Shared::load_image( std::string filename, bool key)
     return optimizedImage;
 }
 
-void Shared::setFrames(SDL_Rect* clips, int clipcount, int width, int height, int y)
+void Shared::DrawSurface( int x, int y, SDL_Surface* pSource, SDL_Surface* destination, SDL_Rect* pClips )
 {
-	for (int i=0; i<= clipcount - 1; i++)
+    SDL_Rect offset;
+    offset.x = x;
+    offset.y = y;
+    SDL_BlitSurface( pSource, pClips, destination, &offset );
+}
+
+void Shared::CheckClip(Timer &rTimer, int &rClip, int interval, int maxClip, int reset)
+{
+	if (rTimer.GetTicks() > interval)
+    { 
+        if (rClip < maxClip - 1)
+            rClip++;
+        else
+            rClip = reset;
+        rTimer.Start();
+	}
+}
+
+void Shared::SetFrames(SDL_Rect* clips, int maxClips, int width, int height, int y)
+{
+	for (int i=0; i<= maxClips - 1; i++)
 	{
         clips[i].x = i * width;
         clips[i].y = y;
@@ -52,9 +64,9 @@ void Shared::setFrames(SDL_Rect* clips, int clipcount, int width, int height, in
 	}
 }
 
-void Shared::setVertFrames(SDL_Rect* clips, int clipcount, int width, int height)
+void Shared::SetVertFrames(SDL_Rect* clips, int maxClips, int width, int height)
 {
-	for (int i=0; i<= clipcount - 1; i++)
+	for (int i=0; i<= maxClips - 1; i++)
 	{
         clips[i].x = 0;
         clips[i].y = i * height;
@@ -63,19 +75,7 @@ void Shared::setVertFrames(SDL_Rect* clips, int clipcount, int width, int height
 	}
 }
 
-void Shared::CheckClip(Timer &timer, int &clip, int interval, int max_clip, int reset)
-{
-	if (timer.get_ticks() > interval)
-    { 
-        if (clip < max_clip - 1)
-            clip++;
-        else
-            clip = reset;
-        timer.start();
-	}
-}
-
-SDL_Surface* Shared::Crop_surface(SDL_Surface* src, int x, int y, int width, int height)
+SDL_Surface* Shared::CropSurface(SDL_Surface* src, int x, int y, int width, int height)
 {
     SDL_Surface* temp = SPG_CreateSurface(0, width, height);
     SDL_Rect rect = {x, y, width, height};
@@ -87,33 +87,33 @@ SDL_Surface* Shared::Crop_surface(SDL_Surface* src, int x, int y, int width, int
 	return dest;
 }
 
-void Shared::setRotationFrames(SDL_Rect* clips, SDL_Surface* src, int clipcount, int width, int height,
-	SDL_Surface ***dest, int startAngle, int endAngle, int destWidth, int destHeight, 
+void Shared::SetRotationFrames(SDL_Rect* clips, SDL_Surface* pSrc, int maxClips, int width, int height,
+	SDL_Surface*** pDest, int startAngle, int endAngle, int destWidth, int destHeight, 
 	int pivotX, int pivotY, int rotInterval)
 {
 	int angle = endAngle-startAngle;
-	for (int i=0; i<clipcount; i++)
+	for (int i=0; i<maxClips; i++)
 	{
-		dest[i] = new SDL_Surface*[angle];
+		pDest[i] = new SDL_Surface*[angle];
 		for (int k=startAngle; k<endAngle; k+=rotInterval)
 		{
 			SDL_Surface* tempSrc = SPG_CreateSurface(0, width, height);
 			SDL_Surface* tempDest = SPG_CreateSurface(0, width*2, height*2);
 			SPG_PushBlend(SPG_SRC_ALPHA);
-			SPG_Blit(src, &clips[i], tempSrc, NULL);
+			SPG_Blit(pSrc, &clips[i], tempSrc, NULL);
 			SPG_TransformX(tempSrc, tempDest, -k, 1, 1, pivotX, pivotY, destWidth, destHeight, SPG_TAA | SPG_TSAFE);
 			SPG_PopBlend();
-			dest[i][k] = SDL_DisplayFormatAlpha(tempDest);
+			pDest[i][k] = SDL_DisplayFormatAlpha(tempDest);
 			SDL_FreeSurface(tempSrc);
 			SDL_FreeSurface(tempDest);
 		}
 	}
 }
 
-void Shared::deleteRotationFrames(SDL_Surface*** surface, int clipcount, int startAngle, int endAngle, int rotInterval)
+void Shared::DeleteRotationFrames(SDL_Surface*** surface, int maxClips, int startAngle, int endAngle, int rotInterval)
 {
-	int angle = endAngle-startAngle;
-	for (int i=0; i<clipcount; i++)
+	int mAngle = endAngle-startAngle;
+	for (int i=0; i<maxClips; i++)
 	{
 		for (int k=startAngle; k<endAngle; k+=rotInterval)
 		{
@@ -122,15 +122,15 @@ void Shared::deleteRotationFrames(SDL_Surface*** surface, int clipcount, int sta
 	}
 }
 
-double Shared::distance( int x1, int y1, int x2, int y2 )
-{	//Return the distance between the two points
-    return sqrt( pow( (double)x2 - x1, (int)2 ) + pow( (double)y2 - y1, (int)2 ) );
-}
-
-int Shared::mod (int a, int b)
+int Shared::Mod(int a, int b)
 {
    int ret = a % b;
    if(ret < 0)
      ret+=b;
    return ret;
+}
+
+double Shared::Distance( int x1, int y1, int x2, int y2 )
+{	//Return the distance between the two points
+    return sqrt( pow( (double)x2 - x1, (int)2 ) + pow( (double)y2 - y1, (int)2 ) );
 }

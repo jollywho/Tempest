@@ -17,38 +17,37 @@ public:
 
 	void Pause(){}
 	void Resume(){}
-	void Return(){}
+	void Back(){}
 
-	void CheckKeys(const KeyStruct& keys);
-	void Update(const int& iElapsedTime);
-	void Draw(SDL_Surface* dest);
+	void KeyInput(const KeyStruct& rKeys);
+	void Update(const int& rDeltaTime);
+	void Draw(SDL_Surface* pDest);
 
 	static COptionState* Instance() {
-		return &m_OptionState;
+		return &mOptionState;
 	}
 protected:
 	COptionState() { }
 
 private:
-	static COptionState m_OptionState;
+	static COptionState mOptionState;
 	static const int FRAME_WIDTH = 256;
 	static const int FRAME_HEIGHT = 20;
 	static const int SELECTOR_WIDTH = 18;
 	static const int SELECTOR_HEIGHT = 32;
 
-	Menu* main_menu;
-	NFont* font;
-	NFont* score_font;
-	SDL_Surface* font_surface;
-	SDL_Surface* score_font_surface;
-	SDL_Surface* selector_surface;
-	SDL_Surface* frame_surface;
+	NFont* mpFont;
+	Menu* mpMenu;
+	
+	SDL_Surface* mpFontSurface;
+	SDL_Surface* mpSelector;
+	SDL_Surface* mpFrame;
 
-	int align_x;
-	Point fx_frame;
-	Point fx_selector;
-	Point bgm_frame;
-	Point bgm_selector;
+	int mAlignX;
+	Point mSfxFrame;
+	Point mSfxSelector;
+	Point mBgmFrame;
+	Point mBgmSelector;
 };
 
 #endif

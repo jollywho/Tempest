@@ -3,29 +3,28 @@
 #include "Engine/SFX.h"
 #include <windows.h> // For the WaitMessage() function.
 #include "State/Gamestate.h"
-#include "State/intostate.h"
+#include "State/Intostate.h"
 #include "State/Playstate.h"
 #include "State/Pollstate.h"
 #include "State/Scorestate.h"
 #include "State/Pausestate.h"
 #include "STate/Optionstate.h"
  
-KeyStruct default_keys = { false, false, false, false, false, false, false, false };
+const KeyStruct DEFAULT_KEYS = { false, false, false, false, false, false, false, false };
 
 /** Default constructor. **/
 CEngine::CEngine()
 {
-	m_iWidth		= 800;
-	m_iHeight		= 600;
-	m_czTitle		= 0;
+	mWidth		= WINDOW_WIDTH;
+	mHeight		= WINDOW_HEIGHT;
+	mpTitle		= 0;
  
-	m_pScreen		= 0;
+	mpScreen		= 0;
 
- 
-	m_bMinimized		= false;
+	mMinimized		= false;
 
-	keys = default_keys;
-	menustate = NULL;
+	mKeys = DEFAULT_KEYS;
+	mpMenuState = NULL;
 }
  
 /** Destructor. **/
@@ -38,68 +37,68 @@ CEngine::~CEngine()
 	@param iWidth The width of the window
 	@param iHeight The height of the window
 **/
-void CEngine::SetSize(const int& iWidth, const int& iHeight)
+void CEngine::SetSize(const int& rWidth, const int& rHeight)
 {
 	SDL_WM_SetIcon(IMG_Load("icon.png"), NULL);
 
-	m_iWidth  = iWidth;
-	m_iHeight = iHeight;
-	m_pScreen = SDL_SetVideoMode( iWidth, iHeight, 0, SDL_SWSURFACE| SDL_DOUBLEBUF );
+	mWidth  = rWidth;
+	mHeight = rHeight;
+	mpScreen = SDL_SetVideoMode( rWidth, rHeight, 0, SDL_SWSURFACE| SDL_DOUBLEBUF );
 }
  
-/** Initialize SDL, the window and the additional data. **/
+/** initialize SDL, the window and the additional data. **/
 void CEngine::Init()
 {
 	// Register SDL_Quit to be called at exit; makes sure things are cleaned up when we quit.
 	atexit( SDL_Quit );
  
-	// Initialize SDL's subsystems - in this case, only video.
+	// initialize SDL's subsystems - in this case, only video.
 	if ( SDL_Init( SDL_INIT_VIDEO ) < 0 ) 
 	{
-		fprintf( stderr, "Unable to init SDL: %s\n", SDL_GetError() );
+		fprintf( stderr, "Unable to initialize SDL: %s\n", SDL_GetError() );
 		exit( 1 );
 	}
  
 	// Attempt to create a window with the specified height and width.
-	SetSize( m_iWidth, m_iHeight );
+	SetSize( mWidth, mHeight );
  
 	// If we fail, return error.
-	if ( m_pScreen == NULL ) 
+	if ( mpScreen == NULL ) 
 	{
 		fprintf( stderr, "Unable to set up video: %s\n", SDL_GetError() );
 		exit( 1 );
 	}
 	if (TTF_Init() < 0)
 	{
-		fprintf( stderr, "Unable to init TTF: %s\n", SDL_GetError() );
+		fprintf( stderr, "Unable to initialize TTF: %s\n", SDL_GetError() );
 		exit( 1 );
 	}
-	SFX::Init_SFX();
+	SFX::Init();
  
 	AdditionalInit();
 }
 
-CGameState* CEngine::GetStateInstance(State id)
+CGameState* CEngine::StateInstance(State id)
 {
 	printf("--STATE CHANGE--\n");
 	switch(id)
 	{
-		case S_INTRO:
+		case State::Intro:
 			return CIntroState::Instance();
 			break;
-		case S_PLAY:
+		case State::Play:
 			return CPlayState::Instance();
 			break;
-		case S_POLL:
+		case State::Poll:
 			return CPollState::Instance();
 			break;
-		case S_SCORE:
+		case State::Score:
 			return CScoreState::Instance();
 			break;
-		case S_PAUSE:
+		case State::Pause:
 			return CPauseState::Instance();
 			break;
-		case S_OPTION:
+		case State::Option:
 			return COptionState::Instance();
 			break;
 		default:
@@ -108,113 +107,113 @@ CGameState* CEngine::GetStateInstance(State id)
 	}
 }
 
-void CEngine::ChangeState(State id) 
+void CEngine::DoStateChange(States::State id) 
 {
 	// cleanup all states
-	for (auto it = states.begin(); it != states.end();) {
+	for (auto it = mpStates.begin(); it != mpStates.end();) {
 
 		(*it)->Cleanup();
-		it = states.erase(it);
+		it = mpStates.erase(it);
 	}
 
-	// store and init the new state
-	states.push_back(GetStateInstance(id));
-	states.back()->Init();
+	// store and initialize the new state
+	mpStates.push_back(StateInstance(id));
+	mpStates.back()->Init();
 }
 
-void CEngine::PushState(State id)
+void CEngine::DoStatePush(States::State id)
 {
-	// store and init the new state
-	states.push_back(GetStateInstance(id));
-    states.back()->Init();
+	// store and initialize the new state
+	mpStates.push_back(StateInstance(id));
+    mpStates.back()->Init();
 }
 
-void CEngine::PopState()
+void CEngine::DoStatePop()
 {
     // cleanup the current state
-    if ( !states.empty() ) {
-        states.back()->Cleanup();
-        states.pop_back();
+    if ( !mpStates.empty() ) {
+        mpStates.back()->Cleanup();
+        mpStates.pop_back();
     }
 
     // resume previous state
-    if ( !states.empty() ) {
-        states.back()->Resume();
+    if ( !mpStates.empty() ) {
+        mpStates.back()->Resume();
     }
 }
 
-void CEngine::PushMenu(State id)
+void CEngine::DoMenuPush(State id)
 {
 	//create top level menu state
-	menustate = GetStateInstance(id);
-	menustate->Init();
+	mpMenuState = StateInstance(id);
+	mpMenuState->Init();
 }
 
-void CEngine::PopMenu()
+void CEngine::DoMenuPop()
 {
-	 menustate->Cleanup(); 
-	 menustate = NULL; 
-	 states.back()->Return();
+	 mpMenuState->Cleanup(); 
+	 mpMenuState = NULL; 
+	 mpStates.back()->Back();
 }
 
-void CEngine::DoRequests()
+void CEngine::DoRequest()
 {
-	if (states.back()->StateRequired())
-		ChangeState(states.back()->GetState());
+	if (mpStates.back()->IsStateChange())
+		DoStateChange(mpStates.back()->RequestedState());
 
-	if (states.back()->PushRequired())
+	if (mpStates.back()->IsStatePush())
 	{
-		PushState(states.back()->GetState());
+		DoStatePush(mpStates.back()->RequestedState());
 	}
-	if (states.back()->PopRequired())
+	if (mpStates.back()->IsStatePop())
 	{
-		PopState();
+		DoStatePop();
 	}
-	if (states.back()->MenuPush())
+	if (mpStates.back()->IsMenuPush())
 	{
-		PushMenu(states.back()->GetState());
+		DoMenuPush(mpStates.back()->RequestedState());
 	}
 
-	if (menustate != NULL) { 
-		if (menustate->MenuPop()) { PopMenu(); } }
+	if (mpMenuState != NULL) { 
+		if (mpMenuState->IsMenuPop()) { DoMenuPop(); } }
 
-	states.back()->ClearRequest();
+	mpStates.back()->ClearRequest();
 }
  
 /** The main loop. **/
 void CEngine::Start()
 {
-	m_bQuit = false;
+	mQuit = false;
  
-	prevTime = 0;
-	prevTime = SDL_GetTicks();
+	mPrevTime = 0;
+	mPrevTime = SDL_GetTicks();
 	
 	// Main loop: loop forever.
-	while ( !m_bQuit )
+	while ( !mQuit )
 	{
 		// Handle mouse and keyboard input
-		HandleInput();
+		DoInput();
 		
-		if ( m_bMinimized ) {
+		if ( mMinimized ) {
 			// Release some system resources if the app. is minimized.
 			WaitMessage(); // pause the application until focus in regained
-		} 
+		}
 		else 
 		{
 			DoThink();
-			DoRequests();
+			DoRequest();
 			DoRender();
 
-			Uint32 currTime = SDL_GetTicks();
-			Uint32 timeElapsed = currTime - prevTime;
-			if(timeElapsed < 15)
+			Uint32 curr_time = SDL_GetTicks();
+			Uint32 elapsed_time = curr_time - mPrevTime;
+			if(elapsed_time < 15)
 			{
 				// Not enough time has elapsed. Let's limit the frame rate
-				SDL_Delay(15 - timeElapsed);
-				currTime = SDL_GetTicks();
-				timeElapsed = currTime - prevTime;
+				SDL_Delay(15 - elapsed_time);
+				curr_time = SDL_GetTicks();
+				elapsed_time = curr_time - mPrevTime;
 			}
-			prevTime = currTime;
+			mPrevTime = curr_time;
 		}
 	}
 	End();
@@ -223,7 +222,7 @@ void CEngine::Start()
 /** Handles all controller inputs.
 	@remark This function is called once per frame.
 **/
-void CEngine::HandleInput()
+void CEngine::DoInput()
 {
 	// Poll for events, and handle the ones we care about.
 	SDL_Event event;
@@ -241,43 +240,16 @@ void CEngine::HandleInput()
 			break;
  
 		case SDL_QUIT:
-			m_bQuit = true;
-			break;
- 
-		case SDL_MOUSEMOTION:
-			MouseMoved(
-				event.button.button, 
-				event.motion.x, 
-				event.motion.y, 
-				event.motion.xrel, 
-				event.motion.yrel);
-			break;
- 
-		case SDL_MOUSEBUTTONUP:
-			MouseButtonUp(
-				event.button.button, 
-				event.motion.x, 
-				event.motion.y, 
-				event.motion.xrel, 
-				event.motion.yrel);
-			break;
- 
-		case SDL_MOUSEBUTTONDOWN:
-			MouseButtonDown(
-				event.button.button, 
-				event.motion.x, 
-				event.motion.y, 
-				event.motion.xrel, 
-				event.motion.yrel);
+			mQuit = true;
 			break;
  
 		case SDL_ACTIVEEVENT:
 			if ( event.active.state & SDL_APPACTIVE ) {
 				if ( event.active.gain ) {
-					m_bMinimized = false;
+					mMinimized = false;
 					WindowActive();
 				} else {
-					m_bMinimized = true;
+					mMinimized = true;
 					WindowInactive();
 				}
 			}
@@ -289,28 +261,28 @@ void CEngine::HandleInput()
 /** Handles the updating routine. **/
 void CEngine::DoThink() 
 {
-	Think( delta.get_ticks() );
-	delta.start();
+	Think( mDelta.GetTicks() );
+	mDelta.Start();
 }
  
 /** Handles the rendering and FPS calculations. **/
 void CEngine::DoRender()
 {
-	//SDL_FillRect( m_pScreen, 0, SDL_MapRGB( m_pScreen->format, 0, 0, 0 ) );
+	//SDL_FillRect( m_screen, 0, SDL_MapRGB( m_screen->format, 0, 0, 0 ) );
 
 	Render( GetSurface() );
  
 	// Tell SDL to update the whole gScreen
-	SDL_Flip( m_pScreen );
+	SDL_Flip( mpScreen );
 }
  
 /** Sets the title of the window 
 	@param czTitle A character array that contains the text that the window title should be set to.
 **/
-void CEngine::SetTitle(const char* czTitle)
+void CEngine::SetTitle(const char* pTitle)
 {
-	m_czTitle = czTitle;
-	SDL_WM_SetCaption( czTitle, 0 );
+	mpTitle = pTitle;
+	SDL_WM_SetCaption( pTitle, 0 );
 }
  
 /** Retrieve the title of the application window.
@@ -319,7 +291,7 @@ void CEngine::SetTitle(const char* czTitle)
 **/
 const char* CEngine::GetTitle()
 {
-	return m_czTitle;
+	return mpTitle;
 }
  
 /** Retrieve the main screen surface.
@@ -328,7 +300,7 @@ const char* CEngine::GetTitle()
 **/
 SDL_Surface* CEngine::GetSurface()
 { 
-	return m_pScreen;
+	return mpScreen;
 }
  
 /** Get the current FPS.

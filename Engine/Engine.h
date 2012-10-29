@@ -6,70 +6,83 @@
 #include <vector>
 
 class CGameState;
-enum State;
+
+namespace States
+{
+	enum State
+	{
+		Intro,
+		Play,
+		Score,
+		Option,
+		Poll,
+		Name,
+		Pause,
+		Gameover,
+	};
+}
+typedef States::State State;
 
 /** The base engine class. **/
-class CEngine  
+class CEngine 
 {
 private:
  
 	/** Window width **/
-	int m_iWidth;
+	int mWidth;
 	/** Window height **/
-	int m_iHeight;
+	int mHeight;
  
 	/** Has quit been called? **/
-	bool m_bQuit;
+	bool mQuit;
  
 	/** The title of the window **/
-	const char* m_czTitle;
+	const char* mpTitle;
  
 	/** Screen surface **/
-	SDL_Surface* m_pScreen;
+	SDL_Surface* mpScreen;
  
 	/** Is the window minimized? **/
-	bool m_bMinimized;
+	bool mMinimized;
 
-	Uint32 prevTime;
-	Timer delta;
+	Uint32 mPrevTime;
+	Timer mDelta;
 
 protected:
+	void DoInput();
 	void DoThink();
 	void DoRender();
-	void DoRequests();
+	void DoRequest();
  
-	void SetSize(const int& iWidth, const int& iHeight);
- 
-	void HandleInput();
-	std::vector<CGameState*> states;
-	CGameState* menustate;
+	void DoStateChange(States::State id);
+	void DoStatePush(States::State id);
+	void DoStatePop();
+	void DoMenuPush(States::State id);
+	void DoMenuPop();
+	
+	void SetSize(const int& rWidth, const int& rHeight);
 
-	/* Tracked keys*/
-	KeyStruct keys;
+	std::vector<CGameState*> mpStates;
+	CGameState* mpMenuState;
+	KeyStruct mKeys;
 public:
 	CEngine();
 	virtual ~CEngine();
  
 	void Init();
 	void Start();
-
-	void ChangeState(State id);
-	void PushState(State id);
-	void PopState();
-	void PushMenu(State id);
-	void PopMenu();
  
 	/** OVERLOADED - Data that should be initialized when the application starts. **/
 	virtual void AdditionalInit	() {}
  
 	/** OVERLOADED - All the games calculation and updating. 
-		@param iElapsedTime The time in milliseconds elapsed since the function was called last.
+		@param deltaTime The time in milliseconds elapsed since the function was called last.
 	**/
-	virtual void Think		( const int& iElapsedTime ) {}
+	virtual void Think		( const int& rDeltaTime ) {}
 	/** OVERLOADED - All the games rendering. 
 		@param pDestSurface The main screen surface.
 	**/
-	virtual void Render		( SDL_Surface* pDestSurface ) {}
+	virtual void Render		( SDL_Surface* pDest ) {}
  
 	/** OVERLOADED - Allocated data that should be cleaned up. **/
 	virtual void End		() {}
@@ -84,61 +97,18 @@ public:
 	/** OVERLOADED - Keyboard key has been released.
 		@param iKeyEnum The key number.
 	**/
-	virtual void KeyUp		(const int& iKeyEnum) {}
+	virtual void KeyUp		(const int& rKeyEnum) {}
  
 	/** OVERLOADED - Keyboard key has been pressed.
 		@param iKeyEnum The key number.
 	**/
-	virtual void KeyDown		(const int& iKeyEnum) {}
+	virtual void KeyDown		(const int& rKeyEnum) {}
  
- 
-	/** OVERLOADED - The mouse has been moved.
-		@param iButton	Specifies if a mouse button is pressed.
-		@param iX	The mouse position on the X-axis in pixels.
-		@param iY	The mouse position on the Y-axis in pixels.
-		@param iRelX	The mouse position on the X-axis relative to the last position, in pixels.
-		@param iRelY	The mouse position on the Y-axis relative to the last position, in pixels.
- 
-		@bug The iButton variable is always NULL.
-	**/
-	virtual void MouseMoved		(const int& iButton,
-					 const int& iX, 
-					 const int& iY, 
-					 const int& iRelX, 
-					 const int& iRelY) {}
- 
-	/** OVERLOADED - A mouse button has been released.
-		@param iButton	Specifies if a mouse button is pressed.
-		@param iX	The mouse position on the X-axis in pixels.
-		@param iY	The mouse position on the Y-axis in pixels.
-		@param iRelX	The mouse position on the X-axis relative to the last position, in pixels.
-		@param iRelY	The mouse position on the Y-axis relative to the last position, in pixels.
-	**/
- 
-	virtual void MouseButtonUp	(const int& iButton, 
-					 const int& iX, 
-					 const int& iY, 
-					 const int& iRelX, 
-					 const int& iRelY) {}
- 
-	/** OVERLOADED - A mouse button has been pressed.
-		@param iButton	Specifies if a mouse button is pressed.
-		@param iX	The mouse position on the X-axis in pixels.
-		@param iY	The mouse position on the Y-axis in pixels.
-		@param iRelX	The mouse position on the X-axis relative to the last position, in pixels.
-		@param iRelY	The mouse position on the Y-axis relative to the last position, in pixels.
-	**/
-	virtual void MouseButtonDown	(const int& iButton, 
-					 const int& iX, 
-					 const int& iY, 
-					 const int& iRelX, 
-					 const int& iRelY) {}
- 
-	void		SetTitle	(const char* czTitle);
+	void		SetTitle	(const char* pTitle);
 	const char* 	GetTitle	();
  
 	SDL_Surface* 	GetSurface	();
-	CGameState*		GetStateInstance(State id);
+	CGameState*		StateInstance(State id);
 	int 		GetFPS		();
 };
  

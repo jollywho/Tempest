@@ -8,53 +8,53 @@
 
 struct SpriteInfo
 {
-	SDL_Surface* surface;
-	SDL_Rect* clips;
+	SDL_Surface* pSurface;
+	SDL_Rect* pClips;
 	int width;
 	int height;
 	int interval;
-	int clip_count;
+	int maxClips;
 
 	~SpriteInfo()
 	{
-		SDL_FreeSurface(surface);
-		delete[] clips;
+		SDL_FreeSurface(pSurface);
+		delete[] pClips;
 	}
 };
 
 struct RotationInfo
 {
-	SDL_Surface*** rot_surface;
-	SDL_Rect* clips;
+	SDL_Surface*** pSurface;
+	SDL_Rect* pClips;
 	int width;
 	int height;
 	int interval;
-	int clip_count;
+	int maxClips;
 	int start;
 	int end;
 	int rotInterval;
 
 	~RotationInfo()
 	{
-		Shared::deleteRotationFrames(rot_surface, clip_count, start, end, rotInterval);
-		delete[] clips;
+		Shared::DeleteRotationFrames(pSurface, maxClips, start, end, rotInterval);
+		delete[] pClips;
 	}
 };
 
 class SpriteResource
 {
 private:
-	static std::map<std::pair<std::string, std::string>, SpriteInfo*> resources;
-	static std::map<std::pair<std::string, std::string>, RotationInfo*> rot_resources;
+	static std::map<std::pair<std::string, std::string>, SpriteInfo*> mResources;
+	static std::map<std::pair<std::string, std::string>, RotationInfo*> mRotResources;
 public:
 	static SpriteInfo& RequestResource(std::string dirname, std::string filename);
 	static RotationInfo& RequestRotationResource(std::string dirname, std::string filename);
 
 	static void AddResource(std::string dirname, std::string filename, 
-		int width, int height, int interval, int clip_count, bool vert=false);
+		int width, int height, int interval, int maxClips, bool vert=false);
 
 	static void AddRotationResource(std::string dirname, std::string filename,
-		int width, int height, int interval, int clip_count,
+		int width, int height, int interval, int maxClips,
 		int start, int end, int destWidth, int destHeight, 
 		int pivotX, int pivotY, int rotInterval=10);
 

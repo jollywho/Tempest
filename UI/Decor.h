@@ -9,15 +9,15 @@ struct SpriteInfo;
 class Decor
 {
 private:
-	SpriteInfo* info;
-	float xVal; float yVal;
-	int clip;
-	Timer clipTimer;
+	SpriteInfo* mpInfo;
+	float mX; float mY;
+	int mClip;
+	Timer mClipTimer;
 	bool show;
 public:
 	Decor(std::string filename);
 	void Update(int deltaTicks);
-    void Draw(SDL_Surface *dest);
+    void Draw(SDL_Surface *pDest);
 };
 
 

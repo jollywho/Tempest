@@ -6,13 +6,13 @@
 class Quartz : public Item
 {
 private:
-	Timer accel_Timer;
-	bool lockedOn;
+	Timer mAccelTimer;
+	bool mLockedOn;
 public:
 	Quartz(int x, int y, int value);
     ~Quartz();
     void Update(Uint32 deltaTicks);
-    void Draw(SDL_Surface *dest);
+    void Draw(SDL_Surface *pDest);
 };
 
 

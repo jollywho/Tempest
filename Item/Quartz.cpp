@@ -9,10 +9,10 @@
 
 Quartz::Quartz(int x, int y, int value) : Item(x, y, 1000, "Quartz.png")
 {
-	Air = false;
-    m_delete = false;
-	lockedOn = false;
-	clip = 0;
+	mAir = false;
+    mDelete = false;
+	mLockedOn = false;
+	mClip = 0;
 }
 
 Quartz::~Quartz() 
@@ -20,48 +20,48 @@ Quartz::~Quartz()
 	if (pickedup)
 	{
 		GameScore::Instance()->IncreaseQuartzCount();
-		CPlayState::Instance()->score_list.push_back(new ScoreMSG(xVal, yVal - Camera::CameraY2(), spawnside, GameScore::Instance()->GetBonus() * val));
+		CPlayState::Instance()->score_list.push_back(new ScoreMSG(mX, mY - Camera::CameraY2(), mSpawnSide, GameScore::Instance()->GetBonus() * val));
 	}
 }
 
 void Quartz::Update(Uint32 deltaTicks)
 {
-	if (pickedup) m_delete = true;
-	Shared::CheckClip(clip_Timer, clip, 50, _info->clip_count, 0);
-	SDL_Rect playerbox = CPlayState::Instance()->player->GetOuterBounds();
-    float dx = (playerbox.x + playerbox.w/2) - (offset.x - Camera::CameraX()  + offset.w/2);
-    float dy = (playerbox.y + playerbox.h/2) - (offset.y - Camera::CameraY2() + offset.h/2);
+	if (pickedup) mDelete = true;
+	Shared::CheckClip(mClipTimer, mClip, 50, mpInfo->maxClips, 0);
+	SDL_Rect playerbox = CPlayState::Instance()->mpPlayer->GetOuterBounds();
+    float dx = (playerbox.x + playerbox.w/2) - (mOffset.x - Camera::CameraX()  + mOffset.w/2);
+    float dy = (playerbox.y + playerbox.h/2) - (mOffset.y - Camera::CameraY2() + mOffset.h/2);
 	double Length = sqrt(pow(dx, 2) + pow(dy, 2));
 
-	if (Length > 0.1f && Length < 100 && duration_Timer.get_ticks() > 600 && !lockedOn)
+	if (Length > 0.1f && Length < 100 && mDurationTimer.GetTicks() > 600 && !mLockedOn)
 	{
-		lockedOn = true;
-		accel_Timer.start();
+		mLockedOn = true;
+		mAccelTimer.Start();
 	}
 
-	if (lockedOn)
+	if (mLockedOn)
 	{
 		float xa = dx / Length;
 		float ya = dy / Length;
-		yVel+=accel_Timer.get_ticks()/50;
-		xVal += (xa * (yVel * (deltaTicks / 1000.f)));
-		yVal += (ya * (yVel * (deltaTicks / 1000.f)));
-		Check_Collision();
+		yvel+=mAccelTimer.GetTicks()/50;
+		mX += (xa * (yvel * (deltaTicks / 1000.f)));
+		mY += (ya * (yvel * (deltaTicks / 1000.f)));
+		CheckCollision();
 	}
 	else
 	{
-		yVal += (yVel * (deltaTicks / 1000.f));
+		mY += (yvel * (deltaTicks / 1000.f));
 	}
-	offset.x = xVal;
-    offset.y = yVal;
+	mOffset.x = mX;
+    mOffset.y = mY;
 
     
-	if (CheckOffscreen(xVal, yVal - Camera::CameraY2(), _info->height))
-		m_delete = true;
+	if (CheckOffscreen(mX, mY - Camera::CameraY2(), mpInfo->height))
+		mDelete = true;
 }
 
-void Quartz::Draw(SDL_Surface *dest)
+void Quartz::Draw(SDL_Surface *pDest)
 {
-    Camera::DrawSurface(offset.x, offset.y,
-        _info->surface, dest, &_info->clips[clip]);
+    Camera::DrawSurface(mOffset.x, mOffset.y,
+        mpInfo->pSurface, pDest, &mpInfo->pClips[mClip]);
 }

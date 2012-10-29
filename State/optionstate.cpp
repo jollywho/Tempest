@@ -6,88 +6,84 @@
 #include "Game/GameScore.h"
 #include "Engine/SFX.h"
 
-COptionState COptionState::m_OptionState;
+COptionState COptionState::mOptionState;
 
 void COptionState::Init()
 {
-	printf("COptionState Init\n");
+	printf("COptionState initialize\n");
 	ClearRequest();
 	SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
-	selector_surface = Shared::load_image("Image/UI/SoundSelector.png");
-	frame_surface = Shared::load_image("Image/UI/SoundFrame.png");
+	mpSelector = Shared::LoadImage("Image/UI/SoundSelector.png");
+	mpFrame = Shared::LoadImage("Image/UI/SoundFrame.png");
 
+	mpFontSurface = Shared::LoadImage("Font/GoldMistral.png");
+	mpFont = new NFont(SDL_GetVideoSurface(), mpFontSurface);
 
-	font_surface = Shared::load_image("Font/GoldMistral.png");
-	score_font_surface = Shared::load_image("Font/BlueHigh.png");
-	font = new NFont(SDL_GetVideoSurface(), font_surface);
-	score_font = new NFont(SDL_GetVideoSurface(), score_font_surface);
+	int h = mpFont->getHeight("BGM");
+	int w = mpFont->getWidth("BGM");
+	int menuheight = WINDOW_HEIGHT/2 - (h * 6)/2 - 84; //offset by top and bottom banners
+	mAlignX = WINDOW_WIDTH/2 - w*2.5;
 
-	int h = font->getHeight("BGM");
-	int w = font->getWidth("BGM");
-	int menuheight = _WSCREEN_HEIGHT/2 - (h * 6)/2 - 84; //offset by top and bottom banners
-	align_x = _WSCREEN_WIDTH/2 - w*2.5;
+	/* Frames */
+	mBgmFrame.x = mAlignX + w*2;
+	mBgmFrame.y = 140 - ( FRAME_HEIGHT/2);
+	mSfxFrame.x = mAlignX + w*2;
+	mSfxFrame.y = 200 - ( FRAME_HEIGHT/2);
 
-	bgm_frame.x = align_x + w*2;
-	bgm_frame.y = 140 - ( FRAME_HEIGHT/2);
-	fx_frame.x = align_x + w*2;
-	fx_frame.y = 200 - ( FRAME_HEIGHT/2);
+	mBgmSelector.y = mBgmFrame.y + (FRAME_HEIGHT/2 - SELECTOR_HEIGHT/2);
+	mSfxSelector.y = mSfxFrame.y + (FRAME_HEIGHT/2 - SELECTOR_HEIGHT/2);
 
-	bgm_selector.y = bgm_frame.y + (FRAME_HEIGHT/2 - SELECTOR_HEIGHT/2);
-	fx_selector.y = fx_frame.y + (FRAME_HEIGHT/2 - SELECTOR_HEIGHT/2);
+	mBgmSelector.x = mBgmFrame.x + (((double)SFX::BgmVolume(0)/MIX_MAX_VOLUME)*235);
+	mSfxSelector.x = mSfxFrame.x + (((double)SFX::SfxVolume(0)/MIX_MAX_VOLUME)*235);
 
-	bgm_selector.x = bgm_frame.x + (((double)SFX::SetBGM(0)/MIX_MAX_VOLUME)*235);
-	fx_selector.x = fx_frame.x + (((double)SFX::SetFX(0)/MIX_MAX_VOLUME)*235);
-
-	main_menu = new Menu();
-	main_menu->AddItem(align_x, 140, "BGM");
-	main_menu->AddItem(align_x, 200, "SFX");
-	main_menu->AddItem(align_x, 260, "Mode");
-	main_menu->AddItem(align_x, 320, "Key Config");
-	main_menu->AddItem(align_x, 380, "Defaults");
-	main_menu->AddItem(align_x, 440, "Return");
+	mpMenu = new Menu();
+	mpMenu->AddItem(mAlignX, 140, "BGM");
+	mpMenu->AddItem(mAlignX, 200, "SFX");
+	mpMenu->AddItem(mAlignX, 260, "Mode");
+	mpMenu->AddItem(mAlignX, 320, "Key Config");
+	mpMenu->AddItem(mAlignX, 380, "Defaults");
+	mpMenu->AddItem(mAlignX, 440, "Return");
 }
 
 void COptionState::Cleanup()
 {
 	printf("COptionState Cleanup\n");
 	SDL_EnableKeyRepeat(0, 0);
-	SDL_FreeSurface(font_surface);
-	SDL_FreeSurface(score_font_surface);
-	SDL_FreeSurface(selector_surface);
-	SDL_FreeSurface(frame_surface);
-	delete font;
-	delete score_font;
+	SDL_FreeSurface(mpFontSurface);
+	SDL_FreeSurface(mpSelector);
+	SDL_FreeSurface(mpFrame);
+	delete mpFont;
 }
 
-void COptionState::CheckKeys(const KeyStruct& keys)
+void COptionState::KeyInput(const KeyStruct& rKeys)
 {
-	if (keys.esc) PopMenu();
-	if (keys.z)
+	if (rKeys.esc) PopMenu();
+	if (rKeys.z)
 	{
-		main_menu->Select();
-		if (main_menu->GetIndex() == 1) {  }
-		if (main_menu->GetIndex() == 2) {  }
-		if (main_menu->GetIndex() == 3) {  }
-		if (main_menu->GetIndex() == 4) {  }
-		if (main_menu->GetIndex() == 5) {  }
-		if (main_menu->GetIndex() == 6) {  }
+		mpMenu->Select();
+		if (mpMenu->GetIndex() == 1) {  }
+		if (mpMenu->GetIndex() == 2) {  }
+		if (mpMenu->GetIndex() == 3) {  }
+		if (mpMenu->GetIndex() == 4) {  }
+		if (mpMenu->GetIndex() == 5) {  }
+		if (mpMenu->GetIndex() == 6) {  }
 	}
-	if (keys.down) main_menu->SetIndex(1);
-	else if (keys.up) main_menu->SetIndex(-1);
+	if (rKeys.down) mpMenu->MoveIndex(1);
+	else if (rKeys.up) mpMenu->MoveIndex(-1);
 }
 
-void COptionState::Update(const int& iElapsedTime) 
+void COptionState::Update(const int& rDeltaTime) 
 {
-	main_menu->Update(iElapsedTime, 255);
+	mpMenu->Update(rDeltaTime, 255);
 }
 
-void COptionState::Draw(SDL_Surface* dest) 
+void COptionState::Draw(SDL_Surface* pDest) 
 {
-	main_menu->Draw(dest);
+	mpMenu->Draw(pDest);
 
-	Shared::apply_surface(bgm_frame.x,bgm_frame.y,frame_surface,dest);
-	Shared::apply_surface(bgm_selector.x,bgm_selector.y,selector_surface,dest);
+	Shared::DrawSurface(mBgmFrame.x,mBgmFrame.y,mpFrame,pDest);
+	Shared::DrawSurface(mBgmSelector.x,mBgmSelector.y,mpSelector,pDest);
 
-	Shared::apply_surface(fx_frame.x,fx_frame.y,frame_surface,dest);
-	Shared::apply_surface(fx_selector.x,fx_selector.y,selector_surface,dest);
+	Shared::DrawSurface(mSfxFrame.x,mSfxFrame.y,mpFrame,pDest);
+	Shared::DrawSurface(mSfxSelector.x,mSfxSelector.y,mpSelector,pDest);
 }

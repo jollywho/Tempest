@@ -9,10 +9,10 @@
 
 Chest::Chest(int x, int y, int value) : Item(x, y, value, "Chest.png")
 {
-	Air = false;
-    m_delete = false;
+	mAir = false;
+    mDelete = false;
 	opened = false;
-	clip = 0;
+	mClip = 0;
 	spawnCount = 0;
 }
 
@@ -22,31 +22,31 @@ Chest::~Chest()
 
 void Chest::Update(Uint32 deltaTicks)
 {
-	Check_Collision();
+	CheckCollision();
 	if (pickedup)
 	{
-		Shared::CheckClip(clip_Timer, clip, 50, _info->clip_count, _info->clip_count-1);
+		Shared::CheckClip(mClipTimer, mClip, 50, mpInfo->maxClips, mpInfo->maxClips-1);
 
-		if (clip == _info->clip_count-1 && !opened) 
+		if (mClip == mpInfo->maxClips-1 && !opened) 
 		{ 
 			opened = true;
-			spawn_Timer.start();
+			spawn_Timer.Start();
 		}
 
-		if (spawnCount < 10 && spawn_Timer.get_ticks() > 100)
+		if (spawnCount < 10 && spawn_Timer.GetTicks() > 100)
 		{
-			spawn_Timer.start();
-			CPlayState::Instance()->item_list.push_back(new Gem(xVal + _info->width/2, yVal, 825));
+			spawn_Timer.Start();
+			CPlayState::Instance()->item_list.push_back(new Gem(mX + mpInfo->width/2, mY, 825));
 			spawnCount++;
 		}
 	}
     
-	//if (CheckOffscreen(xVal, yVal + Camera::CameraY2, _info->height))
-	//	m_delete = true;
+	//if (CheckOffscreen(mX, mY + Camera::CameraY2, mpInfo->height))
+	//	mDelete = true;
 }
 
-void Chest::Draw(SDL_Surface *dest)
+void Chest::Draw(SDL_Surface *pDest)
 {
-    Camera::DrawSurface(offset.x, offset.y,
-        _info->surface, dest, &_info->clips[clip]);
+    Camera::DrawSurface(mOffset.x, mOffset.y,
+        mpInfo->pSurface, pDest, &mpInfo->pClips[mClip]);
 }

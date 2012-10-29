@@ -6,43 +6,43 @@
 
 Zown::Zown(int x, int y) : Enemy(x, y, 50, "zown.png")
 {
-	air = false;
-	bullet_wipe = true;
+	mAir = false;
+	mCausesWipe = true;
 
     rot = 0; attackCount = 0;
-	attack_Timer.start();
+	attack_Timer.Start();
 }
 
 Zown::~Zown()
 {
-    if (hit)
-        SDL_FreeSurface(copy_surface);
+    if (mHit)
+        SDL_FreeSurface(mpCopySurface);
 
 }
 
 void Zown::TakeHit(int dmg)
 {
-    health -= dmg;
-    FlashRed(info->surface, &info->clips[clip]);
+    mHealth -= dmg;
+    FlashRed(mpInfo->pSurface, &mpInfo->pClips[mClip]);
 }
 
 void Zown::Init()
 {
-	printf("Zown Init\n");
+	printf("Zown initialize\n");
 	SpriteResource::AddResource("Enemies", "zown.png", 64, 64, 60, 3);
 	//todo: relink
 	//Explosion::AddExplosionInfo("Zown", "Exp_ThinImplode.png", 5, 0);
 }
 
-void Zown::CleanUp()
+void Zown::Cleanup()
 {
 
 }
 
 void Zown::Attack()
 {
-	CPlayState::Instance()->en_bulletlist.push_back(new ERotBullet(xVal + info->width/2, yVal + info->height, 0, "Arrow.png"));
-	attack_Timer.start();
+	CPlayState::Instance()->en_bulletlist.push_back(new ERotBullet(mX + mpInfo->width/2, mY + mpInfo->height, 0, "Arrow.png"));
+	attack_Timer.Start();
 	/*
 	attackCount++;
 	
@@ -56,15 +56,15 @@ void Zown::Attack()
     {
         double x = cos(i);
         double y = sin(i);
-        CPlayState::Instance()->en_bulletlist.push_back(new VectorBullet(atkgateLEFT_offset.x + GATE_WIDTH/2,
-			atkgateLEFT_offset.y + GATE_WIDTH/2,
+        CPlayState::Instance()->en_bulletlist.push_back(new VectorBullet(atkgatset.x + GATE_WIDTH/2,
+			atkgateLE.y + GATE_WIDTH/2,
 			x*100, y * 100, "LargeRed.png"));
 
-		CPlayState::Instance()->en_bulletlist.push_back(new VectorBullet(atkgateRIGHT_offset.x + GATE_WIDTH/2,
-			atkgateRIGHT_offset.y + GATE_WIDTH/2,
+		CPlayState::Instance()->en_bulletlist.push_back(new VectorBullet(atkgateRIt.x + GATE_WIDTH/2,
+			atkgateRIGHset.y + GATE_WIDTH/2,
 			-x*100, y * 100, "LargeRed.png"));
     }
-    attack_Timer.start();
+    attack_Timer.Start();
 	*/
 }
 
@@ -74,22 +74,22 @@ void Zown::Update(Uint32 deltaTicks)
 	if (CheckHealth()) return;
 	DetectCollision();
 
-    if (attack_Timer.get_ticks() > 480)
+    if (attack_Timer.GetTicks() > 480)
         Attack();
-	Shared::CheckClip(clip_timer, clip, info->interval, info->clip_count, 0);
+	Shared::CheckClip(mClipTimer, mClip, mpInfo->interval, mpInfo->maxClips, 0);
 	
-    hitbox.x = xVal ;
-    hitbox.y = yVal ;
+    mHitbox.x = mX ;
+    mHitbox.y = mY ;
 }
 
-void Zown::Draw(SDL_Surface *dest)
+void Zown::Draw(SDL_Surface *pDest)
 {
-	if (exploding) return;
+	if (mExplode) return;
 
-    if (hit)
-        Camera::DrawSurface(hitbox.x, hitbox.y,
-            copy_surface, dest, &info->clips[clip]);
+    if (mHit)
+        Camera::DrawSurface(mHitbox.x, mHitbox.y,
+            mpCopySurface, pDest, &mpInfo->pClips[mClip]);
     else
-        Camera::DrawSurface(hitbox.x, hitbox.y,
-            info->surface, dest, &info->clips[clip]);
+        Camera::DrawSurface(mHitbox.x, mHitbox.y,
+            mpInfo->pSurface, pDest, &mpInfo->pClips[mClip]);
 }

@@ -2,52 +2,52 @@
 #include "Engine/SpriteResource.h"
 #include "Game/Camera.h"
 
-ERotBullet::ERotBullet(float x, float y, int angl, std::string id) : EnemyBullet()
+ERotBullet::ERotBullet(float x, float y, int angle, std::string id) : EnemyBullet()
 {
-	angle = angl;
-	if (angle < 0)
+	mAngle = angle;
+	if (mAngle < 0)
 	{
-		angle = angle + 360;
+		mAngle = mAngle + 360;
 	}
-	angle = (angle + 10 - 1) / 10 * 10;
-	if (angle > 360)
-		angle = 350;
-    xVel = sin(angle * M_PI/180) * 200; 
-    yVel = cos(angle * M_PI/180) * 200;
+	mAngle = (mAngle + 10 - 1) / 10 * 10;
+	if (mAngle > 360)
+		mAngle = 350;
+    xvel = sin(mAngle * M_PI/180) * 200; 
+    yvel = cos(mAngle * M_PI/180) * 200;
     
-	info = &SpriteResource::RequestRotationResource("Attacks", id);
-    xVal = x - info->width/2;
-    yVal = y - info->height/2;
+	mpRotInfo = &SpriteResource::RequestRotationResource("Attacks", id);
+    mX = x - mpRotInfo->width/2;
+    mY = y - mpRotInfo->height/2;
 }
 
-void ERotBullet::Update( const int& iElapsedTime )
+void ERotBullet::Update( const int& rDeltaTime )
 {
-    if (!exploding)
+    if (!mExplode)
     {
-		Shared::CheckClip(clip_timer, clip, info->interval, info->clip_count,0);
+		Shared::CheckClip(mClipTimer, mClip, mpRotInfo->interval, mpRotInfo->maxClips,0);
         DetectCollision();
     }
     else
     {
-		if (clip == expinfo->clip_count - 1) m_delete = true;
-		Shared::CheckClip(clip_timer, clip, expinfo->interval, expinfo->clip_count,0);
+		if (mClip == mspExpInfo->maxClips - 1) mDelete = true;
+		Shared::CheckClip(mClipTimer, mClip, mspExpInfo->interval, mspExpInfo->maxClips,0);
 	}
-	xVal += (xVel * ( iElapsedTime / 1000.f ));
-	yVal += (yVel * ( iElapsedTime / 1000.f ));
+	mX += (xvel * ( rDeltaTime / 1000.f ));
+	mY += (yvel * ( rDeltaTime / 1000.f ));
 
     CheckBounds();
 }
 
-void ERotBullet::Draw(SDL_Surface *dest)
+void ERotBullet::Draw(SDL_Surface* pDest)
 { 
-    if (!exploding)
+    if (!mExplode)
     {
-        Camera::DrawSurface(xVal - info->width/2, yVal - info->height/2,
-			info->rot_surface[clip][angle], dest, NULL);
+        Camera::DrawSurface(mX - mpRotInfo->width/2, mY - mpRotInfo->height/2,
+			mpRotInfo->pSurface[mClip][mAngle], pDest, NULL);
     }
     else
     {
-        Camera::DrawSurface(xVal + (info->width/4 - expinfo->width/4), yVal + (info->height/4 - expinfo->height/4), 
-			expinfo->surface, dest, &expinfo->clips[clip]);
+        Camera::DrawSurface(mX + (mpRotInfo->width/4 - mspExpInfo->width/4), mY + (mpRotInfo->height/4 - mspExpInfo->height/4), 
+			mspExpInfo->pSurface, pDest, &mspExpInfo->pClips[mClip]);
     }
 }

@@ -8,29 +8,29 @@
 
 class ScoreMSG
 {
-private:
-	static Timer tallyTimer;
-	static int tallyTotal;
-	static int extend;
-    Timer duration_Timer;
-    float xVal; float yVal;
-    float xVel; float yVel;
-	int val;
-	std::ostringstream msg;
-	static SDL_Surface* surfaceFade[4];
-	static NFont fontFade[4];
-	int clip;
-	Timer clip_Timer;
 public:
     static void Init();
-    static void CleanUp();
+    static void Cleanup();
     ScoreMSG(int x, int y, int xDir, int value);
     ~ScoreMSG();    
-    bool RequestDelete() { return m_delete; };
-	bool m_delete;
-
+    bool RequestDelete() { return mDelete; };
+	
     void Update(Uint32 deltaTicks);
-    void Draw(SDL_Surface *dest);
+    void Draw(SDL_Surface *pDest);
+private:
+	static Timer msTallyTimer;
+	static int msTallyTotal;
+	static int msExtend;
+    Timer mDurationTimer;
+    float mX; float mY;
+    float xvel; float yvel;
+	int mValue;
+	std::ostringstream mMsg;
+	static SDL_Surface* mspSurfaceFade[4];
+	static NFont msFontFade[4];
+	int mClip;
+	bool mDelete;
+	Timer mClipTimer;
 };
 
 

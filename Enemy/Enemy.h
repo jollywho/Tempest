@@ -9,30 +9,29 @@ struct SpriteInfo;
 class Enemy
 {
 protected:
-	SpriteInfo* info;
+	SpriteInfo* mpInfo;
+    SDL_Rect mHitbox;
 
-    SDL_Rect hitbox;
+    SDL_Surface* mpCopySurface;
+	static SDL_Color msHitColor;
+	static SDL_Surface* mspHitSurface;
 
-    static SDL_Surface* hit_surface;
-    SDL_Surface* copy_surface;
-	static SDL_Color hitColor;
+	Timer mHitTimer;
+	Timer mClipTimer;
 
-	Timer hit_timer;
-	Timer clip_timer;
+    int mClip;
+	int mHealth;
+	int mMaxHealth;
 
-    int clip;
-	int health;
-	int max_health;
-
-	bool bullet_wipe;
-    bool exploding;
-	bool m_delete;
-	bool air;
-	bool hit;
-	float xVal; float yVal;
-
+	bool mCausesWipe;
+    bool mExplode;
+	bool mDelete;
+	bool mAir;
+	bool mHit;
+	float mX; 
+	float mY;
 	
-	bool Explode(bool del);
+	bool Explode(bool isDelete);
 	bool CheckHealth();
 	void DetectCollision();
 public:
@@ -40,22 +39,21 @@ public:
 	virtual ~Enemy() {};
 
     static void Init();
-    static void CleanUp();
+    static void Cleanup();
 
-    bool RequestDelete() { return m_delete; };
-    
-
-    virtual void Update(Uint32 deltaTicks) = 0;
-    virtual void Draw(SDL_Surface *dest) = 0;
-    
-    void FlashRed(SDL_Surface* en_surface, SDL_Rect* targetClip);
-    void FlashClear();
-
-	bool CheckBounds();
-	bool IsExploding() { return exploding; }
-	bool IsAir() { return air; }
-	bool IsHit() { return hit; }
-	SDL_Rect GetBounds() { return hitbox; };
+	virtual void Update(Uint32 deltaTicks) = 0;
+    virtual void Draw(SDL_Surface *pDest) = 0;
 	virtual void TakeHit(int dmg) = 0;
+
+	void FlashRed(SDL_Surface* pSurface, SDL_Rect* pTargetClips);
+    void FlashClear();
+	bool CheckBounds();
+
+    bool RequestDelete() { return mDelete; };
+	bool IsExploding() { return mExplode; }
+	bool IsAir() { return mAir; }
+	bool IsHit() { return mHit; }
+	SDL_Rect GetBounds() { return mHitbox; };
+	
 };
 #endif

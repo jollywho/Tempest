@@ -8,24 +8,24 @@ struct SpriteInfo;
 class Totem
 {
 private:
-	SpriteInfo* inner;
-	SpriteInfo* outer;
+	SpriteInfo* mpInner;
+	SpriteInfo* mpOuter;
 
-    int clip;
-    Timer clip_Timer;
+    int mClip;
+    Timer mClipTimer;
 
-	float xVal; float yVal;
-	Point shift_pos;
-	Point unshift_pos;
-	Point dest;
+	float mX; float mY;
+	Point mShift;
+	Point mUnshift;
+	Point mTarget;
 
-	bool unset;
-	bool pull;
+	bool mUnset;
+	bool mPull;
 public:
     Totem::Totem(int ux, int uy, int sx, int sy); //todo: extra parameter for color of totem
 	Totem::~Totem();
-    void Update( const int& iElapsedTime, int x, int y, bool animate);
-	void Draw(SDL_Surface* dest);
+    void Update( const int& rDeltaTime, int x, int y, bool isAnimated);
+	void Draw(SDL_Surface* pDest);
 
     void PullTotems();
     void ReleaseTotems();

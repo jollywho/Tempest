@@ -7,29 +7,11 @@ class CMyEngine: public CEngine
 {
 public:
 	void AdditionalInit ();
-	void Think	    ( const int& iElapsedTime );
-	void Render	    ( SDL_Surface* pDestSurface );
+	void Think	    ( const int& rDeltaTime );
+	void Render	    ( SDL_Surface* pDest );
  
 	void KeyUp  	    (const int& iKeyEnum);
 	void KeyDown	    (const int& iKeyEnum);
- 
-	void MouseMoved     (const int& iButton, 
-			     const int& iX, 
-			     const int& iY, 
-			     const int& iRelX, 
-		             const int& iRelY);
- 
-	void MouseButtonUp  (const int& iButton, 
-			     const int& iX, 
-			     const int& iY, 
-			     const int& iRelX, 
-		             const int& iRelY);
- 
-	void MouseButtonDown(const int& iButton, 
-			     const int& iX, 
-			     const int& iY, 
-			     const int& iRelX, 
-		             const int& iRelY);
  
 	void WindowInactive();
 	void WindowActive();
@@ -58,127 +40,97 @@ void CMyEngine::AdditionalInit()
 {
 	// Load up additional data
 	ScoreIO::SaveScore::LoadScores();
-	ChangeState(S_INTRO);
+	DoStateChange(State::Intro);
 }
  
-void CMyEngine::Think( const int& iElapsedTime )
+void CMyEngine::Think( const int& rDeltaTime )
 {
-	states.back()->Update(iElapsedTime);
-	if (menustate != NULL)
-		menustate->Update(iElapsedTime);
+	mpStates.back()->Update(rDeltaTime);
+	if (mpMenuState != NULL)
+		mpMenuState->Update(rDeltaTime);
 }
  
-void CMyEngine::Render( SDL_Surface* pDestSurface )
+void CMyEngine::Render( SDL_Surface* pDest )
 {
-	states.back()->Draw(pDestSurface);
-	if (menustate != NULL)
-		menustate->Draw(pDestSurface);
+	mpStates.back()->Draw(pDest);
+	if (mpMenuState != NULL)
+		mpMenuState->Draw(pDest);
 }
  
-void CMyEngine::KeyDown(const int& iKeyEnum)
+void CMyEngine::KeyDown(const int& rKeyEnum)
 {        
-    switch (iKeyEnum)
+    switch (rKeyEnum)
     {
 	case SDLK_ESCAPE:
-		keys.esc = true;
+		mKeys.esc = true;
 		break;
     case SDLK_LEFT:
-		keys.left = true;
+		mKeys.left = true;
 		break;
     case SDLK_RIGHT:
-		keys.right = true;
+		mKeys.right = true;
 		break;
     case SDLK_UP:
-		keys.up = true;
+		mKeys.up = true;
 		break;
     case SDLK_DOWN:
-		keys.down = true;
+		mKeys.down = true;
 		break;
 	case SDLK_RETURN:
-		keys.enter = true;
+		mKeys.enter = true;
 		break;
 	case SDLK_LSHIFT:
-		keys.shift = true;
+		mKeys.shift = true;
 		break;
 	case SDLK_z:
-		keys.z = true;
+		mKeys.z = true;
 		break;
 	case SDLK_x:
-		keys.x = true;
+		mKeys.x = true;
 		break;
     }
-	if (menustate != NULL)
-		menustate->CheckKeys(keys);
+	if (mpMenuState != NULL)
+		mpMenuState->KeyInput(mKeys);
 	else
-		states.back()->CheckKeys(keys);
+		mpStates.back()->KeyInput(mKeys);
 }
 
-void CMyEngine::KeyUp(const int& iKeyEnum)
+void CMyEngine::KeyUp(const int& rKeyEnum)
 {
-	switch (iKeyEnum)
+	switch (rKeyEnum)
 	{
 	case SDLK_ESCAPE:
-		keys.esc = false;
+		mKeys.esc = false;
 		break;
     case SDLK_LEFT:
-		keys.left = false;
+		mKeys.left = false;
 		break;
     case SDLK_RIGHT:
-		keys.right = false;
+		mKeys.right = false;
 		break;
     case SDLK_UP:
-		keys.up = false;
+		mKeys.up = false;
 		break;
     case SDLK_DOWN:
-		keys.down = false;
+		mKeys.down = false;
 		break;
 	case SDLK_RETURN:
-		keys.enter = false;
+		mKeys.enter = false;
 		break;
 	case SDLK_LSHIFT:
-		keys.shift = false;
+		mKeys.shift = false;
 		break;
 	case SDLK_z:
-		keys.z = false;
+		mKeys.z = false;
 		break;
 	case SDLK_x:
-		keys.x = false;
+		mKeys.x = false;
 		break;
 	}
-	if (menustate != NULL)
-		menustate->CheckKeys(keys);
+	if (mpMenuState != NULL)
+		mpMenuState->KeyInput(mKeys);
 	else
-		states.back()->CheckKeys(keys);
-}
- 
-void CMyEngine::MouseMoved(const int& iButton, 
-			   const int& iX, 
-			   const int& iY, 
-			   const int& iRelX, 
-			   const int& iRelY)
-{
-	// Handle mouse movement
- 
-	// iX and iY are absolute screen positions
-	// iRelX and iRelY are screen position relative to last detected mouse movement
-}
- 
-void CMyEngine::MouseButtonUp(const int& iButton, 
-			      const int& iX, 
-			      const int& iY, 
-			      const int& iRelX, 
-			      const int& iRelY)
-{
-	// Handle mouse button released
-}
- 
-void CMyEngine::MouseButtonDown(const int& iButton, 
-				const int& iX, 
-				const int& iY, 
-				const int& iRelX, 
-				const int& iRelY)
-{
-	// Handle mouse button pressed
+		mpStates.back()->KeyInput(mKeys);
 }
  
 void CMyEngine::WindowInactive()

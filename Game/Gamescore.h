@@ -19,7 +19,7 @@ public:
 	void IncreaseScore(int value);
 	unsigned long long GetScore() { return g_score; }
 	
-	int GetBombs() { return g_bombs; }
+	int GetBombs() { return mBombs; }
 	void IncreaseBombups();
 	bool DecreaseBombups();
 
@@ -32,13 +32,13 @@ public:
 	int GetContinues() { return g_continues; }
 	void DecreaseContinues();
 
-	int GetCoinCount() { return t_coin; }
+	int GetCoinCount() { return mCoins; }
 	void IncreaseCoinCount();
 
-	int GetQuartzCount() { return t_quartz; }
+	int GetQuartzCount() { return mQuartz; }
 	void IncreaseQuartzCount();
 
-	int GetGemCount() { return t_gem; }
+	int GetGemCount() { return mGems; }
 	void IncreaseGemCount();
 
 	//unsigned long GetBonus() { return g_bonus; }
@@ -61,14 +61,13 @@ private:
 	Mode g_mode;
     unsigned long long g_score;
 
-	int t_coin;
-	int t_bomb;
-	int t_lives;
-	int t_quartz;
-	int t_gem;
+	int mCoins;
+	int mBombs;
+	int mLives;
+	int mQuartz;
+	int mGems;
 	
 	unsigned long long prevBonus;
-	int g_bombs;
 	int g_lives;
 	int g_continues;
 	unsigned long g_bonus;

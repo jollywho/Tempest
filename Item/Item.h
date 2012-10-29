@@ -9,31 +9,32 @@ struct SpriteInfo;
 class Item
 {
 protected:
-    int clip;
-    SDL_Rect offset;
-    Timer clip_Timer;
-	Timer duration_Timer;
-    float xVal; float yVal;
-    float xVel; float yVel;
+    int mClip;
+    SDL_Rect mOffset;
+    Timer mClipTimer;
+	Timer mDurationTimer;
+    float mX; float mY;
+    float xvel; float yvel;
 	bool pickedup; bool received;
     int val;
-	SpriteInfo* _info;
-	int spawnside;
+	bool mAir;
+	SpriteInfo* mpInfo;
+	int mSpawnSide;
 	static SDL_Surface* received_frame;
 public:
     Item(int x, int y, int value, char* id);
     virtual ~Item();
     static void Init();
-    static void CleanUp();
-    bool m_delete;
-    bool RequestDelete() { return m_delete; };
+    static void Cleanup();
+    bool mDelete;
+    bool RequestDelete() { return mDelete; };
 	virtual void Update(Uint32 deltaTicks){};
-	virtual void Draw(SDL_Surface *dest){};
-    void Check_Collision();
-	void Check_WallCollision(double w, double h);
+	virtual void Draw(SDL_Surface *pDest){};
+    void CheckCollision();
+	void CheckWallCollision(double w, double h);
 	bool CheckOffscreen(double x, double y, double h);
 	static void SetBonus(int val);
-	bool Air;
+	bool Air() { return mAir; }
 };
 #endif
 

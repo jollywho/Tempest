@@ -8,14 +8,14 @@ class Bullet
 {
 public:
     virtual ~Bullet() {}    
-    bool RequestDelete() { return m_delete; }
-    virtual void Update(const int& iElapsedTime) = 0;
-    virtual void Draw(SDL_Surface *dest) = 0;
+    virtual void Update(const int& rDeltaTime) = 0;
+    virtual void Draw(SDL_Surface *pDest) = 0;
+    bool RequestDelete() { return mDelete; }
 protected:
-	bool exploding;
-	bool m_delete;
-    int clip;
-    Timer clip_timer;
+	bool mExplode;
+	bool mDelete;
+    int mClip;
+    Timer mClipTimer;
 };
 
 

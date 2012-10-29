@@ -37,6 +37,7 @@ namespace ScoreIO
 			std::cout<<"Created: new 'Scores.dat'."<<std::endl;
 			file.open(filename.c_str(), std::ios_base::in | std::ios_base::trunc);
 			GenerateDefaults();
+			SaveScores();
 		}
 		else
 		{

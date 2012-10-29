@@ -13,23 +13,23 @@ public:
 
 	void Pause();
 	void Resume();
-	void Return() {};
+	void Back() {};
 
-	void CheckKeys(const KeyStruct& keys);
-	void Update(const int& iElapsedTime);
-	void Draw(SDL_Surface* dest);
+	void KeyInput(const KeyStruct& rKeys);
+	void Update(const int& rDeltaTime);
+	void Draw(SDL_Surface* pDest);
 
 	static CPollState* Instance() {
-		return &m_IntroState;
+		return &mIntroState;
 	}
 protected:
 	CPollState() { }
 
 private:
-	static CPollState m_IntroState;
-	SDL_Surface* bg;
-	int alpha;
-	Timer fade_timer;
+	static CPollState mIntroState;
+	SDL_Surface* mpBackground;
+	int mAlpha;
+	Timer mFadeTimer;
 	Point banner_middle_pos;
 	Point banner_left_pos;
 	Point banner_right_pos;
@@ -37,7 +37,9 @@ private:
 	SDL_Surface* banner_middle;
 	SDL_Surface* banner_side;
 	float banner_speed;
-	bool exiting; bool entering; bool fadeout;
+	bool mExit; 
+	bool mEnter; 
+	bool mFadeout;
 };
 
 #endif

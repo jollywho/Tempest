@@ -3,84 +3,82 @@
 #include "State/Playstate.h"
 
 SDL_Rect Camera::camera;
-float Camera::camera_speed = 0;
-float Camera::xVal = 0;
-float Camera::yVal = 0;
-float Camera::yVel = 0;
-float Camera::yVal2 = 0;
-float Camera::CameraY() { return yVal; }
-float Camera::CameraX() { return xVal; }
-bool Camera::accel = false;
-bool Camera::shake = false;
-int Camera::shakeCount = 0;
-int Camera::shakeMagnitude = 0;
-int Camera::shakeModifier = 0;
-int Camera::shakeMax = 0;
+float Camera::msSpeed = 0;
+float Camera::msX = 0;
+float Camera::msY = 0;
+float Camera::msY2 = 0;
+float Camera::msYVel = 0;
+bool Camera::msAccel = false;
+bool Camera::msShake = false;
+int Camera::msShakeCount = 0;
+int Camera::msShakeMagnitude = 0;
+int Camera::msShakeModifier = 0;
+int Camera::msShakeMax = 0;
 
 void Camera::JumpToStart()
 {
-    xVal = -50;
-    yVal = _GSCREEN_HEIGHT;
-    camera.w = _GSCREEN_WIDTH;
-    camera.h = _GSCREEN_HEIGHT;
-	yVal2 = 0;
+    msX = -50;
+    msY = GAMESCREEN_HEIGHT;
+    camera.w = GAMESCREEN_WIDTH;
+    camera.h = GAMESCREEN_HEIGHT;
+	msY2 = 0;
 }
 
 void Camera::Reset()
 {
-	camera_speed = CAMERA_NORMAL;
-	accel = false;
+	msSpeed = CAMERA_NORMAL;
+	msAccel = false;
 }
 
 void Camera::MoveFast()
 {
-	accel = true;
+	msAccel = true;
 }
 
 void Camera::StartShake(int magnitude)
 {
-	shake = true;
-	shakeCount = 0;
-	shakeMagnitude = magnitude;
-	shakeModifier = 200;
-	shakeMax = (rand() % 50)+(shakeMagnitude * 20);
+	msShake = true;
+	msShakeCount = 0;
+	msShakeMagnitude = magnitude;
+	msShakeModifier = 200;
+	msShakeMax = (rand() % 50)+(msShakeMagnitude * 20);
 }
 
 void Camera::JumpToEnd()
 {
-	//yVal = CPlayState::Instance()->level->levelend;
-	yVal += 800;
+	//mY = CPlayState::Instance()->level->levelend;
+	msY += 800;
 }
 
 void Camera::Update(int playerX, Uint32 deltaTicks)
 {
-	yVal += camera_speed;
-	if (accel && camera_speed < CAMERA_FAST) 
-		camera_speed += .05f;
+	msY += msSpeed;
+	if (msAccel && msSpeed < CAMERA_FAST) 
+		msSpeed += .05f;
 
-	xVal = ((playerX - _G_BANNER_WIDTH)/480.f) * 160.f;
+	msX = ((playerX - GAME_BANNER_WIDTH)/480.f) * 160.f;
 
-	int max = CPlayState::Instance()->level->GetLevelEnd();
-	if (yVal >= max)
-		yVal = (float)max;
+	int max = CPlayState::Instance()->mpLevel->LevelEnd();
+	if (msY >= max)
+		msY = (float)max;
 
-	if (shake)
+	if (msShake)
 	{
-		xVal += ((rand() % (shakeMagnitude * shakeModifier)) - (shakeMagnitude * shakeModifier)) * (deltaTicks/1000.f);
-		shakeCount++;
-		shakeModifier = shakeMax - shakeCount + 1;
-		if (shakeCount > shakeMax)
-			shake = false; 
+		msX += ((rand() % (msShakeMagnitude * msShakeModifier)) - (msShakeMagnitude * msShakeModifier)) * (deltaTicks/1000.f);
+		msShakeCount++;
+		msShakeModifier = msShakeMax - msShakeCount + 1;
+		if (msShakeCount > msShakeMax)
+			msShake = false; 
 	}
 
-    camera.y = yVal;
-	yVal2 = max-yVal;
+    camera.y = msY;
+	msY2 = max-msY;
 }
 
-void Camera::DrawSurface( int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip )
+void Camera::DrawSurface( int x, int y, SDL_Surface* pSource, SDL_Surface* pDest, SDL_Rect* pClips )
 {
     SDL_Rect offset;
-    offset.x = x - (Sint16)xVal;
-    offset.y = y - (Sint16)yVal2;
-    SDL_BlitSurface( source, clip, destination, &offset );
+    offset.x = x - (Sint16)msX;
+    offset.y = y - (Sint16)msY2;
+    SDL_BlitSurface(pSource, pClips, pDest, &offset );
 }

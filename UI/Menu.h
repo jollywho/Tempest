@@ -10,31 +10,30 @@ class MenuItem;
 
 class Menu
 {
-private:
-    std::vector<MenuItem*> menuList;
-    int maxItems;
-    SDL_Rect selectorOffset;
-	TTF_Font* font;
-	int selectedindex;
-	SpriteInfo* info;
-	Timer clip_timer;
-	int clip;
-	bool click;
-	void MoveSelector(SDL_Rect* bounds);
 public:
     Menu();
     ~Menu();
     void AddItem(int x, int y, char* msg);
-    void Update(Uint32 deltaTicks, int alpha);
-    void Draw(SDL_Surface *dest);
-	
+    void Update(Uint32 deltaTicks, int mAlpha);
+    void Draw(SDL_Surface *pDest);
 	void Reset();
 	void Select();
-
-	void SetIndex(int direction);
-	int GetIndex() { return selectedindex; }
-
+	void MoveIndex(int direction);
+	void Menu::SetIndex(int index);
+	int GetIndex() { return mSelectedindex; }
+	int Count() { return mMaxItems; }
 	Point GetFontSize(char* msg);
+private:
+    std::vector<MenuItem*> menuList;
+    int mMaxItems;
+    FPoint mSelector;
+	TTF_Font* mpFont;
+	int mSelectedindex;
+	SpriteInfo* mpInfo;
+	Timer mClipTimer;
+	int mClip;
+	bool mClick;
+	void MoveSelector(SDL_Rect* bounds);
 };
  
 

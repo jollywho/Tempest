@@ -15,9 +15,9 @@ public:
     ~Zown();
     void Attack();
     void Update(Uint32 deltaTicks);
-    void Draw(SDL_Surface *dest);
+    void Draw(SDL_Surface *pDest);
     static void Init();
-    static void CleanUp();
+    static void Cleanup();
     void TakeHit(int dmg);
 };
 

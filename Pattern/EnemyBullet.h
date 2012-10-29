@@ -15,15 +15,15 @@ public:
     void DetectCollision();
     void Destroy();
 
-	virtual void Update(const int& iElapsedTime) = 0;
-	virtual void Draw(SDL_Surface *dest) = 0;
+	virtual void Update(const int& rDeltaTime) = 0;
+	virtual void Draw(SDL_Surface *pDest) = 0;
 
 protected:
-	RotationInfo* info;
-	static SpriteInfo* expinfo;
-    bool bombed;
-    float xVel, yVel;
-    float xVal, yVal;
+	RotationInfo* mpRotInfo;
+	static SpriteInfo* mspExpInfo;
+    bool mBombed;
+    float xvel, yvel;
+    float mX, mY;
 	void CheckBounds();
 };
 

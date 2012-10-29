@@ -46,7 +46,7 @@ private:
 	bool hpbar_active;
 	Point hpbar_pos;
     Timer hpbar_timer;
-	double hpbar_yval;
+	double hpbar_mY;
 	
 
 	/* Boss Warning */
@@ -69,11 +69,11 @@ public:
     Interface();
 
     ~Interface();
-    void Update(const int& iElapsedTime);
-    void Draw(SDL_Surface *dest);
+    void Update(const int& rDeltaTime);
+    void Draw(SDL_Surface *pDest);
 
-    void DrawHealthBar(SDL_Surface *dest);
-    void DrawIcons(SDL_Surface *dest);
+    void DrawHealthBar(SDL_Surface *pDest);
+    void DrawIcons(SDL_Surface *pDest);
 	void ActivateHub();
     void ActivateHealthBar();
 	void ActivateWarning();

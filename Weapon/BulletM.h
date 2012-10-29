@@ -10,15 +10,15 @@ struct SpriteInfo;
 class BulletM : public PlayerBullet
 {
 private:
-	static RotationInfo* _info;
+	static RotationInfo* mpInfo;
 	static SpriteInfo* _expInfo;
 public:
 	BulletM(float x, float y, int angl, int rots);
 	~BulletM(){}
 	static void Init(std::string id, std::string expId);
 
-	void Update(const int& iElapsedTime);
-	void Draw(SDL_Surface *dest);
+	void Update(const int& rDeltaTime);
+	void Draw(SDL_Surface *pDest);
 
 };
 

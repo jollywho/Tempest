@@ -6,20 +6,20 @@
 #include <string>
 
 const double M_PI = 3.14159265358979323846;
-const int _WSCREEN_WIDTH = 800;
-const int _WSCREEN_HEIGHT = 600;
+const int WINDOW_WIDTH = 800;
+const int WINDOW_HEIGHT = 600;
 
-const int _GSCREEN_WIDTH = 480;
-const int _GSCREEN_HEIGHT = 600;
+const int GAMESCREEN_WIDTH = 480;
+const int GAMESCREEN_HEIGHT = 600;
 
-const int _G_BANNER_WIDTH = 160;
-const int _G_UI_HEIGHT = 54;
-const int _G_UI_BOTTOM = 565;
+const int GAME_BANNER_WIDTH = 160;
+const int GAME_UI_TOP = 54;
+const int GAME_UI_BOTTOM = 565;
 
-const int _G_LEVEL_WIDTH = _G_BANNER_WIDTH + 640;
-const int _G_BOUNDS_WIDTH = _G_BANNER_WIDTH + _GSCREEN_WIDTH;
-const int _G_BOUNDS_HEIGHT = 600;
-const int _G_BULLET_SAFE_ZONE = 350;
+const int GAME_LEVEL_WIDTH = GAME_BANNER_WIDTH + 640;
+const int GAME_BOUNDS_WIDTH = GAME_BANNER_WIDTH + GAMESCREEN_WIDTH;
+const int GAME_BOUNDS_HEIGHT = 600;
+const int GAME_BULLETSAFE_ZONE = 350;
 
 const int MAX_TOTEMS = 4;
 
@@ -31,6 +31,14 @@ struct Point
   int y;
   Point(){}
   Point(int ax, int ay): x(ax), y(ay) {}
+};
+
+struct FPoint
+{
+  float x;
+  float y;
+  FPoint(){}
+  FPoint(float ax, float ay): x(ax), y(ay) {}
 };
 
 struct KeyStruct
@@ -49,17 +57,27 @@ struct KeyStruct
 class Shared
 {
 public:
-	static int mod(int a, int b);
-    static double distance( int x1, int y1, int x2, int y2 );
-	static void setFrames(SDL_Rect* clips, int clipcount, int width, int height, int y=0);
-	static void setVertFrames(SDL_Rect* clips, int clipcount, int width, int height);
-    static SDL_Surface *load_image( std::string filename, bool key = false );
-    static void apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip = NULL );
-	static SDL_Surface* Crop_surface(SDL_Surface* src, int x, int y, int width, int height);
-	static void CheckClip(Timer &timer, int &clip, int interval, int max_clip, int reset);
-	static void deleteRotationFrames(SDL_Surface*** surface, int clipcount, int startAngle, int endAngle, int rotInterval=10);
-	static void setRotationFrames(SDL_Rect* clips, SDL_Surface* src, int clipcount, int width, int height,
-		SDL_Surface*** dest, int startAngle, int endAngle, int destWidth, int destHeight, int pivotX, int pivotY, int rotInterval=10);
+	static SDL_Surface* LoadImage( std::string filename, bool colorKey = false );
+
+	static void DrawSurface( int x, int y, SDL_Surface* pSource, SDL_Surface* pDest, SDL_Rect* pClips = NULL );
+
+	static void CheckClip(Timer &rTimer, int &rClips, int interval, int maxClip, int reset);
+
+	static void SetFrames(SDL_Rect* pClips, int maxClips, int width, int height, int y=0);
+
+	static void SetVertFrames(SDL_Rect* pClips, int maxClips, int width, int height);
+    
+	static SDL_Surface* CropSurface(SDL_Surface* pSrc, int x, int y, int width, int height);
+
+	static void SetRotationFrames(SDL_Rect* pClips, SDL_Surface* pSrc, int maxClips, int width, int height,
+
+		SDL_Surface*** pDest, int startAngle, int endAngle, int destWidth, int destHeight, int pivotX, int pivotY, int rotInterval=10);
+
+	static void DeleteRotationFrames(SDL_Surface*** pSrc, int maxClips, int startAngle, int endAngle, int rotInterval=10);
+
+	static int Mod(int a, int b);
+
+	static double Distance( int x1, int y1, int x2, int y2 );
 };
 
 

@@ -3,16 +3,16 @@
 
 Totem::Totem(int ux, int uy, int sx, int sy)
 {
-	inner = &SpriteResource::RequestResource("Player", "TotemInner.png");
-	outer = &SpriteResource::RequestResource("Player", "Totem.png");
+	mpInner = &SpriteResource::RequestResource("Player", "TotemInner.png");
+	mpOuter = &SpriteResource::RequestResource("Player", "Totem.png");
 
-	shift_pos.x = sx - outer->width/2; shift_pos.y = sy - outer->height/2;
-	unshift_pos.x = ux - outer->width/2; unshift_pos.y = uy - outer->height/2;
+	mShift.x = sx - mpOuter->width/2; mShift.y = sy - mpOuter->height/2;
+	mUnshift.x = ux - mpOuter->width/2; mUnshift.y = uy - mpOuter->height/2;
 
-	clip = 0;
-	clip_Timer.start();
-	pull = false;
-	unset = true;
+	mClip = 0;
+	mClipTimer.Start();
+	mPull = false;
+	mUnset = true;
 }
 
 Totem::~Totem()
@@ -22,46 +22,46 @@ Totem::~Totem()
 
 void Totem::ReleaseTotems()
 {
-	pull = false;
-	dest = unshift_pos;
+	mPull = false;
+	mTarget = mUnshift;
 }
 
 void Totem::PullTotems()
 {
-	pull = true;
-	dest = shift_pos;
+	mPull = true;
+	mTarget = mShift;
 }
 
-void Totem::Update(const int& iElapsedTime, int x, int y, bool animate)
+void Totem::Update(const int& rDeltaTime, int x, int y, bool isAnimated)
 {
-	if (unset) { xVal = x; yVal = y; unset = false; }
-	if (animate) Shared::CheckClip(clip_Timer, clip, inner->interval, inner->clip_count, 0);
+	if (mUnset) { mX = x; mY = y; mUnset = false; }
+	if (isAnimated) Shared::CheckClip(mClipTimer, mClip, mpInner->interval, mpInner->maxClips, 0);
 
-	float dx = (dest.x) - (xVal) + x;
-    float dy = (dest.y) - (yVal) + y;
+	float dx = (mTarget.x) - (mX) + x;
+    float dy = (mTarget.y) - (mY) + y;
 	double Length = sqrt(pow(dx, 2) + pow(dy, 2));
 
 	float spd = Length * 5;
 	
 	float xa = dx / Length;
 	float ya = dy / Length;
-	xVal += (xa * (spd * (iElapsedTime / 1000.f)));
-	yVal += (ya * (spd * (iElapsedTime / 1000.f)));
+	mX += (xa * (spd * (rDeltaTime / 1000.f)));
+	mY += (ya * (spd * (rDeltaTime / 1000.f)));
 	
 }
 
-void Totem::Draw(SDL_Surface *dest)
+void Totem::Draw(SDL_Surface *pDest)
 {
-	Shared::apply_surface(xVal+15, yVal+5, inner->surface, dest, &inner->clips[clip]);
-    Shared::apply_surface(xVal, yVal, outer->surface, dest);
+	Shared::DrawSurface(mX+15, mY+5, mpInner->pSurface, pDest, &mpInner->pClips[mClip]);
+    Shared::DrawSurface(mX, mY, mpOuter->pSurface, pDest);
 }
 
 float Totem::GetMiddle()
 {
-    return xVal + outer->width/2;
+    return mX + mpOuter->width/2;
 }
 
 float Totem::GetVertical()
 {
-    return yVal;
+    return mY;
 }

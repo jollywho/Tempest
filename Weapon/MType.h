@@ -11,19 +11,19 @@ class MType : public Weapon
 public:
 	MType();
 	~MType();
-	void Update(const int& iElapsedTime);
-	void Draw(SDL_Surface *dest);
+	void Update(const int& rDeltaTime);
+	void Draw(SDL_Surface *pDest);
 	void MajorAttack(std::list<PlayerBullet*>& pl_bulletlist);
 	void MinorAttack(std::list<PlayerBullet*>& pl_bulletlist);
 	void SetPos(int x, int y, int mv);
 	void StopAttack();
 	void Shift();
 	void Unshift();
-	Totem* totem_list[MAX_TOTEMS];
+	Totem* mpTotemList[MAX_TOTEMS];
 private:
-	SpriteInfo* shotanim;
-	int shotanim_clip;
-	Timer shotanim_timer;
+	SpriteInfo* mpShotAnim;
+	int mShotAnimClip;
+	Timer mShotAnimTimer;
 	float mov;
 	Point wpn_pos;
 };

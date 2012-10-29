@@ -6,13 +6,13 @@
 class Gem : public Item
 {
 private:
-	Timer accel_Timer;
-	bool lockedOn;
+	Timer mAccelTimer;
+	bool mLockedOn;
 public:
-	Gem(int x, int y, int value, bool autolock=false);
+	Gem(int x, int y, int value, bool autoLocked=false);
     ~Gem();
     void Update(Uint32 deltaTicks);
-    void Draw(SDL_Surface *dest);
+    void Draw(SDL_Surface *pDest);
 };
 
 

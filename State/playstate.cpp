@@ -10,42 +10,41 @@
 #include "Pattern/EnemyBullet.h"
 #include "ENemy/Zown.h"
 
-CPlayState CPlayState::m_PlayState;
+CPlayState CPlayState::mPlayState;
 
 void CPlayState::Init()
 {
-	printf("CPlayState Init\n");
+	printf("CPlayState initialize\n");
 	ClearRequest();
-    m_Exit = false;
-	m_Enter = true;
-	alpha = 255;
+    mExit = false;
+	mEnter = true;
+	mAlpha = 255;
 
 	Enemy::Init();
 	EnemyBullet::Init();
 	Item::Init();
 	ScoreMSG::Init();
 	
-    stage = 1;
-	player = new Player();
-	level = new Level01();
-	ui = new Interface();
+	mpPlayer = new Player();
+	mpLevel = new Level01();
+	mpInterface = new Interface();
 
-	scan_timer.start();
-	fade_timer.start();
+	mScanTimer.Start();
+	mFadeTimer.Start();
+}
+
+CPlayState::~CPlayState()
+{
+    printf("delete playstate\n");
 }
 
 void CPlayState::Cleanup()
 {
 	printf("CPlayState Cleanup\n");
     ClearObjects();
-	delete level;
-	delete ui;
-	delete player;
-}
-
-CPlayState::~CPlayState()
-{
-    printf("delete playstate\n");
+	delete mpLevel;
+	delete mpInterface;
+	delete mpPlayer;
 }
 
 void CPlayState::ClearObjects()
@@ -59,32 +58,60 @@ void CPlayState::ClearObjects()
 	for (auto it = en_bulletlist.begin(); it != en_bulletlist.end();) {
 		delete (*it);
 		it++; }
-    //for (auto it = coinList.begin(); it != coinList.end();) {
-    //    delete (*it);
-    //    it++; }
+    for (auto it = item_list.begin(); it != item_list.end();) {
+        delete (*it);
+        it++; }
     enemy_list.clear();
 	pl_bulletlist.clear();
 	en_bulletlist.clear();
-    //coinList.clear();
+    item_list.clear();
+}
+
+template <class T>
+void CPlayState::UpdateList(std::list<T>& rList, const int& rDeltaTime)
+{
+	for (auto it = rList.begin(); it != rList.end();)
+	{
+		if ((*it)->RequestDelete())
+		{
+			delete (*it);
+			it = rList.erase(it);	
+		}
+		else
+		{
+			(*it)->Update(rDeltaTime);
+			it++;
+		}
+	}
+}
+
+template <class T>
+void CPlayState::DrawList(std::list<T>& rList, SDL_Surface* pDest)
+{
+	for (auto it = rList.begin(); it != rList.end(); it++)
+	{
+		(*it)->Draw(pDest);
+	}
 }
 
 void CPlayState::Pause()
 {
 	printf("CPlayState Pause\n");
+	//todo: release/ set default keys
 }
 
 void CPlayState::Resume()
 {
 	printf("CPlayState Resume\n");
-	if (m_Exit)
+	if (mExit)
 	{
-		m_Exit = false;
-		alpha = 255;
-		m_Enter = true;
+		mExit = false;
+		mAlpha = 255;
+		mEnter = true;
 	}
 }
 
-void CPlayState::Return()
+void CPlayState::Back()
 {
 	printf("CPlayState Return\n");
 
@@ -95,108 +122,81 @@ void CPlayState::NewLevel()
 
 }
 
-void CPlayState::CheckKeys(const KeyStruct& keys)
+void CPlayState::KeyInput(const KeyStruct& rKeys)
 {
-	player->CheckKeys(keys);
-	if (keys.enter) m_Exit = true;
-	if (keys.esc) PushState(S_PAUSE);
+	mpPlayer->KeyInput(rKeys);
+	if (rKeys.enter) mExit = true;
+	if (rKeys.esc) PushState(State::Pause);
 }
 
-template <class T>
-void CPlayState::UpdateList(std::list<T>& lst, const int& iElapsedTime)
+void CPlayState::Update(const int& rDeltaTime)
 {
-	for (auto it = lst.begin(); it != lst.end();)
+	if (mEnter)
 	{
-		if ((*it)->RequestDelete())
+		if (mAlpha > 0) 
 		{
-			delete (*it);
-			it = lst.erase(it);	
-		}
-		else
-		{
-			(*it)->Update(iElapsedTime);
-			it++;
-		}
-	}
-}
-
-void CPlayState::Update(const int& iElapsedTime)
-{
-	if (m_Enter)
-	{
-		if (alpha > 0) 
-		{
-			if (fade_timer.get_ticks() > 10) 
+			if (mFadeTimer.GetTicks() > 10) 
 			{
-				alpha-=5;
-				fade_timer.start(); 
+				mAlpha-=5;
+				mFadeTimer.Start(); 
 			} 
 		}
 		else
-			m_Enter = false;
+			mEnter = false;
 	}
-	if (m_Exit)
+	if (mExit)
 	{
-		if (alpha < 255) 
+		if (mAlpha < 255) 
 		{
-			if (fade_timer.get_ticks() > 10) 
+			if (mFadeTimer.GetTicks() > 10) 
 			{
-				alpha+=5;
-				fade_timer.start(); 
+				mAlpha+=5;
+				mFadeTimer.Start(); 
 			} 
 		}
 		else
-			PushState(S_POLL);
+			PushState(State::Poll);
 	}
-	Camera::Update(player->GetOuterBounds().x, iElapsedTime);
-	level->Update(iElapsedTime);
-	level->LoadEnemies(enemy_list);
-	player->Update(iElapsedTime);
+	Camera::Update(mpPlayer->GetOuterBounds().x, rDeltaTime);
+	mpLevel->Update(rDeltaTime);
+	mpLevel->LoadEnemies(enemy_list);
+	mpPlayer->Update(rDeltaTime);
 
-	if (scan_timer.get_ticks() > 30)
+	if (mScanTimer.GetTicks() > 30)
 	{
 		for (auto it = pl_bulletlist.begin(); it != pl_bulletlist.end(); it++)
 		{
 			(*it)->DetectCollision();
 		}
-		scan_timer.start();
+		mScanTimer.Start();
 	}
-	UpdateList(pl_bulletlist, iElapsedTime);
-	UpdateList(en_bulletlist, iElapsedTime);
-	UpdateList(enemy_list, iElapsedTime);
-	UpdateList(item_list, iElapsedTime);
-	UpdateList(score_list, iElapsedTime);
+	UpdateList(pl_bulletlist, rDeltaTime);
+	UpdateList(en_bulletlist, rDeltaTime);
+	UpdateList(enemy_list, rDeltaTime);
+	UpdateList(item_list, rDeltaTime);
+	UpdateList(score_list, rDeltaTime);
 
-	ui->Update(iElapsedTime);
+	mpInterface->Update(rDeltaTime);
 }
 
-template <class T>
-void CPlayState::DrawList(std::list<T>& lst, SDL_Surface* dest)
+void CPlayState::Draw(SDL_Surface* pDest)
 {
-	for (auto it = lst.begin(); it != lst.end(); it++)
-	{
-		(*it)->Draw(dest);
-	}
-}
+	mpLevel->Draw(pDest);
 
-void CPlayState::Draw(SDL_Surface* dest)
-{
-	level->Draw(dest);
-
-	DrawList(enemy_list, dest);
-	DrawList(pl_bulletlist, dest);
+	DrawList(enemy_list, pDest);
+	DrawList(pl_bulletlist, pDest);
 	
-	if (m_Exit)
-		SPG_RectFilledBlend(dest,_G_BANNER_WIDTH,0,_G_BOUNDS_WIDTH,_WSCREEN_HEIGHT, 16777215, alpha);
-	if (m_Enter)
-		SPG_RectFilledBlend(dest,_G_BANNER_WIDTH,0,_G_BOUNDS_WIDTH,_WSCREEN_HEIGHT, 0, alpha);
+	if (mExit)
+		SPG_RectFilledBlend(pDest,GAME_BANNER_WIDTH,0,GAME_BOUNDS_WIDTH,WINDOW_HEIGHT, 16777215, mAlpha);
+	if (mEnter)
+		SPG_RectFilledBlend(pDest,GAME_BANNER_WIDTH,0,GAME_BOUNDS_WIDTH,WINDOW_HEIGHT, 0, mAlpha);
 
-	player->Draw(dest);
+	mpPlayer->Draw(pDest);
 
-	DrawList(en_bulletlist, dest);
-	DrawList(item_list, dest);
-	DrawList(score_list, dest);
+	DrawList(en_bulletlist, pDest);
+	DrawList(item_list, pDest);
+	DrawList(score_list, pDest);
 
-	ui->Draw(dest);
+	mpInterface->Draw(pDest);
 	
 }

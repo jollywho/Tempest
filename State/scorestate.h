@@ -32,10 +32,10 @@ public:
 
 	void Pause(){}
 	void Resume(){}
-	void Return(){}
+	void Back(){}
 
-	void CheckKeys(const KeyStruct& keys);
-	void Update(const int& iElapsedTime);
+	void KeyInput(const KeyStruct& rKeys);
+	void Update(const int& rDeltaTime);
 	void Draw(SDL_Surface* dest);
 
 	static CScoreState* Instance() {

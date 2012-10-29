@@ -9,17 +9,17 @@ SDL_Surface* Item::received_frame;
 
 Item::Item(int x, int y, int value, char* id)
 {
-	_info = &SpriteResource::RequestResource("Items", id);
-    m_delete = false; pickedup = false; received = false;
-    val = 25; clip = 0;
-	xVal = x - _info->width/2;
-    yVal = y - _info->height/2 - Camera::CameraY2();
-    offset.x = xVal;
-    offset.y = yVal;
-    offset.w = _info->width;
-    offset.h = _info->height;
-	clip_Timer.start();
-	duration_Timer.start();
+	mpInfo = &SpriteResource::RequestResource("Items", id);
+    mDelete = false; pickedup = false; received = false;
+    val = 25; mClip = 0;
+	mX = x - mpInfo->width/2;
+    mY = y - mpInfo->height/2 - Camera::CameraY2();
+    mOffset.x = mX;
+    mOffset.y = mY;
+    mOffset.w = mpInfo->width;
+    mOffset.h = mpInfo->height;
+	mClipTimer.Start();
+	mDurationTimer.Start();
 }
 
 Item::~Item() {}
@@ -31,7 +31,7 @@ void Item::SetBonus(int val)
 
 void Item::Init()
 {
-	printf("Item Init!\n");
+	printf("Item initialize!\n");
 	SpriteResource::AddResource("Items", "Gem.png", 32, 32, 60, 8);
 	SpriteResource::AddResource("Items", "Coin.png", 32, 32, 60, 6);
 	SpriteResource::AddResource("Items", "bombup.png", 48, 48, 60, 5);
@@ -41,7 +41,7 @@ void Item::Init()
 
 	SpriteResource::AddResource("Items", "Bomb_Received.png", 70, 15, 60, 5, true);
 	SpriteResource::AddResource("Items", "Powerup_Received.png", 86, 15, 60, 6, true);
-	received_frame = Shared::load_image("Image/Items/Receive_Frame.png");
+	received_frame = Shared::LoadImage("Image/Items/Receive_Frame.png");
 
 	SFX::AddSoundResource("damage.wav");
 	SFX::AddSoundResource("pickup.wav");
@@ -52,43 +52,43 @@ void Item::Init()
 	SFX::AddSoundResource("tick.wav");
 }
 
-void Item::CleanUp()
+void Item::Cleanup()
 {
 	printf("Item CleanUp!\n");
 	SpriteResource::ClearResourceDir("Items");
 	SDL_FreeSurface(received_frame);
 }
 
-void Item::Check_Collision()
+void Item::CheckCollision()
 {
-	if (CPlayState::Instance()->player->IsExploding())
+	if (CPlayState::Instance()->mpPlayer->IsExploding())
 		return;
-    SDL_Rect playerbox = CPlayState::Instance()->player->GetOuterBounds();
-    int dx = (playerbox.x + playerbox.w/2) - (offset.x - Camera::CameraX()  + offset.w/2);
+    SDL_Rect playerbox = CPlayState::Instance()->mpPlayer->GetOuterBounds();
+    int dx = (playerbox.x + playerbox.w/2) - (mOffset.x - Camera::CameraX()  + mOffset.w/2);
     int dy;
-	if (Air) { dy = (playerbox.y + playerbox.h/2) - (offset.y + offset.h/2); }
-	else { dy = (playerbox.y + playerbox.h/2) - (offset.y - Camera::CameraY2() + offset.h/2); }
-    int radii = playerbox.w/2 + offset.w/4;
+	if (mAir) { dy = (playerbox.y + playerbox.h/2) - (mOffset.y + mOffset.h/2); }
+	else { dy = (playerbox.y + playerbox.h/2) - (mOffset.y - Camera::CameraY2() + mOffset.h/2); }
+    int radii = playerbox.w/2 + mOffset.w/4;
     if ( ( dx * dx )  + ( dy * dy ) < radii * radii ) 
     {
         pickedup = true;
-		if (playerbox.x + playerbox.w/2 < + _G_BANNER_WIDTH + _GSCREEN_WIDTH/2) spawnside = 1;
-		else spawnside = -1;
+		if (playerbox.x + playerbox.w/2 < + GAME_BANNER_WIDTH + GAMESCREEN_WIDTH/2) mSpawnSide = 1;
+		else mSpawnSide = -1;
     }
 }
 
 bool Item::CheckOffscreen(double x, double y, double h)
 {
-	if( y > _G_BOUNDS_HEIGHT || x - Camera::CameraX() < 0 || x - Camera::CameraX() > _G_LEVEL_WIDTH)
+	if( y > GAME_BOUNDS_HEIGHT || x - Camera::CameraX() < 0 || x - Camera::CameraX() > GAME_LEVEL_WIDTH)
 		return true;
 	else
 		return false;
 }
 
-void Item::Check_WallCollision(double w, double h)
+void Item::CheckWallCollision(double w, double h)
 {
-	if (xVal < _G_BANNER_WIDTH) { xVel *= -1; xVal = _G_BANNER_WIDTH; }
-	if (xVal + w > _G_LEVEL_WIDTH ) { xVel *= -1; xVal = _G_LEVEL_WIDTH - w; }
-	if (yVal < 0) { yVel *= -1; yVal = 0; }
-	if (yVal + h > _G_UI_BOTTOM) { yVel *= -1; yVal = _G_UI_BOTTOM - h; }
+	if (mX < GAME_BANNER_WIDTH) { xvel *= -1; mX = GAME_BANNER_WIDTH; }
+	if (mX + w > GAME_LEVEL_WIDTH ) { xvel *= -1; mX = GAME_LEVEL_WIDTH - w; }
+	if (mY < 0) { yvel *= -1; mY = 0; }
+	if (mY + h > GAME_UI_BOTTOM) { yvel *= -1; mY = GAME_UI_BOTTOM - h; }
 }

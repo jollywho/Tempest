@@ -15,8 +15,8 @@ enum WeaponType
 class Weapon 
 {
 public:
-	virtual void Update(const int& iElapsedTime) = 0;
-	virtual void Draw(SDL_Surface *dest) = 0;
+	virtual void Update(const int& rDeltaTime) = 0;
+	virtual void Draw(SDL_Surface *pDest) = 0;
 	virtual void MajorAttack(std::list<PlayerBullet*>& pl_bulletlist) = 0;
 	virtual void MinorAttack(std::list<PlayerBullet*>& pl_bulletlist) = 0;
 	virtual void StopAttack() = 0;

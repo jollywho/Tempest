@@ -13,7 +13,7 @@ public:
 	Chest(int x, int y, int value);
     ~Chest();
     void Update(Uint32 deltaTicks);
-    void Draw(SDL_Surface *dest);
+    void Draw(SDL_Surface *pDest);
 };
 
 

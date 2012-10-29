@@ -1,38 +1,33 @@
 #pragma once
 #ifndef TIMER_H
 #define TIMER_H
-//The timer
+
 class Timer
 {
 private:
     //The clock time when the timer started
-    int startTicks;
+    int mStartTicks;
 
     //The ticks stored when the timer was paused
-    int pausedTicks;
+    int mPausedTicks;
 
     //The timer status
-    bool paused;
-    bool started;
-    int it;
+    bool mPaused;
+    bool mStarted;
+    int mIt;
 
 public:
-    //Initializes variables
     Timer();
-    bool m_delete;
-    //The various clock actions
-    void start();
-    void stop();
-    void pause();
-    void unpause();
+    void Start();
+    void Stop();
+    void Pause();
+    void UnPause();
 
-    //Gets the timer's time
-    int get_ticks();
-    void set_ticks(int t);
+    int GetTicks();
+    void SetTicks(int t);
 
-    //Checks the status of the timer
-    bool is_started();
-    bool is_paused();
+    bool IsStarted(); 
+    bool IsPaused();
 };
 
 #endif

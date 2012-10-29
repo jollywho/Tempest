@@ -5,14 +5,14 @@
 #include "Pattern/EnemyBullet.h"
 #include "Enemy/Enemy.h"
 
-SpriteInfo* Bomb::sprite;
+SpriteInfo* Bomb::mpSprite;
 
 Bomb::Bomb()
 {
 	printf("Bomb created\n");
-	active = false;
+	mActive = false;
 	SpriteResource::AddResource("Player", "bomb.png", 192, 192, 60, 24);
-	sprite = &SpriteResource::RequestResource("Player", "bomb.png");
+	mpSprite = &SpriteResource::RequestResource("Player", "bomb.png");
 }
 
 Bomb::~Bomb()
@@ -22,42 +22,42 @@ Bomb::~Bomb()
 
 void Bomb::Start(int x, int y)
 {
-	xVal = x - sprite->width/2 + Camera::CameraX();
-	yVal = y - sprite->height*2 + Camera::CameraY2();
+	mX = x - mpSprite->width/2 + Camera::CameraX();
+	mY = y - mpSprite->height*2 + Camera::CameraY2();
 
 	/* Always have bomb visible on screen */
 	//todo: have bomb movement and wall collision
 	//issue: camera throws these values off
-	if (xVal < _G_BANNER_WIDTH) xVal = _G_BANNER_WIDTH + 20;
-	if (xVal + sprite->width > _G_LEVEL_WIDTH) xVal = _G_LEVEL_WIDTH - sprite->width - 20;
-	//if (yVal < _G_UI_HEIGHT) yVal = _G_UI_HEIGHT + 20;
-	//if (yVal + sprite->height > _G_UI_BOTTOM) yVal = _G_UI_BOTTOM - sprite->height - 20;
+	if (mX < GAME_BANNER_WIDTH) mX = GAME_BANNER_WIDTH + 20;
+	if (mX + mpSprite->width > GAME_LEVEL_WIDTH) mX = GAME_LEVEL_WIDTH - mpSprite->width - 20;
+	//if (mY < GAME_UI_TOP) mY = GAME_UI_TOP + 20;
+	//if (mY + sprite->height > GAME_UI_BOTTOM) mY = GAME_UI_BOTTOM - sprite->height - 20;
 
-	active = true;
-	clip = 0;
-	dps_timer.start();
-	clip_timer.start();
+	mActive = true;
+	mClip = 0;
+	dps_timer.Start();
+	mClipTimer.Start();
 }
 
-void Bomb::Update(const int& iElapsedTime)
+void Bomb::Update(const int& rDeltaTime)
 {
-	if (!active) return;
-	if (clip >= sprite->clip_count) active = false;
-	Shared::CheckClip(clip_timer, clip, sprite->interval, sprite->clip_count, sprite->clip_count);
+	if (!mActive) return;
+	if (mClip >= mpSprite->maxClips) mActive = false;
+	Shared::CheckClip(mClipTimer, mClip, mpSprite->interval, mpSprite->maxClips, mpSprite->maxClips);
 
     for (auto it = CPlayState::Instance()->en_bulletlist.begin(); it != CPlayState::Instance()->en_bulletlist.end(); it++)
         (*it)->Destroy();
 
-    if (dps_timer.get_ticks() > 60)
+    if (dps_timer.GetTicks() > 60)
     {
         for (auto it = CPlayState::Instance()->enemy_list.begin(); it != CPlayState::Instance()->enemy_list.end();it++)
             (*it)->TakeHit(1);
-		dps_timer.start();
+		dps_timer.Start();
     }
 }
 
-void Bomb::Draw(SDL_Surface *dest)
+void Bomb::Draw(SDL_Surface *pDest)
 {
-	if (!active) return;
-	Camera::DrawSurface(xVal, yVal, sprite->surface, dest, &sprite->clips[clip]);
+	if (!mActive) return;
+	Camera::DrawSurface(mX, mY, mpSprite->pSurface, pDest, &mpSprite->pClips[mClip]);
 }
