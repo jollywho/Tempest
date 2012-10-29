@@ -38,10 +38,9 @@ protected:
 		Point totalPoint;
 		std::stringstream countStr;
 		std::stringstream totalStr;
-		Tally() : visible(false), value(0), count(0), total(0),
-			countPoint(Point(0,0)), totalPoint(Point(0,0)), countStr("0"), totalStr("0") {}
 	};
 	bool TickCounter(Tally& rItem, int counterType, int countLeft);
+	void Reset(Tally& rItem);
 private:
 	static CPollState mIntroState;
 	FontInfo* mpFont;
@@ -60,6 +59,7 @@ private:
 	bool mEnter; 
 	bool mFadeout;
 	bool mReady;
+	bool mSkip;
 
 	/* Totals */
 	Tally mGem;
@@ -70,6 +70,7 @@ private:
 	NSprite* mpGem;
 	NSprite* mpCoin;
 	NSprite* mpQuartz;
+	NSprite* mpReady;
 
 	/*
 	todo:

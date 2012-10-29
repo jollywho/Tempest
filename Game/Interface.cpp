@@ -21,6 +21,7 @@ Interface::Interface()
 	SpriteResource::AddResource("UI", "lives_counter.png", 12, 24, 60, 6);
 	SpriteResource::AddResource("UI", "bombs_counter.png", 24, 24, 60, 5);
 	SpriteResource::AddResource("UI", "healthbar.png", 471, 16, 120, 6, true);
+	SpriteResource::AddResource("UI", "poll_ready_banner.png", 168, 60, 200, 4, true);
 
 	for(int i=0; i<5; i++)
 	{

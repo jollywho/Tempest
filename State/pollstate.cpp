@@ -16,11 +16,8 @@ void CPollState::Init()
 	printf("CPollState initialize\n");
 	ClearRequest();
 	mpBackground =  Shared::LoadImage("Image/UI/poll.bmp");
-
 	banner_middle = Shared::LoadImage("Image/UI/poll_banner_middle.png");
 	banner_side = Shared::LoadImage("Image/UI/poll_banner_side.png");
-
-	FontResource::AddFont("bobble_red.png");
 	mpFont = &FontResource::RequestFont("bobble_red.png");
 
 	/* Banners */
@@ -34,17 +31,21 @@ void CPollState::Init()
 	banner_speed = 12;
 
 	/* Items */
+	Reset(mGem);
+	Reset(mCoin);
+	Reset(mQuartz);
 	mGem.value = 25;
 	mCoin.value = 5;
 	mQuartz.value = 100;
 
 	/* NSprite */
 	mpGem = new NSprite(WINDOW_WIDTH/2, 50 + 140, &SpriteResource::RequestResource("Items", "Gem.png"));
-	mpCoin = new NSprite(WINDOW_WIDTH/2, 50 + 260, &SpriteResource::RequestResource("Items", "Coin.png"));
-	mpQuartz = new NSprite(WINDOW_WIDTH/2, 50 + 360, &SpriteResource::RequestResource("Items", "Quartz.png"));
+	mpCoin = new NSprite(WINDOW_WIDTH/2, 50 + 250, &SpriteResource::RequestResource("Items", "Coin.png"));
+	mpQuartz = new NSprite(WINDOW_WIDTH/2, 50 + 370, &SpriteResource::RequestResource("Items", "Quartz.png"));
+	mpReady = new NSprite(WINDOW_WIDTH/2, 50 + 480, &SpriteResource::RequestResource("UI", "poll_ready_banner.png"));
 
 	mExit = false; mReady = false;
-	mEnter = true; mFadeout = false;
+	mEnter = true; mFadeout = false; mSkip = false;
 
 	mFadeTimer.Start();
 }
@@ -75,9 +76,10 @@ void CPollState::KeyInput(const KeyStruct& rKeys)
 	if (mExit) return;
 	if (rKeys.z)
 	{
-		mExit = true;
-		//todo: skip
-		//todo: if skip | ready => change state
+		if (!mSkip)
+			mSkip = true;
+		if (mReady)
+			mExit = true;
 	}
 }
 
@@ -127,31 +129,42 @@ void CPollState::Update(const int& rDeltaTime)
 					mReady = true;
 	}
 	mpGem->Update(); mpCoin->Update(); mpQuartz->Update();
+	mpReady->Update();
 	CPlayState::Instance()->mpInterface->Update(rDeltaTime);
+}
+
+void CPollState::Reset(Tally& rItem)
+{
+	rItem.countPoint = Point(0,0);
+	rItem.totalPoint = Point(0,0);
+	rItem.count = 0;
+	rItem.total = 0;
+	rItem.value = 0;
+	rItem.visible = false;
+	rItem.countStr.str("0");
+	rItem.totalStr.str("0");
 }
 
 bool CPollState::TickCounter(Tally& rItem, int counterType, int countLeft)
 {
 	int decrement = countLeft > 5 ? 5: 1;
-	
+	rItem.visible = true;
+	if (mSkip)
+		decrement = countLeft;
 	if (countLeft >= 1)
 	{
 		GameScore::Instance()->IncreaseScore(rItem.value * decrement);
 		GameScore::Instance()->DecreaseCounter(decrement, counterType);
 		rItem.total += rItem.value * decrement;
 		rItem.count += decrement;
-		mGem.totalStr.str("");
-		mGem.totalStr << mGem.total;
-		mGem.countStr.str("");
-		mGem.countStr << mGem.count;
-		rItem.visible = false;
+		rItem.totalStr.str("");
+		rItem.totalStr << rItem.total;
+		rItem.countStr.str("");
+		rItem.countStr << "x" << rItem.count;
 		return false;
 	}
 	else
-	{
-		rItem.visible = true;
 		return true;
-	}
 }
 
 void CPollState::Draw(SDL_Surface* pDest) 
@@ -162,18 +175,26 @@ void CPollState::Draw(SDL_Surface* pDest)
 	Shared::DrawSurface(banner_right_pos.x, banner_right_pos.y, banner_side, pDest);
 	Shared::DrawSurface(banner_middle_pos.x, banner_middle_pos.y, banner_middle, pDest);
 
-	mpFont->pFont->draw(banner_left_pos.x + 20, 180, mGem.totalStr.str().c_str());
-	mpFont->pFont->draw(banner_right_pos.x + 20, 180, mGem.countStr.str().c_str());
-
-	mpFont->pFont->draw(banner_left_pos.x + 20, 300, mCoin.totalStr.str().c_str());
-	mpFont->pFont->draw(banner_right_pos.x + 20, 300, mCoin.countStr.str().c_str());
-
-	mpFont->pFont->draw(banner_left_pos.x + 20, 400, mQuartz.totalStr.str().c_str());
-	mpFont->pFont->draw(banner_right_pos.x + 20, 400, mQuartz.countStr.str().c_str());
-	
-	if (mGem.visible) mpGem->Draw(pDest);
-	if (mCoin.visible) mpCoin->Draw(pDest);
-	if (mQuartz.visible) mpQuartz->Draw(pDest);
+	if (mGem.visible)
+	{
+		mpFont->pFont->draw(banner_left_pos.x + 20, 180, mGem.countStr.str().c_str());
+		mpFont->pFont->draw(banner_right_pos.x + 20, 180, mGem.totalStr.str().c_str());
+		mpGem->Draw(pDest);
+	}
+	if (mCoin.visible) 
+	{
+		mpFont->pFont->draw(banner_left_pos.x + 20, 300, mCoin.countStr.str().c_str());
+		mpFont->pFont->draw(banner_right_pos.x + 20, 300, mCoin.totalStr.str().c_str());
+		mpCoin->Draw(pDest);
+	}
+	if (mQuartz.visible)
+	{
+		mpFont->pFont->draw(banner_left_pos.x + 20, 400, mQuartz.countStr.str().c_str());
+		mpFont->pFont->draw(banner_right_pos.x + 20, 400, mQuartz.totalStr.str().c_str());
+		mpQuartz->Draw(pDest);
+	}
+	if (mReady && !mExit)
+		mpReady->Draw(pDest);
 	
 	SPG_RectFilledBlend(pDest, GAME_BANNER_WIDTH, 0, GAME_BOUNDS_WIDTH, WINDOW_HEIGHT, 16777215, mAlpha);
 

@@ -3,6 +3,7 @@
 #include "Level01.h"
 #include "Game/Camera.h"
 #include "State/playstate.h"
+#include "Game/GameScore.h"
 #include "Enemy/Enemy.h"
 #include "Enemy/Zown.h"
 
@@ -22,6 +23,7 @@ Level01::Level01()
 
 	mLevelEnd = 6400;
 	Camera::Reset();
+	GameScore::Instance()->ResetLevel();
 
 	for (int i=6500; i>0; i-=100)
 		enemy_cache.push_back(new Zown(GAME_LEVEL_WIDTH/2,i));

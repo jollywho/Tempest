@@ -160,11 +160,11 @@ void GameScore::ResetGame()
 
 void GameScore::ResetLevel()
 {
-	mGems = 0;
-	mCoins = 0;
+	mGems = 230;
+	mCoins = 990;
+	mQuartz = 50;
 	mBombs = 0;
 	mLives = 0;
-	mQuartz = 0;
 }
 
 void GameScore::ResetSpawn()
