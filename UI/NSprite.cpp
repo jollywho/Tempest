@@ -1,43 +1,25 @@
 #include "NSprite.h"
 #include "Engine/SpriteResource.h"
 
-NSprite::NSprite(int x, int y, int size, int maxClips, int interval, SDL_Surface* pSrc, bool doesStop, bool isReverse)
+NSprite::NSprite(float x, float y, SpriteInfo* pInfo, bool doesStop, bool isReverse)
 {
-	mUseInfo = false;
-	mX = x; 
-	mY = y;
-	mMaxClip = maxClips;
-	mpClips = new SDL_Rect[maxClips];
-	Shared::SetFrames(mpClips, maxClips, size, size);
-	mpSurface = pSrc;
-	mStop = doesStop;
-	mClip = rand() % (maxClips-1);
-	mInterval = interval;
-	mReverse = isReverse;
-	mDir = -1;
-	mClipTimer.Start();
-}
+	mPos.x = x - pInfo->width/2; 
+	mPos.y = y - pInfo->height/2;
 
-NSprite::NSprite(int x, int y, SpriteInfo* pInfo, bool doesStop, bool isReverse)
-{
-	mUseInfo = true;
-	mX = x - pInfo->width/2; 
-	mY = y - pInfo->height/2;
-	mMaxClip = pInfo->maxClips;
-	mpClips = pInfo->pClips;
-	mpSurface = pInfo->pSurface;
-	mClip = 0; mStop = doesStop;
+	mpInfo = pInfo;
 	mDir = -1;
+	mClip = 0; 
+
+	mStop = doesStop;
 	mReverse = isReverse;
-	mClip = rand() % (pInfo->maxClips-1);
-	mInterval = pInfo->interval;
+
+	//mClip = rand() % (pInfo->maxClips-1);
+
 	mClipTimer.Start();
 }
 
 NSprite::~NSprite() 
 {
-	if (!mUseInfo)
-		delete[] mpClips;
 }
 
 void NSprite::Reset()
@@ -45,18 +27,24 @@ void NSprite::Reset()
 	mClip = 0;
 }
 
+void NSprite::SetPos(FPoint& rCenter)
+{
+	mPos.x = rCenter.x - mpInfo->width/2; 
+	mPos.y = rCenter.y - mpInfo->height/2;
+}
+
 void NSprite::Update()
 {
-	if (mStop)
+	if (mStop && !mDone)
 	{
-		if (mClip < mMaxClip)
-			Shared::CheckClip(mClipTimer, mClip, mInterval, mMaxClip, mMaxClip-1);
+		mDone = mClip < mpInfo->maxClips? false: true;
+		Shared::CheckClip(mClipTimer, mClip, mpInfo->interval, mpInfo->maxClips, mpInfo->maxClips-1);
 	}
 	if (mReverse)
 	{
-		if (mClipTimer.GetTicks() > mInterval)
+		if (mClipTimer.GetTicks() > mpInfo->maxClips)
 		{ 
-			if (mClip > 0 && mClip < mMaxClip-1)
+			if (mClip > 0 && mClip < mpInfo->maxClips-1)
 				mClip+=mDir;
 			else {
 				mDir = mDir * -1; mClip+=mDir; }
@@ -64,10 +52,10 @@ void NSprite::Update()
 		}
 	}
 	else
-		Shared::CheckClip(mClipTimer, mClip, mInterval, mMaxClip, 0);
+		Shared::CheckClip(mClipTimer, mClip, mpInfo->interval, mpInfo->maxClips, 0);
 }
 
 void NSprite::Draw(SDL_Surface *pDest)
 {
-	Shared::DrawSurface(mX, mY, mpSurface, pDest, &mpClips[mClip]);
+	Shared::DrawSurface(mPos.x, mPos.y, mpInfo->pSurface, pDest, &mpInfo->pClips[mClip]);
 }

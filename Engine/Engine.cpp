@@ -10,8 +10,6 @@
 #include "State/Pausestate.h"
 #include "State/Optionstate.h"
 #include "State/Continuestate.h"
- 
-const KeyStruct DEFAULT_KEYS = { false, false, false, false, false, false, false, false };
 
 /** Default constructor. **/
 CEngine::CEngine()
@@ -24,7 +22,6 @@ CEngine::CEngine()
 
 	mMinimized		= false;
 
-	mKeys = DEFAULT_KEYS;
 	mpMenuState = NULL;
 }
  
@@ -82,6 +79,7 @@ void CEngine::Init()
 CGameState* CEngine::StateInstance(State id)
 {
 	printf("--STATE CHANGE--\n");
+	mKeys = KeyStruct();
 	switch(id)
 	{
 		case State::Intro:

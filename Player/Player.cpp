@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "Engine/SpriteResource.h"
+#include "UI/NSprite.h"
 #include "State/playstate.h"
 #include "Weapon/MType.h"
 
@@ -16,26 +17,25 @@ void Player::ReSpawn()
 Player::Player() 
 {
 	printf("Player Created\n");
-	SpriteResource::AddResource("Player", "Angel.png", 64, 64, 120, 4);
-	SpriteResource::AddResource("Player", "Hitbox.png", 20, 20, 60, 8);
-	SpriteResource::AddResource("Player", "Booster.png", 38, 38, 60, 5);
-	SpriteResource::AddResource("Player", "Zone.png", 120, 120, 60, 4);
+	SpriteResource::AddResource("Player", "angel.png", 64, 64, 120, 4);
+	SpriteResource::AddResource("Player", "hitbox.png", 20, 20, 60, 8);
+	SpriteResource::AddResource("Player", "booster.png", 38, 38, 60, 5);
+	SpriteResource::AddResource("Player", "zone.png", 120, 120, 60, 4);
+	SpriteResource::AddResource("Player", "player_explosion.png", 96, 96, 60, 20);
+	SpriteResource::AddResource("Player", "invuln_wings.png", 91, 187, 60, 9);
 
-	mpAngel = &SpriteResource::RequestResource("Player", "Angel.png");
-	mpHitbox = &SpriteResource::RequestResource("Player", "Hitbox.png");
-	mpBooster = &SpriteResource::RequestResource("Player", "Booster.png");
-	mpZone = &SpriteResource::RequestResource("Player", "Zone.png");
-
-	mClip = 0; mZoneClip = 0; mHitboxClip = 0; mBoosterClip = 0;
+	mpAngel = new NSprite(0,0, &SpriteResource::RequestResource("Player", "angel.png"));
+	mpHitbox = new NSprite(0,0, &SpriteResource::RequestResource("Player", "hitbox.png"));
+	mpBooster = new NSprite(0,0, &SpriteResource::RequestResource("Player", "booster.png"));
+	mpZone = new NSprite(0,0, &SpriteResource::RequestResource("Player", "zone.png"));
+	mpExplosion = new NSprite(0,0, &SpriteResource::RequestResource("Player", "player_explosion.png"), true);
+	mpWings = new NSprite(0,0, &SpriteResource::RequestResource("Player", "invuln_wings.png"));
 
 	mSpeed = SPEED_NORMAL;
     mov = 0;
 	left = 0; right = 0; up = 0; down = 0;
 	mShift = false; mAttack = false; mBomb = false;
-    mZoneTimer.Start();
-    mHitboxTimer.Start();
-    mBoosterTimer.Start();
-	mClipTimer.Start();
+	mExplode = false; mInvuln = false; mLocked = false;
 
     mX = GAME_LEVEL_WIDTH/2 + 192/2;
     mY = GAME_BOUNDS_HEIGHT/2 + 192/4;
@@ -65,6 +65,7 @@ Player::~Player()
 
 void Player::KeyInput(const KeyStruct& rKeys)
 {
+	if (mExplode || mLocked) return;
 	if (rKeys.up) up = -1;
 	else up = 0;
 	if (rKeys.down) down = 1;
@@ -96,15 +97,18 @@ void Player::HandleMovement(const int& rDeltaTime)
 	mX += (vx * mSpeed) * (rDeltaTime/1000.f);
 	mY += (vy * mSpeed) * (rDeltaTime/1000.f);
 
-	if (mX < GAME_BANNER_WIDTH) mX = GAME_BANNER_WIDTH;
-	if (mX + mpAngel->width > GAME_BOUNDS_WIDTH) mX = GAME_BOUNDS_WIDTH - mpAngel->width;
-	if (mY < GAME_UI_TOP) mY = GAME_UI_TOP;
-	if (mY + mpAngel->height > GAME_UI_BOTTOM) mY = GAME_UI_BOTTOM - mpAngel->height;
+	if (!mLocked)
+	{
+		if (mX < GAME_BANNER_WIDTH) mX = GAME_BANNER_WIDTH;
+		if (mX + ANGEL_SIZE > GAME_BOUNDS_WIDTH) mX = GAME_BOUNDS_WIDTH - ANGEL_SIZE;
+		if (mY < GAME_UI_TOP) mY = GAME_UI_TOP;
+		if (mY + ANGEL_SIZE > GAME_UI_BOTTOM) mY = GAME_UI_BOTTOM - ANGEL_SIZE;
+	}
 }
 
 void Player::HandleAttacks(const int& rDeltaTime)
 {
-	mspWpn->SetPos(mX + mpAngel->width/2, mY, 0);
+	mspWpn->SetPos(mX + ANGEL_SIZE/2, mY, 0);
 	if (mAttack)
 	{
 		if (mShift)	mspWpn->MajorAttack(CPlayState::Instance()->pl_bulletlist);
@@ -116,63 +120,100 @@ void Player::HandleAttacks(const int& rDeltaTime)
 	if (mShift)mspWpn->Shift();
 	else mspWpn->Unshift();
 
-	if (mBomb && !mspBomb->IsActive()) mspBomb->Start(mX + mpAngel->width/2, mY);
+	if (mBomb && !mspBomb->IsActive()) mspBomb->Start(mX + ANGEL_SIZE/2, mY);
 
 	mspWpn->Update(rDeltaTime);
 	mspBomb->Update(rDeltaTime);
 }
 
+void Player::UpdateExploding(const int& rDeltaTime)
+{
+	mpExplosion->Update();
+	if (mpExplosion->IsDone())
+	{
+		mExplode = false;
+		mInvuln = true;
+		mLocked = true;
+		mX = GAME_LEVEL_WIDTH/2;
+		mY = GAME_BOUNDS_HEIGHT + 100;
+	}
+}
+
+void Player::UpdateLocked(const int& rDeltaTime)
+{
+	mpWings->Update();
+}
+
 void Player::Update(const int& rDeltaTime)
 {
-	Shared::CheckClip(mClipTimer, mClip, mpAngel->interval, mpAngel->maxClips, 0);
-	Shared::CheckClip(mBoosterTimer, mBoosterClip, mpBooster->interval, mpBooster->maxClips, 0);
-	Shared::CheckClip(mHitboxTimer, mHitboxClip, mpHitbox->interval, mpHitbox->maxClips, 0);
-	Shared::CheckClip(mZoneTimer, mZoneClip, mpZone->interval, mpZone->maxClips, 0);
+	if (mExplode)
+		UpdateExploding(rDeltaTime);
+	if (mLocked)
+		UpdateLocked(rDeltaTime);
 
+	mpAngel->Update();
+	mpBooster->Update();
+	mpHitbox->Update();
+	mpZone->Update();
 
 	HandleMovement(rDeltaTime);
-	mBooster.x = mX + mpAngel->width/2 - mpBooster->width/2;
-	mBooster.y = mY + mpAngel->height - mpBooster->height/2;
-	mHitbox.x = mX + mpAngel->width/2 - mpHitbox->width/2;
-	mHitbox.y = mY + mpAngel->height - mpHitbox->height*2;
-	mZone.x = mX + mpAngel->width/2 - mpZone->width/2;
-	mZone.y = mY + mpAngel->height/2 - mpZone->height/2;
+
+	FPoint center_point = FPoint(mX + ANGEL_SIZE/2, mY + ANGEL_SIZE/2);
+	FPoint hit_point = FPoint(mX + ANGEL_SIZE, mY + ANGEL_SIZE*2);
+	mpAngel->SetPos(center_point);
+	mpBooster->SetPos(center_point);
+	mpWings->SetPos(center_point);
+	mpZone->SetPos(center_point);
+	mpHitbox->SetPos(hit_point);
 
 	HandleAttacks(rDeltaTime);
 }
 
 void Player::Draw(SDL_Surface *pDest)
 {
-	//move to separate function for draw order?
+	if (mExplode)
+	{
+		mpExplosion->Draw(pDest);
+		return;
+	}
+
 	if (mShift)
-		Shared::DrawSurface(mZone.x, mZone.y, mpZone->pSurface, pDest, &mpZone->pClips[mZoneClip]);
+		mpZone->Draw(pDest);
 	mspWpn->Draw(pDest);
 	mspBomb->Draw(pDest);
-	Shared::DrawSurface(mBooster.x, mBooster.y, mpBooster->pSurface, pDest, &mpBooster->pClips[mBoosterClip]);
-	Shared::DrawSurface(mX, mY, mpAngel->pSurface, pDest, &mpAngel->pClips[mClip]);
-	Shared::DrawSurface(mHitbox.x, mHitbox.y, mpHitbox->pSurface, pDest, &mpHitbox->pClips[mHitboxClip]);
+	mpBooster->Draw(pDest);
+	mpAngel->Draw(pDest);
+	mpHitbox->Draw(pDest);
+
+	if (mInvuln)
+		mpWings->Draw(pDest);
 }
 
 SDL_Rect Player::GetBounds()
 {
-	SDL_Rect temp = {mHitbox.x, mHitbox.y, mpHitbox->width, mpHitbox->height};
+	SDL_Rect temp = {mX, mY, HITBOX_SIZE, HITBOX_SIZE};
     return temp;
 }
 
 SDL_Rect Player::GetOuterBounds()
 {
-	SDL_Rect temp = {mX, mY, mpAngel->width, mpAngel->height};
+	SDL_Rect temp = {mX, mY, ANGEL_SIZE, ANGEL_SIZE};
     return temp;
 }
 
 Point Player::GetCenter()
 {
-	return Point(mX + mpAngel->width/2, mY + mpAngel->height/2);
+	return Point(mX + ANGEL_SIZE/2, mY + ANGEL_SIZE/2);
 }
 
 void Player::TakeHit()
 {
-	//todo: die animation and respawn timer
+	if (!mInvuln)
+	{
+		mExplode = true;
+		mpExplosion->Reset();
+		mpExplosion->SetPos(FPoint(mX + ANGEL_SIZE/2, mY + ANGEL_SIZE/2));
+	}
 }
 
 bool Player::IsBombActive()

@@ -8,6 +8,7 @@
 
 struct SpriteInfo;
 class Bomb;
+class NSprite;
 
 class Player 
 {
@@ -18,8 +19,7 @@ public:
     void KeyInput(const KeyStruct& rKeys);
     void ReSpawn();
 
-	void HandleMovement(const int& rDeltaTime);
-	void HandleAttacks(const int& rDeltaTime);
+
     void Update( const int& rDeltaTime);
 
     void Draw(SDL_Surface *pDest);
@@ -36,6 +36,11 @@ public:
 	void WeaponLevelUp();
 
 private:
+
+	void HandleMovement(const int& rDeltaTime);
+	void HandleAttacks(const int& rDeltaTime);
+	void UpdateExploding(const int& rDeltaTime);
+	void UpdateLocked(const int& rDeltaTime);
 	static Weapon* mspWpn;
 	static Bomb* mspBomb;
 	int mSpeed;
@@ -44,29 +49,21 @@ private:
 	bool mShift; bool mAttack; bool mBomb;
     static const int SPEED_NORMAL = 350;
     static const int SPEED_SLOW = 180;
+	static const int HITBOX_SIZE = 20;
+	static const int ANGEL_SIZE = 64;
 
 	bool mExplode;
-
-	Point mBooster;
-	Timer mBoosterTimer;
-    int mBoosterClip;
-
-	Point mHitbox;
-	Timer mHitboxTimer;
-    int mHitboxClip;
-
-    Point mZone;
-    Timer mZoneTimer;
-    int mZoneClip;
+	bool mInvuln;
+	bool mLocked;
 
     float mX; float mY;
-    Timer mClipTimer;
-	int mClip;
 
-	SpriteInfo* mpAngel;
-	SpriteInfo* mpBooster;
-	SpriteInfo* mpHitbox;
-	SpriteInfo* mpZone;
+	NSprite* mpAngel;
+	NSprite* mpBooster;
+	NSprite* mpHitbox;
+	NSprite* mpZone;
+	NSprite* mpExplosion;
+	NSprite* mpWings;
 };
 
 #endif

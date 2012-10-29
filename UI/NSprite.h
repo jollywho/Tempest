@@ -9,23 +9,26 @@ struct SpriteInfo;
 class NSprite
 {
 private:
-	bool mUseInfo;
-    int mMaxClip;
-    int mSize;
-    SDL_Rect* mpClips;
+	SpriteInfo* mpInfo;
+
 	int mClip;
-	int mInterval;
-	SDL_Surface* mpSurface;
-	int mX; int mY;
+	FPoint mPos;
 	Timer mClipTimer;
-	bool mStop; bool mReverse; int mDir;
+
+	int mDir;
+	bool mStop; 
+	bool mReverse; 
+	bool mDone;
 public:
-	NSprite(int x, int y, int size, int maxClips, int interval, SDL_Surface* pSrc, bool doesStop, bool isReverse=false);
-	NSprite(int x, int y, SpriteInfo* pInfo, bool doesStop=false, bool isReverse=false);
+	explicit NSprite(float x, float y, SpriteInfo* pInfo, bool doesStop=false, bool isReverse=false);
     ~NSprite();
+
     void Update();
     void Draw(SDL_Surface *pDest);
 	void Reset();
+
+	void SetPos(FPoint& rCenter);
+	bool IsDone() { return mDone; }
 };
 
 

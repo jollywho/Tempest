@@ -52,6 +52,9 @@ struct KeyStruct
 	bool enter;
 	bool shift;
 	bool esc;
+	bool none;
+	KeyStruct() { 
+		std::fill(&left, &none+1, false); }
 };
 
 class Shared
@@ -61,7 +64,7 @@ public:
 
 	static void DrawSurface( int x, int y, SDL_Surface* pSource, SDL_Surface* pDest, SDL_Rect* pClips = NULL );
 
-	static void CheckClip(Timer &rTimer, int &rClips, int interval, int maxClip, int reset);
+	static void CheckClip(Timer &rTimer, int &rClip, int interval, int maxClip, int reset);
 
 	static void SetFrames(SDL_Rect* pClips, int maxClips, int width, int height, int y=0);
 
