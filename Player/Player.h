@@ -17,15 +17,14 @@ public:
     ~Player();
 
     void KeyInput(const KeyStruct& rKeys);
-    void ReSpawn();
 
 
     void Update( const int& rDeltaTime);
 
     void Draw(SDL_Surface *pDest);
 
-    SDL_Rect GetBounds();
-    SDL_Rect GetOuterBounds();
+    Rect& GetBounds();
+    Rect& GetOuterBounds();
 	Point GetCenter();
 	void TakeHit();
 
@@ -49,13 +48,16 @@ private:
 	bool mShift; bool mAttack; bool mBomb;
     static const int SPEED_NORMAL = 350;
     static const int SPEED_SLOW = 180;
+	static const int SPEED_RECOVERY = 220;
 	static const int HITBOX_SIZE = 20;
 	static const int ANGEL_SIZE = 64;
+	static const int INVULN_DURATION = 3000;
 
 	bool mExplode;
 	bool mInvuln;
 	bool mLocked;
 
+	Timer mInvulnTimer;
     float mX; float mY;
 
 	NSprite* mpAngel;

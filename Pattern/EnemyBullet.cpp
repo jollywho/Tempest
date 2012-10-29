@@ -10,7 +10,6 @@ EnemyBullet::EnemyBullet()
 	mClip = 0;
 	mClipTimer.Start();
 	mDelete = false;
-	mBombed = false;
 	mExplode = CPlayState::Instance()->mpPlayer->IsBombActive();
 }
 
@@ -24,8 +23,10 @@ void EnemyBullet::Init()
 
 void EnemyBullet::DetectCollision()
 {
-	//todo: mpPlayer->IsInvuln/Exploding
-    SDL_Rect playerbox = CPlayState::Instance()->mpPlayer->GetBounds();
+	if (CPlayState::Instance()->mpPlayer->IsExploding()) 
+		return;
+
+    SDL_Rect playerbox = CPlayState::Instance()->mpPlayer->GetBounds().rect;
     float dx = (playerbox.x + playerbox.w/2) - (mX - Camera::CameraX()  + mpRotInfo->width/2);
     float dy = (playerbox.y + playerbox.h/2) - (mY - Camera::CameraY2() + mpRotInfo->height/2);
 	double Length = sqrt(pow(dx, 2) + pow(dy, 2));
@@ -40,8 +41,9 @@ void EnemyBullet::DetectCollision()
 
 void EnemyBullet::Destroy()
 {
+	//only active bullets when bombed spawn coins
     if (!mExplode)
-        mBombed = true;
+        //spawn coins
      mExplode = true;
 }
 

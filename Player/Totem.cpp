@@ -65,3 +65,9 @@ float Totem::GetVertical()
 {
     return mY;
 }
+
+void Totem::ResetPos(int x, int y)
+{
+	mX = x;
+	mY = y;
+}

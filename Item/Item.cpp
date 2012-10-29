@@ -63,7 +63,7 @@ void Item::CheckCollision()
 {
 	if (CPlayState::Instance()->mpPlayer->IsExploding())
 		return;
-    SDL_Rect playerbox = CPlayState::Instance()->mpPlayer->GetOuterBounds();
+    SDL_Rect playerbox = CPlayState::Instance()->mpPlayer->GetOuterBounds().rect;
     int dx = (playerbox.x + playerbox.w/2) - (mOffset.x - Camera::CameraX()  + mOffset.w/2);
     int dy;
 	if (mAir) { dy = (playerbox.y + playerbox.h/2) - (mOffset.y + mOffset.h/2); }

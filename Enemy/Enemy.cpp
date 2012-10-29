@@ -106,7 +106,7 @@ void Enemy::DetectCollision()
 		return;
 	}
 
-	SDL_Rect pl_mpHitbox = CPlayState::Instance()->mpPlayer->GetBounds();
+	SDL_Rect pl_mpHitbox = CPlayState::Instance()->mpPlayer->GetBounds().rect;
 
 	if (mHitbox.x + mHitbox.w > pl_mpHitbox.x  && 
         mHitbox.x < pl_mpHitbox.x + pl_mpHitbox.w  && 

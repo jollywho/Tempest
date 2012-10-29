@@ -28,7 +28,7 @@ void Quartz::Update(Uint32 deltaTicks)
 {
 	if (pickedup) mDelete = true;
 	Shared::CheckClip(mClipTimer, mClip, 50, mpInfo->maxClips, 0);
-	SDL_Rect playerbox = CPlayState::Instance()->mpPlayer->GetOuterBounds();
+	SDL_Rect playerbox = CPlayState::Instance()->mpPlayer->GetOuterBounds().rect;
     float dx = (playerbox.x + playerbox.w/2) - (mOffset.x - Camera::CameraX()  + mOffset.w/2);
     float dy = (playerbox.y + playerbox.h/2) - (mOffset.y - Camera::CameraY2() + mOffset.h/2);
 	double Length = sqrt(pow(dx, 2) + pow(dy, 2));

@@ -16,6 +16,7 @@ public:
 	void MajorAttack(std::list<PlayerBullet*>& pl_bulletlist);
 	void MinorAttack(std::list<PlayerBullet*>& pl_bulletlist);
 	void SetPos(int x, int y, int mv);
+	void ResetPos(int x, int y);
 	void StopAttack();
 	void Shift();
 	void Unshift();

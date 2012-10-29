@@ -32,6 +32,8 @@ public:
 
     float GetMiddle();
     float GetVertical();
+
+	void ResetPos(int x, int y);
 };
 
 #endif

@@ -57,6 +57,17 @@ struct KeyStruct
 		std::fill(&left, &none+1, false); }
 };
 
+struct Rect
+{
+	SDL_Rect rect;
+	Rect(int x, int y, int w, int h) { 
+		rect.x = x;
+		rect.y = y;
+		rect.w = w;
+		rect.h = h;
+	}
+};
+
 class Shared
 {
 public:

@@ -29,6 +29,7 @@ public:
 
 	void SetPos(FPoint& rCenter);
 	bool IsDone() { return mDone; }
+	Rect& Bounds();
 };
 
 

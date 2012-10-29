@@ -14,6 +14,7 @@ public:
 	void Draw(SDL_Surface* dest);
     bool IsActive() { return mActive; };
 	void Start(int x, int y);
+	void BulletWipe();
 private:
     Timer dps_timer;
 	Timer mClipTimer;

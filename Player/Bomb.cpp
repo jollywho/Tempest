@@ -39,13 +39,19 @@ void Bomb::Start(int x, int y)
 	mClipTimer.Start();
 }
 
+void Bomb::BulletWipe()
+{
+	for (auto it = CPlayState::Instance()->en_bulletlist.begin(); it != CPlayState::Instance()->en_bulletlist.end(); it++)
+        (*it)->Destroy();
+}
+
 void Bomb::Update(const int& rDeltaTime)
 {
 	if (!mActive) return;
 	if (mClip >= mpSprite->maxClips) mActive = false;
 	Shared::CheckClip(mClipTimer, mClip, mpSprite->interval, mpSprite->maxClips, mpSprite->maxClips);
 
-    for (auto it = CPlayState::Instance()->en_bulletlist.begin(); it != CPlayState::Instance()->en_bulletlist.end(); it++)
+	for (auto it = CPlayState::Instance()->en_bulletlist.begin(); it != CPlayState::Instance()->en_bulletlist.end(); it++)
         (*it)->Destroy();
 
     if (dps_timer.GetTicks() > 60)

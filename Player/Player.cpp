@@ -97,7 +97,7 @@ void Player::HandleMovement(const int& rDeltaTime)
 	mX += (vx * mSpeed) * (rDeltaTime/1000.f);
 	mY += (vy * mSpeed) * (rDeltaTime/1000.f);
 
-	if (!mLocked)
+	if (!mLocked && !mExplode)
 	{
 		if (mX < GAME_BANNER_WIDTH) mX = GAME_BANNER_WIDTH;
 		if (mX + ANGEL_SIZE > GAME_BOUNDS_WIDTH) mX = GAME_BOUNDS_WIDTH - ANGEL_SIZE;
@@ -134,14 +134,21 @@ void Player::UpdateExploding(const int& rDeltaTime)
 		mExplode = false;
 		mInvuln = true;
 		mLocked = true;
-		mX = GAME_LEVEL_WIDTH/2;
-		mY = GAME_BOUNDS_HEIGHT + 100;
+		mY = GAME_BOUNDS_HEIGHT + 200;
+		mspWpn->ResetPos(mX + ANGEL_SIZE/2, mY);
+		mInvulnTimer.Start();
 	}
 }
 
 void Player::UpdateLocked(const int& rDeltaTime)
 {
-	mpWings->Update();
+	mSpeed = SPEED_SLOW;
+	up = -1;
+	if (mY < GAME_UI_BOTTOM)
+	{
+		mLocked = false;
+		up = 0;
+	}
 }
 
 void Player::Update(const int& rDeltaTime)
@@ -150,16 +157,19 @@ void Player::Update(const int& rDeltaTime)
 		UpdateExploding(rDeltaTime);
 	if (mLocked)
 		UpdateLocked(rDeltaTime);
+	if (mInvulnTimer.GetTicks() > INVULN_DURATION)
+		mInvuln = false;
 
 	mpAngel->Update();
 	mpBooster->Update();
 	mpHitbox->Update();
 	mpZone->Update();
+	mpWings->Update();
 
 	HandleMovement(rDeltaTime);
 
 	FPoint center_point = FPoint(mX + ANGEL_SIZE/2, mY + ANGEL_SIZE/2);
-	FPoint hit_point = FPoint(mX + ANGEL_SIZE, mY + ANGEL_SIZE*2);
+	FPoint hit_point = FPoint(mX + ANGEL_SIZE/2, mY + HITBOX_SIZE*1.5);
 	mpAngel->SetPos(center_point);
 	mpBooster->SetPos(center_point);
 	mpWings->SetPos(center_point);
@@ -189,16 +199,14 @@ void Player::Draw(SDL_Surface *pDest)
 		mpWings->Draw(pDest);
 }
 
-SDL_Rect Player::GetBounds()
+Rect& Player::GetBounds()
 {
-	SDL_Rect temp = {mX, mY, HITBOX_SIZE, HITBOX_SIZE};
-    return temp;
+    return mpHitbox->Bounds();
 }
 
-SDL_Rect Player::GetOuterBounds()
+Rect& Player::GetOuterBounds()
 {
-	SDL_Rect temp = {mX, mY, ANGEL_SIZE, ANGEL_SIZE};
-    return temp;
+	return mpAngel->Bounds();
 }
 
 Point Player::GetCenter()
@@ -208,11 +216,13 @@ Point Player::GetCenter()
 
 void Player::TakeHit()
 {
-	if (!mInvuln)
+	if (!mInvuln && !mExplode)
 	{
+		KeyInput(KeyStruct());
 		mExplode = true;
 		mpExplosion->Reset();
 		mpExplosion->SetPos(FPoint(mX + ANGEL_SIZE/2, mY + ANGEL_SIZE/2));
+		mspBomb->BulletWipe();
 	}
 }
 

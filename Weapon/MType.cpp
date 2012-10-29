@@ -47,6 +47,13 @@ void MType::SetPos(int x, int y, int mv)
 	wpn_pos.x = x; wpn_pos.y = y;
 }
 
+void MType::ResetPos(int x, int y) 
+{
+	wpn_pos.x = x; wpn_pos.y = y;
+	for (int i=0; i<MAX_TOTEMS; i++)
+		mpTotemList[i]->ResetPos(x, y);
+}
+
 void MType::MinorAttack(std::list<PlayerBullet*>& pl_bulletlist) 
 {		
 	if (wpn_timer.GetTicks() > minor_speed  || wpn_timer.IsPaused())

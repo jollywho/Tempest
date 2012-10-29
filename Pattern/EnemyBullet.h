@@ -21,7 +21,6 @@ public:
 protected:
 	RotationInfo* mpRotInfo;
 	static SpriteInfo* mspExpInfo;
-    bool mBombed;
     float xvel, yvel;
     float mX, mY;
 	void CheckBounds();

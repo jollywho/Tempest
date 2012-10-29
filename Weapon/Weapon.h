@@ -23,6 +23,7 @@ public:
 	virtual void Shift() = 0;
 	virtual void Unshift() = 0;
 	virtual void SetPos(int x, int y, int mv) = 0;
+	virtual void ResetPos(int x, int y) = 0;
 	virtual void LevelUp() { if (level < MAX_TOTEMS) level++; }
 protected:
 	Timer wpn_timer;

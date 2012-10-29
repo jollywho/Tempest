@@ -158,7 +158,7 @@ void CPlayState::Update(const int& rDeltaTime)
 		else
 			PushState(State::Poll);
 	}
-	Camera::Update(mpPlayer->GetOuterBounds().x, rDeltaTime);
+	Camera::Update(mpPlayer->GetOuterBounds().rect.x, rDeltaTime);
 	mpLevel->Update(rDeltaTime);
 	mpLevel->LoadEnemies(enemy_list);
 	mpPlayer->Update(rDeltaTime);
