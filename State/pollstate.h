@@ -4,7 +4,10 @@
 
 #include "gamestate.h"
 #include "Engine/Timer.h"
+#include <sstream>
+
 class FontInfo;
+class NSprite;
 
 class CPollState : public CGameState
 {
@@ -25,7 +28,20 @@ public:
 	}
 protected:
 	CPollState() { }
-
+	struct Tally
+	{
+		bool visible;
+		int value;
+		int count;
+		int total;
+		Point countPoint;
+		Point totalPoint;
+		std::stringstream countStr;
+		std::stringstream totalStr;
+		Tally() : visible(false), value(0), count(0), total(0),
+			countPoint(Point(0,0)), totalPoint(Point(0,0)), countStr("0"), totalStr("0") {}
+	};
+	bool TickCounter(Tally& rItem, int counterType, int countLeft);
 private:
 	static CPollState mIntroState;
 	FontInfo* mpFont;
@@ -43,7 +59,17 @@ private:
 	bool mExit; 
 	bool mEnter; 
 	bool mFadeout;
+	bool mReady;
 
+	/* Totals */
+	Tally mGem;
+	Tally mCoin;
+	Tally mQuartz;
+
+	/* Sprites */
+	NSprite* mpGem;
+	NSprite* mpCoin;
+	NSprite* mpQuartz;
 
 	/*
 	todo:

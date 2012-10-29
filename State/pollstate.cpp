@@ -2,11 +2,14 @@
 #include "Engine/Shared.h"
 #include "Engine/FontResource.h"
 #include "Engine/SpriteResource.h"
+#include "Game/Gamescore.h"
 #include "Game/Interface.h"
 #include "Sprig.h"
 #include "playstate.h"
 
 CPollState CPollState::mIntroState;
+
+
 
 void CPollState::Init()
 {
@@ -20,24 +23,28 @@ void CPollState::Init()
 	FontResource::AddFont("bobble_red.png");
 	mpFont = &FontResource::RequestFont("bobble_red.png");
 
-	//todo: nsprites
-
-	//todo: load scores
-
-	mAlpha = 255;
-	banner_speed = 12;
-	//
-
+	/* Banners */
 	banner_middle_pos.x = WINDOW_WIDTH/2 - 112/2;
 	banner_middle_pos.y = WINDOW_HEIGHT;
-
 	banner_left_pos.x = GAME_BANNER_WIDTH - 116;
 	banner_left_pos.y = WINDOW_HEIGHT/2 - 412/2;
-
 	banner_right_pos.x = GAME_BOUNDS_WIDTH;
 	banner_right_pos.y = WINDOW_HEIGHT/2 - 412/2;
+	mAlpha = 255;
+	banner_speed = 12;
 
-	mExit = false; mEnter = true; mFadeout = false;
+	/* Items */
+	mGem.value = 25;
+	mCoin.value = 5;
+	mQuartz.value = 100;
+
+	/* NSprite */
+	mpGem = new NSprite(WINDOW_WIDTH/2, 50 + 140, &SpriteResource::RequestResource("Items", "Gem.png"));
+	mpCoin = new NSprite(WINDOW_WIDTH/2, 50 + 260, &SpriteResource::RequestResource("Items", "Coin.png"));
+	mpQuartz = new NSprite(WINDOW_WIDTH/2, 50 + 360, &SpriteResource::RequestResource("Items", "Quartz.png"));
+
+	mExit = false; mReady = false;
+	mEnter = true; mFadeout = false;
 
 	mFadeTimer.Start();
 }
@@ -46,9 +53,11 @@ void CPollState::Cleanup()
 {
 	printf("CPollState Cleanup\n");
 	SDL_FreeSurface(mpBackground);
-
 	SDL_FreeSurface(banner_middle);
 	SDL_FreeSurface(banner_side);
+	delete mpGem;
+	delete mpCoin;
+	delete mpQuartz;
 }
 
 void CPollState::Pause()
@@ -96,7 +105,6 @@ void CPollState::Update(const int& rDeltaTime)
 		else
 			if (mAlpha <= 2 )
 				mEnter = false;
-			
 	}
 	else if (mExit)
 	{		
@@ -111,17 +119,39 @@ void CPollState::Update(const int& rDeltaTime)
 		else
 			PopState();
 	}
-
+	else
+	{
+		if (TickCounter(mGem, 1, GameScore::Instance()->GetGemCount()))
+			if (TickCounter(mCoin, 2, GameScore::Instance()->GetCoinCount()))
+				if (TickCounter(mQuartz, 3, GameScore::Instance()->GetQuartzCount()))
+					mReady = true;
+	}
+	mpGem->Update(); mpCoin->Update(); mpQuartz->Update();
 	CPlayState::Instance()->mpInterface->Update(rDeltaTime);
+}
 
-	/*
-	todo: ELSE {}
-	1) Show Nsprite/ Update
-	2) Count its coins until done
-	3) Next item
-	4) If item count = 3, ready = true
-
-	*/
+bool CPollState::TickCounter(Tally& rItem, int counterType, int countLeft)
+{
+	int decrement = countLeft > 5 ? 5: 1;
+	
+	if (countLeft >= 1)
+	{
+		GameScore::Instance()->IncreaseScore(rItem.value * decrement);
+		GameScore::Instance()->DecreaseCounter(decrement, counterType);
+		rItem.total += rItem.value * decrement;
+		rItem.count += decrement;
+		mGem.totalStr.str("");
+		mGem.totalStr << mGem.total;
+		mGem.countStr.str("");
+		mGem.countStr << mGem.count;
+		rItem.visible = false;
+		return false;
+	}
+	else
+	{
+		rItem.visible = true;
+		return true;
+	}
 }
 
 void CPollState::Draw(SDL_Surface* pDest) 
@@ -132,11 +162,20 @@ void CPollState::Draw(SDL_Surface* pDest)
 	Shared::DrawSurface(banner_right_pos.x, banner_right_pos.y, banner_side, pDest);
 	Shared::DrawSurface(banner_middle_pos.x, banner_middle_pos.y, banner_middle, pDest);
 
-	//todo: draw nsprite
+	mpFont->pFont->draw(banner_left_pos.x + 20, 180, mGem.totalStr.str().c_str());
+	mpFont->pFont->draw(banner_right_pos.x + 20, 180, mGem.countStr.str().c_str());
 
-	//fadeout area based on sub state
+	mpFont->pFont->draw(banner_left_pos.x + 20, 300, mCoin.totalStr.str().c_str());
+	mpFont->pFont->draw(banner_right_pos.x + 20, 300, mCoin.countStr.str().c_str());
+
+	mpFont->pFont->draw(banner_left_pos.x + 20, 400, mQuartz.totalStr.str().c_str());
+	mpFont->pFont->draw(banner_right_pos.x + 20, 400, mQuartz.countStr.str().c_str());
+	
+	if (mGem.visible) mpGem->Draw(pDest);
+	if (mCoin.visible) mpCoin->Draw(pDest);
+	if (mQuartz.visible) mpQuartz->Draw(pDest);
+	
 	SPG_RectFilledBlend(pDest, GAME_BANNER_WIDTH, 0, GAME_BOUNDS_WIDTH, WINDOW_HEIGHT, 16777215, mAlpha);
 
 	CPlayState::Instance()->mpInterface->Draw(pDest);
-	//todo: draw game/ui
 }

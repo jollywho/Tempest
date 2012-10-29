@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "State/Gamestate.h"
 #include "Game/Savescore.h"
+#include "FontResource.h"
  
 class CMyEngine: public CEngine
 {
@@ -39,6 +40,9 @@ int main(int argc, char* argv[])  // <- this must match exactly, since SDL rewri
 void CMyEngine::AdditionalInit()
 {
 	// Load up additional data
+	FontResource::AddFont("bobble_red.png");
+	FontResource::AddFont("bobble_green.png");
+	FontResource::AddFont("GoldMistral.png");
 	ScoreIO::SaveScore::LoadScores();
 	DoStateChange(State::Intro);
 }

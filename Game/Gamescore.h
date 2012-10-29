@@ -23,7 +23,7 @@ public:
 	void IncreaseBombups();
 	bool DecreaseBombups();
 
-	void DecreaseCounter(int val, int type);
+	void DecreaseCounter(int decrement, int type);
 
 	int GetLives() { return g_lives; }
 	void IncreaseLives();

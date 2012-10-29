@@ -125,19 +125,19 @@ void GameScore::DecreaseContinues()
 	//CPlayState::m_Continue = false;
 }
 
-void GameScore::DecreaseCounter(int val, int counter)
+void GameScore::DecreaseCounter(int decrement, int counter)
 {
 	SFX::PlaySoundResource("tick.wav");
 	switch(counter)
 	{
 	case 1:
-		mGems -= val;
+		mGems -= decrement;
 		break;
 	case 2:
-		mCoins -= val;
+		mCoins -= decrement;
 		break;
 	case 3:
-		mQuartz -= val;
+		mQuartz -= decrement;
 		break;
 	}
 	

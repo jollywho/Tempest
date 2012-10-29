@@ -28,7 +28,7 @@ public:
 private:
 	static std::map<std::string, FontInfo*> msFontResources;
 
-
+	//todo: create animated font support
 };
 
 #endif 
