@@ -18,6 +18,7 @@ namespace States
 		Poll,
 		Name,
 		Pause,
+		Continue,
 		Gameover,
 	};
 }

@@ -1,7 +1,7 @@
 #include "NSprite.h"
 #include "Engine/SpriteResource.h"
 
-NSprite::NSprite(int x, int y, int size, int maxClips, int interval, SDL_Surface* pSrc, bool stopclp, bool reverse)
+NSprite::NSprite(int x, int y, int size, int maxClips, int interval, SDL_Surface* pSrc, bool doesStop, bool isReverse)
 {
 	mUseInfo = false;
 	mX = x; 
@@ -10,15 +10,15 @@ NSprite::NSprite(int x, int y, int size, int maxClips, int interval, SDL_Surface
 	mpClips = new SDL_Rect[maxClips];
 	Shared::SetFrames(mpClips, maxClips, size, size);
 	mpSurface = pSrc;
-	stop = stopclp;
+	mStop = doesStop;
 	mClip = rand() % (maxClips-1);
-	this->interval = interval;
-	this->reverse = reverse;
-	dir = -1;
+	mInterval = interval;
+	mReverse = isReverse;
+	mDir = -1;
 	mClipTimer.Start();
 }
 
-NSprite::NSprite(int x, int y, SpriteInfo* pInfo, bool stopclp)
+NSprite::NSprite(int x, int y, SpriteInfo* pInfo, bool doesStop, bool isReverse)
 {
 	mUseInfo = true;
 	mX = x - pInfo->width/2; 
@@ -26,11 +26,11 @@ NSprite::NSprite(int x, int y, SpriteInfo* pInfo, bool stopclp)
 	mMaxClip = pInfo->maxClips;
 	mpClips = pInfo->pClips;
 	mpSurface = pInfo->pSurface;
-	mClip = 0; stop = stopclp;
-	dir = -1;
-	reverse = true;
+	mClip = 0; mStop = doesStop;
+	mDir = -1;
+	mReverse = isReverse;
 	mClip = rand() % (pInfo->maxClips-1);
-	this->interval = pInfo->interval;
+	mInterval = pInfo->interval;
 	mClipTimer.Start();
 }
 
@@ -47,24 +47,24 @@ void NSprite::Reset()
 
 void NSprite::Update()
 {
-	if (stop)
+	if (mStop)
 	{
 		if (mClip < mMaxClip)
-			Shared::CheckClip(mClipTimer, mClip, interval, mMaxClip, mMaxClip-1);
+			Shared::CheckClip(mClipTimer, mClip, mInterval, mMaxClip, mMaxClip-1);
 	}
-	if (reverse)
+	if (mReverse)
 	{
-		if (mClipTimer.GetTicks() > interval)
+		if (mClipTimer.GetTicks() > mInterval)
 		{ 
 			if (mClip > 0 && mClip < mMaxClip-1)
-				mClip+=dir;
+				mClip+=mDir;
 			else {
-				dir = dir * -1; mClip+=dir; }
+				mDir = mDir * -1; mClip+=mDir; }
 			mClipTimer.Start();
 		}
 	}
 	else
-		Shared::CheckClip(mClipTimer, mClip, interval, mMaxClip, 0);
+		Shared::CheckClip(mClipTimer, mClip, mInterval, mMaxClip, 0);
 }
 
 void NSprite::Draw(SDL_Surface *pDest)

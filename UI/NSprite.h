@@ -11,17 +11,17 @@ class NSprite
 private:
 	bool mUseInfo;
     int mMaxClip;
-    int size;
+    int mSize;
     SDL_Rect* mpClips;
 	int mClip;
-	int interval;
+	int mInterval;
 	SDL_Surface* mpSurface;
 	int mX; int mY;
 	Timer mClipTimer;
-	bool stop; bool reverse; int dir;
+	bool mStop; bool mReverse; int mDir;
 public:
-	NSprite(int x, int y, int size, int maxClips, int interval, SDL_Surface* pSrc, bool stopclp, bool reverse=false);
-	NSprite(int x, int y, SpriteInfo* pInfo, bool stop=false);
+	NSprite(int x, int y, int size, int maxClips, int interval, SDL_Surface* pSrc, bool doesStop, bool isReverse=false);
+	NSprite(int x, int y, SpriteInfo* pInfo, bool doesStop=false, bool isReverse=false);
     ~NSprite();
     void Update();
     void Draw(SDL_Surface *pDest);

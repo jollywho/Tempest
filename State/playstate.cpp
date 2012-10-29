@@ -125,7 +125,8 @@ void CPlayState::NewLevel()
 void CPlayState::KeyInput(const KeyStruct& rKeys)
 {
 	mpPlayer->KeyInput(rKeys);
-	if (rKeys.enter) mExit = true;
+	//if (rKeys.enter) mExit = true;
+	if (rKeys.enter) PushState(State::Continue);
 	if (rKeys.esc) PushState(State::Pause);
 }
 
