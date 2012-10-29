@@ -4,6 +4,7 @@
 
 #include "gamestate.h"
 #include "Engine/Timer.h"
+class FontInfo;
 
 class CPollState : public CGameState
 {
@@ -27,7 +28,9 @@ protected:
 
 private:
 	static CPollState mIntroState;
+	FontInfo* mpFont;
 	SDL_Surface* mpBackground;
+	SDL_Surface* mpFontSurface;
 	int mAlpha;
 	Timer mFadeTimer;
 	Point banner_middle_pos;
@@ -40,6 +43,14 @@ private:
 	bool mExit; 
 	bool mEnter; 
 	bool mFadeout;
+
+
+	/*
+	todo:
+	1) Increment counter by 10/5/1
+	2) Increase score by value
+	3) Decrease interface count by counter
+	*/
 };
 
 #endif

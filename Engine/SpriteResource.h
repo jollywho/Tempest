@@ -6,6 +6,7 @@
 #include <string>
 #include "Shared.h"
 
+
 struct SpriteInfo
 {
 	SDL_Surface* pSurface;
@@ -41,11 +42,11 @@ struct RotationInfo
 	}
 };
 
+/*
+Static image interface class for storing and using images as sprites.
+*/
 class SpriteResource
 {
-private:
-	static std::map<std::pair<std::string, std::string>, SpriteInfo*> mResources;
-	static std::map<std::pair<std::string, std::string>, RotationInfo*> mRotResources;
 public:
 	static SpriteInfo& RequestResource(std::string dirname, std::string filename);
 	static RotationInfo& RequestRotationResource(std::string dirname, std::string filename);
@@ -60,6 +61,9 @@ public:
 
 	static void ClearAllResources();
 	static void ClearResourceDir(std::string dirname);
+private:
+	static std::map<std::pair<std::string, std::string>, SpriteInfo*> mResources;
+	static std::map<std::pair<std::string, std::string>, RotationInfo*> mRotResources;
 };
 
 #endif

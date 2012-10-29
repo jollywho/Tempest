@@ -1,8 +1,9 @@
 #include "Pollstate.h"
 #include "Engine/Shared.h"
+#include "Engine/FontResource.h"
+#include "Engine/SpriteResource.h"
 #include "Game/Interface.h"
 #include "Sprig.h"
-#include "Engine/SpriteResource.h"
 #include "playstate.h"
 
 CPollState CPollState::mIntroState;
@@ -15,6 +16,9 @@ void CPollState::Init()
 
 	banner_middle = Shared::LoadImage("Image/UI/poll_banner_middle.png");
 	banner_side = Shared::LoadImage("Image/UI/poll_banner_side.png");
+
+	FontResource::AddFont("bobble_red.png");
+	mpFont = &FontResource::RequestFont("bobble_red.png");
 
 	//todo: nsprites
 
