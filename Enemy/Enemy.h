@@ -23,6 +23,8 @@ protected:
 	int mHealth;
 	int mMaxHealth;
 
+	bool mBombupSpawn;
+	bool mPowerupSpawn;
 	bool mCausesWipe;
     bool mExplode;
 	bool mDelete;

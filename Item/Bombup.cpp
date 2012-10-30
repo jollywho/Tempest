@@ -7,7 +7,7 @@
 
 Bombup::Bombup(int x, int y, int value) : Item(x, y, value, "bombup.png")
 {
-	mpPickup = &SpriteResource::RequestResource("Items", "Bombup_Received.png");
+	mpPickup = &SpriteResource::RequestResource("Items", "bombup_received.png");
 	mAir = true;
     mDelete = false;
 	yvel = 200 * ((rand() % 2) == 1 ? -1 : 1);
@@ -25,7 +25,7 @@ void Bombup::Update(Uint32 deltaTicks)
 		Shared::CheckClip(mClipTimer, mClip, mpPickup->interval, mpPickup->maxClips, mpPickup->maxClips-1);
 		if (!received) 
 		{
-			SFX::PlaySoundResource("Bombup_pickup.wav");
+			SFX::PlaySoundResource("bombup_pickup.wav");
 			received = true;
 			mDurationTimer.Start(); 
 			GameScore::Instance()->IncreaseBombups();

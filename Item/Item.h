@@ -6,6 +6,9 @@
 
 struct SpriteInfo;
 
+//todo: bonus shroud
+//todo: merge receive frame with message surface
+//		(expand from center)
 class Item
 {
 public:

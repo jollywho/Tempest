@@ -39,14 +39,14 @@ void Item::Init()
 	SpriteResource::AddResource("Items", "Chest.png", 34, 40, 160, 4);
 	SpriteResource::AddResource("Items", "Quartz.png", 32, 44, 30, 7);
 
-	SpriteResource::AddResource("Items", "Bomb_Received.png", 70, 15, 60, 5, true);
+	SpriteResource::AddResource("Items", "bombup_received.png", 70, 15, 60, 5, true);
 	SpriteResource::AddResource("Items", "Powerup_Received.png", 86, 15, 60, 6, true);
 	smpPickupFrameInfo = Shared::LoadImage("Image/Items/Receive_Frame.png");
 
 	SFX::AddSoundResource("damage.wav");
 	SFX::AddSoundResource("pickup.wav");
 	SFX::AddSoundResource("powerup_pickup.wav");
-	SFX::AddSoundResource("bomb_pickup.wav");
+	SFX::AddSoundResource("bombup_pickup.wav");
 	SFX::AddSoundResource("gem_pickup.wav");
 	SFX::AddSoundResource("coin_pickup.wav");
 	SFX::AddSoundResource("tick.wav");

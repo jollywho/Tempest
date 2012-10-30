@@ -4,6 +4,8 @@
 #include "Player/Player.h"
 #include "State/Playstate.h"
 #include "Item/Gem.h"
+#include "Item/Powerup.h"
+#include "Item/Bombup.h"
 
 SDL_Surface* Enemy::mspHitSurface;
 SDL_Color Enemy::msHitColor = { 255, 0, 0 };
@@ -15,6 +17,8 @@ Enemy::Enemy(int x, int y, int hp, std::string id)
 	mpInfo = &SpriteResource::RequestResource("Enemies", id);
 	mClipTimer.Start();
 
+	mBombupSpawn = false;
+	mPowerupSpawn = false;
     mDelete = false;
     mExplode = false;
     mHit = false;
@@ -89,9 +93,16 @@ bool Enemy::CheckHealth()
 	FlashClear();
 	if (mHealth <= 0)
 	{
-		for (int i=0; i<=mMaxHealth; i+=25)
-			CPlayState::Instance()->item_list.push_back(
-			new Gem(mX + rand() % mpInfo->width, mY + mpInfo->height/2, 25));
+		if (mBombupSpawn)
+			CPlayState::Instance()->item_list.push_back(new Bombup(mX + mpInfo->width/2, mY + mpInfo->height/2, 0));
+		else if (mPowerupSpawn)
+			CPlayState::Instance()->item_list.push_back(new Powerup(mX + mpInfo->width/2, mY + mpInfo->height/2, 0));
+		else
+		{
+			for (int i=0; i<=mMaxHealth; i+=25)
+				CPlayState::Instance()->item_list.push_back(
+				new Gem(mX + rand() % mpInfo->width, mY + mpInfo->height/2, 25));
+		}
 		mExplode = true;
 	}
 	//todo: request explosion

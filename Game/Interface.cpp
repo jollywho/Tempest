@@ -25,7 +25,7 @@ Interface::Interface()
 	SpriteResource::AddResource("UI", "cont_title.png", 138, 30, 60, 5, true);
 	
 
-	for(int i=0; i<5; i++)
+	for(int i=0; i<GameScore::MAX_BOMBS; i++)
 	{
 		mpLives[i] = new NSprite(GAME_BANNER_WIDTH + (i * 24), GAME_UI_BOTTOM + 24, &SpriteResource::RequestResource("UI", "lives_counter.png"));
 		mpBombs[i] = new NSprite(GAME_BOUNDS_WIDTH - (i * 24), GAME_UI_BOTTOM + 24, &SpriteResource::RequestResource("UI", "bombs_counter.png"));
