@@ -28,11 +28,11 @@ Player::Player()
     mov = 0;
 	left = 0; right = 0; up = 0; down = 0;
 	mShift = false; mAttack = false; mBomb = false;
-	mExplode = false; mInvuln = false; mLocked = false;
+	mExplode = false; mInvuln = false;
 
-    mX = GAME_LEVEL_WIDTH/2 + 192/2;
-    mY = GAME_BOUNDS_HEIGHT/2 + 192/4;
-
+    mX = WINDOW_WIDTH/2;
+    mY = GAME_BOUNDS_HEIGHT + 200;
+	mLocked = true;
 	SetWeaponType(M_type);
 }
 

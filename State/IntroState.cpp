@@ -181,10 +181,10 @@ void CIntroState::Draw(SDL_Surface* pDest)
 	for(int i=0; i<50; i++)
 		mpDecorList[i]->Draw(pDest);
 
-	if (mpPanel != NULL && !mExit)
-		mpPanel->Draw(pDest);
-	else
+	if (mpPanel == NULL && !mExit)
 		mpMenu->Draw(pDest);
+	else
+		mpPanel->Draw(pDest);
 	
 	SPG_RectFilledBlend(pDest,0,0,WINDOW_WIDTH,WINDOW_HEIGHT, 0, mAlpha);
 

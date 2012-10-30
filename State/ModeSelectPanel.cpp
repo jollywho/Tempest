@@ -64,10 +64,10 @@ void ModeSelectPanel::KeyInput(const KeyStruct& rKeys)
 
 			GameScore::Instance()->SetMode(mpMenu->GetIndex());
 			mpPanel = new PlayerSelectPanel(); mpMenu->Reset();
-		} //keys.z
+		}
 		if (rKeys.down) mpMenu->MoveIndex(1);
 		else if (rKeys.up) mpMenu->MoveIndex(-1);
-	} //not panel
+	}
 }
 
 void ModeSelectPanel::Update(const int& rDeltaTime)
@@ -109,11 +109,8 @@ void ModeSelectPanel::Draw(SDL_Surface *pDest)
 void ModeSelectPanel::DrawTop(SDL_Surface *pDest)
 {
 	if (!mForward)
-	{
-		if (mpPanel != NULL)
-			mpPanel->DrawTop(pDest);
-		else
-			Shared::DrawSurface(0, 0, mpTitle, pDest);
-	}
+		Shared::DrawSurface(0, 0, mpTitle, pDest);
+	if (mpPanel != NULL)
+		mpPanel->DrawTop(pDest);
 	mpMode->Draw(pDest);
 }
