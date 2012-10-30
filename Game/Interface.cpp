@@ -20,9 +20,13 @@ Interface::Interface()
 
 	for(int i=0; i<GameScore::MAX_BOMBS; i++)
 	{
-		mpLives[i] = new NSprite(GAME_BANNER_WIDTH + (i * 24), GAME_UI_BOTTOM + 24, &SpriteResource::RequestResource("UI", "lives_counter.png"));
-		mpBombs[i] = new NSprite(GAME_BOUNDS_WIDTH - (i * 24), GAME_UI_BOTTOM + 24, &SpriteResource::RequestResource("UI", "bombs_counter.png"));
+		mpLives[i] = new NSprite(GAME_BANNER_WIDTH + (i * 24), GAME_UI_BOTTOM + 24, 
+			&SpriteResource::RequestResource("UI", "lives_counter.png"));
+		mpBombs[i] = new NSprite(GAME_BOUNDS_WIDTH - (i * 24), GAME_UI_BOTTOM + 24, 
+			&SpriteResource::RequestResource("UI", "bombs_counter.png"));
 	}
+	mpMode = new NSprite(GAME_UI_MODE_X, GAME_UI_MODE_Y, 
+		&SpriteResource::RequestResource("UI", GameScore::Instance()->GetModeString() + ".png"), false, true);
 	mpHpBar = &SpriteResource::RequestResource("UI", "healthbar.png");
 
 	mHpBarActive = false;
@@ -33,9 +37,6 @@ Interface::Interface()
 	mScoreTitle.y = 5;
 	mHiScoreTitle.x = WINDOW_WIDTH/2 - mpRedFont->getWidth("HIGH SCORE")/2;
 	mHiScoreTitle.y = 5;
-	mModeStr = GameScore::Instance()->GetMode(true);
-	mModeTitle.x = WINDOW_WIDTH/1.5 - mpRedFont->getWidth(mModeStr.c_str())/2;
-	mModeTitle.y = 5;
 	mScore.y = mpRedFont->getHeight("99") + 8;
 	mScoreOrigin = WINDOW_WIDTH/3 + mpRedFont->getWidth("123456789")/2;
 	//todo: use gamescore::getmode() NONVERBOSE
@@ -84,7 +85,6 @@ void Interface::Draw(SDL_Surface *pDest)
 {
 	mpGreenFont->draw(mScoreTitle.x, mScoreTitle.y, "PLAYER");
 	mpRedFont->draw(mHiScoreTitle.x, mHiScoreTitle.y, "HIGH SCORE");
-	mpGreenFont->draw(mModeTitle.x, mModeTitle.y, mModeStr.c_str());
 	mpRedFont->draw(mScore.x, mScore.y, mScoreStr.str().c_str());
 	mpGreenFont->draw(mHiScore.x, mHiScore.y, mHiScoreStr.str().c_str());
 	mpRedFont->draw(mGem.x, mGem.y, mGemCountStr.str().c_str());
@@ -114,6 +114,7 @@ void Interface::UpdateIcons()
 		mpLives[i]->Update();
 	for (int i=0; i<GameScore::Instance()->GetBombs(); i++)
 		mpBombs[i]->Update();
+	mpMode->Update();
 }
 
 void Interface::DrawIcons(SDL_Surface *pDest)
@@ -122,6 +123,7 @@ void Interface::DrawIcons(SDL_Surface *pDest)
 		mpLives[i]->Draw(pDest);
 	for (int i=0; i<GameScore::Instance()->GetBombs(); i++)
 		mpBombs[i]->Draw(pDest);
+	mpMode->Draw(pDest);
 }
 
 void Interface::DrawHealthBar(SDL_Surface *pDest)

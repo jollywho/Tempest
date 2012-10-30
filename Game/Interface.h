@@ -39,7 +39,6 @@ private:
 	/* Message Points */
 	Point mScoreTitle;
 	Point mHiScoreTitle;
-	Point mModeTitle;
 	Point mScore;
 	Point mHiScore;
 	int mScoreOrigin;
@@ -50,7 +49,6 @@ private:
 	//star
 
 	/* Messages */
-	std::string mModeStr;
     std::stringstream mScoreStr;
 	std::stringstream mHiScoreStr;
     std::stringstream mBulletCountStr;
@@ -78,6 +76,7 @@ private:
     /* Icons */
 	NSprite* mpLives[5]; //todo: change to constant in gamescores
 	NSprite* mpBombs[5];
+	NSprite* mpMode;
 	Point mBannerBot;
 	SDL_Surface* mpBannerBotSurface;
 	SDL_Surface* mpBannerBot2Surface;

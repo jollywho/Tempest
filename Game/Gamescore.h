@@ -45,7 +45,7 @@ public:
 	unsigned long GetBonus() { return 1; }
 	void IncreaseBonus() { g_bonus++; }
 
-	std::string GetMode(bool verbose=false);
+	std::string GetModeString();
 	static std::string GetModeEquivalent(int mode, bool verbose=false);
 	void SetMode(int mode);
 

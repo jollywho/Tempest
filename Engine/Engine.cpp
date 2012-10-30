@@ -2,12 +2,12 @@
 #include "SDL_ttf.h"
 #include "Engine/SFX.h"
 #include <windows.h> // For the WaitMessage() function.
-#include "State/Gamestate.h"
-#include "State/Intostate.h"
-#include "State/Playstate.h"
-#include "State/Pollstate.h"
-#include "State/Pausestate.h"
-#include "State/Continuestate.h"
+#include "State/GameState.h"
+#include "State/IntroState.h"
+#include "State/PlayState.h"
+#include "State/PollState.h"
+#include "State/PauseState.h"
+#include "State/ContinueState.h"
 
 /** Default constructor. **/
 CEngine::CEngine()

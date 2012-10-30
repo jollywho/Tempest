@@ -19,6 +19,8 @@ Demo - downup enter from under intro panels
 Some type of selector using icons
 
 */
+FPoint HIDE_POINT = FPoint(-500, -500);
+FPoint START_POINT = FPoint(WINDOW_WIDTH/2, WINDOW_HEIGHT/2);
 
 ModeSelectPanel::ModeSelectPanel()
 {
@@ -27,15 +29,14 @@ ModeSelectPanel::ModeSelectPanel()
 
 	mpTitle = Shared::LoadImage("Image/UI/select_mode_title.png");
 
-	mpMode = new NSprite(-500, -500, &SpriteResource::RequestResource("UI", "mode_normal.png"), false, true);
+	//default mode sprite offscreen
+	mpMode = new NSprite(HIDE_POINT.x, HIDE_POINT.y, &SpriteResource::RequestResource("UI", "mode_normal.png"), false, true);
 	mpPanel = NULL;
 	mpMenu = new Menu();
 	//
     mpMenu->AddItem(WINDOW_WIDTH/2, 200, "Normal");
 	mpMenu->AddItem(WINDOW_WIDTH/2, 260, "Ultra");
     mpMenu->AddItem(WINDOW_WIDTH/2, 320, "Insane");
-
-	mMode = FPoint(WINDOW_WIDTH/2, WINDOW_HEIGHT/2);
 }
 
 ModeSelectPanel::~ModeSelectPanel()
@@ -56,19 +57,21 @@ void ModeSelectPanel::KeyInput(const KeyStruct& rKeys)
 		if (rKeys.esc || rKeys.x) mBack = true;
 		if (rKeys.z)
 		{
+			mMode = START_POINT;
 			delete mpMode;
 			switch(mpMenu->GetIndex())
 			{
 				case 1:
-					mpMode = new NSprite(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, &SpriteResource::RequestResource("UI", "mode_normal.png"), false, true);
+					mpMode = new NSprite(mMode.x, mMode.y, &SpriteResource::RequestResource("UI", "mode_normal.png"), false, true);
 					break;
 				case 2:
-					mpMode = new NSprite(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, &SpriteResource::RequestResource("UI", "mode_ultra.png"), false, true);
+					mpMode = new NSprite(mMode.x, mMode.y, &SpriteResource::RequestResource("UI", "mode_ultra.png"), false, true);
 					break;								
 				case 3:									 
-					mpMode = new NSprite(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, &SpriteResource::RequestResource("UI", "mode_insane.png"), false, true);
+					mpMode = new NSprite(mMode.x, mMode.y, &SpriteResource::RequestResource("UI", "mode_insane.png"), false, true);
 					break;
 			} //swtich
+			GameScore::Instance()->SetMode(mpMenu->GetIndex());
 			mpPanel = new PlayerSelectPanel(); mpMenu->Reset();
 		} //keys.z
 		if (rKeys.down) mpMenu->MoveIndex(1);
@@ -83,17 +86,18 @@ void ModeSelectPanel::Update(const int& rDeltaTime)
 		mForward = mpPanel->Forward();
 		if (mpPanel->Back())
 		{
-			mMode = FPoint(WINDOW_WIDTH/2, WINDOW_HEIGHT/2);
+			mMode = HIDE_POINT;
+			mpMode->SetPos(mMode);	//rehide
 			mpMenu->Reset();
 			delete mpPanel;
 			mpPanel = NULL;
 		}
 		else
 			mpPanel->Update(rDeltaTime);
-		if (mMode.x < 550)
-			mMode.x += 200 * rDeltaTime/1000.f;
-		if (mMode.y > 15)
-			mMode.y -= 250 * rDeltaTime/1000.f;
+		if (mMode.x < GAME_UI_MODE_X)
+			mMode.x += 300 * rDeltaTime/1000.f;
+		if (mMode.y > GAME_UI_MODE_Y)
+			mMode.y -= 300 * rDeltaTime/1000.f;
 		mpMode->SetPos(mMode);
 	}
 	mpMode->Update();
@@ -106,7 +110,6 @@ void ModeSelectPanel::Draw(SDL_Surface *pDest)
 		mpPanel->Draw(pDest);
 	else
 	{
-		
 		mpMenu->Draw(pDest);
 	}
 }

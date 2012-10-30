@@ -1,12 +1,12 @@
-#include "intostate.h"
+#include "IntroState.h"
 #include "Engine/Shared.h"
 #include "UI/Menu.h"
 #include "Sprig.h"
 #include "Engine/SpriteResource.h"
 #include "UI/Decor.h"
-#include "scorepanel.h"
-#include "optionpanel.h"
-#include "modeselectpanel.h"
+#include "ScorePanel.h"
+#include "OptionPanel.h"
+#include "ModeSelectPanel.h"
 
 CIntroState CIntroState::mIntroState;
 

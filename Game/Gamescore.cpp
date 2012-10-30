@@ -54,28 +54,25 @@ void GameScore::SetMode(int mode)
 	}
 }
 
-std::string GameScore::GetMode(bool verbose)
+std::string GameScore::GetModeString()
 {
-	std::string prefix;
+	std::string suffix;
 	switch(g_mode)
 	{
 	case Mode::Normal:
-		prefix = "Normal";
+		suffix = "normal";
 		break;
 	case Mode::Ultra:
-		prefix = "Ultra";
+		suffix = "ultra";
 		break;
 	case Mode::Insane:
-		prefix = "Insane";
+		suffix = "insane";
 		break;
 	default:
-		prefix = "Test";
+		suffix = "normal";
 		break;
 	}
-	prefix = verbose? prefix + " Mode" : prefix;
-	if (verbose)
-		std::transform(prefix.begin(), prefix.end(), prefix.begin(), ::toupper);
-	return prefix;
+	return "mode_" + suffix;
 }
 
 std::string GameScore::GetModeEquivalent(int mode, bool verbose)
