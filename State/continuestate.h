@@ -31,10 +31,7 @@ protected:
 	CContinueState() { }
 private:
 	static CContinueState mContState;
-	FontInfo* mpFont;
     int mAlpha;
-	char countdown[9];
-	int mCount;
 	Timer mCountdownTimer;
 	Timer mFadeTimer;
 	Timer mTitleTimer;
@@ -43,6 +40,7 @@ private:
 	bool mFadeout; 
 	bool mSpan;
 
+	NSprite* mpCounter;
 	NSprite* mpTitle;
 	SDL_Surface* mpContTitle;
 	SDL_Surface* mpContCount;

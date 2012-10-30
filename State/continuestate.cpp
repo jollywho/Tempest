@@ -19,9 +19,9 @@ void CContinueState::Init()
 	mScreenBounds.h = GAMESCREEN_HEIGHT;
 	
 	mpTitle = new NSprite(WINDOW_WIDTH/2, 195, &SpriteResource::RequestResource("UI", "cont_title.png"), false, true);
+	mpCounter = new NSprite(WINDOW_WIDTH/2, 195 + 48, &SpriteResource::RequestResource("UI", "cont_counter.png"), true);
 	mpContTitle = Shared::LoadImage("Image/UI/cont_title_frame.png");
 	mpContCount = Shared::LoadImage("Image/UI/cont_count_frame.png");
-	mpFont = &FontResource::RequestFont("bobble_red.png");
 
 	mAlpha = 0;
 
@@ -34,8 +34,6 @@ void CContinueState::Init()
 	mFadeout = false; 
 	mSpan = false;
 
-	mCount = 9;
-	itoa(mCount, countdown, 10);
 	mCountdownTimer.Start();
 	mFadeTimer.Start();
 }
@@ -46,7 +44,6 @@ void CContinueState::Cleanup()
 	SDL_FreeSurface(mpContTitle);
 	SDL_FreeSurface(mpContCount);
 	delete mpMenu;
-	delete mpFont;
 }
 
 void CContinueState::KeyInput(const KeyStruct& rKeys)
@@ -65,6 +62,9 @@ void CContinueState::Update(const int& rDeltaTime)
 {
 	mpMenu->Update(rDeltaTime, mAlpha);
 	mpTitle->Update();
+	mpCounter->Update();
+	if (mpCounter->IsDone())
+		PopState();
 	if (mFadeTimer.GetTicks() > 10)
 	{
 		if (mAlpha < 100) mAlpha+=5;
@@ -80,6 +80,5 @@ void CContinueState::Draw(SDL_Surface* pDest)
 	Shared::DrawSurface(WINDOW_WIDTH/2 - 225, 150, mpContTitle, pDest);
 	Shared::DrawSurface(WINDOW_WIDTH/2 - 98, 200, mpContCount, pDest);
 	mpTitle->Draw(pDest);
-
-	
+	mpCounter->Draw(pDest);
 }

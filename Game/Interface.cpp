@@ -22,7 +22,8 @@ Interface::Interface()
 	SpriteResource::AddResource("UI", "bombs_counter.png", 24, 24, 60, 5);
 	SpriteResource::AddResource("UI", "healthbar.png", 471, 16, 120, 6, true);
 	SpriteResource::AddResource("UI", "poll_ready_banner.png", 168, 60, 200, 4, true);
-	SpriteResource::AddResource("UI", "cont_title.png", 138, 30, 60, 5, true);
+	SpriteResource::AddResource("UI", "cont_title.png", 138, 30, 140, 4, true);
+	SpriteResource::AddResource("UI", "cont_counter.png", 24, 23, 1000, 10, false);
 	
 
 	for(int i=0; i<GameScore::MAX_BOMBS; i++)

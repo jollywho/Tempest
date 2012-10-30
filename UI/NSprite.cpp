@@ -37,14 +37,9 @@ void NSprite::SetPos(FPoint& rCenter)
 
 void NSprite::Update()
 {
-	if (mStop && !mDone)
-	{
-		mDone = mClip >= mpInfo->maxClips? true: false;
-		Shared::CheckClip(mClipTimer, mClip, mpInfo->interval, mpInfo->maxClips, mpInfo->maxClips);
-	}
 	if (mReverse)
 	{
-		if (mClipTimer.GetTicks() > mpInfo->maxClips)
+		if (mClipTimer.GetTicks() > mpInfo->interval)
 		{ 
 			if (mClip > 0 && mClip < mpInfo->maxClips-1)
 				mClip+=mDir;
@@ -52,6 +47,11 @@ void NSprite::Update()
 				mDir = mDir * -1; mClip+=mDir; }
 			mClipTimer.Start();
 		}
+	}
+	else if (mStop && !mDone)
+	{
+		mDone = mClip >= mpInfo->maxClips? true: false;
+		Shared::CheckClip(mClipTimer, mClip, mpInfo->interval, mpInfo->maxClips, mpInfo->maxClips);
 	}
 	else
 		Shared::CheckClip(mClipTimer, mClip, mpInfo->interval, mpInfo->maxClips, 0);
