@@ -59,7 +59,7 @@ void ScorePanel::KeyInput(const KeyStruct& rKeys)
 		if (modeSelection + 1 < 1) selChange = +2;
 		if (modeSelection + 1 > 3) selChange = -2;
 	}
-	if (rKeys.z)
+	if (rKeys.x)
 		mBack = true;
 }
 

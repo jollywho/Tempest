@@ -6,6 +6,7 @@
 #include "UI/Decor.h"
 #include "scorepanel.h"
 #include "optionpanel.h"
+#include "selectpanel.h"
 
 CIntroState CIntroState::mIntroState;
 
@@ -53,11 +54,14 @@ void CIntroState::Cleanup()
 	for(int i=0; i<50; i++)
 		delete mpDecorList[i];
 	SDL_FreeSurface(mpBackgroundSurface);
-
 	SDL_FreeSurface(mpBorderTop);
 	SDL_FreeSurface(mpBorderBot);
 	SDL_FreeSurface(mpBorderLeft);
 	SDL_FreeSurface(mpBorderRight);
+	if (mpPanel != NULL) {
+		delete mpPanel;
+		mpPanel = NULL;
+	}
 }
 
 void CIntroState::Back()
@@ -84,7 +88,7 @@ void CIntroState::KeyInput(const KeyStruct& rKeys)
 		if (rKeys.z)
 		{
 			mpMenu->Select();
-			if (mpMenu->GetIndex() == 1) {  }
+			if (mpMenu->GetIndex() == 1) { mpPanel = new SelectPanel(); }
 			if (mpMenu->GetIndex() == 3) { mpPanel = new ScorePanel(); }
 			if (mpMenu->GetIndex() == 4) { mpPanel = new OptionPanel(); }
 			if (mpMenu->GetIndex() == 5) { SDL_Quit; }
@@ -100,13 +104,14 @@ void CIntroState::MenuAction()
 	mExit = true; 
 	mSpan = true; 
 	mFadeout = true;
+
 }
 
 void CIntroState::Update(const int& rDeltaTime) 
 {
 	if (mpPanel != NULL)
 	{
-		if (mpPanel->Forward())
+		if (mpPanel->Forward() && !mExit)
 			MenuAction();
 		if (mpPanel->Back())
 		{
@@ -176,7 +181,7 @@ void CIntroState::Draw(SDL_Surface* pDest)
 	for(int i=0; i<50; i++)
 		mpDecorList[i]->Draw(pDest);
 
-	if (mpPanel != NULL)
+	if (mpPanel != NULL && !mExit)
 		mpPanel->Draw(pDest);
 	else
 		mpMenu->Draw(pDest);
