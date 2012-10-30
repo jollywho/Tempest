@@ -15,9 +15,9 @@ class Player
 public:
     Player();
     ~Player();
+	void Spawn();
 
     void KeyInput(const KeyStruct& rKeys);
-
 
     void Update( const int& rDeltaTime);
 

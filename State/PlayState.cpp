@@ -29,6 +29,7 @@ void CPlayState::Init()
 	mpLevel = new Level01();
 	mpInterface = new Interface();
 
+	mpPlayer->Spawn();
 	mScanTimer.Start();
 	mFadeTimer.Start();
 }

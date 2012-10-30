@@ -108,9 +108,9 @@ void ModeSelectPanel::Draw(SDL_Surface *pDest)
 
 void ModeSelectPanel::DrawTop(SDL_Surface *pDest)
 {
-	if (!mForward)
+	if (mpPanel == NULL && !mForward)
 		Shared::DrawSurface(0, 0, mpTitle, pDest);
-	if (mpPanel != NULL)
+	else
 		mpPanel->DrawTop(pDest);
 	mpMode->Draw(pDest);
 }

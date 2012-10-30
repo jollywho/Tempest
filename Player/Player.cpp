@@ -30,10 +30,17 @@ Player::Player()
 	mShift = false; mAttack = false; mBomb = false;
 	mExplode = false; mInvuln = false;
 
-    mX = WINDOW_WIDTH/2;
-    mY = GAME_BOUNDS_HEIGHT + 200;
-	mLocked = true;
+	mX = WINDOW_WIDTH/2;
 	SetWeaponType(M_type);
+}
+
+void Player::Spawn()
+{
+	mInvuln = true;
+	mLocked = true;
+    mY = GAME_BOUNDS_HEIGHT + 200;
+	mspWpn->ResetPos(mX + ANGEL_SIZE/2, mY);
+	mInvulnTimer.Start();
 }
 
 void Player::SetWeaponType(WeaponType type)
@@ -128,11 +135,7 @@ void Player::UpdateExploding(const int& rDeltaTime)
 	if (mpExplosion->IsDone())
 	{
 		mExplode = false;
-		mInvuln = true;
-		mLocked = true;
-		mY = GAME_BOUNDS_HEIGHT + 200;
-		mspWpn->ResetPos(mX + ANGEL_SIZE/2, mY);
-		mInvulnTimer.Start();
+		Spawn();
 	}
 }
 
