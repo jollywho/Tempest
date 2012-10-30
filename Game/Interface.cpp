@@ -18,14 +18,6 @@ Interface::Interface()
 	mpGreenFont = new NFont(SDL_GetVideoSurface(), mpGreenSurface);
 	mpRedFont = new NFont(SDL_GetVideoSurface(), mpRedSurface);
 
-	SpriteResource::AddResource("UI", "lives_counter.png", 12, 24, 60, 6);
-	SpriteResource::AddResource("UI", "bombs_counter.png", 24, 24, 60, 5);
-	SpriteResource::AddResource("UI", "healthbar.png", 471, 16, 120, 6, true);
-	SpriteResource::AddResource("UI", "poll_ready_banner.png", 168, 60, 200, 4, true);
-	SpriteResource::AddResource("UI", "cont_title.png", 138, 30, 140, 4, true);
-	SpriteResource::AddResource("UI", "cont_counter.png", 24, 23, 1000, 10, false);
-	
-
 	for(int i=0; i<GameScore::MAX_BOMBS; i++)
 	{
 		mpLives[i] = new NSprite(GAME_BANNER_WIDTH + (i * 24), GAME_UI_BOTTOM + 24, &SpriteResource::RequestResource("UI", "lives_counter.png"));
@@ -70,7 +62,7 @@ Interface::~Interface()
 	delete mpRedFont;
 	//delete icons
 
-	SpriteResource::ClearResourceDir("UI");
+	
 }
 
 void Interface::Update(const int& rDeltaTime)

@@ -3,6 +3,7 @@
 #include "State/Gamestate.h"
 #include "Game/Savescore.h"
 #include "FontResource.h"
+#include "SpriteResource.h"
  
 class CMyEngine: public CEngine
 {
@@ -43,6 +44,17 @@ void CMyEngine::AdditionalInit()
 	FontResource::AddFont("bobble_red.png");
 	FontResource::AddFont("bobble_green.png");
 	FontResource::AddFont("GoldMistral.png");
+
+	SpriteResource::AddResource("UI", "lives_counter.png", 12, 24, 60, 6);
+	SpriteResource::AddResource("UI", "bombs_counter.png", 24, 24, 60, 5);
+	SpriteResource::AddResource("UI", "healthbar.png", 471, 16, 120, 6, true);
+	SpriteResource::AddResource("UI", "poll_ready_banner.png", 168, 60, 200, 4, true);
+	SpriteResource::AddResource("UI", "cont_title.png", 138, 30, 140, 4, true);
+	SpriteResource::AddResource("UI", "cont_counter.png", 24, 23, 1000, 10);
+	SpriteResource::AddResource("UI", "mode_normal.png", 140, 20, 60, 5, true);
+	SpriteResource::AddResource("UI", "mode_ultra.png", 140, 20, 60, 5, true);
+	SpriteResource::AddResource("UI", "mode_insane.png", 140, 20, 60, 5, true);
+
 	ScoreIO::SaveScore::LoadScores();
 	DoStateChange(State::Intro);
 }

@@ -68,7 +68,7 @@ void CEngine::Init()
 		exit( 1 );
 	}
 	SFX::Init();
- 
+	SDL_ShowCursor(0);
 	AdditionalInit();
 }
 

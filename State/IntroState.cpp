@@ -6,7 +6,7 @@
 #include "UI/Decor.h"
 #include "scorepanel.h"
 #include "optionpanel.h"
-#include "selectpanel.h"
+#include "modeselectpanel.h"
 
 CIntroState CIntroState::mIntroState;
 
@@ -88,7 +88,7 @@ void CIntroState::KeyInput(const KeyStruct& rKeys)
 		if (rKeys.z)
 		{
 			mpMenu->Select();
-			if (mpMenu->GetIndex() == 1) { mpPanel = new SelectPanel(); }
+			if (mpMenu->GetIndex() == 1) { mpPanel = new ModeSelectPanel(); }
 			if (mpMenu->GetIndex() == 3) { mpPanel = new ScorePanel(); }
 			if (mpMenu->GetIndex() == 4) { mpPanel = new OptionPanel(); }
 			if (mpMenu->GetIndex() == 5) { SDL_Quit; }
@@ -194,4 +194,6 @@ void CIntroState::Draw(SDL_Surface* pDest)
 	Shared::DrawSurface(mBorderLeft, 0, mpBorderLeft, pDest);
 	Shared::DrawSurface(mBorderRight, 0, mpBorderRight, pDest);
 
+	if (mpPanel != NULL)
+		mpPanel->DrawTop(pDest);
 }

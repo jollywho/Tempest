@@ -13,6 +13,7 @@ public:
 	virtual void KeyInput(const KeyStruct& rKeys) = 0;
 	virtual void Update(const int& rDeltaTime) = 0;
 	virtual void Draw(SDL_Surface* pDest) = 0;
+	virtual void DrawTop(SDL_Surface* pDest) {}
 	bool Back() { return mBack; }
 	bool Forward() { return mForward; }
 protected:
