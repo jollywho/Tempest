@@ -4,8 +4,8 @@
 
 #include "panel.h"
 
-struct SpriteInfo;
 class NFont;
+class NSprite;
 
 class ScoreBanner
 {
@@ -32,16 +32,16 @@ public:
 	void KeyInput(const KeyStruct& rKeys);
 	void Update(const int& rDeltaTime);
 	void Draw(SDL_Surface* pDest);
-
+	void DrawTop(SDL_Surface* pDest);
 private:
 	void DrawMsg(int centerX, int centerY, int value);
 	void DrawMsg(int centerX, int centerY, std::string msg);
 	int modeSelection;
-	NFont* font;
 	NFont* score_font;
-	SDL_Surface* font_surface;
+	NSprite* mpMode;
 	SDL_Surface* score_font_surface;
 	SDL_Surface* banner;
+	SDL_Surface* mpTitle;
 	int selChange;
 	float mov; int middle; int right;
 	bool exit; bool enter;

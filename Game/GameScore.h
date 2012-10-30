@@ -46,7 +46,7 @@ public:
 	void IncreaseBonus() { g_bonus++; }
 
 	std::string GetModeString();
-	static std::string GetModeEquivalent(int mode, bool verbose=false);
+	static std::string GetModeEquivalent(int mode, bool fileFormat=false);
 	void SetMode(int mode);
 
 private:

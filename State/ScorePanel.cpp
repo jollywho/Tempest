@@ -2,6 +2,7 @@
 #include <sstream>
 #include "Engine/NFont.h"
 #include "Engine/SpriteResource.h"
+#include "UI/NSprite.h"
 #include "Game/SaveScore.h"
 #include "Game/GameScore.h"
 
@@ -10,10 +11,10 @@ ScorePanel::ScorePanel()
 	printf("-ScorePanel Created-\n");
 	mBack = false; mForward = false;
 
+	mpMode = new NSprite(GAME_UI_MODE_X, GAME_UI_MODE_Y, &SpriteResource::RequestResource("UI", "mode_normal.png"), false, true);
 	banner = Shared::LoadImage("Image/UI/ScoreBanner.png");
-	font_surface = Shared::LoadImage("Font/GoldMistral.png");
+	mpTitle = Shared::LoadImage("Image/UI/highscore_title.png");
 	score_font_surface = Shared::LoadImage("Font/BlueHigh.png");
-	font = new NFont(SDL_GetVideoSurface(), font_surface);
 	score_font = new NFont(SDL_GetVideoSurface(), score_font_surface);
 	modeSelection = 1; selChange = 0;
 	right = WINDOW_WIDTH + 50;
@@ -34,10 +35,9 @@ ScorePanel::~ScorePanel()
 {
 	printf("-ScorePanel Deleted-\n");
 	SDL_EnableKeyRepeat(0, 0);
-	SDL_FreeSurface(font_surface);
 	SDL_FreeSurface(score_font_surface);
 	SDL_FreeSurface(banner);
-	delete font;
+	SDL_FreeSurface(mpTitle);
 	delete score_font;
 }
 
@@ -65,6 +65,7 @@ void ScorePanel::KeyInput(const KeyStruct& rKeys)
 
 void ScorePanel::Update(const int& rDeltaTime) 
 {
+	mpMode->Update();
 	if (exit)
 	{
 		if (mov_timer.GetTicks() > 10)
@@ -94,6 +95,11 @@ void ScorePanel::Update(const int& rDeltaTime)
 		{
 			enter = false;
 			mov = middle;
+
+			delete mpMode;
+			mpMode = new NSprite(GAME_UI_MODE_X, GAME_UI_MODE_Y, 
+					&SpriteResource::RequestResource("UI", GameScore::GetModeEquivalent(modeSelection, true) + ".png"), false, true);
+
 		}
 		for (int i=0; i<5; i++)
 			bannerList[i].x = mov;
@@ -111,7 +117,14 @@ void ScorePanel::Draw(SDL_Surface* pDest)
 		DrawMsg(bannerList[i].nameX(), bannerList[i].nameY(), temp.name);
 		DrawMsg(bannerList[i].stageX(), bannerList[i].stageY(), temp.stage);
 	}
-	font->draw(0, 0, GameScore::GetModeEquivalent(modeSelection + selChange, true).c_str());
+}
+
+void ScorePanel::DrawTop(SDL_Surface* pDest)
+{
+	Shared::DrawSurface(0,1, mpTitle, pDest);
+
+	if (!enter && !exit)
+		mpMode->Draw(pDest);
 }
 
 void ScorePanel::DrawMsg(int centerX, int centerY, int value)

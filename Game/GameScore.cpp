@@ -75,25 +75,30 @@ std::string GameScore::GetModeString()
 	return "mode_" + suffix;
 }
 
-std::string GameScore::GetModeEquivalent(int mode, bool verbose)
+std::string GameScore::GetModeEquivalent(int mode, bool fileFormat)
 {
 	std::string prefix;
+	std::string suffix;
 	switch(mode)
 	{
 	case 1:
 		prefix = "Normal";
+		suffix = "normal";
 		break;
 	case 2:
 		prefix = "Ultra";
+		suffix = "ultra";
 		break;
 	case 3:
 		prefix = "Insane";
+		suffix = "insane";
 		break;
 	default:
 		prefix = "Test";
+		suffix = "normal";
 		break;
 	}
-	return verbose? (prefix + " Mode") : prefix;
+	return fileFormat? ("mode_" +  suffix) : prefix;
 }
 
 void GameScore::DecreaseLives()

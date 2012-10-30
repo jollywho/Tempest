@@ -59,18 +59,9 @@ void ModeSelectPanel::KeyInput(const KeyStruct& rKeys)
 		{
 			mMode = START_POINT;
 			delete mpMode;
-			switch(mpMenu->GetIndex())
-			{
-				case 1:
-					mpMode = new NSprite(mMode.x, mMode.y, &SpriteResource::RequestResource("UI", "mode_normal.png"), false, true);
-					break;
-				case 2:
-					mpMode = new NSprite(mMode.x, mMode.y, &SpriteResource::RequestResource("UI", "mode_ultra.png"), false, true);
-					break;								
-				case 3:									 
-					mpMode = new NSprite(mMode.x, mMode.y, &SpriteResource::RequestResource("UI", "mode_insane.png"), false, true);
-					break;
-			} //swtich
+			mpMode = new NSprite(mMode.x, mMode.y, 
+					&SpriteResource::RequestResource("UI", GameScore::GetModeEquivalent(mpMenu->GetIndex(), true) + ".png"), false, true);
+
 			GameScore::Instance()->SetMode(mpMenu->GetIndex());
 			mpPanel = new PlayerSelectPanel(); mpMenu->Reset();
 		} //keys.z
@@ -94,8 +85,9 @@ void ModeSelectPanel::Update(const int& rDeltaTime)
 		}
 		else
 			mpPanel->Update(rDeltaTime);
+
 		if (mMode.x < GAME_UI_MODE_X)
-			mMode.x += 300 * rDeltaTime/1000.f;
+			mMode.x += 150 * rDeltaTime/1000.f;
 		if (mMode.y > GAME_UI_MODE_Y)
 			mMode.y -= 300 * rDeltaTime/1000.f;
 		mpMode->SetPos(mMode);
