@@ -1,4 +1,4 @@
-#include "optionstate.h"
+#include "OptionPanel.h"
 #include "Engine/NFont.h"
 #include "UI/Menu.h"
 #include "Engine/SpriteResource.h"
@@ -6,13 +6,11 @@
 #include "Game/GameScore.h"
 #include "Engine/SFX.h"
 
-COptionState COptionState::mOptionState;
-
-void COptionState::Init()
+OptionPanel::OptionPanel()
 {
-	printf("COptionState initialize\n");
-	ClearRequest();
-	SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
+	printf("-OptionPanel Created-\n");
+	mBack = false; mForward = false;
+
 	mpSelector = Shared::LoadImage("Image/UI/SoundSelector.png");
 	mpFrame = Shared::LoadImage("Image/UI/SoundFrame.png");
 
@@ -45,9 +43,9 @@ void COptionState::Init()
 	mpMenu->AddItem(mAlignX, 440, "Return");
 }
 
-void COptionState::Cleanup()
+OptionPanel::~OptionPanel()
 {
-	printf("COptionState Cleanup\n");
+	printf("-OptionPanel Deleted-\n");
 	SDL_EnableKeyRepeat(0, 0);
 	SDL_FreeSurface(mpFontSurface);
 	SDL_FreeSurface(mpSelector);
@@ -55,9 +53,9 @@ void COptionState::Cleanup()
 	delete mpFont;
 }
 
-void COptionState::KeyInput(const KeyStruct& rKeys)
+void OptionPanel::KeyInput(const KeyStruct& rKeys)
 {
-	if (rKeys.esc) PopMenu();
+	if (rKeys.esc) mBack = true;
 	if (rKeys.z)
 	{
 		mpMenu->Select();
@@ -72,12 +70,12 @@ void COptionState::KeyInput(const KeyStruct& rKeys)
 	else if (rKeys.up) mpMenu->MoveIndex(-1);
 }
 
-void COptionState::Update(const int& rDeltaTime) 
+void OptionPanel::Update(const int& rDeltaTime) 
 {
 	mpMenu->Update(rDeltaTime, 255);
 }
 
-void COptionState::Draw(SDL_Surface* pDest) 
+void OptionPanel::Draw(SDL_Surface* pDest) 
 {
 	mpMenu->Draw(pDest);
 

@@ -1,16 +1,15 @@
-#include "scorestate.h"
+#include "scorepanel.h"
+#include <sstream>
 #include "Engine/NFont.h"
 #include "Engine/SpriteResource.h"
 #include "Game/SaveScore.h"
 #include "Game/GameScore.h"
 
-CScoreState CScoreState::m_SelectState;
-
-void CScoreState::Init()
+ScorePanel::ScorePanel()
 {
-	printf("CScoreState initialize\n");
-	ClearRequest();
-	SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
+	printf("-ScorePanel Created-\n");
+	mBack = false; mForward = false;
+
 	banner = Shared::LoadImage("Image/UI/ScoreBanner.png");
 	font_surface = Shared::LoadImage("Font/GoldMistral.png");
 	score_font_surface = Shared::LoadImage("Font/BlueHigh.png");
@@ -19,6 +18,7 @@ void CScoreState::Init()
 	modeSelection = 1; selChange = 0;
 	right = WINDOW_WIDTH + 50;
 	exit = false; enter = true; mov = right;
+	
 	middle = WINDOW_WIDTH/2 - 451/2;
 	int spacer = WINDOW_HEIGHT/2 - (113*4)/2;
 	dir = -20;
@@ -30,9 +30,9 @@ void CScoreState::Init()
 	mov_timer.Start();
 }
 
-void CScoreState::Cleanup()
+ScorePanel::~ScorePanel()
 {
-	printf("CScoreState Cleanup\n");
+	printf("-ScorePanel Deleted-\n");
 	SDL_EnableKeyRepeat(0, 0);
 	SDL_FreeSurface(font_surface);
 	SDL_FreeSurface(score_font_surface);
@@ -41,7 +41,7 @@ void CScoreState::Cleanup()
 	delete score_font;
 }
 
-void CScoreState::KeyInput(const KeyStruct& rKeys)
+void ScorePanel::KeyInput(const KeyStruct& rKeys)
 {
 	if (rKeys.left)
 	{
@@ -60,10 +60,10 @@ void CScoreState::KeyInput(const KeyStruct& rKeys)
 		if (modeSelection + 1 > 3) selChange = -2;
 	}
 	if (rKeys.z)
-		PopMenu();
+		mBack = true;
 }
 
-void CScoreState::Update(const int& rDeltaTime) 
+void ScorePanel::Update(const int& rDeltaTime) 
 {
 	if (exit)
 	{
@@ -100,11 +100,11 @@ void CScoreState::Update(const int& rDeltaTime)
 	}
 }
 
-void CScoreState::Draw(SDL_Surface* dest) 
+void ScorePanel::Draw(SDL_Surface* pDest) 
 {
 	for (int i=0; i<4; i++)
 	{
-		Shared::DrawSurface(bannerList[i].x, bannerList[i].y, banner, dest);
+		Shared::DrawSurface(bannerList[i].x, bannerList[i].y, banner, pDest);
 		ScoreIO::ScoreData temp = ScoreIO::SaveScore::GetScores(GameScore::GetModeEquivalent(modeSelection), i+1);
 		DrawMsg(bannerList[i].scoreX(), bannerList[i].scoreY(), temp.value);
 		DrawMsg(bannerList[i].rankX(), bannerList[i].rankY(), temp.rank);
@@ -114,7 +114,7 @@ void CScoreState::Draw(SDL_Surface* dest)
 	font->draw(0, 0, GameScore::GetModeEquivalent(modeSelection + selChange, true).c_str());
 }
 
-void CScoreState::DrawMsg(int centerX, int centerY, int value)
+void ScorePanel::DrawMsg(int centerX, int centerY, int value)
 {
 	int width = 0; int height = 0;
 	std::stringstream msg;
@@ -124,7 +124,7 @@ void CScoreState::DrawMsg(int centerX, int centerY, int value)
 	score_font->draw(centerX - width/2, centerY - height/2, msg.str().c_str());
 }
 
-void CScoreState::DrawMsg(int centerX, int centerY, std::string msg)
+void ScorePanel::DrawMsg(int centerX, int centerY, std::string msg)
 {
 	int width = 0; int height = 0;
 	width = score_font->getWidth(msg.c_str());

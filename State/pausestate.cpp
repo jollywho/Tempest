@@ -1,12 +1,13 @@
 #include "pausestate.h"
 #include <sprig.h>
 #include "UI/Menu.h"
+#include "optionpanel.h"
 
 CPauseState CPauseState::mPauseState;
 
 void CPauseState::Init()
 {
-	printf("CPauseState initialize\n");
+	printf("CPauseState Init\n");
 
 	ClearRequest();
 	mpScreen = SDL_DisplayFormatAlpha(SPG_CopySurface(SDL_GetVideoSurface()));
@@ -28,7 +29,6 @@ void CPauseState::Init()
 	mEnter = true; 
 	mFadeout = false; 
 	mSpan = false;
-	mSubmenu = false;
 
 	mFadeTimer.Start();
 }
@@ -50,29 +50,42 @@ void CPauseState::Resume()
 	printf("CPauseState Resume\n");
 }
 
-void CPauseState::Back()
-{
-	printf("CPauseState Return\n");
-	mSubmenu = false;
-}
-
 void CPauseState::KeyInput(const KeyStruct& rKeys)
 {
-	if (rKeys.esc) PopState();
-	if (rKeys.z)
+	if (mpPanel != NULL) 
 	{
-		mpMenu->Select();
-		if (mpMenu->GetIndex() == 1) { PopState(); }
-		if (mpMenu->GetIndex() == 2) { PushMenu(State::Option); mSubmenu = true; mpMenu->Reset(); }
-		if (mpMenu->GetIndex() == 3) { ChangeState(State::Intro); }
-		if (mpMenu->GetIndex() == 4) { SDL_Quit(); } //todo: are you sure?
+		mpPanel->KeyInput(rKeys);
 	}
-	if (rKeys.down) mpMenu->MoveIndex(1);
-	else if (rKeys.up) mpMenu->MoveIndex(-1);
+	else
+	{
+		if (rKeys.esc) PopState();
+		if (rKeys.z)
+		{
+			mpMenu->Select();
+			if (mpMenu->GetIndex() == 1) { PopState(); }
+			if (mpMenu->GetIndex() == 2) { mpPanel = new OptionPanel(); mpMenu->Reset(); }
+			if (mpMenu->GetIndex() == 3) { ChangeState(State::Intro); }
+			if (mpMenu->GetIndex() == 4) { SDL_Quit(); } //todo: are you sure?
+		}
+		if (rKeys.down) mpMenu->MoveIndex(1);
+		else if (rKeys.up) mpMenu->MoveIndex(-1);
+	}
 }
 
 void CPauseState::Update(const int& rDeltaTime)
 {
+	if (mpPanel != NULL)
+	{
+		if (mpPanel->Back())
+		{
+			mpMenu->Reset();
+			delete mpPanel;
+			mpPanel = NULL;
+		}
+		else
+			mpPanel->Update(rDeltaTime);
+	}
+
 	mpMenu->Update(rDeltaTime, mAlpha);
 	if (mFadeTimer.GetTicks() > 10)
 	{
@@ -85,5 +98,9 @@ void CPauseState::Draw(SDL_Surface* pDest)
 {
 	Shared::DrawSurface(GAME_BANNER_WIDTH, 0, mpScreen, pDest, &mScreenBounds);
 	SPG_RectFilledBlend(pDest, GAME_BANNER_WIDTH, 0, GAME_BOUNDS_WIDTH, GAME_BOUNDS_HEIGHT, 0, mAlpha);
-	if (!mSubmenu) mpMenu->Draw(pDest);
+
+	if (mpPanel != NULL)
+		mpPanel->Draw(pDest);
+	else
+		mpMenu->Draw(pDest);
 }

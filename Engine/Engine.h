@@ -13,8 +13,6 @@ namespace States
 	{
 		Intro,
 		Play,
-		Score,
-		Option,
 		Poll,
 		Name,
 		Pause,
@@ -58,13 +56,10 @@ protected:
 	void DoStateChange(States::State id);
 	void DoStatePush(States::State id);
 	void DoStatePop();
-	void DoMenuPush(States::State id);
-	void DoMenuPop();
 	
 	void SetSize(const int& rWidth, const int& rHeight);
 
 	std::vector<CGameState*> mpStates;
-	CGameState* mpMenuState;
 	KeyStruct mKeys;
 public:
 	CEngine();

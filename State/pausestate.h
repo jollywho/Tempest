@@ -6,6 +6,7 @@
 #include "Engine/Timer.h"
 
 class Menu;
+class Panel;
 
 class CPauseState : public CGameState
 {
@@ -15,7 +16,6 @@ public:
 
 	void Pause();
 	void Resume();
-	void Back();
 
 	void KeyInput(const KeyStruct& rKeys);
 	void Update(const int& rDeltaTime);
@@ -31,6 +31,7 @@ protected:
 private:
 	static CPauseState mPauseState;
     int mAlpha;
+	Panel* mpPanel;
     Menu* mpMenu;
 	Timer mFadeTimer;
 	SDL_Surface* mpScreen;
@@ -38,7 +39,6 @@ private:
 	bool mEnter; 
 	bool mFadeout; 
 	bool mSpan;
-	bool mSubmenu;
 
 };
 

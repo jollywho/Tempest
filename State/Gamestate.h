@@ -12,7 +12,6 @@ public:
 
 	virtual void Pause() = 0;
 	virtual void Resume() = 0;
-	virtual void Back() = 0;
 
 	virtual void KeyInput(const KeyStruct& rKeys) = 0;
 	virtual void Update(const int& rDeltaTime) = 0;
@@ -22,8 +21,6 @@ public:
 		mStateChange = false; 
 		mStatePush = false;
 		mStatePop = false;
-		mMenuPush = false;
-		mMenuPop = false;
 	}
 
 	void ChangeState(States::State id) {
@@ -40,20 +37,9 @@ public:
 		mStatePop = true; 
 	}
 
-	void PushMenu(States::State id) {
-		mRequestedState = id;
-		mMenuPush = true;
-	}
-
-	void PopMenu()	{ 
-		mMenuPop = true; 
-	}
-
 	bool IsStateChange() { return mStateChange; }
 	bool IsStatePush() { return mStatePush; }
 	bool IsStatePop() { return mStatePop; }
-	bool IsMenuPush() { return mMenuPush; }
-	bool IsMenuPop()	{ return mMenuPop; }
 
 	States::State RequestedState() { return mRequestedState; }
 protected:
@@ -63,8 +49,6 @@ private:
 	bool mStateChange;
 	bool mStatePush;
 	bool mStatePop;
-	bool mMenuPush;
-	bool mMenuPop;
 };
 
 #endif

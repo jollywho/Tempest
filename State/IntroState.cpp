@@ -4,12 +4,14 @@
 #include "Sprig.h"
 #include "Engine/SpriteResource.h"
 #include "UI/Decor.h"
+#include "scorepanel.h"
+#include "optionpanel.h"
 
 CIntroState CIntroState::mIntroState;
 
 void CIntroState::Init()
 {
-	printf("CIntroState initialize\n");
+	printf("CIntroState Init\n");
 	ClearRequest();
 	mpBackgroundSurface =  Shared::LoadImage("Image/UI/IntroBG.png");
 	SpriteResource::AddResource("UI", "decor.png", 48,48,100,8);
@@ -40,7 +42,6 @@ void CIntroState::Init()
 	mEnter = true; 
 	mFadeout = false; 
 	mSpan = false;
-	mSubmenu = false;
 
 	mFadeTimer.Start();
 }
@@ -59,53 +60,64 @@ void CIntroState::Cleanup()
 	SDL_FreeSurface(mpBorderRight);
 }
 
-void CIntroState::OpenSubMenu()
-{
-	mExit = false; 
-	mSubmenu = true;
-	mpMenu->Reset();
-}
-
 void CIntroState::Back()
 {
-	printf("CIntroState Return\n");
-	mSubmenu = false;
+	printf("CIntroState Return\n"); //todo delete
 }
 
 void CIntroState::KeyInput(const KeyStruct& rKeys)
 {
 	if (mExit) return;
-	if (rKeys.esc)
+	if (mpPanel != NULL) 
 	{
-		if (mpMenu->GetIndex() == mpMenu->Count()) 
-			SDL_Quit();
-		else  
-			mpMenu->SetIndex(mpMenu->Count());
+		mpPanel->KeyInput(rKeys);
 	}
-	if (rKeys.z)
+	else
 	{
-		mpMenu->Select();
-		mExit = true;
-		mAlpha = 0;
-		if (mpMenu->GetIndex() == 1) { mSpan = true; mFadeout = true; }
-		if (mpMenu->GetIndex() == 3) { mFadeout = false; }
-		if (mpMenu->GetIndex() == 4) { mFadeout = false; }
-		if (mpMenu->GetIndex() == 5) { SDL_Quit; }
+		if (rKeys.esc)
+		{
+			if (mpMenu->GetIndex() == mpMenu->Count()) 
+				SDL_Quit();
+			else  
+				mpMenu->SetIndex(mpMenu->Count());
+		}
+		if (rKeys.z)
+		{
+			mpMenu->Select();
+			if (mpMenu->GetIndex() == 1) {  }
+			if (mpMenu->GetIndex() == 3) { mpPanel = new ScorePanel(); }
+			if (mpMenu->GetIndex() == 4) { mpPanel = new OptionPanel(); }
+			if (mpMenu->GetIndex() == 5) { SDL_Quit; }
+		}
+		if (rKeys.down) mpMenu->MoveIndex(1);
+		else if (rKeys.up) mpMenu->MoveIndex(-1);
 	}
-	if (rKeys.down) mpMenu->MoveIndex(1);
-	else if (rKeys.up) mpMenu->MoveIndex(-1);
 }
 
 void CIntroState::MenuAction()
 {
-	if (mpMenu->GetIndex() == 1) ChangeState(State::Play);
-	//if (main_menu->GetIndex() == 2) RequestState(Poll);
-	if (mpMenu->GetIndex() == 3) { PushMenu(State::Score); OpenSubMenu(); }
-	if (mpMenu->GetIndex() == 4) { PushMenu(State::Option); OpenSubMenu(); }
+	mAlpha = 0;
+	mExit = true; 
+	mSpan = true; 
+	mFadeout = true;
 }
 
 void CIntroState::Update(const int& rDeltaTime) 
 {
+	if (mpPanel != NULL)
+	{
+		if (mpPanel->Forward())
+			MenuAction();
+		if (mpPanel->Back())
+		{
+			mpMenu->Reset();
+			delete mpPanel;
+			mpPanel = NULL;
+		}
+		else
+			mpPanel->Update(rDeltaTime);
+	}
+
 	mpMenu->Update(rDeltaTime, mAlpha);
 	for(int i=0; i<50; i++)
 		mpDecorList[i]->Update(rDeltaTime);
@@ -152,7 +164,7 @@ void CIntroState::Update(const int& rDeltaTime)
 			} 
 		}
 		else
-			MenuAction();
+			ChangeState(State::Play);
 	}
 }
 
@@ -164,7 +176,10 @@ void CIntroState::Draw(SDL_Surface* pDest)
 	for(int i=0; i<50; i++)
 		mpDecorList[i]->Draw(pDest);
 
-	if (!mSubmenu) mpMenu->Draw(pDest);
+	if (mpPanel != NULL)
+		mpPanel->Draw(pDest);
+	else
+		mpMenu->Draw(pDest);
 	
 	SPG_RectFilledBlend(pDest,0,0,WINDOW_WIDTH,WINDOW_HEIGHT, 0, mAlpha);
 
@@ -173,4 +188,5 @@ void CIntroState::Draw(SDL_Surface* pDest)
 
 	Shared::DrawSurface(mBorderLeft, 0, mpBorderLeft, pDest);
 	Shared::DrawSurface(mBorderRight, 0, mpBorderRight, pDest);
+
 }

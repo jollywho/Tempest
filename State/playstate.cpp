@@ -111,12 +111,6 @@ void CPlayState::Resume()
 	}
 }
 
-void CPlayState::Back()
-{
-	printf("CPlayState Return\n");
-
-}
-
 void CPlayState::NewLevel()
 {
 

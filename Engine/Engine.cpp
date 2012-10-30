@@ -6,9 +6,7 @@
 #include "State/Intostate.h"
 #include "State/Playstate.h"
 #include "State/Pollstate.h"
-#include "State/Scorestate.h"
 #include "State/Pausestate.h"
-#include "State/Optionstate.h"
 #include "State/Continuestate.h"
 
 /** Default constructor. **/
@@ -21,8 +19,6 @@ CEngine::CEngine()
 	mpScreen		= 0;
 
 	mMinimized		= false;
-
-	mpMenuState = NULL;
 }
  
 /** Destructor. **/
@@ -91,14 +87,8 @@ CGameState* CEngine::StateInstance(State id)
 		case State::Poll:
 			return CPollState::Instance();
 			break;
-		case State::Score:
-			return CScoreState::Instance();
-			break;
 		case State::Pause:
 			return CPauseState::Instance();
-			break;
-		case State::Option:
-			return COptionState::Instance();
 			break;
 		case State::Continue:
 			return CContinueState::Instance();
@@ -144,20 +134,6 @@ void CEngine::DoStatePop()
     }
 }
 
-void CEngine::DoMenuPush(State id)
-{
-	//create top level menu state
-	mpMenuState = StateInstance(id);
-	mpMenuState->Init();
-}
-
-void CEngine::DoMenuPop()
-{
-	 mpMenuState->Cleanup(); 
-	 mpMenuState = NULL; 
-	 mpStates.back()->Back();
-}
-
 void CEngine::DoRequest()
 {
 	if (mpStates.back()->IsStateChange())
@@ -171,13 +147,6 @@ void CEngine::DoRequest()
 	{
 		DoStatePop();
 	}
-	if (mpStates.back()->IsMenuPush())
-	{
-		DoMenuPush(mpStates.back()->RequestedState());
-	}
-
-	if (mpMenuState != NULL) { 
-		if (mpMenuState->IsMenuPop()) { DoMenuPop(); } }
 
 	mpStates.back()->ClearRequest();
 }

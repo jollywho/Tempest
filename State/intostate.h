@@ -7,6 +7,7 @@
 
 class Menu;
 class Decor;
+class Panel;
 
 class CIntroState : public CGameState
 {
@@ -28,10 +29,10 @@ public:
 protected:
 	CIntroState() { }
 	void MenuAction();
-	void OpenSubMenu();
 private:
 	static CIntroState mIntroState;
     Menu* mpMenu;
+	Panel* mpPanel;
 	SDL_Surface* mpBackgroundSurface;
 	int mAlpha;
 	Timer mFadeTimer;
@@ -54,7 +55,6 @@ private:
 	bool mExit; 
 	bool mFadeout; 
 	bool mSpan;
-	bool mSubmenu;
 };
 
 #endif

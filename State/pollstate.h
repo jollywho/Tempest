@@ -17,7 +17,6 @@ public:
 
 	void Pause();
 	void Resume();
-	void Back() {};
 
 	void KeyInput(const KeyStruct& rKeys);
 	void Update(const int& rDeltaTime);

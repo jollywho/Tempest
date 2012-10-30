@@ -50,15 +50,11 @@ void CMyEngine::AdditionalInit()
 void CMyEngine::Think( const int& rDeltaTime )
 {
 	mpStates.back()->Update(rDeltaTime);
-	if (mpMenuState != NULL)
-		mpMenuState->Update(rDeltaTime);
 }
  
 void CMyEngine::Render( SDL_Surface* pDest )
 {
 	mpStates.back()->Draw(pDest);
-	if (mpMenuState != NULL)
-		mpMenuState->Draw(pDest);
 }
  
 void CMyEngine::KeyDown(const int& rKeyEnum)
@@ -93,10 +89,7 @@ void CMyEngine::KeyDown(const int& rKeyEnum)
 		mKeys.x = true;
 		break;
     }
-	if (mpMenuState != NULL)
-		mpMenuState->KeyInput(mKeys);
-	else
-		mpStates.back()->KeyInput(mKeys);
+	mpStates.back()->KeyInput(mKeys);
 }
 
 void CMyEngine::KeyUp(const int& rKeyEnum)
@@ -131,10 +124,7 @@ void CMyEngine::KeyUp(const int& rKeyEnum)
 		mKeys.x = false;
 		break;
 	}
-	if (mpMenuState != NULL)
-		mpMenuState->KeyInput(mKeys);
-	else
-		mpStates.back()->KeyInput(mKeys);
+	mpStates.back()->KeyInput(mKeys);
 }
  
 void CMyEngine::WindowInactive()
