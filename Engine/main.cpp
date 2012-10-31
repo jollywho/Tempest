@@ -54,6 +54,8 @@ void CMyEngine::AdditionalInit()
 	SpriteResource::AddResource("UI", "mode_normal.png", 140, 20, 60, 5, true);
 	SpriteResource::AddResource("UI", "mode_ultra.png", 140, 20, 60, 5, true);
 	SpriteResource::AddResource("UI", "mode_insane.png", 140, 20, 60, 5, true);
+	SpriteResource::AddResource("UI", "player_title.png", 100, 20, 60, 4, true);
+	SpriteResource::AddResource("UI", "high_title.png", 56, 18, 120, 3, true);
 
 	ScoreIO::SaveScore::LoadScores();
 	DoStateChange(State::Intro);

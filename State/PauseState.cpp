@@ -65,7 +65,7 @@ void CPauseState::KeyInput(const KeyStruct& rKeys)
 			if (mpMenu->GetIndex() == 1) { PopState(); }
 			if (mpMenu->GetIndex() == 2) { mpPanel = new OptionPanel(); mpMenu->Reset(); }
 			if (mpMenu->GetIndex() == 3) { ChangeState(State::Intro); }
-			if (mpMenu->GetIndex() == 4) { SDL_Quit(); } //todo: are you sure?
+			if (mpMenu->GetIndex() == 4) { SDL_Event event_quit; event_quit.type = SDL_QUIT;  SDL_PushEvent(&event_quit); }
 		}
 		if (rKeys.down) mpMenu->MoveIndex(1);
 		else if (rKeys.up) mpMenu->MoveIndex(-1);

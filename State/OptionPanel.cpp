@@ -64,7 +64,7 @@ void OptionPanel::KeyInput(const KeyStruct& rKeys)
 		if (mpMenu->GetIndex() == 3) {  }
 		if (mpMenu->GetIndex() == 4) {  }
 		if (mpMenu->GetIndex() == 5) {  }
-		if (mpMenu->GetIndex() == 6) {  }
+		if (mpMenu->GetIndex() == 6) { mBack = true; }
 	}
 	if (rKeys.down) mpMenu->MoveIndex(1);
 	else if (rKeys.up) mpMenu->MoveIndex(-1);

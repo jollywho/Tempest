@@ -36,6 +36,7 @@ public:
 
 	bool mExit;
 	bool mEnter;
+	bool mReturn;
 
     std::list<EnemyBullet*> en_bulletlist;
 	std::list<PlayerBullet*> pl_bulletlist;

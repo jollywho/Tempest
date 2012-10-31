@@ -7,7 +7,6 @@
 Zown::Zown(int x, int y) : Enemy(x, y, 50, "zown.png")
 {
 	mAir = false;
-	mPowerupSpawn = true;
 	
     rot = 0; attackCount = 0;
 	attack_Timer.Start();

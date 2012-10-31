@@ -18,6 +18,7 @@ void CPlayState::Init()
 	ClearRequest();
     mExit = false;
 	mEnter = true;
+	mReturn = false;
 	mAlpha = 255;
 
 	Enemy::Init();
@@ -108,7 +109,7 @@ void CPlayState::Resume()
 	{
 		mExit = false;
 		mAlpha = 255;
-		mEnter = true;
+		mReturn = true;
 	}
 }
 
@@ -121,13 +122,14 @@ void CPlayState::KeyInput(const KeyStruct& rKeys)
 {
 	mpPlayer->KeyInput(rKeys);
 	//if (rKeys.enter) mExit = true;
-	if (rKeys.enter) PushState(State::Continue);
+	if (rKeys.enter && rKeys.shift) PushState(State::Continue);
+	if (rKeys.enter && !rKeys.shift) mExit = true;
 	if (rKeys.esc) PushState(State::Pause);
 }
 
 void CPlayState::Update(const int& rDeltaTime)
 {
-	if (mEnter)
+	if (mEnter || mReturn)
 	{
 		if (mAlpha > 0) 
 		{
@@ -138,7 +140,10 @@ void CPlayState::Update(const int& rDeltaTime)
 			} 
 		}
 		else
+		{
 			mEnter = false;
+			mReturn = false;
+		}
 	}
 	if (mExit)
 	{
@@ -182,7 +187,7 @@ void CPlayState::Draw(SDL_Surface* pDest)
 	DrawList(enemy_list, pDest);
 	DrawList(pl_bulletlist, pDest);
 	
-	if (mExit)
+	if (mExit || mReturn)
 		SPG_RectFilledBlend(pDest,GAME_BANNER_WIDTH,0,GAME_BOUNDS_WIDTH,WINDOW_HEIGHT, 16777215, mAlpha);
 	if (mEnter)
 		SPG_RectFilledBlend(pDest,GAME_BANNER_WIDTH,0,GAME_BOUNDS_WIDTH,WINDOW_HEIGHT, 0, mAlpha);

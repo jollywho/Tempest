@@ -45,7 +45,7 @@ public:
 	unsigned long GetBonus() { return 1; }
 	void IncreaseBonus() { g_bonus++; }
 
-	std::string GetModeString();
+	std::string GetModeString(bool fileFormat=false);
 	static std::string GetModeEquivalent(int mode, bool fileFormat=false);
 	void SetMode(int mode);
 

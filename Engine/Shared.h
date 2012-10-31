@@ -22,7 +22,7 @@ const int GAME_BOUNDS_HEIGHT = 600;
 const int GAME_BULLETSAFE_ZONE = 350;
 
 const int GAME_UI_MODE_X = 550;
-const int GAME_UI_MODE_Y = 15;
+const int GAME_UI_MODE_Y = 10;
 const int MAX_TOTEMS = 4;
 
 const float DEG_TO_RAD_f = 0.017453292519943295769236907684886f;

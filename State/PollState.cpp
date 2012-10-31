@@ -59,7 +59,6 @@ void CPollState::Cleanup()
 	delete mpGem;
 	delete mpCoin;
 	delete mpQuartz;
-	delete mpFont;
 }
 
 void CPollState::Pause()

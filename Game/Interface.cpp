@@ -13,10 +13,9 @@ Interface::Interface()
 	mpBannerRightSurface = Shared::LoadImage("Image/UI/ui_border_right.png");
 	mpBannerBotSurface = Shared::LoadImage("Image/UI/ui_border_bottom.png");
 	mpBannerBot2Surface = Shared::LoadImage("Image/UI/ui_border_bottom2.png");
-	mpGreenSurface = Shared::LoadImage("Font/bobble_green.png");
-	mpRedSurface = Shared::LoadImage("Font/bobble_red.png");
-	mpGreenFont = new NFont(SDL_GetVideoSurface(), mpGreenSurface);
+	mpRedSurface = Shared::LoadImage("Font/GoldMistral.png");
 	mpRedFont = new NFont(SDL_GetVideoSurface(), mpRedSurface);
+	mpRedFont->setSpacing(2);
 
 	for(int i=0; i<GameScore::MAX_BOMBS; i++)
 	{
@@ -25,24 +24,27 @@ Interface::Interface()
 		mpBombs[i] = new NSprite(GAME_BOUNDS_WIDTH - (i * 24), GAME_UI_BOTTOM + 24, 
 			&SpriteResource::RequestResource("UI", "bombs_counter.png"));
 	}
-	mpMode = new NSprite(GAME_UI_MODE_X, GAME_UI_MODE_Y, 
+	mpMode = new NSprite(WINDOW_WIDTH/2, GAME_UI_MODE_Y, 
 		&SpriteResource::RequestResource("UI", GameScore::Instance()->GetModeString() + ".png"), false, true);
+	mpPlayer = new NSprite(WINDOW_WIDTH/3 - 20, GAME_UI_MODE_Y, 
+		&SpriteResource::RequestResource("UI", "player_title.png"), false, true);
+	mpHigh = new NSprite(WINDOW_WIDTH/1.5 + 20, GAME_UI_MODE_Y, 
+		&SpriteResource::RequestResource("UI", "high_title.png"), false);
 	mpHpBar = &SpriteResource::RequestResource("UI", "healthbar.png");
 
 	mHpBarActive = false;
 	mBannerBot.x = GAME_BANNER_WIDTH;
 	mBannerBot.y = GAME_UI_BOTTOM;
 
-	mScoreTitle.x = WINDOW_WIDTH/3 - mpRedFont->getWidth("PLAYER")/2;
-	mScoreTitle.y = 5;
-	mHiScoreTitle.x = WINDOW_WIDTH/2 - mpRedFont->getWidth("HIGH SCORE")/2;
-	mHiScoreTitle.y = 5;
-	mScore.y = mpRedFont->getHeight("99") + 8;
-	mScoreOrigin = WINDOW_WIDTH/3 + mpRedFont->getWidth("123456789")/2;
-	//todo: use gamescore::getmode() NONVERBOSE
-	mHiScoreStr << ScoreIO::SaveScore::GetScores("Normal", 1).value;
-	mHiScore.x = WINDOW_WIDTH/2 + mpRedFont->getWidth("123456789")/2 - mpRedFont->getWidth(mHiScoreStr.str().c_str());
-	mHiScore.y = mpRedFont->getHeight("99") + 8;
+	int max_score_width = mpRedFont->getWidth("1234567899")/2;
+
+	mScore.x = GAME_BANNER_WIDTH + 20;
+	mScore.y = mpRedFont->getHeight("99") + 6;
+
+	mHiScoreStr << ScoreIO::SaveScore::GetScores(GameScore::Instance()->GetModeString(true), 1).value;
+	mHiScore.x = GAME_BOUNDS_WIDTH - 20 - max_score_width - mpRedFont->getWidth(mHiScoreStr.str().c_str())/2;
+
+	mHiScore.y = mpRedFont->getHeight("99") + 6;
 	mGemOrigin = mpRedFont->getHeight("99")*2 + 14;
 	mGem.x = GAME_BANNER_WIDTH + 20; mGem.y = mGemOrigin;
 	mCoin.x = GAME_BANNER_WIDTH + 20; mCoin.y = mGemOrigin + mpRedFont->getHeight("99") + 3;
@@ -57,9 +59,7 @@ Interface::~Interface()
     SDL_FreeSurface(mpBannerRightSurface);
 	SDL_FreeSurface(mpBannerBotSurface);
 	SDL_FreeSurface(mpBannerBot2Surface);
-    SDL_FreeSurface(mpGreenSurface);
 	SDL_FreeSurface(mpRedSurface);
-	delete mpGreenFont;
 	delete mpRedFont;
 	//delete icons
 
@@ -73,7 +73,7 @@ void Interface::Update(const int& rDeltaTime)
 
 	mScoreStr.str("");
 	mScoreStr << GameScore::Instance()->GetScore();
-	mScore.x = mScoreOrigin - mpGreenFont->getWidth(mScoreStr.str().c_str());
+	mScore.x = mGem.x + mpRedFont->getWidth("123456789") - mpRedFont->getWidth(mScoreStr.str().c_str())/2;
 
 	mGemCountStr.str("");
 	mGemCountStr << GameScore::Instance()->GetGemCount();
@@ -83,10 +83,8 @@ void Interface::Update(const int& rDeltaTime)
 
 void Interface::Draw(SDL_Surface *pDest)
 {
-	mpGreenFont->draw(mScoreTitle.x, mScoreTitle.y, "PLAYER");
-	mpRedFont->draw(mHiScoreTitle.x, mHiScoreTitle.y, "HIGH SCORE");
 	mpRedFont->draw(mScore.x, mScore.y, mScoreStr.str().c_str());
-	mpGreenFont->draw(mHiScore.x, mHiScore.y, mHiScoreStr.str().c_str());
+	mpRedFont->draw(mHiScore.x, mHiScore.y, mHiScoreStr.str().c_str());
 	mpRedFont->draw(mGem.x, mGem.y, mGemCountStr.str().c_str());
 	mpRedFont->draw(mCoin.x, mCoin.y, mCoinCountStr.str().c_str());
 
@@ -115,6 +113,8 @@ void Interface::UpdateIcons()
 	for (int i=0; i<GameScore::Instance()->GetBombs(); i++)
 		mpBombs[i]->Update();
 	mpMode->Update();
+	mpPlayer->Update();
+	mpHigh->Update();
 }
 
 void Interface::DrawIcons(SDL_Surface *pDest)
@@ -124,6 +124,8 @@ void Interface::DrawIcons(SDL_Surface *pDest)
 	for (int i=0; i<GameScore::Instance()->GetBombs(); i++)
 		mpBombs[i]->Draw(pDest);
 	mpMode->Draw(pDest);
+	mpPlayer->Draw(pDest);
+	mpHigh->Draw(pDest);
 }
 
 void Interface::DrawHealthBar(SDL_Surface *pDest)

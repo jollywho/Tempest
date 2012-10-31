@@ -86,10 +86,9 @@ void ModeSelectPanel::Update(const int& rDeltaTime)
 		else
 			mpPanel->Update(rDeltaTime);
 
-		if (mMode.x < GAME_UI_MODE_X)
-			mMode.x += 150 * rDeltaTime/1000.f;
-		if (mMode.y > GAME_UI_MODE_Y)
-			mMode.y -= 300 * rDeltaTime/1000.f;
+		if (mMode.y > GAME_UI_MODE_Y) mMode.y -= 300 * rDeltaTime/1000.f;
+		else mMode.y = GAME_UI_MODE_Y;
+			
 		mpMode->SetPos(mMode);
 	}
 	mpMode->Update();

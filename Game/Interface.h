@@ -32,16 +32,11 @@ public:
 private:
 	/* Fonts */
 	NFont* mpRedFont;
-	NFont* mpGreenFont;
-	SDL_Surface* mpGreenSurface;
 	SDL_Surface* mpRedSurface;
 
 	/* Message Points */
-	Point mScoreTitle;
-	Point mHiScoreTitle;
 	Point mScore;
 	Point mHiScore;
-	int mScoreOrigin;
 	int mGemOrigin;
 	Point mGem;
 	Point mCoin;
@@ -77,6 +72,8 @@ private:
 	NSprite* mpLives[5]; //todo: change to constant in gamescores
 	NSprite* mpBombs[5];
 	NSprite* mpMode;
+	NSprite* mpPlayer;
+	NSprite* mpHigh;
 	Point mBannerBot;
 	SDL_Surface* mpBannerBotSurface;
 	SDL_Surface* mpBannerBot2Surface;

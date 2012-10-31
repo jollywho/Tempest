@@ -80,8 +80,10 @@ void CIntroState::KeyInput(const KeyStruct& rKeys)
 	{
 		if (rKeys.esc)
 		{
-			if (mpMenu->GetIndex() == mpMenu->Count()) 
-				SDL_Quit();
+			if (mpMenu->GetIndex() == mpMenu->Count())
+			{
+				SDL_Event event_quit; event_quit.type = SDL_QUIT;  SDL_PushEvent(&event_quit);
+			}
 			else  
 				mpMenu->SetIndex(mpMenu->Count());
 		}
@@ -91,7 +93,7 @@ void CIntroState::KeyInput(const KeyStruct& rKeys)
 			if (mpMenu->GetIndex() == 1) { mpPanel = new ModeSelectPanel(); }
 			if (mpMenu->GetIndex() == 3) { mpPanel = new ScorePanel(); }
 			if (mpMenu->GetIndex() == 4) { mpPanel = new OptionPanel(); }
-			if (mpMenu->GetIndex() == 5) { SDL_Quit; }
+			if (mpMenu->GetIndex() == 5) { SDL_Event event_quit; event_quit.type = SDL_QUIT;  SDL_PushEvent(&event_quit); }
 		}
 		if (rKeys.down) mpMenu->MoveIndex(1);
 		else if (rKeys.up) mpMenu->MoveIndex(-1);
