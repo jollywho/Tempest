@@ -63,13 +63,15 @@ void Zown::Attack()
     {
         double x = cos(i);
         double y = sin(i);
-        CPlayState::Instance()->en_bulletlist.push_back(new ERotBullet(atkgatset.x + GATE_WIDTH/2,
+       /*
+		CPlayState::Instance()->en_bulletlist.push_back(new ERotBullet(atkgatset.x + GATE_WIDTH/2,
 			atkgateLE.y + GATE_WIDTH/2,
 			x*100, y * 100, "LargeRed.png"));
 
 		CPlayState::Instance()->en_bulletlist.push_back(new ERotBullet(atkgateRIt.x + GATE_WIDTH/2,
 			atkgateRIGHset.y + GATE_WIDTH/2,
 			-x*100, y * 100, "LargeRed.png"));
+			*/
     }
     attack_Timer.Start();
 
