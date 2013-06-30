@@ -4,7 +4,7 @@ std::map<std::string, Mix_Music*> SFX::msMusicFiles;
 std::map<std::string, std::pair<int, Mix_Chunk*>> SFX::msSoundFiles;
 int SFX::msSoundCount = 0;
 int SFX::msBgmVolume = 1;
-int SFX::msSfxVolume = 10;
+int SFX::msSfxVolume = 1;
 
 void SFX::Init()
 {

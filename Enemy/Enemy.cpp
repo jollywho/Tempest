@@ -6,6 +6,7 @@
 #include "Item/Gem.h"
 #include "Item/Powerup.h"
 #include "Item/Bombup.h"
+#include "Game/GameScore.h"
 
 SDL_Surface* Enemy::mspHitSurface;
 SDL_Color Enemy::msHitColor = { 255, 0, 0 };
@@ -47,6 +48,7 @@ void Enemy::FlashRed(SDL_Surface* en_surface, SDL_Rect* targetClip)
 {
     if (!mHit)
     {
+		GameScore::Instance()->IncreaseScore(1);
 		mHit = true;
 		mHitTimer.Start();
 		mpCopySurface = SDL_ConvertSurface(en_surface, en_surface->format, SDL_SWSURFACE);

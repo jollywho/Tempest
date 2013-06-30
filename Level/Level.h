@@ -2,6 +2,7 @@
 #define LEVEL_H
 
 #include <list>
+#include "Engine/Engine.h"
 
 class Layer;
 class Enemy;
@@ -9,13 +10,18 @@ class Enemy;
 class Level
 {
 public:
-	virtual ~Level(){};
-    virtual void Update(const int& rDeltaTime) = 0;
-    virtual void Draw(SDL_Surface *pDest) = 0;
+	Level();
+	~Level();
+    void Update(const int& rDeltaTime);
+    void Draw(SDL_Surface *pDest);
 	int LevelEnd() { return mLevelEnd; }
 
 	/* Create enemies used for this level */
-	virtual void LoadEnemies(std::list<Enemy*>& rList) = 0;
+	static int loadstuff(lua_State *l);
+
+
+
+	void LoadEnemies(std::list<Enemy*>& rList);
 protected:
 	std::list<Enemy*> enemy_cache;
 	Layer* mpEnd;

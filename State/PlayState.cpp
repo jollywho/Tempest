@@ -2,12 +2,13 @@
 #include <sprig.h>
 #include "Game/Camera.h"
 #include "Game/Interface.h"
-#include "Level/Level01.h"
+#include "Level/Level.h"
 #include "Enemy/Enemy.h"
 #include "UI/ScoreMSG.h"
 #include "Item/Item.h"
 #include "Weapon/PlayerBullet.h"
 #include "Pattern/EnemyBullet.h"
+
 #include "ENemy/Zown.h"
 
 CPlayState CPlayState::mPlayState;
@@ -27,7 +28,7 @@ void CPlayState::Init()
 	ScoreMSG::Init();
 	
 	mpPlayer = new Player();
-	mpLevel = new Level01();
+	mpLevel = new Level();
 	mpInterface = new Interface();
 
 	mpPlayer->Spawn();

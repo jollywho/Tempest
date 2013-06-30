@@ -9,6 +9,8 @@
 #include "State/PauseState.h"
 #include "State/ContinueState.h"
 
+lua_State* CEngine::mspL;
+
 /** Default constructor. **/
 CEngine::CEngine()
 {
@@ -28,8 +30,8 @@ CEngine::~CEngine()
 }
  
 /** Sets the height and width of the window.
-	@param iWidth The width of the window
-	@param iHeight The height of the window
+	@param rWidth The width of the window
+	@param rHeight The height of the window
 **/
 void CEngine::SetSize(const int& rWidth, const int& rHeight)
 {
@@ -67,6 +69,13 @@ void CEngine::Init()
 		fprintf( stderr, "Unable to initialize TTF: %s\n", SDL_GetError() );
 		exit( 1 );
 	}
+
+	/* initialize Lua */
+	mspL = lua_open();
+	
+	/* load Lua base libraries */
+	luaL_openlibs(mspL);
+
 	SFX::Init();
 	SDL_ShowCursor(0);
 	AdditionalInit();

@@ -13,9 +13,8 @@ Interface::Interface()
 	mpBannerRightSurface = Shared::LoadImage("Image/UI/ui_border_right.png");
 	mpBannerBotSurface = Shared::LoadImage("Image/UI/ui_border_bottom.png");
 	mpBannerBot2Surface = Shared::LoadImage("Image/UI/ui_border_bottom2.png");
-	mpRedSurface = Shared::LoadImage("Font/GoldMistral.png");
+	mpRedSurface = Shared::LoadImage("Font/HaneBlack.png");
 	mpRedFont = new NFont(SDL_GetVideoSurface(), mpRedSurface);
-	mpRedFont->setSpacing(2);
 
 	for(int i=0; i<GameScore::MAX_BOMBS; i++)
 	{
@@ -24,30 +23,29 @@ Interface::Interface()
 		mpBombs[i] = new NSprite(GAME_BOUNDS_WIDTH - (i * 24), GAME_UI_BOTTOM + 24, 
 			&SpriteResource::RequestResource("UI", "bombs_counter.png"));
 	}
-	mpMode = new NSprite(WINDOW_WIDTH/2, GAME_UI_MODE_Y, 
-		&SpriteResource::RequestResource("UI", GameScore::Instance()->GetModeString() + ".png"), false, true);
-	mpPlayer = new NSprite(WINDOW_WIDTH/3 - 20, GAME_UI_MODE_Y, 
-		&SpriteResource::RequestResource("UI", "player_title.png"), false, true);
-	mpHigh = new NSprite(WINDOW_WIDTH/1.5 + 20, GAME_UI_MODE_Y, 
-		&SpriteResource::RequestResource("UI", "high_title.png"), false);
-	mpHpBar = &SpriteResource::RequestResource("UI", "healthbar.png");
 
 	mHpBarActive = false;
 	mBannerBot.x = GAME_BANNER_WIDTH;
 	mBannerBot.y = GAME_UI_BOTTOM;
 
-	int max_score_width = mpRedFont->getWidth("1234567899")/2;
+	/* Scores */ //todo: get a fixed width font for scores
+	int max_score_width = mpRedFont->getWidth("123456789012")/2;
+	mpMode = new NSprite(WINDOW_WIDTH/2, GAME_UI_MODE_Y, 
+		&SpriteResource::RequestResource("UI", GameScore::Instance()->GetModeString() + ".png"), false, true);
+	mpPlayer = new NSprite(WINDOW_WIDTH/3 - max_score_width/2, GAME_UI_MODE_Y, 
+		&SpriteResource::RequestResource("UI", "player_title.png"), false, true);
+	mpHigh = new NSprite(WINDOW_WIDTH/1.5 + max_score_width/2, GAME_UI_MODE_Y, 
+		&SpriteResource::RequestResource("UI", "high_title.png"), false);
+	mpHpBar = &SpriteResource::RequestResource("UI", "healthbar.png");
 
-	mScore.x = GAME_BANNER_WIDTH + 20;
+	mScore.x = GAME_BANNER_WIDTH;
 	mScore.y = mpRedFont->getHeight("99") + 6;
-
 	mHiScoreStr << ScoreIO::SaveScore::GetScores(GameScore::Instance()->GetModeString(true), 1).value;
-	mHiScore.x = GAME_BOUNDS_WIDTH - 20 - max_score_width - mpRedFont->getWidth(mHiScoreStr.str().c_str())/2;
-
+	mHiScore.x = GAME_BOUNDS_WIDTH - max_score_width - mpRedFont->getWidth(mHiScoreStr.str().c_str());
 	mHiScore.y = mpRedFont->getHeight("99") + 6;
 	mGemOrigin = mpRedFont->getHeight("99")*2 + 14;
-	mGem.x = GAME_BANNER_WIDTH + 20; mGem.y = mGemOrigin;
-	mCoin.x = GAME_BANNER_WIDTH + 20; mCoin.y = mGemOrigin + mpRedFont->getHeight("99") + 3;
+	mGem.x = GAME_BANNER_WIDTH + 5; mGem.y = mGemOrigin;
+	mCoin.x = GAME_BANNER_WIDTH + 5; mCoin.y = mGemOrigin + mpRedFont->getHeight("99") + 3;
 }
 
 Interface::~Interface() 
@@ -62,8 +60,6 @@ Interface::~Interface()
 	SDL_FreeSurface(mpRedSurface);
 	delete mpRedFont;
 	//delete icons
-
-	
 }
 
 void Interface::Update(const int& rDeltaTime)
@@ -73,7 +69,7 @@ void Interface::Update(const int& rDeltaTime)
 
 	mScoreStr.str("");
 	mScoreStr << GameScore::Instance()->GetScore();
-	mScore.x = mGem.x + mpRedFont->getWidth("123456789") - mpRedFont->getWidth(mScoreStr.str().c_str())/2;
+	mScore.x = mGem.x + mpRedFont->getWidth("123456789012") - mpRedFont->getWidth(mScoreStr.str().c_str());
 
 	mGemCountStr.str("");
 	mGemCountStr << GameScore::Instance()->GetGemCount();

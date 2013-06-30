@@ -4,6 +4,8 @@
 #include "Game/Camera.h"
 #include "Pattern/ERotBullet.h"
 
+#include "Engine/Engine.h"
+
 Zown::Zown(int x, int y) : Enemy(x, y, 50, "zown.png")
 {
 	mAir = false;
@@ -31,6 +33,9 @@ void Zown::Init()
 	SpriteResource::AddResource("Enemies", "zown.png", 64, 64, 60, 3);
 	//todo: relink
 	//Explosion::AddExplosionInfo("Zown", "Exp_ThinImplode.png", 5, 0);
+
+
+
 }
 
 void Zown::Cleanup()
@@ -40,9 +45,12 @@ void Zown::Cleanup()
 
 void Zown::Attack()
 {
-	CPlayState::Instance()->en_bulletlist.push_back(new ERotBullet(mX + mpInfo->width/2, mY + mpInfo->height, 0, "Arrow.png"));
+	//CPlayState::Instance()->en_bulletlist.push_back(new ERotBullet(mX + mpInfo->width/2, mY + mpInfo->height, 0, "Arrow.png"));
 	attack_Timer.Start();
-	/*
+
+	luaL_dofile(CEngine::mspL, "Scripts/Level01.lua");
+
+
 	attackCount++;
 	
 	if (attackCount > 3) attackCount = 1;
@@ -55,16 +63,16 @@ void Zown::Attack()
     {
         double x = cos(i);
         double y = sin(i);
-        CPlayState::Instance()->en_bulletlist.push_back(new VectorBullet(atkgatset.x + GATE_WIDTH/2,
+        CPlayState::Instance()->en_bulletlist.push_back(new ERotBullet(atkgatset.x + GATE_WIDTH/2,
 			atkgateLE.y + GATE_WIDTH/2,
 			x*100, y * 100, "LargeRed.png"));
 
-		CPlayState::Instance()->en_bulletlist.push_back(new VectorBullet(atkgateRIt.x + GATE_WIDTH/2,
+		CPlayState::Instance()->en_bulletlist.push_back(new ERotBullet(atkgateRIt.x + GATE_WIDTH/2,
 			atkgateRIGHset.y + GATE_WIDTH/2,
 			-x*100, y * 100, "LargeRed.png"));
     }
     attack_Timer.Start();
-	*/
+
 }
 
 void Zown::Update(Uint32 deltaTicks)

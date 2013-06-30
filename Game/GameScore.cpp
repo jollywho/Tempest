@@ -157,7 +157,7 @@ void GameScore::ResetGame()
 {
 	g_continues = 3;
 	prevBonus = 10000;
-    g_score = 0;
+    g_score = 123456789012;
 	//todo: relink
 	//CPlayState::m_Continue = false;
 	//CPlayState::m_GameOver = false;

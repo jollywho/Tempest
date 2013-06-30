@@ -41,6 +41,7 @@ void PlayerBullet::DetectCollision()
 			int radii = enemybounds.w/2 + mOffset.w/4;
 			if ( ( dx * dx )  + ( dy * dy ) < radii * radii ) 
 			{
+				
 					(*it)->TakeHit(1);
 					mClip = 0;
 					mClipTimer.Start();
