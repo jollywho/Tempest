@@ -5,12 +5,6 @@
 #include "Engine/Shared.h"
 #include <vector>
 
-extern "C" {
-	#include "lua.h"
-	#include "lualib.h"
-	#include "lauxlib.h"
-}
-
 class CGameState;
 
 namespace States
@@ -112,7 +106,6 @@ public:
 	SDL_Surface* 	GetSurface	();
 	CGameState*		StateInstance(State id);
 	int 		GetFPS		();
-	static lua_State* mspL;
 };
  
 #endif // ENGINE_H

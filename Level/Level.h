@@ -16,9 +16,6 @@ public:
     void Draw(SDL_Surface *pDest);
 	int LevelEnd() { return mLevelEnd; }
 
-	/* Create enemies used for this level */
-	static int loadstuff(lua_State *l);
-
 
 
 	void LoadEnemies(std::list<Enemy*>& rList);

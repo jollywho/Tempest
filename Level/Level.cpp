@@ -25,16 +25,8 @@ Level::Level()
 	Camera::Reset();
 	GameScore::Instance()->ResetLevel();
 
-	lua_register(CEngine::mspL, "loadstuff", loadstuff);
-	luaL_dofile(CEngine::mspL, "Level01.lua");
-
 	for (int i=6500; i>0; i-=100)
 		enemy_cache.push_back(new Zown(GAME_LEVEL_WIDTH/2,i));
-}
-
-int Level::loadstuff(lua_State *L)
-{
-	return 0;
 }
 
 //Load onscreen enemies from the cache to the active list.

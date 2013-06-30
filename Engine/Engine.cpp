@@ -9,8 +9,6 @@
 #include "State/PauseState.h"
 #include "State/ContinueState.h"
 
-lua_State* CEngine::mspL;
-
 /** Default constructor. **/
 CEngine::CEngine()
 {
@@ -69,12 +67,6 @@ void CEngine::Init()
 		fprintf( stderr, "Unable to initialize TTF: %s\n", SDL_GetError() );
 		exit( 1 );
 	}
-
-	/* initialize Lua */
-	mspL = lua_open();
-	
-	/* load Lua base libraries */
-	luaL_openlibs(mspL);
 
 	SFX::Init();
 	SDL_ShowCursor(0);

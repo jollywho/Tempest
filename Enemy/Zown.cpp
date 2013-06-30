@@ -48,8 +48,6 @@ void Zown::Attack()
 	//CPlayState::Instance()->en_bulletlist.push_back(new ERotBullet(mX + mpInfo->width/2, mY + mpInfo->height, 0, "Arrow.png"));
 	attack_Timer.Start();
 
-	luaL_dofile(CEngine::mspL, "Scripts/Level01.lua");
-
 
 	attackCount++;
 	
@@ -59,6 +57,7 @@ void Zown::Attack()
 	if (rot > M_PI)
 		rot = 0;
 	
+	/*
 	for (double i=0-rot; i<=M_PI/2+rot - .4; i+= .4 )
     {
         double x = cos(i);
@@ -71,6 +70,7 @@ void Zown::Attack()
 			atkgateRIGHset.y + GATE_WIDTH/2,
 			-x*100, y * 100, "LargeRed.png"));
     }
+	*/
     attack_Timer.Start();
 
 }
