@@ -12,6 +12,7 @@ class PlayerBullet;
 class EnemyBullet;
 class Item;
 class ScoreMSG;
+class Explosion;
 
 class CPlayState : public CGameState
 {
@@ -43,6 +44,7 @@ public:
 	std::list<Enemy*> enemy_list;
 	std::list<Item*> item_list;
 	std::list<ScoreMSG*> score_list;
+	std::list<Explosion*> explosion_list;
 	//explosionlist
 	Player* mpPlayer;
 	Level* mpLevel;

@@ -12,8 +12,8 @@ BulletM::BulletM(float x, float y, int angl, int rots) :
 {
 	mOffset.w = mpInfo->width;
     mOffset.h = mpInfo->height;
-    mX = x - mpInfo->width/2 + Camera::CameraX();
-    mY = y - mpInfo->height/2 + Camera::CameraY2();
+    mX = x - mpInfo->width/2 + Camera::Instance()->Instance()->CameraX();
+    mY = y - mpInfo->height/2 + Camera::Instance()->Instance()->CameraY2();
     mOffset.x = mX;
     mOffset.y = mY;
 }
@@ -35,7 +35,7 @@ void BulletM::Update(const int& rDeltaTime)
 		Shared::CheckClip(mClipTimer, mClip, mpInfo->interval, mpInfo->maxClips,0);
 		mY += (yvel * ( rDeltaTime / 1000.f ));
 		mX += (xvel * ( rDeltaTime / 1000.f ));
-		CheckBounds(Point(Camera::CameraX(), Camera::CameraY2()));
+		CheckBounds(Point(Camera::Instance()->Instance()->Camera::Instance()->CameraX(), Camera::Instance()->Instance()->CameraY2()));
     }
     else
     {
@@ -52,11 +52,11 @@ void BulletM::Draw(SDL_Surface *pDest)
 { 
     if (!mExplode)
     {
-        Camera::DrawSurface(mOffset.x - mOffset.w/2, mOffset.y-mOffset.h/2, mpInfo->pSurface[0][mAngle], pDest, NULL);
+        Camera::Instance()->Instance()->DrawSurface(mOffset.x - mOffset.w/2, mOffset.y-mOffset.h/2, mpInfo->pSurface[0][mAngle], pDest, NULL);
     }
     else
     {
-        Camera::DrawSurface(mOffset.x + (mOffset.w/4 - _expInfo->width/4), mOffset.y + (mOffset.h/4 - _expInfo->height/4), 
+        Camera::Instance()->Instance()->DrawSurface(mOffset.x + (mOffset.w/4 - _expInfo->width/4), mOffset.y + (mOffset.h/4 - _expInfo->height/4), 
 			_expInfo->pSurface, pDest, &_expInfo->pClips[mClip]);
     }
 }

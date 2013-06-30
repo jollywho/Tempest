@@ -45,6 +45,6 @@ void Coin::Update(Uint32 deltaTicks)
 
 void Coin::Draw(SDL_Surface *pDest)
 {
-    Camera::DrawSurface(mOffset.x, mOffset.y + Camera::CameraY2(),
+    Camera::Instance()->DrawSurface(mOffset.x, mOffset.y + Camera::Instance()->CameraY2(),
         mpInfo->pSurface, pDest, &mpInfo->pClips[mClip]);
 }

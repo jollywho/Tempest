@@ -28,8 +28,8 @@ void EnemyBullet::DetectCollision()
 		return;
 
     SDL_Rect playerbox = CPlayState::Instance()->mpPlayer->GetBounds().rect;
-    float dx = (playerbox.x + playerbox.w/2) - (mX - Camera::CameraX()  + mpRotInfo->width/2);
-    float dy = (playerbox.y + playerbox.h/2) - (mY - Camera::CameraY2() + mpRotInfo->height/2);
+    float dx = (playerbox.x + playerbox.w/2) - (mX - Camera::Instance()->CameraX()  + mpRotInfo->width/2);
+    float dy = (playerbox.y + playerbox.h/2) - (mY - Camera::Instance()->CameraY2() + mpRotInfo->height/2);
 	double Length = sqrt(pow(dx, 2) + pow(dy, 2));
 
     int radii = playerbox.w/2 + mpRotInfo->width/4;
@@ -50,19 +50,19 @@ void EnemyBullet::Destroy()
 
 void EnemyBullet::CheckBounds()
 {
-	if( mX + mpRotInfo->width - Camera::CameraX() < GAME_BANNER_WIDTH )
+	if( mX + mpRotInfo->width - Camera::Instance()->CameraX() < GAME_BANNER_WIDTH )
 	{
 		mDelete = true;
 	}
-	else if( mX - Camera::CameraX() > GAME_LEVEL_WIDTH )
+	else if( mX - Camera::Instance()->CameraX() > GAME_LEVEL_WIDTH )
 	{
 		mDelete = true;
 	}
-	if( mY + mpRotInfo->height - Camera::CameraY2() < 0 )
+	if( mY + mpRotInfo->height - Camera::Instance()->CameraY2() < 0 )
 	{
 		mDelete = true;
 	}
-	else if( mY - Camera::CameraY2() > GAME_BOUNDS_HEIGHT )
+	else if( mY - Camera::Instance()->CameraY2() > GAME_BOUNDS_HEIGHT )
 	{
 		mDelete = true;
 	}

@@ -54,12 +54,12 @@ void Powerup::Update(Uint32 deltaTicks)
 void Powerup::Draw(SDL_Surface *pDest)
 {
 	if (pickedup) {
-		Camera::DrawSurface(mOffset.x - 45, mOffset.y + Camera::CameraY2() - 25,
+		Camera::Instance()->DrawSurface(mOffset.x - 45, mOffset.y + Camera::Instance()->CameraY2() - 25,
 			smpPickupFrameInfo, pDest, NULL);
-		Camera::DrawSurface(mOffset.x, mOffset.y + Camera::CameraY2(),
+		Camera::Instance()->DrawSurface(mOffset.x, mOffset.y + Camera::Instance()->CameraY2(),
 			mpPickup->pSurface, pDest, &mpPickup->pClips[mClip]);
 	}
 	else
-		Camera::DrawSurface(mOffset.x, mOffset.y + Camera::CameraY2(),
+		Camera::Instance()->DrawSurface(mOffset.x, mOffset.y + Camera::Instance()->CameraY2(),
 			mpInfo->pSurface, pDest, &mpInfo->pClips[mClip]);
 }

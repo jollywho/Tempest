@@ -41,12 +41,12 @@ void Chest::Update(Uint32 deltaTicks)
 		}
 	}
     
-	//if (CheckOffscreen(mX, mY + Camera::CameraY2, mpInfo->height))
+	//if (CheckOffscreen(mX, mY + Camera::Instance()->CameraY2, mpInfo->height))
 	//	mDelete = true;
 }
 
 void Chest::Draw(SDL_Surface *pDest)
 {
-    Camera::DrawSurface(mOffset.x, mOffset.y,
+    Camera::Instance()->DrawSurface(mOffset.x, mOffset.y,
         mpInfo->pSurface, pDest, &mpInfo->pClips[mClip]);
 }

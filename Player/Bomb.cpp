@@ -1,5 +1,6 @@
 #include "Bomb.h"
 #include "Engine/SpriteResource.h"
+#include "Engine/SFX.h"
 #include "Game/Camera.h"
 #include "State/Playstate.h"
 #include "Pattern/EnemyBullet.h"
@@ -22,12 +23,14 @@ Bomb::~Bomb()
 
 void Bomb::Start(int x, int y)
 {
-	mX = x - mpSprite->width/2 + Camera::CameraX();
-	mY = y - mpSprite->height*2 + Camera::CameraY2();
+	mX = x - mpSprite->width/2 + Camera::Instance()->CameraX();
+	mY = y - mpSprite->height*2 + Camera::Instance()->CameraY2();
 
 	/* Always have bomb visible on screen */
 	//todo: have bomb movement and wall collision
 	//issue: camera throws these values off
+	SFX::PlaySoundResource("bomb.wav");
+	Camera::Instance()->StartShake(4);
 	if (mX < GAME_BANNER_WIDTH) mX = GAME_BANNER_WIDTH + 20;
 	if (mX + mpSprite->width > GAME_LEVEL_WIDTH) mX = GAME_LEVEL_WIDTH - mpSprite->width - 20;
 	//if (mY < GAME_UI_TOP) mY = GAME_UI_TOP + 20;
@@ -49,6 +52,8 @@ void Bomb::Update(const int& rDeltaTime)
 {
 	if (!mActive) return;
 	if (mClip >= mpSprite->maxClips) mActive = false;
+	if (mClip == mpSprite->maxClips/2)
+		SFX::PlaySoundResource("bomb2.wav");
 	Shared::CheckClip(mClipTimer, mClip, mpSprite->interval, mpSprite->maxClips, mpSprite->maxClips);
 
 	for (auto it = CPlayState::Instance()->en_bulletlist.begin(); it != CPlayState::Instance()->en_bulletlist.end(); it++)
@@ -65,5 +70,5 @@ void Bomb::Update(const int& rDeltaTime)
 void Bomb::Draw(SDL_Surface *pDest)
 {
 	if (!mActive) return;
-	Camera::DrawSurface(mX, mY, mpSprite->pSurface, pDest, &mpSprite->pClips[mClip]);
+	Camera::Instance()->DrawSurface(mX, mY, mpSprite->pSurface, pDest, &mpSprite->pClips[mClip]);
 }

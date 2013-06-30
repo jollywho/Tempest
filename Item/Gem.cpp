@@ -35,7 +35,7 @@ void Gem::Update(Uint32 deltaTicks)
 	Shared::CheckClip(mClipTimer, mClip, 50, mpInfo->maxClips, 0);
 
 	SDL_Rect playerbox = CPlayState::Instance()->mpPlayer->GetOuterBounds().rect;
-    float dx = (playerbox.x + playerbox.w/2) - (mOffset.x - Camera::CameraX()  + mOffset.w/2);
+    float dx = (playerbox.x + playerbox.w/2) - (mOffset.x - Camera::Instance()->CameraX()  + mOffset.w/2);
     float dy = (playerbox.y + playerbox.h/2) - (mOffset.y + mOffset.h/2);
 	double Length = sqrt(pow(dx, 2) + pow(dy, 2));
 
@@ -72,6 +72,6 @@ void Gem::Update(Uint32 deltaTicks)
 
 void Gem::Draw(SDL_Surface *pDest)
 {
-    Camera::DrawSurface(mOffset.x, mOffset.y + Camera::CameraY2(),
+    Camera::Instance()->DrawSurface(mOffset.x, mOffset.y + Camera::Instance()->CameraY2(),
         mpInfo->pSurface, pDest, &mpInfo->pClips[mClip]);
 }

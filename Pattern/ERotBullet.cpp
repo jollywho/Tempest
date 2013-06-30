@@ -42,12 +42,12 @@ void ERotBullet::Draw(SDL_Surface* pDest)
 { 
     if (!mExplode)
     {
-        Camera::DrawSurface(mX - mpRotInfo->width/2, mY - mpRotInfo->height/2,
+        Camera::Instance()->DrawSurface(mX - mpRotInfo->width/2, mY - mpRotInfo->height/2,
 			mpRotInfo->pSurface[mClip][mAngle], pDest, NULL);
     }
     else
     {
-        Camera::DrawSurface(mX + (mpRotInfo->width/4 - mspExpInfo->width/4), mY + (mpRotInfo->height/4 - mspExpInfo->height/4), 
+        Camera::Instance()->DrawSurface(mX + (mpRotInfo->width/4 - mspExpInfo->width/4), mY + (mpRotInfo->height/4 - mspExpInfo->height/4), 
 			mspExpInfo->pSurface, pDest, &mspExpInfo->pClips[mClip]);
     }
 }

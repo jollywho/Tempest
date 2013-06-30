@@ -2,18 +2,7 @@
 #include "Level/Level.h"
 #include "State/Playstate.h"
 
-SDL_Rect Camera::camera;
-float Camera::msSpeed = 0;
-float Camera::msX = 0;
-float Camera::msY = 0;
-float Camera::msY2 = 0;
-float Camera::msYVel = 0;
-bool Camera::msAccel = false;
-bool Camera::msShake = false;
-int Camera::msShakeCount = 0;
-int Camera::msShakeMagnitude = 0;
-int Camera::msShakeModifier = 0;
-int Camera::msShakeMax = 0;
+Camera Camera::mCamera;
 
 void Camera::JumpToStart()
 {
@@ -46,7 +35,7 @@ void Camera::StartShake(int magnitude)
 
 void Camera::JumpToEnd()
 {
-	//mY = CPlayState::Instance()->level->levelend;
+	//mY = CPlayState::level->levelend;
 	msY += 800;
 }
 
@@ -57,7 +46,7 @@ void Camera::Update(int playerX, Uint32 deltaTicks)
 		msSpeed += .05f;
 
 	msX = ((playerX - GAME_BANNER_WIDTH)/480.f) * 160.f;
-
+	
 	int max = CPlayState::Instance()->mpLevel->LevelEnd();
 	if (msY >= max)
 		msY = (float)max;

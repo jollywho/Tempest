@@ -8,7 +8,7 @@
 #include "Item/Item.h"
 #include "Weapon/PlayerBullet.h"
 #include "Pattern/EnemyBullet.h"
-
+#include "Pattern/Explosion.h"
 #include "ENemy/Zown.h"
 
 CPlayState CPlayState::mPlayState;
@@ -55,6 +55,9 @@ void CPlayState::ClearObjects()
     for (auto it = enemy_list.begin(); it != enemy_list.end();) {
         delete (*it);
         it++; }
+    for (auto it = explosion_list.begin(); it != explosion_list.end();) {
+        delete (*it);
+        it++; }
 	for (auto it = pl_bulletlist.begin(); it != pl_bulletlist.end();) {
 		delete (*it);
 		it++; }
@@ -65,6 +68,7 @@ void CPlayState::ClearObjects()
         delete (*it);
         it++; }
     enemy_list.clear();
+	explosion_list.clear();
 	pl_bulletlist.clear();
 	en_bulletlist.clear();
     item_list.clear();
@@ -159,7 +163,7 @@ void CPlayState::Update(const int& rDeltaTime)
 		else
 			PushState(State::Poll);
 	}
-	Camera::Update(mpPlayer->GetOuterBounds().rect.x, rDeltaTime);
+	Camera::Instance()->Update(mpPlayer->GetOuterBounds().rect.x, rDeltaTime);
 	mpLevel->Update(rDeltaTime);
 	mpLevel->LoadEnemies(enemy_list);
 	mpPlayer->Update(rDeltaTime);
@@ -177,6 +181,7 @@ void CPlayState::Update(const int& rDeltaTime)
 	UpdateList(enemy_list, rDeltaTime);
 	UpdateList(item_list, rDeltaTime);
 	UpdateList(score_list, rDeltaTime);
+	UpdateList(explosion_list, rDeltaTime);
 
 	mpInterface->Update(rDeltaTime);
 }
@@ -194,7 +199,7 @@ void CPlayState::Draw(SDL_Surface* pDest)
 		SPG_RectFilledBlend(pDest,GAME_BANNER_WIDTH,0,GAME_BOUNDS_WIDTH,WINDOW_HEIGHT, 0, mAlpha);
 
 	mpPlayer->Draw(pDest);
-
+	DrawList(explosion_list, pDest);
 	DrawList(en_bulletlist, pDest);
 	DrawList(item_list, pDest);
 	DrawList(score_list, pDest);

@@ -4,6 +4,7 @@
 #include "Game/Interface.h"
 #include "Player/Player.h"
 #include "Game/Gamescore.h"
+#include "Engine/SFX.h"
 
 SDL_Surface* ScoreMSG::mspSurfaceFade[4];
 NFont ScoreMSG::msFontFade[4];
@@ -70,12 +71,15 @@ void ScoreMSG::Update(Uint32 deltaTicks)
 	mY += yvel * (deltaTicks/1000.f);
 	if (mDurationTimer.GetTicks() > 800 + msExtend) { mDelete = true; }
 	if (mValue < msTallyTotal)
+	{
 		mValue++;
+		SFX::PlaySoundResource("tick.wav");
+	}
 	mMsg.str("");
 	mMsg << "+" << mValue;
 }
 
 void ScoreMSG::Draw(SDL_Surface *pDest)
 {
-	msFontFade[mClip].draw(mX-Camera::CameraX(), mY, mMsg.str().c_str());
+	msFontFade[mClip].draw(mX-Camera::Instance()->CameraX(), mY, mMsg.str().c_str());
 }

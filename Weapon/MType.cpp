@@ -30,6 +30,8 @@ MType::MType()
 	mShotAnimClip = 0;
 	mov = 0;
 	SFX::AddSoundResource("attack.wav");
+	SFX::AddSoundResource("bomb.wav");
+	SFX::AddSoundResource("bomb2.wav");
 }
 
 MType::~MType()

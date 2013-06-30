@@ -11,7 +11,7 @@ class Enemy
 protected:
 	SpriteInfo* mpInfo;
     SDL_Rect mHitbox;
-
+	std::string mId;
     SDL_Surface* mpCopySurface;
 	static SDL_Color msHitColor;
 	static SDL_Surface* mspHitSurface;

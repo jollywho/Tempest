@@ -51,9 +51,9 @@ void Layer::Update(Uint32 deltaTicks, float spd)
 		if (mY2 >= GAME_BOUNDS_HEIGHT)
 			mY2 = mY-mHeight;
 		mBounds.y = 0;
-		mBounds.x = (int)Camera::CameraX();
+		mBounds.x = (int)Camera::Instance()->CameraX();
 	}
-	if (Camera::CameraY() >= mStartY && !mFixed) Start();
+	if (Camera::Instance()->CameraY() >= mStartY && !mFixed) Start();
 }
 
 void Layer::Draw(SDL_Surface *pDest)

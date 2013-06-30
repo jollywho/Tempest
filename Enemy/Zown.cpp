@@ -3,13 +3,13 @@
 #include "Engine/SpriteResource.h"
 #include "Game/Camera.h"
 #include "Pattern/ERotBullet.h"
-
+#include "Pattern/Explosion.h"
 #include "Engine/Engine.h"
 
 Zown::Zown(int x, int y) : Enemy(x, y, 50, "zown.png")
 {
 	mAir = false;
-	
+	mId = "Zown";
     rot = 0; attackCount = 0;
 	attack_Timer.Start();
 }
@@ -31,11 +31,8 @@ void Zown::Init()
 {
 	printf("Zown initialize\n");
 	SpriteResource::AddResource("Enemies", "zown.png", 64, 64, 60, 3);
-	//todo: relink
-	//Explosion::AddExplosionInfo("Zown", "Exp_ThinImplode.png", 5, 0);
-
-
-
+	SpriteResource::AddResource("Explosion", "green_small1.png", 45, 60, 60, 8);
+	Explosion::AddExplosionInfo("Zown", "green_small1.png", 1, 0);
 }
 
 void Zown::Cleanup()
@@ -94,9 +91,9 @@ void Zown::Draw(SDL_Surface *pDest)
 	if (mExplode) return;
 
     if (mHit)
-        Camera::DrawSurface(mHitbox.x, mHitbox.y,
+        Camera::Instance()->DrawSurface(mHitbox.x, mHitbox.y,
             mpCopySurface, pDest, &mpInfo->pClips[mClip]);
     else
-        Camera::DrawSurface(mHitbox.x, mHitbox.y,
+        Camera::Instance()->DrawSurface(mHitbox.x, mHitbox.y,
             mpInfo->pSurface, pDest, &mpInfo->pClips[mClip]);
 }

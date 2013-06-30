@@ -7,6 +7,8 @@
 #include "Item/Powerup.h"
 #include "Item/Bombup.h"
 #include "Game/GameScore.h"
+#include "Engine/SFX.h"
+#include "Pattern/Explosion.h"
 
 SDL_Surface* Enemy::mspHitSurface;
 SDL_Color Enemy::msHitColor = { 255, 0, 0 };
@@ -48,6 +50,7 @@ void Enemy::FlashRed(SDL_Surface* en_surface, SDL_Rect* targetClip)
 {
     if (!mHit)
     {
+		SFX::PlaySoundResource("en_takehit.wav");
 		GameScore::Instance()->IncreaseScore(1);
 		mHit = true;
 		mHitTimer.Start();
@@ -67,7 +70,7 @@ void Enemy::FlashClear()
 
 bool Enemy::CheckBounds()
 {
-	if( mY + mpInfo->height - Camera::CameraY2() > 0 )
+	if( mY + mpInfo->height - Camera::Instance()->CameraY2() > 0 )
 	{
 		return true;
 	}
@@ -86,8 +89,6 @@ bool Enemy::Explode(bool del)
 	}
 	else
 		return false;
-
-	//todo: connect with explosion manager.
 }
 
 bool Enemy::CheckHealth()
@@ -105,15 +106,16 @@ bool Enemy::CheckHealth()
 				CPlayState::Instance()->item_list.push_back(
 				new Gem(mX + rand() % mpInfo->width, mY + mpInfo->height/2, 25));
 		}
+		Explosion::RequestExplosion(mId, mX + mpInfo->width/2, mY + mpInfo->height/2, 0, 10);
+		SFX::PlaySoundResource("explode_light1.wav");
 		mExplode = true;
 	}
-	//todo: request explosion
 	return false;
 }
 
 void Enemy::DetectCollision()
 {
-	if( mY - Camera::CameraY2() > GAME_BOUNDS_HEIGHT)
+	if( mY - Camera::Instance()->CameraY2() > GAME_BOUNDS_HEIGHT)
 	{
 		mDelete = true;
 		return;

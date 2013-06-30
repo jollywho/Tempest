@@ -22,7 +22,7 @@ Level::Level()
 	mpTop->Start();
 
 	mLevelEnd = 6400;
-	Camera::Reset();
+	Camera::Instance()->Reset();
 	GameScore::Instance()->ResetLevel();
 
 	for (int i=6500; i>0; i-=100)
@@ -60,9 +60,9 @@ Level::~Level()
 
 void Level::Update(const int& rDeltaTime)
 {
-	mpTop->Update(rDeltaTime, Camera::CameraSpeed()*3);
-	mBounds.x = Camera::CameraX();
-	mBounds.y = Camera::CameraY2() - WINDOW_HEIGHT;
+	mpTop->Update(rDeltaTime, Camera::Instance()->CameraSpeed()*3);
+	mBounds.x = Camera::Instance()->CameraX();
+	mBounds.y = Camera::Instance()->CameraY2() - WINDOW_HEIGHT;
 }
 
 void Level::Draw(SDL_Surface *pDest)
