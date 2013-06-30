@@ -39,7 +39,7 @@ void CEngine::SetSize(const int& rWidth, const int& rHeight)
 
 	mWidth  = rWidth;
 	mHeight = rHeight;
-	mpScreen = SDL_SetVideoMode( rWidth, rHeight, 0, SDL_SWSURFACE| SDL_DOUBLEBUF);
+	mpScreen = SDL_SetVideoMode( rWidth, rHeight, 0, SDL_SWSURFACE| SDL_DOUBLEBUF );
 }
  
 /** initialize SDL, the window and the additional data. **/
