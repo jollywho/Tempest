@@ -6,6 +6,8 @@
 #include "Game/GameScore.h"
 #include "Enemy/Enemy.h"
 #include "Enemy/Zown.h"
+#include "Action/Attack.h"
+#include "Action/Move.h"
 
 Level::Level()
 {
@@ -26,7 +28,12 @@ Level::Level()
 	GameScore::Instance()->ResetLevel();
 
 	for (int i=6500; i>0; i-=100)
-		enemy_cache.push_back(new Zown(GAME_LEVEL_WIDTH/2,i));
+	{
+		std::list<Action*> actions;
+		actions.push_back(new Attack(5));
+		actions.push_back(new Move());
+		enemy_cache.push_back(new Zown(GAME_LEVEL_WIDTH/2+(i/100),i, actions));
+	}
 }
 
 //Load onscreen enemies from the cache to the active list.

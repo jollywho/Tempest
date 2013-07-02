@@ -3,8 +3,10 @@
 #define ENEMY_H
 
 #include "Engine/Shared.h"
+#include <list>
 
 struct SpriteInfo;
+class Action;
 
 class Enemy
 {
@@ -15,6 +17,9 @@ protected:
     SDL_Surface* mpCopySurface;
 	static SDL_Color msHitColor;
 	static SDL_Surface* mspHitSurface;
+
+	std::list<Action*> mActions;
+	std::list<Action*>::iterator mDo;
 
 	Timer mHitTimer;
 	Timer mClipTimer;
@@ -32,12 +37,14 @@ protected:
 	bool mHit;
 	float mX; 
 	float mY;
+	Point mVel;
+	Point mDest;
 	
 	bool Explode(bool isDelete);
 	bool CheckHealth();
 	void DetectCollision();
 public:
-    explicit Enemy(int x, int y, int hp, std::string id);
+    explicit Enemy(int x, int y, int hp, std::string id, std::list<Action*>& actions);
 	virtual ~Enemy() {};
 
     static void Init();
@@ -47,9 +54,11 @@ public:
     virtual void Draw(SDL_Surface *pDest) = 0;
 	virtual void TakeHit(int dmg) = 0;
 
+	void Decide(Uint32 deltaTicks);
 	void FlashRed(SDL_Surface* pSurface, SDL_Rect* pTargetClips);
     void FlashClear();
 	bool CheckBounds();
+	void MoveTo(Point p);
 
     bool RequestDelete() { return mDelete; };
 	bool IsExploding() { return mExplode; }

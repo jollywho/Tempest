@@ -9,11 +9,12 @@
 #include "Game/GameScore.h"
 #include "Engine/SFX.h"
 #include "Pattern/Explosion.h"
+#include "Action/Action.h"
 
 SDL_Surface* Enemy::mspHitSurface;
 SDL_Color Enemy::msHitColor = { 255, 0, 0 };
 
-Enemy::Enemy(int x, int y, int hp, std::string id)
+Enemy::Enemy(int x, int y, int hp, std::string id, std::list<Action*>& actions)
 {
 	printf("Enemy Created\n");
 
@@ -34,6 +35,9 @@ Enemy::Enemy(int x, int y, int hp, std::string id)
 	mHitbox.h = mpInfo->height;
 	mHealth = hp;
 	mMaxHealth = hp;
+
+	std::copy( actions.begin(), actions.end(), std::back_inserter( mActions ) );
+	mDo = mActions.begin();
 }
 
 void Enemy::Init()
@@ -44,6 +48,15 @@ void Enemy::Init()
 void Enemy::Cleanup()
 {
     SDL_FreeSurface(mspHitSurface);
+}
+
+void Enemy::Decide(Uint32 deltaTicks)
+{
+	if ((*mDo)->RequestNext())
+		++mDo;
+		if (mDo == mActions.end())
+			mDo = mActions.begin();
+	(*mDo)->Update(*this, deltaTicks);
 }
 
 void Enemy::FlashRed(SDL_Surface* en_surface, SDL_Rect* targetClip)
@@ -78,6 +91,13 @@ bool Enemy::CheckBounds()
 	{
 		return false;
 	}
+}
+
+void Enemy::MoveTo(Point p)
+{
+	mDest = p;
+	mVel.x = ((rand() % 100) - 50);
+	mVel.y = -10 * (rand() % 10);
 }
 
 bool Enemy::Explode(bool del)

@@ -1,17 +1,17 @@
 #include "Zown.h"
-#include "State/playstate.h"
 #include "Engine/SpriteResource.h"
 #include "Game/Camera.h"
-#include "Pattern/ERotBullet.h"
 #include "Pattern/Explosion.h"
 #include "Engine/Engine.h"
 
-Zown::Zown(int x, int y) : Enemy(x, y, 50, "zown.png")
+Zown::Zown(int x, int y, std::list<Action*>& actions) : Enemy(x, y, 50, "zown.png", actions)
 {
-	mAir = false;
+	mAir = true;
 	mId = "Zown";
     rot = 0; attackCount = 0;
 	attack_Timer.Start();
+	mVel = Point(0,0);
+	mDest = Point(0,0);
 }
 
 Zown::~Zown()
@@ -74,6 +74,7 @@ void Zown::Attack()
 
 void Zown::Update(Uint32 deltaTicks)
 {
+	Decide(deltaTicks);
 	if (Explode(true)) return;
 	if (CheckHealth()) return;
 	DetectCollision();
@@ -82,6 +83,9 @@ void Zown::Update(Uint32 deltaTicks)
         Attack();
 	Shared::CheckClip(mClipTimer, mClip, mpInfo->interval, mpInfo->maxClips, 0);
 	
+	mX += mVel.x * (deltaTicks/1000.f);
+	mY += mVel.y * (deltaTicks/1000.f);
+
     mHitbox.x = mX ;
     mHitbox.y = mY ;
 }

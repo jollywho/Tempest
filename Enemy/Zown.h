@@ -11,7 +11,7 @@ private:
     double rot;
 	int attackCount;
 public:
-    Zown(int x, int y);
+    Zown(int x, int y, std::list<Action*>& actions);
     ~Zown();
     void Attack();
     void Update(Uint32 deltaTicks);

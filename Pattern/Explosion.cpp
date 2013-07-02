@@ -3,7 +3,6 @@
 #include "State/Playstate.h"
 #include "Engine/SpriteResource.h"
 #include "Level/Level.h"
-#include "Level/LayerObject.h"
 
 std::map<std::string, std::list<ExplosionInfo>> Explosion::explosions;
 
