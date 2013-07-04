@@ -8,7 +8,6 @@ Menu::Menu()
 	printf("Menu Create\n");
     mMaxItems = 0;
     mSelectedindex = 1;
-	SpriteResource::AddResource("UI", "selector.png", 155, 60, 60, 3, true);
 	mpInfo = &SpriteResource::RequestResource("UI", "selector.png");
 	mpFont = TTF_OpenFont("Font/plantc.ttf", 24);
 	mClip = 0;

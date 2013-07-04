@@ -14,7 +14,7 @@ Level::Level()
     printf("Level01 initialize\n");
 
 	/* initialize enemies used for this level */
-	
+
 	Zown::Init();
 
 	/* Create layers used for this level */

@@ -9,7 +9,7 @@ SDL_Surface* Item::smpPickupFrameInfo;
 
 Item::Item(int x, int y, int value, char* id)
 {
-	mpInfo = &SpriteResource::RequestResource("Items", id);
+	mpInfo = &SpriteResource::RequestResource("Item", id);
     mDelete = false; pickedup = false; received = false;
     val = 25; mClip = 0;
 	mX = x - mpInfo->width/2;
@@ -32,32 +32,13 @@ void Item::SetBonus(int val)
 void Item::Init()
 {
 	printf("Item initialize!\n");
-	SpriteResource::AddResource("Items", "Gem.png", 32, 32, 60, 8);
-	SpriteResource::AddResource("Items", "Coin.png", 32, 32, 60, 6);
-	SpriteResource::AddResource("Items", "bombup.png", 48, 48, 60, 5);
-	SpriteResource::AddResource("Items", "Powerup.png", 64, 64, 60, 4);
-	SpriteResource::AddResource("Items", "Chest.png", 34, 40, 160, 4);
-	SpriteResource::AddResource("Items", "Quartz.png", 32, 44, 30, 7);
 
-	SpriteResource::AddResource("Items", "bombup_received.png", 70, 15, 60, 5, true);
-	SpriteResource::AddResource("Items", "Powerup_Received.png", 86, 15, 60, 6, true);
-	smpPickupFrameInfo = Shared::LoadImage("Image/Items/Receive_Frame.png");
-
-	SFX::AddSoundResource("damage.wav");
-	SFX::AddSoundResource("pickup.wav");
-	SFX::AddSoundResource("powerup_pickup.wav");
-	SFX::AddSoundResource("bombup_pickup.wav");
-	SFX::AddSoundResource("gem_pickup.wav");
-	SFX::AddSoundResource("coin_pickup.wav");
-	SFX::AddSoundResource("en_takehit.wav");
-	SFX::AddSoundResource("tick.wav");
-	SFX::AddSoundResource("explode_light1.wav");
+	smpPickupFrameInfo = Shared::LoadImage("Image/Item/Receive_Frame.png");
 }
 
 void Item::Cleanup()
 {
 	printf("Item CleanUp!\n");
-	SpriteResource::ClearResourceDir("Items");
 	SDL_FreeSurface(smpPickupFrameInfo);
 }
 

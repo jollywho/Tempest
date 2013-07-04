@@ -15,7 +15,7 @@ ERotBullet::ERotBullet(float x, float y, int angle, std::string id) : EnemyBulle
     xvel = sin(mAngle * M_PI/180) * 200; 
     yvel = cos(mAngle * M_PI/180) * 200;
     
-	mpRotInfo = &SpriteResource::RequestRotationResource("Attacks", id);
+	mpRotInfo = &SpriteResource::RequestRotationResource("Attack", id);
     mX = x - mpRotInfo->width/2;
     mY = y - mpRotInfo->height/2;
 }

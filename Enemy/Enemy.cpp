@@ -18,7 +18,7 @@ Enemy::Enemy(int x, int y, int hp, std::string id, std::list<Action*>& actions)
 {
 	printf("Enemy Created\n");
 
-	mpInfo = &SpriteResource::RequestResource("Enemies", id);
+	mpInfo = &SpriteResource::RequestResource("Enemy", id);
 	mClipTimer.Start();
 
 	mBombupSpawn = false;
@@ -42,7 +42,7 @@ Enemy::Enemy(int x, int y, int hp, std::string id, std::list<Action*>& actions)
 
 void Enemy::Init()
 {
-    mspHitSurface = Shared::LoadImage("Image/Enemies/HitColor.png");
+    mspHitSurface = Shared::LoadImage("Image/Enemy/HitColor.png");
 }
 
 void Enemy::Cleanup()

@@ -13,7 +13,7 @@ NSprite::NSprite(float x, float y, SpriteInfo* pInfo, bool doesStop, bool isReve
 	mStop = doesStop;
 	mReverse = isReverse;
 	mDone = false;
-	//mClip = rand() % (pInfo->maxClips-1);
+	mClip = rand() % (pInfo->maxClips-1);
 
 	mClipTimer.Start();
 }

@@ -9,7 +9,7 @@
 Powerup::Powerup(int x, int y, int value) : Item(x, y, value, "Powerup.png")
 {
 	mAir = true;
-	mpPickup = &SpriteResource::RequestResource("Items", "Powerup_Received.png");
+	mpPickup = &SpriteResource::RequestResource("Item", "Powerup_Received.png");
     mDelete = false;
 	yvel = 200 * ((rand() % 2) == 1 ? -1 : 1);
 	xvel = 200 * ((rand() % 2) == 1 ? -1 : 1);

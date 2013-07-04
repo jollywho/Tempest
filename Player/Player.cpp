@@ -3,6 +3,7 @@
 #include "UI/NSprite.h"
 #include "State/playstate.h"
 #include "Weapon/MType.h"
+#include "Game/GameScore.h"
 
 Bomb* Player::mspBomb;
 Weapon* Player::mspWpn;
@@ -10,12 +11,6 @@ Weapon* Player::mspWpn;
 Player::Player() 
 {
 	printf("Player Created\n");
-	SpriteResource::AddResource("Player", "angel.png", 64, 64, 120, 4);
-	SpriteResource::AddResource("Player", "hitbox.png", 20, 20, 60, 8);
-	SpriteResource::AddResource("Player", "booster.png", 38, 38, 60, 5);
-	SpriteResource::AddResource("Player", "zone.png", 120, 120, 60, 4);
-	SpriteResource::AddResource("Player", "player_explosion.png", 96, 96, 60, 20);
-	SpriteResource::AddResource("Player", "invuln_wings.png", 91, 187, 60, 9);
 
 	mpAngel = new NSprite(0,0, &SpriteResource::RequestResource("Player", "angel.png"));
 	mpHitbox = new NSprite(0,0, &SpriteResource::RequestResource("Player", "hitbox.png"));
@@ -58,7 +53,6 @@ void Player::WeaponLevelUp()
 Player::~Player()
 {
 	printf("Player Deleted\n");
-	SpriteResource::ClearResourceDir("Player");
 }
 
 void Player::KeyInput(const KeyStruct& rKeys)
@@ -120,9 +114,13 @@ void Player::HandleAttacks(const int& rDeltaTime)
 
 	if (mBomb && !mspBomb->IsActive()) 
 	{
-		mspBomb->Start(mX + ANGEL_SIZE/2, mY);
-		mInvuln = true;
-		mInvulnTimer.Start();
+		if (GameScore::Instance()->DecreaseBombups())
+		{
+			mspBomb->Start(mX + ANGEL_SIZE/2, mY);
+			mInvuln = true;
+			mInvulnTimer.Start();
+		}
+		//else play fail.wav
 	}
 
 	mspWpn->Update(rDeltaTime);
@@ -222,6 +220,7 @@ void Player::TakeHit()
 		mpExplosion->Reset();
 		mpExplosion->SetPos(FPoint(mX + ANGEL_SIZE/2, mY + ANGEL_SIZE/2));
 		mspBomb->BulletWipe();
+		GameScore::Instance()->DecreaseLives();
 	}
 }
 

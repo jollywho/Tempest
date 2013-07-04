@@ -4,16 +4,13 @@
 #include "UI/Menu.h"
 #include "Engine/SpriteResource.h"
 #include "Weapon/MType.h"
+#include "Engine/ResourceLoader.h"
 
 PlayerSelectPanel::PlayerSelectPanel()
 {
 	printf("-PlayerSelectPanel Created-\n");
 	mBack = false; mForward = false;
-
-	SpriteResource::AddResource("Player", "angel_1.png", 64, 50, 120, 4);
-	SpriteResource::AddResource("Player", "angel_2.png", 80, 52, 120, 4);
-	SpriteResource::AddResource("Player", "angel_3.png", 80, 55, 120, 4);
-	
+	ResourceLoader::ReadFile("Player");
 	mpPlayer = new NSprite(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, &SpriteResource::RequestResource("Player", "angel_1.png"));
 
 	mpTitle = Shared::LoadImage("Image/UI/select_player_title.png");

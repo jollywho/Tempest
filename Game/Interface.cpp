@@ -1,7 +1,6 @@
 #include "Interface.h"
 #include "Engine/Spriteresource.h"
 #include "Savescore.h"
-#include "Gamescore.h"
 
 Interface::Interface() 
 {
@@ -18,9 +17,9 @@ Interface::Interface()
 
 	for(int i=0; i<GameScore::MAX_BOMBS; i++)
 	{
-		mpLives[i] = new NSprite(GAME_BANNER_WIDTH + (i * 24), GAME_UI_BOTTOM + 24, 
+		mpLives[i] = new NSprite(GAME_BANNER_WIDTH + 32 + (i * 36), GAME_UI_BOTTOM + 24, 
 			&SpriteResource::RequestResource("UI", "lives_counter.png"));
-		mpBombs[i] = new NSprite(GAME_BOUNDS_WIDTH - (i * 24), GAME_UI_BOTTOM + 24, 
+		mpBombs[i] = new NSprite(GAME_BOUNDS_WIDTH - 32 - (i * 36), GAME_UI_BOTTOM + 24, 
 			&SpriteResource::RequestResource("UI", "bombs_counter.png"));
 	}
 

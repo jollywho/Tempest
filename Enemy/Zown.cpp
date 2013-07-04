@@ -30,8 +30,6 @@ void Zown::TakeHit(int dmg)
 void Zown::Init()
 {
 	printf("Zown initialize\n");
-	SpriteResource::AddResource("Enemies", "zown.png", 64, 64, 60, 3);
-	SpriteResource::AddResource("Explosion", "green_small1.png", 45, 60, 60, 8);
 	Explosion::AddExplosionInfo("Zown", "green_small1.png", 1, 0);
 }
 

@@ -12,7 +12,6 @@ Bomb::Bomb()
 {
 	printf("Bomb created\n");
 	mActive = false;
-	SpriteResource::AddResource("Player", "bomb.png", 256, 256, 60, 16);
 	mpSprite = &SpriteResource::RequestResource("Player", "bomb.png");
 }
 

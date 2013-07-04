@@ -156,8 +156,10 @@ void GameScore::IncreaseGemCount() { mGems++; }
 void GameScore::ResetGame()
 {
 	g_continues = 3;
-	prevBonus = 10000;
-    g_score = 123456789012;
+	prevBonus = 1000;
+    g_score = 0;
+	ResetLevel();
+	ResetSpawn();
 	//todo: relink
 	//CPlayState::m_Continue = false;
 	//CPlayState::m_GameOver = false;
@@ -166,9 +168,9 @@ void GameScore::ResetGame()
 
 void GameScore::ResetLevel()
 {
-	mGems = 230;
-	mCoins = 990;
-	mQuartz = 50;
+	mGems = 0;
+	mCoins = 0;
+	mQuartz = 0;
 	mBombs = 0;
 	mLives = 0;
 }

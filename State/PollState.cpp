@@ -39,9 +39,9 @@ void CPollState::Init()
 	mQuartz.value = 100;
 
 	/* NSprite */
-	mpGem = new NSprite(WINDOW_WIDTH/2, 50 + 140, &SpriteResource::RequestResource("Items", "Gem.png"));
-	mpCoin = new NSprite(WINDOW_WIDTH/2, 50 + 250, &SpriteResource::RequestResource("Items", "Coin.png"));
-	mpQuartz = new NSprite(WINDOW_WIDTH/2, 50 + 370, &SpriteResource::RequestResource("Items", "Quartz.png"));
+	mpGem = new NSprite(WINDOW_WIDTH/2, 50 + 140, &SpriteResource::RequestResource("Item", "Gem.png"));
+	mpCoin = new NSprite(WINDOW_WIDTH/2, 50 + 250, &SpriteResource::RequestResource("Item", "Coin.png"));
+	mpQuartz = new NSprite(WINDOW_WIDTH/2, 50 + 370, &SpriteResource::RequestResource("Item", "Quartz.png"));
 	mpReady = new NSprite(WINDOW_WIDTH/2, 50 + 480, &SpriteResource::RequestResource("UI", "poll_ready_banner.png"));
 
 	mExit = false; mReady = false;

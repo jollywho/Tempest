@@ -7,7 +7,7 @@
 
 Bombup::Bombup(int x, int y, int value) : Item(x, y, value, "bombup.png")
 {
-	mpPickup = &SpriteResource::RequestResource("Items", "bombup_received.png");
+	mpPickup = &SpriteResource::RequestResource("Item", "bombup_received.png");
 	mAir = true;
     mDelete = false;
 	yvel = 200 * ((rand() % 2) == 1 ? -1 : 1);

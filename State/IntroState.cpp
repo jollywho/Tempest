@@ -15,7 +15,6 @@ void CIntroState::Init()
 	printf("CIntroState Init\n");
 	ClearRequest();
 	mpBackgroundSurface =  Shared::LoadImage("Image/UI/IntroBG.png");
-	SpriteResource::AddResource("UI", "decor.png", 48,48,100,8);
 
 	mpBorderTop = Shared::LoadImage("Image/UI/intro_border_top.png");
 	mpBorderBot =  Shared::LoadImage("Image/UI/intro_border_bot.png");

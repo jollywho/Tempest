@@ -6,6 +6,7 @@
 #include "Engine/NFont.h"
 #include "Engine/Shared.h"
 #include "UI/NSprite.h"
+#include "Gamescore.h"
 
 struct SpriteInfo;
 class NSprite;
@@ -69,8 +70,8 @@ private:
 	SDL_Surface* mpBannerRightSurface;
 
     /* Icons */
-	NSprite* mpLives[5]; //todo: change to constant in gamescores
-	NSprite* mpBombs[5];
+	NSprite* mpLives[GameScore::MAX_LIVES];
+	NSprite* mpBombs[GameScore::MAX_BOMBS];
 	NSprite* mpMode;
 	NSprite* mpPlayer;
 	NSprite* mpHigh;

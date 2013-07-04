@@ -9,7 +9,8 @@
 #include "Weapon/PlayerBullet.h"
 #include "Pattern/EnemyBullet.h"
 #include "Pattern/Explosion.h"
-#include "ENemy/Zown.h"
+#include "Engine/ResourceLoader.h"
+#include "Engine/SpriteResource.h"
 
 CPlayState CPlayState::mPlayState;
 
@@ -21,6 +22,11 @@ void CPlayState::Init()
 	mEnter = true;
 	mReturn = false;
 	mAlpha = 255;
+
+	ResourceLoader::ReadFile("Item");
+	ResourceLoader::ReadFile("Enemy");
+	ResourceLoader::ReadFile("Attack");
+	ResourceLoader::ReadFile("Explosion");
 
 	Enemy::Init();
 	EnemyBullet::Init();
@@ -44,10 +50,18 @@ CPlayState::~CPlayState()
 void CPlayState::Cleanup()
 {
 	printf("CPlayState Cleanup\n");
+	Enemy::Cleanup();
+	Item::Cleanup();
+	ScoreMSG::Cleanup();
     ClearObjects();
 	delete mpLevel;
 	delete mpInterface;
 	delete mpPlayer;
+	SpriteResource::ClearResourceDir("Item");
+	SpriteResource::ClearResourceDir("Enemy");
+	SpriteResource::ClearResourceDir("Attack");
+	SpriteResource::ClearResourceDir("Explosion");
+	SpriteResource::ClearResourceDir("Player");
 }
 
 void CPlayState::ClearObjects()
