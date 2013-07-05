@@ -39,6 +39,7 @@ ScorePanel::~ScorePanel()
 	SDL_FreeSurface(banner);
 	SDL_FreeSurface(mpTitle);
 	delete score_font;
+	delete mpMode;
 }
 
 void ScorePanel::KeyInput(const KeyStruct& rKeys)

@@ -40,6 +40,13 @@ Enemy::Enemy(int x, int y, int hp, std::string id, std::list<Action*>& actions)
 	mDo = mActions.begin();
 }
 
+Enemy::~Enemy()
+{
+	for (auto it = mActions.begin(); it != mActions.end();) {
+    delete (*it);
+    it++; }
+}
+
 void Enemy::Init()
 {
     mspHitSurface = Shared::LoadImage("Image/Enemy/HitColor.png");

@@ -56,13 +56,11 @@ Level::~Level()
 	printf("Level01 Cleanup\n");
 	SDL_FreeSurface(mpBackground);
 	SDL_FreeSurface(mpTopSurface);
+	for (auto it = enemy_cache.begin(); it != enemy_cache.end();) {
+        delete (*it);
+        it++; }
 	enemy_cache.clear();
 	Zown::Cleanup();
-	/* CleanUp enemies used for this level */
-	//
-	//
-
-	//delete layers
 }
 
 void Level::Update(const int& rDeltaTime)

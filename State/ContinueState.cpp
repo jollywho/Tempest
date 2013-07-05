@@ -43,7 +43,10 @@ void CContinueState::Cleanup()
 	printf("CContinueState Cleanup\n");
 	SDL_FreeSurface(mpContTitle);
 	SDL_FreeSurface(mpContCount);
+	SDL_FreeSurface(mpScreen);
 	delete mpMenu;
+	delete mpTitle;
+	delete mpCounter;
 }
 
 void CContinueState::KeyInput(const KeyStruct& rKeys)

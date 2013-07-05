@@ -2,7 +2,7 @@
 #include "SpriteResource.h"
 #include "SFX.h"
 
-std::istream& operator >> (std::istream& is, Sprite& data)
+std::istream& operator >> (std::istream& is, Resource::Sprite& data)
 {
 	is >> data.id;
 	is >> data.width;
@@ -13,7 +13,7 @@ std::istream& operator >> (std::istream& is, Sprite& data)
 	return is;
 }
 
-std::istream& operator >> (std::istream& is, Sound& data)
+std::istream& operator >> (std::istream& is, Resource::Sound& data)
 {
 	is >> data.id;
 	return is;
@@ -23,8 +23,8 @@ void ResourceLoader::ReadFile(std::string dir)
 {
 	std::ifstream file;
 	std::string meta;
-	Sound data;
-	Sprite info;
+	Resource::Sound data;
+	Resource::Sprite info;
 	std::string filename = "resx.dat";
 	file.open(filename.c_str(), std::ios_base::in);
 

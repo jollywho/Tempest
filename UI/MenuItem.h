@@ -17,7 +17,7 @@ private:
     char* text;
 public:
     int index;
-    explicit MenuItem(int indx, int x, int y, char* msg, TTF_Font* Font);
+    explicit MenuItem(int indx, int x, int y, char& msg, TTF_Font& font);
     ~MenuItem();
     void Move(float x, float y);
     void Update(Uint32 deltaTicks, int mAlpha, int indx);

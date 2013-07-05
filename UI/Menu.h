@@ -22,7 +22,7 @@ public:
 	void Menu::SetIndex(int index);
 	int GetIndex() { return mSelectedindex; }
 	int Count() { return mMaxItems; }
-	Point GetFontSize(char* msg);
+	Point GetFontSize(char& msg);
 private:
     std::vector<MenuItem*> menuList;
     int mMaxItems;
@@ -33,7 +33,7 @@ private:
 	Timer mClipTimer;
 	int mClip;
 	bool mClick;
-	void MoveSelector(SDL_Rect* bounds);
+	void MoveSelector(SDL_Rect& bounds);
 };
  
 

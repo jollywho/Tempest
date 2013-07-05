@@ -7,11 +7,25 @@
 #include <sstream>
 #include <string>
 
-	struct Sound
+namespace Resource
+{
+	struct Sound{std::string id;};
+	struct Font {std::string id;};
+	struct RotSprite
 	{
 		std::string id;
+		int width;
+		int height;
+		int interval;
+		int maxClips;
+		int start;
+		int end;
+		int destWidth;
+		int destHeight;
+		int pivotX;
+		int pivotY;
+		int rotInterval;
 	};
-
 	struct Sprite
 	{
 		std::string id;
@@ -21,16 +35,26 @@
 		int maxClips;
 		bool vert;
 	};
-
-
-	//Static image interface class for storing and using images as sprites.
-	class ResourceLoader
+	struct Explosion
 	{
-	public:
-		static void ReadFile(std::string dir);
-
+		std::string id;
+		std::string eId;
+		int magnitude;
+		int delay;
+		int offsetX;
+		int offsetY;
+		bool residue;
 	};
-std::istream& operator >> (std::istream& is, Sound& data);
-std::istream& operator >> (std::istream& is, Sprite& data);
+}
+
+//Static image interface class for storing and using images as sprites.
+class ResourceLoader
+{
+public:
+	static void ReadFile(std::string dir);
+
+};
+std::istream& operator >> (std::istream& is, Resource::Sound& data);
+std::istream& operator >> (std::istream& is, Resource::Sprite& data);
 
 #endif

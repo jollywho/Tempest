@@ -14,14 +14,14 @@ MenuItem::~MenuItem()
     SDL_FreeSurface(mpInnerSurface);
 }
 
-MenuItem::MenuItem(int indx, int x, int y, char* msg, TTF_Font* Font)
+MenuItem::MenuItem(int indx, int x, int y, char& msg, TTF_Font& font)
 {
-	mpFont = Font;
-    text = msg;
+	mpFont = &font;
+    text = &msg;
     TTF_SetFontOutline(mpFont, 1);
-    mpOuterSurface = TTF_RenderText_Blended(mpFont, msg, color);
+    mpOuterSurface = TTF_RenderText_Blended(mpFont, &msg, color);
     TTF_SetFontOutline(mpFont, 0);
-    mpInnerSurface = TTF_RenderText_Blended(mpFont, msg, color2);
+    mpInnerSurface = TTF_RenderText_Blended(mpFont, &msg, color2);
 
 	int w = 0; int h = 0;
 	TTF_SizeText(mpFont, text, &w, &h);

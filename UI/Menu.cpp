@@ -29,7 +29,7 @@ Menu::~Menu()
 void Menu::AddItem(int x, int y, char* msg)
 {
 	mMaxItems++;
-	menuList.push_back(new MenuItem(mMaxItems, x, y, msg, mpFont));
+	menuList.push_back(new MenuItem(mMaxItems, x, y, *msg, *mpFont));
 }
 
 void Menu::Update(Uint32 deltaTicks, int alpha)
@@ -41,14 +41,14 @@ void Menu::Update(Uint32 deltaTicks, int alpha)
     {
         (*it)->Update(deltaTicks, alpha, mSelectedindex);
         if ((*it)->index == mSelectedindex)
-            MoveSelector(&(*it)->GetBounds());
+            MoveSelector((*it)->GetBounds());
     }
 }
 
-void Menu::MoveSelector(SDL_Rect* bounds)
+void Menu::MoveSelector(SDL_Rect& bounds)
 {
-    mSelector.x = (bounds->x + bounds->w/2) - mpInfo->width/2;
-    mSelector.y = (bounds->y + bounds->h/2) - mpInfo->height/2;
+    mSelector.x = (bounds.x + bounds.w/2) - mpInfo->width/2;
+    mSelector.y = (bounds.y + bounds.h/2) - mpInfo->height/2;
 }
 
 void Menu::Draw(SDL_Surface *pDest)
@@ -87,9 +87,9 @@ void Menu::MoveIndex(int direction)
 	}
 }
 
-Point Menu::GetFontSize(char* msg)
+Point Menu::GetFontSize(char& msg)
 {
 	int w; int h;
-	TTF_SizeText(mpFont, msg, &w, &h);
+	TTF_SizeText(mpFont, &msg, &w, &h);
 	return Point(w,h);
 }

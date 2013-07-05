@@ -42,8 +42,14 @@ ModeSelectPanel::ModeSelectPanel()
 ModeSelectPanel::~ModeSelectPanel()
 {
 	printf("-ModeSelectPanel Deleted-\n");
+	if (mpPanel != NULL) {
+		delete mpPanel;
+		mpPanel = NULL;
+	}
 	SDL_FreeSurface(mpTitle);
 	delete mpMode;
+	delete mpMenu;
+
 }
 
 void ModeSelectPanel::KeyInput(const KeyStruct& rKeys)

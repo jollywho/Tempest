@@ -10,13 +10,13 @@ void CPauseState::Init()
 	printf("CPauseState Init\n");
 
 	ClearRequest();
-	mpScreen = SDL_DisplayFormatAlpha(SPG_CopySurface(SDL_GetVideoSurface()));
+	mpScreen = SDL_DisplayFormatAlpha(SDL_GetVideoSurface());
 
 	mScreenBounds.x = GAME_BANNER_WIDTH;
 	mScreenBounds.y = 0;
 	mScreenBounds.w = GAMESCREEN_WIDTH;
 	mScreenBounds.h = GAMESCREEN_HEIGHT;
-
+	mpPanel = NULL;
 	mAlpha = 0;
 
     mpMenu = new Menu();
@@ -36,6 +36,10 @@ void CPauseState::Init()
 void CPauseState::Cleanup()
 {
 	printf("CPauseState Cleanup\n");
+	if (mpPanel != NULL) {
+		delete mpPanel;
+		mpPanel = NULL;
+	}
 	SDL_FreeSurface(mpScreen);
 	delete mpMenu;
 }

@@ -45,7 +45,7 @@ protected:
 	void DetectCollision();
 public:
     explicit Enemy(int x, int y, int hp, std::string id, std::list<Action*>& actions);
-	virtual ~Enemy() {};
+	~Enemy();
 
     static void Init();
     static void Cleanup();

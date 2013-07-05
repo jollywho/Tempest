@@ -44,7 +44,6 @@ private:
 	static CPollState mIntroState;
 	FontInfo* mpFont;
 	SDL_Surface* mpBackground;
-	SDL_Surface* mpFontSurface;
 	int mAlpha;
 	Timer mFadeTimer;
 	Point banner_middle_pos;

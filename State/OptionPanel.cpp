@@ -51,6 +51,7 @@ OptionPanel::~OptionPanel()
 	SDL_FreeSurface(mpSelector);
 	SDL_FreeSurface(mpFrame);
 	delete mpFont;
+	delete mpMenu;
 }
 
 void OptionPanel::KeyInput(const KeyStruct& rKeys)
