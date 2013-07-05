@@ -9,7 +9,7 @@
 struct SpriteInfo;
 struct ExplosionInfo
 {
-	std::string id;
+	std::string spriteId;
 	int delay;
 	int offsetX;
 	int offsetY;
@@ -36,9 +36,9 @@ public:
     void Update(Uint32 deltaTicks);
     void Draw(SDL_Surface *dest);
 	bool RequestDelete() { return m_delete; };
-	static void AddExplosionInfo(std::string enemyID, std::string expID, int magnitude, 
+	static void AddExplosionInfo(std::string expId, std::string spriteId, int magnitude, 
 		int delay, int offsetX=0, int offsetY=0, bool residue=false);
-	static void RequestExplosion(std::string enemyID, int x, int y, int xv, int yv);
+	static void RequestExplosion(std::string expId, int x, int y, int xv, int yv);
 };
 
 

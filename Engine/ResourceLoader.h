@@ -37,8 +37,8 @@ namespace Resource
 	};
 	struct Explosion
 	{
-		std::string id;
-		std::string eId;
+		std::string expId;
+		std::string spriteId;
 		int magnitude;
 		int delay;
 		int offsetX;
@@ -52,9 +52,19 @@ class ResourceLoader
 {
 public:
 	static void ReadFile(std::string dir);
-
+	static std::string msDir;
+};
+enum Resx
+{
+	Sound = 1,
+	Sprite = 2,
+	RotSprite = 3,
+	Font = 4,
+	Music = 5,
+	Explosion = 6,
 };
 std::istream& operator >> (std::istream& is, Resource::Sound& data);
 std::istream& operator >> (std::istream& is, Resource::Sprite& data);
+std::istream& operator >> (std::istream& is, Resource::Explosion& data);
 
 #endif
