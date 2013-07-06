@@ -7,7 +7,7 @@
 #include "Game/GameScore.h"
 #include "UI/ScoreMsg.h"
 
-Coin::Coin(int x, int y, int value) : Item(x, y, value, "Coin.png")
+Coin::Coin(int x, int y, int value) : Item(x, y, value, "coin")
 {
 	mAir = true;
     mDelete = false;
@@ -22,7 +22,7 @@ Coin::~Coin()
 	{
 		GameScore::Instance()->IncreaseCoinCount();
 		GameScore::Instance()->IncreaseBonus();
-		SFX::PlaySoundResource("coin_pickup.wav");
+		SFX::PlaySoundResource("coin_pickup");
 		//CPlayState::Instance()->scoreMsgList.push_back(new ScoreMSG(mX, mY, mSpawnSide, GameScore::Instance()->GetBonus() * val));
 		CPlayState::Instance()->score_list.push_back(new ScoreMSG(mX, mY, mSpawnSide, val));
 	}

@@ -20,7 +20,8 @@ Enemy::Enemy(int x, int y, int hp, std::string id, std::list<Action*>& actions)
 
 	mpInfo = &SpriteResource::RequestResource("Enemy", id);
 	mClipTimer.Start();
-
+	
+	mId = id;
 	mBombupSpawn = false;
 	mPowerupSpawn = false;
     mDelete = false;
@@ -70,7 +71,7 @@ void Enemy::FlashRed(SDL_Surface* en_surface, SDL_Rect* targetClip)
 {
     if (!mHit)
     {
-		SFX::PlaySoundResource("en_takehit.wav");
+		SFX::PlaySoundResource("en_takehit");
 		GameScore::Instance()->IncreaseScore(1);
 		mHit = true;
 		mHitTimer.Start();
@@ -134,7 +135,7 @@ bool Enemy::CheckHealth()
 				new Gem(mX + rand() % mpInfo->width, mY + mpInfo->height/2, 25));
 		}
 		Explosion::RequestExplosion(mId, mX + mpInfo->width/2, mY + mpInfo->height/2, 0, 10);
-		SFX::PlaySoundResource("explode_light1.wav");
+		SFX::PlaySoundResource("explode_light1");
 		mExplode = true;
 	}
 	return false;

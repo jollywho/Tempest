@@ -10,10 +10,15 @@ class Action
 {
 protected:
 	bool mNext;
+	bool mDel; //this is for one-time-only actions
+	int mLoops;
 public:
-	virtual ~Action() {};
-	virtual void Update(Enemy& enemy, Uint32 deltaTicks) = 0;
+	Action();
+	Action(bool del, int loops);
+	~Action();
+	void Update(Enemy& enemy, Uint32 deltaTicks);
 	bool RequestNext() { return mNext; };
+	bool RequestDelete() { return mDel; };
 };
 
 

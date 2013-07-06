@@ -18,9 +18,9 @@ Interface::Interface()
 	for(int i=0; i<GameScore::MAX_BOMBS; i++)
 	{
 		mpLives[i] = new NSprite(GAME_BANNER_WIDTH + 32 + (i * 36), GAME_UI_BOTTOM + 24, 
-			&SpriteResource::RequestResource("UI", "lives_counter.png"));
+			&SpriteResource::RequestResource("UI", "lives_counter"));
 		mpBombs[i] = new NSprite(GAME_BOUNDS_WIDTH - 32 - (i * 36), GAME_UI_BOTTOM + 24, 
-			&SpriteResource::RequestResource("UI", "bombs_counter.png"));
+			&SpriteResource::RequestResource("UI", "bombs_counter"));
 	}
 
 	mHpBarActive = false;
@@ -30,12 +30,12 @@ Interface::Interface()
 	/* Scores */ //todo: get a fixed width font for scores
 	int max_score_width = mpRedFont->getWidth("123456789012")/2;
 	mpMode = new NSprite(WINDOW_WIDTH/2, GAME_UI_MODE_Y, 
-		&SpriteResource::RequestResource("UI", GameScore::Instance()->GetModeString() + ".png"), false, true);
+		&SpriteResource::RequestResource("UI", GameScore::Instance()->GetModeString()), false, true);
 	mpPlayer = new NSprite(WINDOW_WIDTH/3 - max_score_width/2, GAME_UI_MODE_Y, 
-		&SpriteResource::RequestResource("UI", "player_title.png"), false, true);
+		&SpriteResource::RequestResource("UI", "player_title"), false, true);
 	mpHigh = new NSprite(WINDOW_WIDTH/1.5 + max_score_width/2, GAME_UI_MODE_Y, 
-		&SpriteResource::RequestResource("UI", "high_title.png"), false);
-	mpHpBar = &SpriteResource::RequestResource("UI", "healthbar.png");
+		&SpriteResource::RequestResource("UI", "high_title"), false);
+	mpHpBar = &SpriteResource::RequestResource("UI", "healthbar");
 
 	mScore.x = GAME_BANNER_WIDTH;
 	mScore.y = mpRedFont->getHeight("99") + 6;

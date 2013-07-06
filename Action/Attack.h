@@ -9,14 +9,12 @@ class Attack : public Action
 private:
 	std::string mBulletId;
 	int mSpeed;
-	double mAngle;
 	double mRot;
 	std::string mSpriteId;
-	int mAttackRate;
+	int mInterval;
 	Timer mTimer;
-	Point mTarget;
 public:
-	Attack(int x);
+	Attack(bool del, std::string bullet_id, int speed, int rot, int interval);
 	~Attack();
 	void Update(Enemy& enemy, Uint32 deltaTicks);
 };

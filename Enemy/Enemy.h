@@ -4,6 +4,7 @@
 
 #include "Engine/Shared.h"
 #include <list>
+#include "Level/Factory.h"
 
 struct SpriteInfo;
 class Action;
@@ -44,7 +45,8 @@ protected:
 	bool CheckHealth();
 	void DetectCollision();
 public:
-    explicit Enemy(int x, int y, int hp, std::string id, std::list<Action*>& actions);
+	Enemy(){};
+    Enemy(int x, int y, int hp, std::string id, std::list<Action*>& actions);
 	~Enemy();
 
     static void Init();

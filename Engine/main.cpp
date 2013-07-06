@@ -43,9 +43,9 @@ void CMyEngine::AdditionalInit()
 	// Load up additional data2
 	ResourceLoader::ReadFile("UI");
 
-	FontResource::AddFont("bobble_red.png");
-	FontResource::AddFont("bobble_green.png");
-	FontResource::AddFont("GoldMistral.png");
+	FontResource::AddFont("bobble_red", "bobble_red.png");
+	FontResource::AddFont("bobble_green", "bobble_green.png");
+	FontResource::AddFont("gold", "GoldMistral.png");
 
 	ScoreIO::SaveScore::LoadScores();
 	DoStateChange(State::Intro);

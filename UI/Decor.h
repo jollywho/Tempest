@@ -15,7 +15,7 @@ private:
 	Timer mClipTimer;
 	bool show;
 public:
-	Decor(std::string filename);
+	Decor();
 	void Update(int deltaTicks);
     void Draw(SDL_Surface *pDest);
 };

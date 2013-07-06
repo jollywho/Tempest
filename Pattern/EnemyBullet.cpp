@@ -16,8 +16,7 @@ EnemyBullet::EnemyBullet()
 
 void EnemyBullet::Init()
 {
-	SpriteResource::AddRotationResource("Attack","Arrow.png",28,28,80,4,0,360,28,28,14,14);
-	mspExpInfo = &SpriteResource::RequestResource("Attack","enemy_bullet_explode.png");
+	mspExpInfo = &SpriteResource::RequestResource("Attack","enemy_bullet_explode");
 }
 
 void EnemyBullet::DetectCollision()

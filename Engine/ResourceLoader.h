@@ -9,11 +9,27 @@
 
 namespace Resource
 {
-	struct Sound{std::string id;};
-	struct Font {std::string id;};
+	struct Texture
+	{
+		std::string id;
+		std::string filename;
+		int width;
+		int height;
+	};
+	struct Sprite
+	{
+		std::string id;
+		std::string filename;
+		int width;
+		int height;
+		int inteval;
+		int maxClips;
+		bool vert;
+	};
 	struct RotSprite
 	{
 		std::string id;
+		std::string filename;
 		int width;
 		int height;
 		int interval;
@@ -26,18 +42,13 @@ namespace Resource
 		int pivotY;
 		int rotInterval;
 	};
-	struct Sprite
-	{
-		std::string id;
-		int width;
-		int height;
-		int inteval;
-		int maxClips;
-		bool vert;
-	};
+	struct Font {std::string id; std::string filename;};
+	struct Sound{std::string id; std::string filename;};
+	struct Music{std::string id; std::string filename;};
+
 	struct Explosion
 	{
-		std::string expId;
+		std::string id;
 		std::string spriteId;
 		int magnitude;
 		int delay;
@@ -56,15 +67,21 @@ public:
 };
 enum Resx
 {
-	Sound = 1,
+	Texture = 1,
 	Sprite = 2,
 	RotSprite = 3,
 	Font = 4,
-	Music = 5,
-	Explosion = 6,
+	Sound = 5,
+	Music = 6,
+	Explosion = 7,
 };
-std::istream& operator >> (std::istream& is, Resource::Sound& data);
+std::istream& operator >> (std::istream& is, Resource::Texture& data);
 std::istream& operator >> (std::istream& is, Resource::Sprite& data);
+std::istream& operator >> (std::istream& is, Resource::RotSprite& data);
+std::istream& operator >> (std::istream& is, Resource::Font& data);
+std::istream& operator >> (std::istream& is, Resource::Sound& data);
+std::istream& operator >> (std::istream& is, Resource::Music& data);
 std::istream& operator >> (std::istream& is, Resource::Explosion& data);
+
 
 #endif

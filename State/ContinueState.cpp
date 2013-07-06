@@ -18,8 +18,8 @@ void CContinueState::Init()
 	mScreenBounds.w = GAMESCREEN_WIDTH;
 	mScreenBounds.h = GAMESCREEN_HEIGHT;
 	
-	mpTitle = new NSprite(WINDOW_WIDTH/2, 195, &SpriteResource::RequestResource("UI", "cont_title.png"), false, true);
-	mpCounter = new NSprite(WINDOW_WIDTH/2, 195 + 48, &SpriteResource::RequestResource("UI", "cont_counter.png"), true);
+	mpTitle = new NSprite(WINDOW_WIDTH/2, 195, &SpriteResource::RequestResource("UI", "cont_title"), false, true);
+	mpCounter = new NSprite(WINDOW_WIDTH/2, 195 + 48, &SpriteResource::RequestResource("UI", "cont_counter"), true);
 	mpContTitle = Shared::LoadImage("Image/UI/cont_title_frame.png");
 	mpContCount = Shared::LoadImage("Image/UI/cont_count_frame.png");
 

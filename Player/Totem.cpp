@@ -3,8 +3,8 @@
 
 Totem::Totem(int ux, int uy, int sx, int sy)
 {
-	mpInner = &SpriteResource::RequestResource("Player", "TotemInner.png");
-	mpOuter = &SpriteResource::RequestResource("Player", "Totem.png");
+	mpInner = &SpriteResource::RequestResource("Player", "totem_inner");
+	mpOuter = &SpriteResource::RequestResource("Player", "totem");
 
 	mShift.x = sx - mpOuter->width/2; mShift.y = sy - mpOuter->height/2;
 	mUnshift.x = ux - mpOuter->width/2; mUnshift.y = uy - mpOuter->height/2;

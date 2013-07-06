@@ -6,6 +6,12 @@
 #include <string>
 #include "Shared.h"
 
+struct TextureInfo
+{
+	SDL_Surface* pSurface;
+	int width;
+	int height;
+};
 
 struct SpriteInfo
 {
@@ -48,13 +54,17 @@ Static image interface class for storing and using images as sprites.
 class SpriteResource
 {
 public:
-	static SpriteInfo& RequestResource(std::string dirname, std::string filename);
-	static RotationInfo& RequestRotationResource(std::string dirname, std::string filename);
+	static SpriteInfo& RequestResource(std::string dirname, std::string id);
+	static RotationInfo& RequestRotationResource(std::string dirname, std::string id);
+	static TextureInfo& RequestTextureResource(std::string dirname, std::string id);
 
-	static void AddResource(std::string dirname, std::string filename, 
+	static void AddResource(std::string dirname, std::string id, std::string filename,
 		int width, int height, int interval, int maxClips, bool vert=false);
+	
+	static void AddTexture(std::string dirname, std::string id, std::string filename,
+		int width, int height);
 
-	static void AddRotationResource(std::string dirname, std::string filename,
+	static void AddRotationResource(std::string dirname, std::string id, std::string filename,
 		int width, int height, int interval, int maxClips,
 		int start, int end, int destWidth, int destHeight, 
 		int pivotX, int pivotY, int rotInterval=10);
@@ -64,6 +74,7 @@ public:
 private:
 	static std::map<std::pair<std::string, std::string>, SpriteInfo*> mResources;
 	static std::map<std::pair<std::string, std::string>, RotationInfo*> mRotResources;
+	static std::map<std::pair<std::string, std::string>, TextureInfo*> mTxResources;
 };
 
 #endif

@@ -24,7 +24,7 @@ void CIntroState::Init()
 	mAlpha = 255;
 
 	for(int i=0; i<50; i++)
-		mpDecorList[i] = new Decor("decor.png");
+		mpDecorList[i] = new Decor();
 
     mpMenu = new Menu();
 	//

@@ -5,17 +5,13 @@
 #include "State/playstate.h"
 #include "Game/GameScore.h"
 #include "Enemy/Enemy.h"
-#include "Enemy/Zown.h"
-#include "Action/Attack.h"
-#include "Action/Move.h"
+#include "Factory.h"
 
 Level::Level()
 {
     printf("Level01 initialize\n");
 
 	/* initialize enemies used for this level */
-
-	Zown::Init();
 
 	/* Create layers used for this level */
 	mpBackground = Shared::LoadImage("Image/Levels/level02.png");
@@ -27,13 +23,7 @@ Level::Level()
 	Camera::Instance()->Reset();
 	GameScore::Instance()->ResetLevel();
 
-	for (int i=6500; i>0; i-=100)
-	{
-		std::list<Action*> actions;
-		actions.push_back(new Attack(5));
-		actions.push_back(new Move());
-		enemy_cache.push_back(new Zown(GAME_LEVEL_WIDTH/2+(i/100),i, actions));
-	}
+	Factory::ReadFile("Script/level_01.dat", enemy_cache);
 }
 
 //Load onscreen enemies from the cache to the active list.
@@ -60,7 +50,6 @@ Level::~Level()
         delete (*it);
         it++; }
 	enemy_cache.clear();
-	Zown::Cleanup();
 }
 
 void Level::Update(const int& rDeltaTime)

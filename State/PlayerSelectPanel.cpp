@@ -11,7 +11,7 @@ PlayerSelectPanel::PlayerSelectPanel()
 	printf("-PlayerSelectPanel Created-\n");
 	mBack = false; mForward = false;
 	ResourceLoader::ReadFile("Player");
-	mpPlayer = new NSprite(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, &SpriteResource::RequestResource("Player", "angel_1.png"));
+	mpPlayer = new NSprite(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, &SpriteResource::RequestResource("Player", "angel_1"));
 	mpTitle = Shared::LoadImage("Image/UI/select_player_title.png");
 	mIndex = 1;
 }
@@ -42,7 +42,7 @@ void PlayerSelectPanel::KeyInput(const KeyStruct& rKeys)
 	if (rKeys.down || rKeys.up)
 	{
 		std::stringstream angel_name;
-		angel_name << "angel_" << mIndex << ".png";
+		angel_name << "angel_" << mIndex;
 		delete mpPlayer;
 		mpPlayer = new NSprite(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, 
 			&SpriteResource::RequestResource("Player", angel_name.str()));

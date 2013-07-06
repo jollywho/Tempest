@@ -21,15 +21,15 @@ public:
 	static int BgmVolume(int vol);
 	static int SfxVolume(int vol);
 
-	static void AddMusicResource(std::string filename);
-	static void AddSoundResource(std::string filename);
+	static void AddMusicResource(std::string id, std::string filename);
+	static void AddSoundResource(std::string id, std::string filename);
 
-	static Mix_Music* RequestMusic(std::string);
+	static Mix_Music* RequestMusic(std::string id);
 	
-	static void PlaySoundResource(std::string filename);
-	static void PlayChannelResource(std::string filename, int channel);
+	static void PlaySoundResource(std::string id);
+	static void PlayChannelResource(std::string id, int channel);
 
-	static void PauseSoundResource(std::string filename);
+	static void PauseSoundResource(std::string id);
 
 	static void Init();
 	static void ClearAllResources();

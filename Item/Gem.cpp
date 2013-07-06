@@ -7,7 +7,7 @@
 #include "Game/GameScore.h"
 #include "UI/ScoreMsg.h"
 
-Gem::Gem(int x, int y, int value, bool autoLocked) : Item(x, y, value, "Gem.png")
+Gem::Gem(int x, int y, int value, bool autoLocked) : Item(x, y, value, "gem")
 {
 	mAir = true;
     mDelete = false;
@@ -23,7 +23,7 @@ Gem::~Gem()
 	{
 		GameScore::Instance()->IncreaseGemCount();
 		GameScore::Instance()->IncreaseBonus();
-		SFX::PlaySoundResource("gem_pickup.wav");
+		SFX::PlaySoundResource("gem_pickup");
 		//CPlayState::Instance()->scoreMsgList.push_back(new ScoreMSG(mX, mY, mSpawnSide, GameScore::Instance()->GetBonus() * val));
 		CPlayState::Instance()->score_list.push_back(new ScoreMSG(mX, mY, mSpawnSide, val));
 	}

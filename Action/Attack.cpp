@@ -3,10 +3,14 @@
 #include "State/PlayState.h"
 #include "Pattern/ERotBullet.h"
 
-Attack::Attack(int x)
+Attack::Attack(bool del, std::string bullet_id, int speed, int rot, int interval)
+	: Action (del, 0)
 {
-	mSpeed = x;
-	mNext = false;
+	mBulletId = bullet_id;
+	mSpeed = speed;
+	mRot = rot;
+	mInterval = interval;
+	mTimer.Start();
 }
 
 Attack::~Attack()

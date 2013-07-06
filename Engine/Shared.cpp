@@ -27,7 +27,7 @@ SDL_Surface* Shared::LoadImage( std::string filename, bool key)
         SDL_FreeSurface( loadedImage );
     }
 	else
-		std::cout<<"Error loading file : " << filename<<std::endl;
+		std::cout<<"***Error loading file : " << filename<< "***" << std::endl;
 
     //Return the optimized image
     return optimizedImage;

@@ -3,9 +3,14 @@
 #include "State/PlayState.h"
 #include "Pattern/ERotBullet.h"
 
-Move::Move()
+Move::Move(bool del, int move_type, int speed, int dest_x, int dest_y, int dir_type)
+	: Action(del, 0)
 {
-	mNext = false;
+	mMoveType = (Moves)move_type;
+	mSpeed = speed;
+	mDestx = dest_x;
+	mDesty = dest_y;
+	mDir = (Direction)dir_type;
 }
 
 Move::~Move()

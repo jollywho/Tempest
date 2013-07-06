@@ -6,10 +6,10 @@
 #include "Player/Player.h"
 #include "Game/GameScore.h"
 
-Powerup::Powerup(int x, int y, int value) : Item(x, y, value, "Powerup.png")
+Powerup::Powerup(int x, int y, int value) : Item(x, y, value, "powerup")
 {
 	mAir = true;
-	mpPickup = &SpriteResource::RequestResource("Item", "Powerup_Received.png");
+	mpPickup = &SpriteResource::RequestResource("Item", "powerup_received");
     mDelete = false;
 	yvel = 200 * ((rand() % 2) == 1 ? -1 : 1);
 	xvel = 200 * ((rand() % 2) == 1 ? -1 : 1);
@@ -27,7 +27,7 @@ void Powerup::Update(Uint32 deltaTicks)
 		Shared::CheckClip(mClipTimer, mClip, mpPickup->interval, mpPickup->maxClips, 0);
 		if (!received) 
 		{
-			SFX::PlaySoundResource("powerup_pickup.wav");
+			SFX::PlaySoundResource("powerup_pickup");
 			received = true;
 			mDurationTimer.Start(); 
 			CPlayState::Instance()->mpPlayer->WeaponLevelUp();

@@ -7,7 +7,7 @@
 #include "Player/Player.h"
 #include "UI/ScoreMSG.h"
 
-Quartz::Quartz(int x, int y, int value) : Item(x, y, 1000, "Quartz.png")
+Quartz::Quartz(int x, int y, int value) : Item(x, y, 1000, "quartz")
 {
 	mAir = false;
     mDelete = false;

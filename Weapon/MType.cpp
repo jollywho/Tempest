@@ -16,16 +16,12 @@ MType::MType()
 	mpTotemList[1] = new Totem(-40,90,-40,-50);
 	mpTotemList[2] = new Totem(80,80, 10,-60);
 	mpTotemList[3] = new Totem(-80,80,-10,-60);
-	mpShotAnim = &SpriteResource::RequestResource("Player", "Shot.png");
+	mpShotAnim = &SpriteResource::RequestResource("Player", "shot");
 	rot_divs = 2;
-	SpriteResource::AddRotationResource("Player", "MType.png", 12, 38, 300, 1, 0, 360, 12, 38, 6, 19, rot_divs);
-	BulletM::Init("MType.png", "Conc_Explode.png");
+	BulletM::Init("m_type", "conc_explode");
 	minor_speed = 90; major_speed = 90;
 	mShotAnimClip = 0;
 	mov = 0;
-	SFX::AddSoundResource("attack.wav");
-	SFX::AddSoundResource("bomb.wav");
-	SFX::AddSoundResource("bomb2.wav");
 }
 
 MType::~MType()
@@ -55,7 +51,7 @@ void MType::MinorAttack(std::list<PlayerBullet*>& pl_bulletlist)
 	if (wpn_timer.GetTicks() > minor_speed  || wpn_timer.IsPaused())
 	{
 		wpn_timer.Start(); 	mShotAnimClip = 0; mShotAnimTimer.Start();
-		SFX::PlaySoundResource("attack.wav");
+		SFX::PlaySoundResource("attack");
 		
 		pl_bulletlist.push_back(new BulletM(wpn_pos.x, wpn_pos.y, 180+mov, rot_divs));
 		for (int i=0; i<4; i++)
@@ -76,7 +72,7 @@ void MType::MajorAttack(std::list<PlayerBullet*>& pl_bulletlist)
 	if (wpn_timer.GetTicks() > major_speed || wpn_timer.IsPaused())
 	{
 		wpn_timer.Start(); 	mShotAnimClip = 0; mShotAnimTimer.Start();
-		SFX::PlaySoundResource("attack.wav");
+		SFX::PlaySoundResource("attack");
 		
 		pl_bulletlist.push_back(new BulletM(wpn_pos.x, wpn_pos.y, 180+mov,rot_divs));
 		for (int i=0; i<level; i++)

@@ -12,7 +12,7 @@ Bomb::Bomb()
 {
 	printf("Bomb created\n");
 	mActive = false;
-	mpSprite = &SpriteResource::RequestResource("Player", "bomb.png");
+	mpSprite = &SpriteResource::RequestResource("Player", "bomb");
 }
 
 Bomb::~Bomb()
@@ -28,7 +28,7 @@ void Bomb::Start(int x, int y)
 	/* Always have bomb visible on screen */
 	//todo: have bomb movement and wall collision
 	//issue: camera throws these values off
-	SFX::PlaySoundResource("bomb.wav");
+	SFX::PlaySoundResource("bomb");
 	Camera::Instance()->StartShake(4);
 	if (mX < GAME_BANNER_WIDTH) mX = GAME_BANNER_WIDTH + 20;
 	if (mX + mpSprite->width > GAME_LEVEL_WIDTH) mX = GAME_LEVEL_WIDTH - mpSprite->width - 20;
@@ -52,7 +52,7 @@ void Bomb::Update(const int& rDeltaTime)
 	if (!mActive) return;
 	if (mClip >= mpSprite->maxClips) mActive = false;
 	if (mClip == mpSprite->maxClips/2)
-		SFX::PlaySoundResource("bomb2.wav");
+		SFX::PlaySoundResource("bomb2");
 	Shared::CheckClip(mClipTimer, mClip, mpSprite->interval, mpSprite->maxClips, mpSprite->maxClips);
 
 	for (auto it = CPlayState::Instance()->en_bulletlist.begin(); it != CPlayState::Instance()->en_bulletlist.end(); it++)

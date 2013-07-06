@@ -18,7 +18,7 @@ void CPollState::Init()
 	mpBackground =  Shared::LoadImage("Image/UI/poll.bmp");
 	banner_middle = Shared::LoadImage("Image/UI/poll_banner_middle.png");
 	banner_side = Shared::LoadImage("Image/UI/poll_banner_side.png");
-	mpFont = &FontResource::RequestFont("bobble_red.png");
+	mpFont = &FontResource::RequestFont("bobble_red");
 
 	/* Banners */
 	banner_middle_pos.x = WINDOW_WIDTH/2 - 112/2;

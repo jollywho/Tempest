@@ -11,7 +11,7 @@ ScorePanel::ScorePanel()
 	printf("-ScorePanel Created-\n");
 	mBack = false; mForward = false;
 
-	mpMode = new NSprite(GAME_UI_MODE_X, GAME_UI_MODE_Y, &SpriteResource::RequestResource("UI", "mode_normal.png"), false, true);
+	mpMode = new NSprite(GAME_UI_MODE_X, GAME_UI_MODE_Y, &SpriteResource::RequestResource("UI", "mode_normal"), false, true);
 	banner = Shared::LoadImage("Image/UI/ScoreBanner.png");
 	mpTitle = Shared::LoadImage("Image/UI/highscore_title.png");
 	score_font_surface = Shared::LoadImage("Font/BlueHigh.png");

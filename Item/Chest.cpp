@@ -7,7 +7,7 @@
 #include "Game/GameScore.h"
 #include "Game/Camera.h"
 
-Chest::Chest(int x, int y, int value) : Item(x, y, value, "Chest.png")
+Chest::Chest(int x, int y, int value) : Item(x, y, value, "Chest")
 {
 	mAir = false;
     mDelete = false;

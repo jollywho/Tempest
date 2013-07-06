@@ -4,10 +4,11 @@
 #include "Pattern/Explosion.h"
 #include "Engine/Engine.h"
 
-Zown::Zown(int x, int y, std::list<Action*>& actions) : Enemy(x, y, 50, "zown.png", actions)
+REGISTERIMPL(Zown);
+
+Zown::Zown(int x, int y, std::list<Action*>& actions) : Enemy(x, y, 50, "zown", actions)
 {
 	mAir = true;
-	mId = "Zown";
     rot = 0; attackCount = 0;
 	attack_Timer.Start();
 	mVel = Point(0,0);

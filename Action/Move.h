@@ -13,21 +13,25 @@ enum Moves
 
 enum Direction
 {
-	Up, Down, Left, Right
+	Up = 	1, 
+	Down =	2, 
+	Left =	3, 
+	Right =	4,
 };
 
 class Move : public Action
 {
 private:
-	Point mDestination;
+	int mDestx;
+	int mDesty;
 	int mSpeed;
-	Moves mMoveId;
+	Moves mMoveType;
 	Timer mTimer;
 	Direction mDir;
 public:
-	void Update(Enemy& enemy, Uint32 deltaTicks);
-	Move();
+	Move(bool del, int move_type, int speed, int dest_x, int dest_y, int dir_type);
 	~Move();
+	void Update(Enemy& enemy, Uint32 deltaTicks);
 };
 
 

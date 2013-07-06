@@ -1,9 +1,9 @@
 #include "Decor.h"
 #include "Engine/SpriteResource.h"
 
-Decor::Decor(std::string filename)
+Decor::Decor()
 {
-	mpInfo = &SpriteResource::RequestResource("UI", filename);
+	mpInfo = &SpriteResource::RequestResource("UI", "decor");
 	mX = rand() % WINDOW_WIDTH;
 	mY = rand() % WINDOW_WIDTH;
 	
@@ -29,6 +29,6 @@ void Decor::Update(int deltaTicks)
 
 void Decor::Draw(SDL_Surface *pDest)
 {
-	if (show)
-		Shared::DrawSurface(mX, mY, mpInfo->pSurface, pDest, &mpInfo->pClips[mClip]);
+	//if (show)
+		//Shared::DrawSurface(mX, mY, mpInfo->pSurface, pDest, &mpInfo->pClips[mClip]);
 }

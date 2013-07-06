@@ -10,7 +10,7 @@ void SFX::Init()
 {
 	if (Mix_OpenAudio(44100, AUDIO_S16SYS, 2, 1024) < 0)
 	{
-		printf("Error initializeializing SDL_mixer: %s\n", Mix_GetError());
+		printf("***Error initializeializing SDL_mixer: %s***\n", Mix_GetError());
 	}
 	Mix_AllocateChannels(32);
 	Mix_VolumeMusic(msBgmVolume);
@@ -37,20 +37,20 @@ int SFX::SfxVolume(int vol)
 	return msSfxVolume;
 }
 
-void SFX::AddMusicResource(std::string filename)
+void SFX::AddMusicResource(std::string id, std::string filename)
 {
 	filename.insert(0, "SFX/");
-	if (msMusicFiles.find(filename) == msMusicFiles.end())
+	if (msMusicFiles.find(id) == msMusicFiles.end())
 	{
 		printf("Added: %s\n", filename.c_str());
-		msMusicFiles.insert(std::make_pair(filename, Mix_LoadMUS(filename.c_str())));
+		msMusicFiles.insert(std::make_pair(id, Mix_LoadMUS(filename.c_str())));
 	}
 }
 
-void SFX::AddSoundResource(std::string filename)
+void SFX::AddSoundResource(std::string id, std::string filename)
 {
 	filename.insert(0, "SFX/");
-	if (msSoundFiles.find(filename) == msSoundFiles.end())
+	if (msSoundFiles.find(id) == msSoundFiles.end())
 	{
 		Mix_Chunk* sound = Mix_LoadWAV(filename.c_str());
 		if (sound == NULL)
@@ -59,36 +59,32 @@ void SFX::AddSoundResource(std::string filename)
 		{
 			printf("Added: %s\n", filename.c_str());
 			msSoundCount++;
-			msSoundFiles.insert(std::make_pair(filename, std::make_pair(msSoundCount, sound)));
+			msSoundFiles.insert(std::make_pair(id, std::make_pair(msSoundCount, sound)));
 		}
 	}
 }
 
-Mix_Music* SFX::RequestMusic(std::string filename)
+Mix_Music* SFX::RequestMusic(std::string id)
 {
-	filename.insert(0, "SFX/");
-	auto temp = msMusicFiles.find(filename);
+	auto temp = msMusicFiles.find(id);
 	return temp->second;
 }
 
-void SFX::PlaySoundResource(std::string filename)
+void SFX::PlaySoundResource(std::string id)
 {
-	filename.insert(0, "SFX/");
-	auto temp = msSoundFiles.find(filename);
+	auto temp = msSoundFiles.find(id);
 	Mix_PlayChannel(temp->second.first, temp->second.second, 0);
 }
 
-void SFX::PlayChannelResource(std::string filename, int channel)
+void SFX::PlayChannelResource(std::string id, int channel)
 {
-	filename.insert(0, "SFX/");
-	auto temp = msSoundFiles.find(filename);
+	auto temp = msSoundFiles.find(id);
 	Mix_PlayChannel(channel, temp->second.second, 0);
 }
 
-void SFX::PauseSoundResource(std::string filename)
+void SFX::PauseSoundResource(std::string id)
 {
-	filename.insert(0, "SFX/");
-	auto temp = msSoundFiles.find(filename);
+	auto temp = msSoundFiles.find(id);
 	Mix_Pause(temp->second.first);
 }
 

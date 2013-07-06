@@ -133,7 +133,7 @@ void GameScore::DecreaseContinues()
 
 void GameScore::DecreaseCounter(int decrement, int counter)
 {
-	SFX::PlaySoundResource("tick.wav");
+	SFX::PlaySoundResource("tick");
 	switch(counter)
 	{
 	case 1:

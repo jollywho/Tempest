@@ -6,11 +6,13 @@
 
 class Zown : public Enemy
 {
+	REGISTER(Zown);
 private:
     Timer attack_Timer;
     double rot;
 	int attackCount;
 public:
+	Zown(){};
     Zown(int x, int y, std::list<Action*>& actions);
     ~Zown();
     void Attack();

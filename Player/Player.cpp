@@ -12,12 +12,12 @@ Player::Player()
 {
 	printf("Player Created\n");
 
-	mpAngel = new NSprite(0,0, &SpriteResource::RequestResource("Player", "angel.png"));
-	mpHitbox = new NSprite(0,0, &SpriteResource::RequestResource("Player", "hitbox.png"));
-	mpBooster = new NSprite(0,0, &SpriteResource::RequestResource("Player", "booster.png"));
-	mpZone = new NSprite(0,0, &SpriteResource::RequestResource("Player", "zone.png"));
-	mpExplosion = new NSprite(0,0, &SpriteResource::RequestResource("Player", "player_explosion.png"), true);
-	mpWings = new NSprite(0,0, &SpriteResource::RequestResource("Player", "invuln_wings.png"));
+	mpAngel = new NSprite(0,0, &SpriteResource::RequestResource("Player", "angel"));
+	mpHitbox = new NSprite(0,0, &SpriteResource::RequestResource("Player", "hitbox"));
+	mpBooster = new NSprite(0,0, &SpriteResource::RequestResource("Player", "booster"));
+	mpZone = new NSprite(0,0, &SpriteResource::RequestResource("Player", "zone"));
+	mpExplosion = new NSprite(0,0, &SpriteResource::RequestResource("Player", "player_explosion"), true);
+	mpWings = new NSprite(0,0, &SpriteResource::RequestResource("Player", "invuln_wings"));
 
 	mSpeed = SPEED_NORMAL;
     mov = 0;

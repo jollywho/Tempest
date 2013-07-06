@@ -30,7 +30,7 @@ ModeSelectPanel::ModeSelectPanel()
 	mpTitle = Shared::LoadImage("Image/UI/select_mode_title.png");
 
 	//default mode sprite offscreen
-	mpMode = new NSprite(HIDE_POINT.x, HIDE_POINT.y, &SpriteResource::RequestResource("UI", "mode_normal.png"), false, true);
+	mpMode = new NSprite(HIDE_POINT.x, HIDE_POINT.y, &SpriteResource::RequestResource("UI", "mode_normal"), false, true);
 	mpPanel = NULL;
 	mpMenu = new Menu();
 	//
@@ -66,7 +66,7 @@ void ModeSelectPanel::KeyInput(const KeyStruct& rKeys)
 			mMode = START_POINT;
 			delete mpMode;
 			mpMode = new NSprite(mMode.x, mMode.y, 
-					&SpriteResource::RequestResource("UI", GameScore::GetModeEquivalent(mpMenu->GetIndex(), true) + ".png"), false, true);
+					&SpriteResource::RequestResource("UI", GameScore::GetModeEquivalent(mpMenu->GetIndex(), true)), false, true);
 
 			GameScore::Instance()->SetMode(mpMenu->GetIndex());
 			mpPanel = new PlayerSelectPanel(); mpMenu->Reset();
