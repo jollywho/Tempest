@@ -27,6 +27,7 @@ void CPlayState::Init()
 	ResourceLoader::ReadFile("Enemy");
 	ResourceLoader::ReadFile("Attack");
 	ResourceLoader::ReadFile("Explosion");
+	ResourceLoader::ReadFile("Explosion", "explosion.dat");
 
 	Enemy::Init();
 	EnemyBullet::Init();

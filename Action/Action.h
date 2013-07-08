@@ -19,6 +19,8 @@ public:
 	void Update(Enemy& enemy, Uint32 deltaTicks);
 	bool RequestNext() { return mNext; };
 	bool RequestDelete() { return mDel; };
+	bool IsLoopAction() { return mLoops ? 1 : 0; };
+	int ActionCount() { return mLoops; };
 };
 
 

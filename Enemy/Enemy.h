@@ -45,8 +45,7 @@ protected:
 	bool CheckHealth();
 	void DetectCollision();
 public:
-	Enemy(){};
-    Enemy(int x, int y, int hp, std::string id, std::list<Action*>& actions);
+    explicit Enemy(std::string id, int x, int y, std::list<Action*>& actions);
 	~Enemy();
 
     static void Init();

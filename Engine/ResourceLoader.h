@@ -62,7 +62,7 @@ namespace Resource
 class ResourceLoader
 {
 public:
-	static void ReadFile(std::string dir);
+	static void ReadFile(std::string dir, std::string file_name="resx.dat");
 	static std::string msDir;
 };
 enum Resx

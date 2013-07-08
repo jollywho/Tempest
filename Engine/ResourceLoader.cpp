@@ -34,16 +34,17 @@ std::istream& operator >> (std::istream& is, Resource::Explosion& data)
 {	is >> data.id >> data.spriteId >> data.magnitude >> data.delay >> data.offsetX
 		 >> data.offsetY >> data.residue; return is; }
 
-void ResourceLoader::ReadFile(std::string dir)
+void ResourceLoader::ReadFile(std::string dir, std::string file_name)
 {
     std::ifstream file;
 	std::string meta;
-    std::string filename = "resx.dat";
+    std::string filename = file_name;
+	filename.insert(0, "Script/");
 	msDir = dir;
     file.open(filename.c_str(), std::ios_base::in);
 
     if (!file.is_open()) {
-        std::cout<<"***Error: opening file 'resx.dat'***\n"<<std::endl;
+        std::cout<<"***Error: opening file: " << file_name << "***\n"<<std::endl;
         return; }
 
     while (!file.eof())

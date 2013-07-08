@@ -14,8 +14,9 @@
 #define _CREATORIMPL_H_
 
 #include <string>
-
+#include <list>
 #include "Creator.h"
+#include "Action/Action.h"
 
 template <class T>
 class CreatorImpl : public Creator
@@ -24,8 +25,7 @@ public:
 	CreatorImpl<T>(const std::string& classname) : Creator(classname) {}
 	virtual ~CreatorImpl<T>() {}
 
-	virtual Enemy* create() { return new T; }
-	//virtual Enemy* create() { return new T(x,y,id,list<action>& actions); } ???
+	virtual Enemy* create(int x, int y, std::list<Action*> actions) { return new T(x,y,actions); }
 };
 
 #endif //_CREATORIMPL_H_

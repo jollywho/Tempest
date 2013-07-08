@@ -14,14 +14,14 @@
 SDL_Surface* Enemy::mspHitSurface;
 SDL_Color Enemy::msHitColor = { 255, 0, 0 };
 
-Enemy::Enemy(int x, int y, int hp, std::string id, std::list<Action*>& actions)
+Enemy::Enemy(std::string id, int x, int y, std::list<Action*>& actions)
 {
 	printf("Enemy Created\n");
 
+	mId = id;
 	mpInfo = &SpriteResource::RequestResource("Enemy", id);
 	mClipTimer.Start();
 	
-	mId = id;
 	mBombupSpawn = false;
 	mPowerupSpawn = false;
     mDelete = false;
@@ -34,8 +34,6 @@ Enemy::Enemy(int x, int y, int hp, std::string id, std::list<Action*>& actions)
 	mHitbox.y = mY;
 	mHitbox.w = mpInfo->width; 
 	mHitbox.h = mpInfo->height;
-	mHealth = hp;
-	mMaxHealth = hp;
 
 	std::copy( actions.begin(), actions.end(), std::back_inserter( mActions ) );
 	mDo = mActions.begin();
@@ -60,11 +58,30 @@ void Enemy::Cleanup()
 
 void Enemy::Decide(Uint32 deltaTicks)
 {
-	if ((*mDo)->RequestNext())
-		++mDo;
-		if (mDo == mActions.end())
-			mDo = mActions.begin();
-	(*mDo)->Update(*this, deltaTicks);
+	if (mActions.size() < 1) return;
+
+    if ((*mDo)->RequestNext()) { ++mDo; }
+    if (mDo == mActions.end()) { mDo = mActions.begin(); }
+    /*
+		if ((*mDo)->IsLoopAction())
+    {
+        int counter = 0;
+        int max = (*mDo)->ActionCount();
+        for (int i=0; i < max; i++)
+        {
+            mDo = mActions.begin() + i;
+            (*mDo)->Update(*this, deltaTicks);
+            counter += (*mDo)->RequestNext();
+            if (counter > max)
+            {
+                mDo = mActions.begin() - counter;
+                (*mDo)->RequestNext();
+            }
+        }
+    }
+    else
+	*/
+        (*mDo)->Update(*this, deltaTicks);
 }
 
 void Enemy::FlashRed(SDL_Surface* en_surface, SDL_Rect* targetClip)

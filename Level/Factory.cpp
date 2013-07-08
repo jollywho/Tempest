@@ -6,13 +6,17 @@
 
 std::istream& operator >> (std::istream& is, ActionData& data)
 {is >> data.del >> data.loops; return is;}
+
 std::istream& operator >> (std::istream& is, AttackData& data)
 {is >> data.del >> data.bulletId >> data.speed >> data.rot >> data.interval; return is;}
+
 std::istream& operator >> (std::istream& is, MoveData& data)
 {is >> data.del >> data.move_type >> data.speed >> data.dest_x 
 	>> data.dest_y >> data.dir_type; return is;}
+
 std::istream& operator >> (std::istream& is, NoiseData& data)
 {is >> data.del >> data.id >> data.is_music; return is; }
+
 std::istream& operator >> (std::istream& is, EnData& data)
 {
     size_t size;
@@ -37,13 +41,13 @@ void Factory::registerit(const std::string& classname, Creator* creator)
 	get_table()[classname] = creator;
 }
 
-Enemy* Factory::create(const std::string& classname)
+Enemy* Factory::create(const std::string& classname, int x, int y, std::list<Action*>& actions)
 {
 	std::map<std::string, Creator*>::iterator i;
 	i = get_table().find(classname);
 
 	if(i != get_table().end())
-		return i->second->create();
+		return i->second->create(x, y, actions);
 	else
 		return (Enemy*)NULL;
 }
@@ -68,7 +72,7 @@ void Factory::ReadFile(std::string filename, std::list<Enemy*>& cache)
     while (!file.eof())
     {
         file >> en;
-		cache.push_back(Factory::create(en.id));
+		cache.push_back(Factory::create(en.id, en.originX, en.originY, en.actions));
     }
     file.close();
 }

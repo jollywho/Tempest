@@ -6,8 +6,10 @@
 
 REGISTERIMPL(Zown);
 
-Zown::Zown(int x, int y, std::list<Action*>& actions) : Enemy(x, y, 50, "zown", actions)
+Zown::Zown(int x, int y, std::list<Action*>& actions) : Enemy("zown", x, y, actions)
 {
+	mHealth = 50;
+	mMaxHealth = 50;
 	mAir = true;
     rot = 0; attackCount = 0;
 	attack_Timer.Start();
@@ -19,7 +21,6 @@ Zown::~Zown()
 {
     if (mHit)
         SDL_FreeSurface(mpCopySurface);
-
 }
 
 void Zown::TakeHit(int dmg)

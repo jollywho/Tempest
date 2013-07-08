@@ -22,7 +22,7 @@ Level::Level()
 	mLevelEnd = 6400;
 	Camera::Instance()->Reset();
 	GameScore::Instance()->ResetLevel();
-
+	
 	Factory::ReadFile("Script/level_01.dat", enemy_cache);
 }
 

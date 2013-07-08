@@ -73,7 +73,7 @@ void ScoreMSG::Update(Uint32 deltaTicks)
 	if (mValue < msTallyTotal)
 	{
 		mValue++;
-		SFX::PlaySoundResource("tick.wav");
+		SFX::PlaySoundResource("tick");
 	}
 	mMsg.str("");
 	mMsg << "+" << mValue;

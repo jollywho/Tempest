@@ -30,7 +30,7 @@ struct EnData
 class Factory
 {
 public:
-	static Enemy* create(const std::string& classname);
+	static Enemy* create(const std::string& classname, int x, int y, std::list<Action*>& actions);
 	static void registerit(const std::string& classname, Creator* creator);
 	static void Factory::ReadFile(std::string dir, std::list<Enemy*>& cache);
 private:
