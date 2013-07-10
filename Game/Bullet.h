@@ -7,7 +7,7 @@
 class Bullet
 {
 public:
-    virtual ~Bullet() {}    
+    Bullet(int clip, bool del, bool explode) : mClip(clip), mDelete(del), mExplode(explode){};
     virtual void Update(const int& rDeltaTime) = 0;
     virtual void Draw(SDL_Surface *pDest) = 0;
     bool RequestDelete() { return mDelete; }
@@ -20,4 +20,3 @@ protected:
 
 
 #endif
-

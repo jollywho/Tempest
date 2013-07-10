@@ -75,7 +75,6 @@ void Enemy::Decide(Uint32 deltaTicks)
             if (counter > max)
             {
                 mDo = std::prev (mActions.end(), counter);
-                (*mDo)->RequestNext();
             }
         }
     }
@@ -167,6 +166,7 @@ void Enemy::DetectCollision()
 
 	SDL_Rect pl_mpHitbox = CPlayState::Instance()->mpPlayer->GetBounds().rect;
 
+	
 	if (mHitbox.x + mHitbox.w > pl_mpHitbox.x  && 
         mHitbox.x < pl_mpHitbox.x + pl_mpHitbox.w  && 
         mHitbox.y + mHitbox.h > pl_mpHitbox.y && 

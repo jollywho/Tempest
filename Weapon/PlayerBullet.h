@@ -3,29 +3,33 @@
 
 #include "Game/Bullet.h"
 
+struct RotationInfo;
+struct SpriteInfo;
+
 class PlayerBullet : public Bullet
 {
 public:
-    explicit PlayerBullet(float x, float y, int angl, int rots);
+    explicit PlayerBullet(float x, float y, int angle, int rots);
 	virtual ~PlayerBullet(){}
-
+	
 	static void Init();
-	virtual void Update(const int& rDeltaTime) = 0;
-	virtual void Draw(SDL_Surface *pDest) = 0;
-    
+	void Update(const int& rDeltaTime);
+	void Draw(SDL_Surface *pDest);
+    static void Init(std::string id, std::string expId);
     void DetectCollision();
 	void CheckBounds(Point camera_pos);
-protected:
-	
-	SDL_Rect mOffset;
+private:
+	static const int TOO_FAR = 50;
 	float xvel, yvel;
     float mX, mY;
     Timer mClipTimer;
 	int mAngle;
-
-	static Point min_bounds;
-	static Point max_bounds;
-	
+	int mRots;
+	static Point msMinBounds;
+	static Point msMaxBounds;
+	static RotationInfo* mpInfo;
+	static SpriteInfo* _expInfo;
+	SDL_Rect mOffset;
 };
 
 #endif

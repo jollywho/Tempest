@@ -27,6 +27,5 @@ void Attack::Update(Enemy& enemy, Uint32 deltaTicks)
 		rec.x += rec.w/2;
 		rec.y += rec.h/2;
 		CPlayState::Instance()->en_bulletlist.push_back(new EnemyBullet(mBulletId, rec.x, rec.y, mRot));
-		printf("~%i, %i\n", rec.x, rec.y);
 	}
 }

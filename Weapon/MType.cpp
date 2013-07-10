@@ -5,7 +5,7 @@
 #include "Player/Player.h"
 #include "Player/Totem.h"
 //#include "Beam.h"
-#include "BulletM.h"
+#include "PlayerBullet.h"
 
 MType::MType()
 {
@@ -18,7 +18,7 @@ MType::MType()
 	totem_list.push_back(new Totem(-80,80,-10,-60));
 	mpShotAnim = &SpriteResource::RequestResource("Player", "shot");
 	rot_divs = 2;
-	BulletM::Init("m_type", "conc_explode");
+	PlayerBullet::Init("m_type", "conc_explode");
 	minor_speed = 90; major_speed = 90;
 	mShotAnimClip = 0;
 	mov = 0;
@@ -51,15 +51,15 @@ void MType::MinorAttack(std::list<PlayerBullet*>& pl_bulletlist)
 		wpn_timer.Start(); 	mShotAnimClip = 0; mShotAnimTimer.Start();
 		SFX::PlaySoundResource("attack");
 		
-		pl_bulletlist.push_back(new BulletM(wpn_pos.x, wpn_pos.y, 180+mov, rot_divs));
+		pl_bulletlist.push_back(new PlayerBullet(wpn_pos.x, wpn_pos.y, 180+mov, rot_divs));
 		for (auto it = totem_list.begin(); it != std::next(totem_list.begin(), level); it++)
 		{
 			int x = (*it)->GetMiddle();
 			int y = (*it)->GetVertical();
 			for (int i=4; i<10; i+=2)
 			{
-				pl_bulletlist.push_back(new BulletM(x+(i*2), y+(i*2), 180+(i*2)+mov,rot_divs));
-				pl_bulletlist.push_back(new BulletM(x-(i*2), y+(i*2), 180-(i*2)+mov,rot_divs));
+				pl_bulletlist.push_back(new PlayerBullet(x+(i*2), y+(i*2), 180+(i*2)+mov,rot_divs));
+				pl_bulletlist.push_back(new PlayerBullet(x-(i*2), y+(i*2), 180-(i*2)+mov,rot_divs));
 			}
 		}
 	}
@@ -72,15 +72,15 @@ void MType::MajorAttack(std::list<PlayerBullet*>& pl_bulletlist)
 		wpn_timer.Start(); 	mShotAnimClip = 0; mShotAnimTimer.Start();
 		SFX::PlaySoundResource("attack");
 		
-		pl_bulletlist.push_back(new BulletM(wpn_pos.x, wpn_pos.y, 180+mov,rot_divs));
+		pl_bulletlist.push_back(new PlayerBullet(wpn_pos.x, wpn_pos.y, 180+mov,rot_divs));
 		for (auto it = totem_list.begin(); it != std::next(totem_list.begin(), level); it++)
 		{
 			int x = (*it)->GetMiddle();
 			int y = (*it)->GetVertical();
 			for (int i=2; i<10; i+=2)
 			{
-				pl_bulletlist.push_back(new BulletM(x+(i*2), y+(i*2), 180+(i)+mov,rot_divs));
-				pl_bulletlist.push_back(new BulletM(x-(i*2), y+(i*2), 180-(i)+mov,rot_divs));
+				pl_bulletlist.push_back(new PlayerBullet(x+(i*2), y+(i*2), 180+(i)+mov,rot_divs));
+				pl_bulletlist.push_back(new PlayerBullet(x-(i*2), y+(i*2), 180-(i)+mov,rot_divs));
 			}
 		}
 	}

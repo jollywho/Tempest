@@ -18,13 +18,15 @@ public:
 	void Update(const int& rDeltaTime);
 	void Draw(SDL_Surface *pDest);
 
-protected:
+private:
+	static const int TOO_FAR = 50;
+	int mChangeTime;
 	RotationInfo* mpRotInfo;
 	static SpriteInfo* mspExpInfo;
     float xvel, yvel;
     float mX, mY;
-	float xvel2; float yvel2;
-	int mAngle;
+	float mModx; float mMody;
+	int mAngle; int mAngle2;
 	void CheckBounds();
 };
 

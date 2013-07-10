@@ -8,11 +8,15 @@
 
 SpriteInfo* EnemyBullet::mspExpInfo;
 
-EnemyBullet::EnemyBullet(std::string id, float x, float y, int angle, int ch_time, float xmod, float ymod, int angle2)
+EnemyBullet::EnemyBullet(std::string id, float x, float y, int angle, int ch_time, float xmod, float ymod, int angle2) :
+	Bullet(0, false, false),
+	mX(x), mY(y), 
+	mAngle(angle),
+	mChangeTime(ch_time),
+	mModx(xmod), mMody(ymod),
+	mAngle2(angle2)
 {
 	//if angle == -1 use targeting
-	mClip = 0;
-	mAngle = angle;
 	if (mAngle < 0)
 	{
 		mAngle = mAngle + 360;
@@ -23,12 +27,11 @@ EnemyBullet::EnemyBullet(std::string id, float x, float y, int angle, int ch_tim
     xvel = sin(mAngle * M_PI/180) * 200; 
     yvel = cos(mAngle * M_PI/180) * 200;
 	mClipTimer.Start();
-	mDelete = false;
 	mExplode = CPlayState::Instance()->mpPlayer->IsBombActive();
 	mpRotInfo = &SpriteResource::RequestRotationResource("Attack", id);
 	mspExpInfo = &SpriteResource::RequestResource("Attack","enemy_bullet_explode");
-	mX = x - mpRotInfo->width/2;
-    mY = y - mpRotInfo->height/2;
+	mX = mX - mpRotInfo->width/2;
+    mY = mY - mpRotInfo->height/2;
 }
 
 EnemyBullet::~EnemyBullet()
@@ -41,7 +44,7 @@ void EnemyBullet::DetectCollision()
 	if (CPlayState::Instance()->mpPlayer->IsExploding()) 
 		return;
 
-    std::list<Totem*> bounds = CPlayState::Instance()->mpPlayer->GetWpn()->GetTotems();
+    std::list<Totem*>& bounds = CPlayState::Instance()->mpPlayer->GetWpn()->GetTotems();
 	for (auto it = bounds.begin(); it != bounds.end(); it++)
 		if (IsCollision((*it)->GetBounds()))
 		{ 
@@ -54,8 +57,13 @@ void EnemyBullet::DetectCollision()
 
 bool EnemyBullet::IsCollision(SDL_Rect obj)
 {
-	float dx = (obj.x + obj.w/2) - (mX - Camera::Instance()->CameraX()  + mpRotInfo->width/2);
-	float dy = (obj.y + obj.h/2) - (mY - Camera::Instance()->CameraY2() + mpRotInfo->height/2);
+    float dx = (obj.x + obj.w/2) - (mX - Camera::Instance()->CameraX()  + mpRotInfo->width/2);
+	if (dx > 200) 
+		return false;
+    float dy = (obj.y + obj.h/2) - (mY - Camera::Instance()->CameraY2() + mpRotInfo->height/2);
+	if (dy > 200)
+		return false;
+
 	double Length = sqrt(pow(dx, 2) + pow(dy, 2));
 
 	int radii = obj.w/2 + mpRotInfo->width/4;

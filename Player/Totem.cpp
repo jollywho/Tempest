@@ -41,7 +41,6 @@ void Totem::PullTotems()
 void Totem::Update(const int& rDeltaTime, int x, int y, bool isAnimated)
 {
 	if (mDisable) return;
-	if (!mpFlash->IsDone()) { mpFlash->SetPos(FPoint(mX + mpOuter->width/2, mY + mpOuter->height/2)); mpFlash->Update(); }
 	
 	if (mUnset) { mX = x; mY = y; mUnset = false; }
 	if (isAnimated) Shared::CheckClip(mClipTimer, mClip, mpInner->interval, mpInner->maxClips, 0);
@@ -53,7 +52,7 @@ void Totem::Update(const int& rDeltaTime, int x, int y, bool isAnimated)
 	if (mDetTimer.GetTicks() > 600) 
 	{ 
 		mDisable = true;  
-		CPlayState::Instance()->mpPlayer->Knockback(dx*50,dy*50,SPEED*50);
+		CPlayState::Instance()->mpPlayer->Knockback(dx,dy,SPEED*50);
 		 // + request explosion
 		 return;
 	}
@@ -62,6 +61,15 @@ void Totem::Update(const int& rDeltaTime, int x, int y, bool isAnimated)
 	
 	float xa = dx / Length;
 	float ya = dy / Length;
+
+	if (!mpFlash->IsDone()) 
+	{ 
+		mpFlash->SetPos(FPoint(mX + mpOuter->width/2, mY + mpOuter->height/2)); 
+		mpFlash->Update(); 
+		ya = 1;
+		spd = 100;
+	}
+
 	mX += (xa * (spd * (rDeltaTime / 1000.f)));
 	mY += (ya * (spd * (rDeltaTime / 1000.f)));
 }
@@ -100,7 +108,7 @@ void Totem::ResetPos(int x, int y)
 void Totem::TakeHit()
 {
 	mpFlash->Reset();
-	CPlayState::Instance()->mpPlayer->Knockback(0,-1,SPEED);
+	CPlayState::Instance()->mpPlayer->Knockback(0,1,200);
 	if (mHealth < 1) {
 		mDet = true;
 		mDetTimer.Start();

@@ -2,17 +2,21 @@
 #include "State/playstate.h"
 #include "Engine/SpriteResource.h"
 #include "Enemy/Enemy.h"
+#include "Game/Camera.h"
 
-Point PlayerBullet::min_bounds;
-Point PlayerBullet::max_bounds;
+RotationInfo* PlayerBullet::mpInfo;
+SpriteInfo* PlayerBullet::_expInfo;
+Point PlayerBullet::msMinBounds;
+Point PlayerBullet::msMaxBounds;
 
-PlayerBullet::PlayerBullet(float x, float y, int angl, int rots)
+PlayerBullet::PlayerBullet(float x, float y, int angle, int rots) :
+	Bullet(0, false, false),
+	mX(x), mY(y),
+	mAngle(-angle),
+	mRots(rots),
+	mOffset(),
+	xvel(0), yvel(0)
 {
-    mDelete = false;
-    mExplode = false;
-	mClip = 0;
-
-	mAngle = -angl;
 	if (mAngle < 0)
 	{
 		mAngle = mAngle + 360;
@@ -23,7 +27,23 @@ PlayerBullet::PlayerBullet(float x, float y, int angl, int rots)
     xvel = sinf(mAngle * (float)(M_PI/180)) * 1600; 
     yvel = cosf(mAngle * (float)(M_PI/180)) * 1600;
 	
+	mOffset.w = mpInfo->width;
+    mOffset.h = mpInfo->height;
+    mX = x - mpInfo->width/2 + Camera::Instance()->Instance()->CameraX();
+    mY = y - mpInfo->height/2 + Camera::Instance()->Instance()->CameraY2();
+	mOffset.x = mX;
+    mOffset.y = mY;
     mClipTimer.Start();
+}
+
+void PlayerBullet::Init(std::string id, std::string expId)
+{
+    mpInfo = &SpriteResource::RequestRotationResource("Player",id);
+    _expInfo = &SpriteResource::RequestResource("Player", expId);
+    msMinBounds.x = GAME_BANNER_WIDTH;
+    msMinBounds.y = 0;
+    msMaxBounds.x = GAME_BOUNDS_WIDTH;
+    msMaxBounds.y = GAME_BOUNDS_HEIGHT;
 }
 
 void PlayerBullet::DetectCollision()
@@ -34,9 +54,13 @@ void PlayerBullet::DetectCollision()
 		if (!(*it)->IsExploding())
 		{
 			SDL_Rect enemybounds = (*it)->GetBounds();
-
-			int dx = (enemybounds.x + enemybounds.w/2) - (mOffset.x  + mOffset.w/2);
-			int dy = (enemybounds.y + enemybounds.h/2) - (mOffset.y  + mOffset.h/2);
+			
+			float tx = enemybounds.x - mOffset.x;
+			if (tx > TOO_FAR) return;
+			float ty = enemybounds.y - mOffset.y;
+			if (ty > TOO_FAR) return;
+			int dx = tx + enemybounds.w/2 - mOffset.w/2;
+			int dy = tx + enemybounds.h/2 - mOffset.h/2;
 
 			int radii = enemybounds.w/2 + mOffset.w/4;
 			if ( ( dx * dx )  + ( dy * dy ) < radii * radii ) 
@@ -54,20 +78,39 @@ void PlayerBullet::DetectCollision()
 
 void PlayerBullet::CheckBounds(Point camera_pos)
 {
-	if( mOffset.x + mOffset.w - camera_pos.x < min_bounds.x - mOffset.w )
-	{
+	//all player bullets are north directional and only need one bounds check
+	if( mOffset.y + mOffset.h - camera_pos.y < 0)
 		mDelete = true;
+}
+void PlayerBullet::Update(const int& rDeltaTime)
+{
+    if (!mExplode)
+    {
+		Shared::CheckClip(mClipTimer, mClip, mpInfo->interval, mpInfo->maxClips,0);
+		mY += (yvel * ( rDeltaTime / 1000.f ));
+		mX += (xvel * ( rDeltaTime / 1000.f ));
+		CheckBounds(Point(Camera::Instance()->Instance()->Camera::Instance()->CameraX(), Camera::Instance()->Instance()->CameraY2()));
+    }
+    else
+    {
+		mOffset.x = mOffset.x + (mOffset.w/2 - _expInfo->width/2);
+        mOffset.y = mOffset.y + (mOffset.h/2 - _expInfo->height/2);
+		if (mClip >= _expInfo->maxClips - 1) mDelete = true;
+		Shared::CheckClip(mClipTimer, mClip, _expInfo->interval, _expInfo->maxClips, 0);
 	}
-	else if( mOffset.x - camera_pos.x > max_bounds.x )
-	{
-		mDelete = true;
-	}
-	if( mOffset.y + mOffset.h - camera_pos.y < 0 + min_bounds.y )
-	{
-		mDelete = true;
-	}
-	else if( mOffset.y - camera_pos.y > max_bounds.y )
-	{
-		mDelete = true;
-	}
+	mOffset.x = mX;
+	mOffset.y = mY;
+}
+
+void PlayerBullet::Draw(SDL_Surface *pDest)
+{ 
+    if (!mExplode)
+    {
+        Camera::Instance()->Instance()->DrawSurface(mOffset.x - mOffset.w/2, mOffset.y-mOffset.h/2, mpInfo->pSurface[0][mAngle], pDest, NULL);
+    }
+    else
+    {
+        Camera::Instance()->Instance()->DrawSurface(mOffset.x + (mOffset.w/4 - _expInfo->width/4), mOffset.y + (mOffset.h/4 - _expInfo->height/4), 
+			_expInfo->pSurface, pDest, &_expInfo->pClips[mClip]);
+    }
 }

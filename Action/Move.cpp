@@ -25,3 +25,24 @@ void Move::Update(Enemy& enemy, Uint32 deltaTicks)
 		mNext =  true;
 	}
 }
+
+void Move::ToTarget()
+{
+	/*
+	float dx = (mDestx) - (mX);
+	float dy = (mDesty) - (mY);
+	double Length = sqrt(pow(dx, 2) + pow(dy, 2));
+	
+	float xa = dx / Length;
+	float ya = dy / Length;
+	
+	if (mDir == 1)
+	{
+		xa = xa * cos(mAngle);
+		ya = ya * sin(mAngle);
+	}
+	
+	mX += (xa * (mSpeed * (rDeltaTime / 1000.f)));
+	mY += (ya * (mSpeed * (rDeltaTime / 1000.f)));
+	*/
+}
