@@ -5,10 +5,13 @@
 #include "Action/Noise.h"
 
 std::istream& operator >> (std::istream& is, ActionData& data)
-{is >> data.del >> data.loops; return is;}
+{
+	is >> data.del >> data.loops; return is;
+}
 
 std::istream& operator >> (std::istream& is, AttackData& data)
-{is >> data.del >> data.bulletId >> data.speed >> data.rot >> data.interval; return is;}
+{
+	is >> data.del >> data.bulletId >> data.speed >> data.rot >> data.interval; return is;}
 
 std::istream& operator >> (std::istream& is, MoveData& data)
 {is >> data.del >> data.move_type >> data.speed >> data.dest_x 
@@ -21,17 +24,15 @@ std::istream& operator >> (std::istream& is, EnData& data)
 {
     size_t size;
     std::string meta;
-	std::list<Action*> actions;
 
     is >> data.id >> data.originX >> data.originY >> size;
-    actions.resize(size);
     for (size_t i=0; i<size; i++)
     {
         is >> meta;
-		if (meta == "Action") 	{ ActionData act;	is >> act;	actions.push_back(new Action(act.del, act.loops));	}
-		if (meta == "Attack") 	{ AttackData atk;	is >> atk;	actions.push_back(new Attack(atk.del, atk.bulletId, atk.speed, atk.rot, atk.interval));	}
-		if (meta == "Move")		{ MoveData mv;	is >> mv;		actions.push_back(new Move(mv.del, mv.move_type, mv.speed, mv.dest_x, mv.dest_y, mv.dir_type));	}
-		if (meta == "Noise")	{ NoiseData ns;	is >> ns;		actions.push_back(new Noise(ns.del, ns.id, ns.is_music));	}	
+		if (meta == "Action") 	{ ActionData act;	is >> act;	data.actions.push_back(new Action(act.del, act.loops));	}
+		if (meta == "Attack") 	{ AttackData atk;	is >> atk;	data.actions.push_back(new Attack(atk.del, atk.bulletId, atk.speed, atk.rot, atk.interval));	}
+		if (meta == "Move")		{ MoveData mv;	is >> mv;		data.actions.push_back(new Move(mv.del, mv.move_type, mv.speed, mv.dest_x, mv.dest_y, mv.dir_type));	}
+		if (meta == "Noise")	{ NoiseData ns;	is >> ns;		data.actions.push_back(new Noise(ns.del, ns.id, ns.is_music));	}	
     }
     return is;
 }
@@ -62,7 +63,6 @@ void Factory::ReadFile(std::string filename, std::list<Enemy*>& cache)
 {
     std::ifstream file;
 	std::string meta;
-	EnData en;
     file.open(filename.c_str(), std::ios_base::in);
 
     if (!file.is_open()) {
@@ -71,6 +71,7 @@ void Factory::ReadFile(std::string filename, std::list<Enemy*>& cache)
 
     while (!file.eof())
     {
+		EnData en;
         file >> en;
 		cache.push_back(Factory::create(en.id, en.originX, en.originY, en.actions));
     }

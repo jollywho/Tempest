@@ -4,15 +4,19 @@
 #include "Engine/Shared.h"
 
 struct SpriteInfo;
+class NSprite;
 
 class Totem
 {
 private:
 	SpriteInfo* mpInner;
 	SpriteInfo* mpOuter;
-
+	NSprite*  mpFlash;
+	int mHealth;
     int mClip;
     Timer mClipTimer;
+	Timer mDetTimer;
+	static const int SPEED = 5;
 
 	float mX; float mY;
 	Point mShift;
@@ -21,6 +25,8 @@ private:
 
 	bool mUnset;
 	bool mPull;
+	bool mDet;
+	bool mDisable;
 public:
     Totem::Totem(int ux, int uy, int sx, int sy); //todo: extra parameter for color of totem
 	Totem::~Totem();
@@ -32,8 +38,10 @@ public:
 
     float GetMiddle();
     float GetVertical();
+	SDL_Rect GetBounds();
 
 	void ResetPos(int x, int y);
+	void TakeHit();
 };
 
 #endif

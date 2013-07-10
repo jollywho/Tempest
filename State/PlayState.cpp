@@ -30,7 +30,6 @@ void CPlayState::Init()
 	ResourceLoader::ReadFile("Explosion", "explosion.dat");
 
 	Enemy::Init();
-	EnemyBullet::Init();
 	Item::Init();
 	ScoreMSG::Init();
 	
@@ -67,21 +66,16 @@ void CPlayState::Cleanup()
 
 void CPlayState::ClearObjects()
 {
-    for (auto it = enemy_list.begin(); it != enemy_list.end();) {
+    for (auto it = enemy_list.begin(); it != enemy_list.end(); it++)
         delete (*it);
-        it++; }
-    for (auto it = explosion_list.begin(); it != explosion_list.end();) {
+    for (auto it = explosion_list.begin(); it != explosion_list.end(); it++)
         delete (*it);
-        it++; }
-	for (auto it = pl_bulletlist.begin(); it != pl_bulletlist.end();) {
+	for (auto it = pl_bulletlist.begin(); it != pl_bulletlist.end(); it++)
 		delete (*it);
-		it++; }
-	for (auto it = en_bulletlist.begin(); it != en_bulletlist.end();) {
+	for (auto it = en_bulletlist.begin(); it != en_bulletlist.end(); it++)
 		delete (*it);
-		it++; }
-    for (auto it = item_list.begin(); it != item_list.end();) {
+    for (auto it = item_list.begin(); it != item_list.end(); it++)
         delete (*it);
-        it++; }
     enemy_list.clear();
 	explosion_list.clear();
 	pl_bulletlist.clear();

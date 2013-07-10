@@ -62,25 +62,24 @@ void Enemy::Decide(Uint32 deltaTicks)
 
     if ((*mDo)->RequestNext()) { ++mDo; }
     if (mDo == mActions.end()) { mDo = mActions.begin(); }
-    /*
-		if ((*mDo)->IsLoopAction())
+
+	if ((*mDo)->IsLoopAction())
     {
         int counter = 0;
         int max = (*mDo)->ActionCount();
         for (int i=0; i < max; i++)
         {
-            mDo = mActions.begin() + i;
+            mDo = std::next(mActions.begin(), + i);
             (*mDo)->Update(*this, deltaTicks);
             counter += (*mDo)->RequestNext();
             if (counter > max)
             {
-                mDo = mActions.begin() - counter;
+                mDo = std::prev (mActions.end(), counter);
                 (*mDo)->RequestNext();
             }
         }
     }
     else
-	*/
         (*mDo)->Update(*this, deltaTicks);
 }
 

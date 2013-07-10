@@ -27,12 +27,14 @@ public:
     Rect& GetOuterBounds();
 	Point GetCenter();
 	void TakeHit();
+	void Knockback(float xv, float yv, int force);
 
 	static void SetWeaponType(WeaponType type);
 
 	bool IsExploding() { return mExplode; }
 	bool IsBombActive();
 	void WeaponLevelUp();
+	Weapon* GetWpn() { return mspWpn; }
 
 private:
 
@@ -44,6 +46,7 @@ private:
 	static Bomb* mspBomb;
 	int mSpeed;
     float mov;
+	int mKForce;
 	int left, right, up, down;
 	bool mShift; bool mAttack; bool mBomb;
     static const int SPEED_NORMAL = 350;
@@ -57,8 +60,10 @@ private:
 	bool mInvuln;
 	bool mLocked;
 
+	Timer mKnockbackTimer;
 	Timer mInvulnTimer;
     float mX; float mY;
+	float mKx; float mKy;
 
 	NSprite* mpAngel;
 	NSprite* mpBooster;

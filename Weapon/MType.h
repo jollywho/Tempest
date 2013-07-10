@@ -3,7 +3,6 @@
 
 #include "Weapon.h"
 
-class Totem;
 struct SpriteInfo;
 
 class MType : public Weapon 
@@ -20,7 +19,6 @@ public:
 	void StopAttack();
 	void Shift();
 	void Unshift();
-	Totem* mpTotemList[MAX_TOTEMS];
 private:
 	SpriteInfo* mpShotAnim;
 	int mShotAnimClip;

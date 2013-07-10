@@ -86,6 +86,13 @@ void Player::HandleMovement(const int& rDeltaTime)
 		vx=(left+right)/length;
 		vy=(up+down)/length;
 	}
+	if (mKnockbackTimer.IsStarted()) 
+	{
+		vx = mKx; 
+		vy = mKy; 
+		if (mKnockbackTimer.GetTicks() > mKForce) {
+			mKnockbackTimer.Stop(); }
+	}
 	mX += (vx * mSpeed) * (rDeltaTime/1000.f);
 	mY += (vy * mSpeed) * (rDeltaTime/1000.f);
 
@@ -221,6 +228,15 @@ void Player::TakeHit()
 		mpExplosion->SetPos(FPoint(mX + ANGEL_SIZE/2, mY + ANGEL_SIZE/2));
 		mspBomb->BulletWipe();
 		GameScore::Instance()->DecreaseLives();
+	}
+}
+
+void Player::Knockback(float xv, float yv, int force)
+{
+	if (mShift)
+	{
+		mKx = xv; mKy = yv; mKForce = force;
+		mKnockbackTimer.Start();
 	}
 }
 

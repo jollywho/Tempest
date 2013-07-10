@@ -1,22 +1,39 @@
 #include "EnemyBullet.h"
+#include <list>
 #include "Engine/SpriteResource.h"
 #include "State/Playstate.h"
 #include "Game/Camera.h"
 #include "Item/Coin.h"
+#include "Player/Totem.h"
 
 SpriteInfo* EnemyBullet::mspExpInfo;
 
-EnemyBullet::EnemyBullet()
+EnemyBullet::EnemyBullet(std::string id, float x, float y, int angle, int ch_time, float xmod, float ymod, int angle2)
 {
+	//if angle == -1 use targeting
 	mClip = 0;
+	mAngle = angle;
+	if (mAngle < 0)
+	{
+		mAngle = mAngle + 360;
+	}
+	mAngle = (mAngle + 10 - 1) / 10 * 10;
+	if (mAngle > 360)
+		mAngle = 350;
+    xvel = sin(mAngle * M_PI/180) * 200; 
+    yvel = cos(mAngle * M_PI/180) * 200;
 	mClipTimer.Start();
 	mDelete = false;
 	mExplode = CPlayState::Instance()->mpPlayer->IsBombActive();
+	mpRotInfo = &SpriteResource::RequestRotationResource("Attack", id);
+	mspExpInfo = &SpriteResource::RequestResource("Attack","enemy_bullet_explode");
+	mX = x - mpRotInfo->width/2;
+    mY = y - mpRotInfo->height/2;
 }
 
-void EnemyBullet::Init()
+EnemyBullet::~EnemyBullet()
 {
-	mspExpInfo = &SpriteResource::RequestResource("Attack","enemy_bullet_explode");
+
 }
 
 void EnemyBullet::DetectCollision()
@@ -24,17 +41,29 @@ void EnemyBullet::DetectCollision()
 	if (CPlayState::Instance()->mpPlayer->IsExploding()) 
 		return;
 
-    SDL_Rect playerbox = CPlayState::Instance()->mpPlayer->GetBounds().rect;
-    float dx = (playerbox.x + playerbox.w/2) - (mX - Camera::Instance()->CameraX()  + mpRotInfo->width/2);
-    float dy = (playerbox.y + playerbox.h/2) - (mY - Camera::Instance()->CameraY2() + mpRotInfo->height/2);
+    std::list<Totem*> bounds = CPlayState::Instance()->mpPlayer->GetWpn()->GetTotems();
+	for (auto it = bounds.begin(); it != bounds.end(); it++)
+		if (IsCollision((*it)->GetBounds()))
+		{ 
+			(*it)->TakeHit(); 
+			return; 
+		}
+		
+	if (IsCollision(CPlayState::Instance()->mpPlayer->GetBounds().rect)) { CPlayState::Instance()->mpPlayer->TakeHit(); return; }
+}
+
+bool EnemyBullet::IsCollision(SDL_Rect obj)
+{
+	float dx = (obj.x + obj.w/2) - (mX - Camera::Instance()->CameraX()  + mpRotInfo->width/2);
+	float dy = (obj.y + obj.h/2) - (mY - Camera::Instance()->CameraY2() + mpRotInfo->height/2);
 	double Length = sqrt(pow(dx, 2) + pow(dy, 2));
 
-    int radii = playerbox.w/2 + mpRotInfo->width/4;
-    if ( ( dx * dx )  + ( dy * dy ) < radii * radii ) 
-    {
-        mExplode = true;
-        CPlayState::Instance()->mpPlayer->TakeHit();
-    }
+	int radii = obj.w/2 + mpRotInfo->width/4;
+	if ( ( dx * dx )  + ( dy * dy ) < radii * radii )  {
+		mExplode = true;
+		return true; }
+	else
+		return false;
 }
 
 void EnemyBullet::Destroy()
@@ -63,4 +92,36 @@ void EnemyBullet::CheckBounds()
 	{
 		mDelete = true;
 	}
+}
+
+void EnemyBullet::Update( const int& rDeltaTime )
+{
+    if (!mExplode)
+    {
+		Shared::CheckClip(mClipTimer, mClip, mpRotInfo->interval, mpRotInfo->maxClips,0);
+        DetectCollision();
+    }
+    else
+    {
+		if (mClip == mspExpInfo->maxClips - 1) mDelete = true;
+		Shared::CheckClip(mClipTimer, mClip, mspExpInfo->interval, mspExpInfo->maxClips,0);
+	}
+	mX += (xvel * ( rDeltaTime / 1000.f ));
+	mY += (yvel * ( rDeltaTime / 1000.f ));
+
+    CheckBounds();
+}
+
+void EnemyBullet::Draw(SDL_Surface* pDest)
+{ 
+    if (!mExplode)
+    {
+        Camera::Instance()->DrawSurface(mX - mpRotInfo->width/2, mY - mpRotInfo->height/2,
+			mpRotInfo->pSurface[mClip][mAngle], pDest, NULL);
+    }
+    else
+    {
+        Camera::Instance()->DrawSurface(mX + (mpRotInfo->width/4 - mspExpInfo->width/4), mY + (mpRotInfo->height/4 - mspExpInfo->height/4), 
+			mspExpInfo->pSurface, pDest, &mspExpInfo->pClips[mClip]);
+    }
 }

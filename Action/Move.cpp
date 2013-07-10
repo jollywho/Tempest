@@ -1,7 +1,6 @@
 #include "Move.h"
 #include "Enemy/Enemy.h"
 #include "State/PlayState.h"
-#include "Pattern/ERotBullet.h"
 
 Move::Move(bool del, int move_type, int speed, int dest_x, int dest_y, int dir_type)
 	: Action(del, 0)

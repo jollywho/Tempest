@@ -5,6 +5,8 @@
 #include "PlayerBullet.h"
 #include <list>
 
+class Totem;
+
 enum WeaponType
 {
 	M_type,
@@ -25,6 +27,7 @@ public:
 	virtual void SetPos(int x, int y, int mv) = 0;
 	virtual void ResetPos(int x, int y) = 0;
 	virtual void LevelUp() { if (level < MAX_TOTEMS) level++; }
+	std::list<Totem*>& GetTotems() { return totem_list; }
 protected:
 	Timer wpn_timer;
 	int minor_speed;
@@ -32,6 +35,7 @@ protected:
 	bool is_shift;
 	int level;
 	int rot_divs;
+	std::list<Totem*> totem_list;
 };
 
 #endif
