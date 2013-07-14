@@ -17,6 +17,7 @@ void Camera::Reset()
 {
 	msX = -50;
 	msY = GAMESCREEN_HEIGHT;
+	msSpeed = 0;
 	msSpeed = CAMERA_NORMAL;
 	msAccel = false;
 }

@@ -29,6 +29,6 @@ void Decor::Update(int deltaTicks)
 
 void Decor::Draw(SDL_Surface *pDest)
 {
-	//if (show)
-		//Shared::DrawSurface(mX, mY, mpInfo->pSurface, pDest, &mpInfo->pClips[mClip]);
+	if (show)
+		Shared::DrawSurface(mX, mY, mpInfo->pSurface, pDest, &mpInfo->pClips[mClip]);
 }

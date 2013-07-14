@@ -3,6 +3,7 @@
 
 #include "Engine/Shared.h"
 #include "PlayerBullet.h"
+#include <vector>
 #include <list>
 
 class Totem;
@@ -27,7 +28,7 @@ public:
 	virtual void SetPos(int x, int y, int mv) = 0;
 	virtual void ResetPos(int x, int y) = 0;
 	virtual void LevelUp() { if (level < MAX_TOTEMS) level++; }
-	std::list<Totem*>& GetTotems() { return totem_list; }
+	std::vector<Totem*>& GetTotems() { return totem_list; }
 protected:
 	Timer wpn_timer;
 	int minor_speed;
@@ -35,7 +36,7 @@ protected:
 	bool is_shift;
 	int level;
 	int rot_divs;
-	std::list<Totem*> totem_list;
+	std::vector<Totem*> totem_list;
 };
 
 #endif

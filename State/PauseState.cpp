@@ -100,7 +100,7 @@ void CPauseState::Update(const int& rDeltaTime)
 
 void CPauseState::Draw(SDL_Surface* pDest)
 {
-	Shared::DrawSurface(GAME_BANNER_WIDTH, 0, mpScreen, pDest, &mScreenBounds);
+	Shared::DrawSurface(GAME_BANNER_WIDTH, 0, mpScreen, pDest, NULL);
 	SPG_RectFilledBlend(pDest, GAME_BANNER_WIDTH, 0, GAME_BOUNDS_WIDTH, GAME_BOUNDS_HEIGHT, 0, mAlpha);
 
 	if (mpPanel != NULL)

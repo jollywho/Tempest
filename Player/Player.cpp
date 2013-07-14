@@ -235,7 +235,9 @@ void Player::Knockback(float xv, float yv, int force)
 {
 	if (mShift)
 	{
-		mKx = xv; mKy = yv; mKForce = force;
+		mKForce = force;
+		xv == 0 ? mKx = 0 : mKx = xv/abs(xv);
+		mKy = yv < 0 ? -1: 1;
 		mKnockbackTimer.Start();
 	}
 }

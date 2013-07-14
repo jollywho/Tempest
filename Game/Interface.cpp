@@ -88,8 +88,8 @@ void Interface::Draw(SDL_Surface *pDest)
 	Shared::DrawSurface(mBannerBot.x, mBannerBot.y, mpBannerBot2Surface, pDest);
     if (mHpBarActive) DrawHealthBar(pDest);
 
-	Shared::DrawSurface(0, 0, mpBannerLeftSurface, pDest);
-	Shared::DrawSurface(GAME_BOUNDS_WIDTH, 0, mpBannerRightSurface, pDest);
+	//Shared::DrawSurface(0, 0, mpBannerLeftSurface, pDest);
+	//Shared::DrawSurface(GAME_UI_RIGHT, 0, mpBannerRightSurface, pDest);
 }
 
 void Interface::UpdateHealthBar()

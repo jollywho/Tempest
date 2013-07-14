@@ -49,8 +49,8 @@ private:
 	int mKForce;
 	int left, right, up, down;
 	bool mShift; bool mAttack; bool mBomb;
-    static const int SPEED_NORMAL = 350;
-    static const int SPEED_SLOW = 180;
+    static const int SPEED_NORMAL = 400;
+    static const int SPEED_SLOW = 200;
 	static const int SPEED_RECOVERY = 220;
 	static const int HITBOX_SIZE = 20;
 	static const int ANGEL_SIZE = 64;

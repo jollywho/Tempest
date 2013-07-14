@@ -16,7 +16,7 @@ Level::Level()
 	/* Create layers used for this level */
 	mpBackground = Shared::LoadImage("Image/Levels/level02.png");
 	mpTopSurface = Shared::LoadImage("Image/Levels/fog.png");
-	mpTop = new Layer(mpTopSurface, 600, 0);
+	mpTop = new Layer(mpTopSurface, 720, 0);
 	mpTop->Start();
 
 	mLevelEnd = 6400;

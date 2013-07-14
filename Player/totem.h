@@ -40,6 +40,8 @@ public:
     float GetVertical();
 	SDL_Rect GetBounds();
 
+	bool IsDisabled() { return mDisable; }
+
 	void ResetPos(int x, int y);
 	void TakeHit();
 };

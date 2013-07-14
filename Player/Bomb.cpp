@@ -50,10 +50,11 @@ void Bomb::BulletWipe()
 void Bomb::Update(const int& rDeltaTime)
 {
 	if (!mActive) return;
-	if (mClip >= mpSprite->maxClips) mActive = false;
+	
 	if (mClip == mpSprite->maxClips/2)
 		SFX::PlaySoundResource("bomb2");
 	Shared::CheckClip(mClipTimer, mClip, mpSprite->interval, mpSprite->maxClips, mpSprite->maxClips);
+	if (mClip >= mpSprite->maxClips) mActive = false;
 
 	for (auto it = CPlayState::Instance()->en_bulletlist.begin(); it != CPlayState::Instance()->en_bulletlist.end(); it++)
         (*it)->Destroy();

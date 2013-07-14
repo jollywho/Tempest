@@ -3,6 +3,8 @@
 #include "UI/NSprite.h"
 #include "State/Playstate.h"
 #include "Engine/SFX.h"
+#include "Pattern/Explosion.h"
+#include "Game/Camera.h"
 
 Totem::Totem(int ux, int uy, int sx, int sy)
 {
@@ -13,7 +15,7 @@ Totem::Totem(int ux, int uy, int sx, int sy)
 	mShift.x = sx - mpOuter->width/2; mShift.y = sy - mpOuter->height/2;
 	mUnshift.x = ux - mpOuter->width/2; mUnshift.y = uy - mpOuter->height/2;
 
-	mHealth = 50;
+	mHealth = 5;
 	mClip = 0;
 	mClipTimer.Start();
 	mPull = false;
@@ -51,14 +53,14 @@ void Totem::Update(const int& rDeltaTime, int x, int y, bool isAnimated)
 
 	if (mDetTimer.GetTicks() > 600) 
 	{ 
-		mDisable = true;  
-		CPlayState::Instance()->mpPlayer->Knockback(dx,dy,SPEED*50);
-		 // + request explosion
+		mDisable = true;
+		CPlayState::Instance()->mpPlayer->Knockback(dx -x,dy,200);
+		Explosion::RequestExplosion("totem", mX + Camera::Instance()->CameraX() + mpOuter->width/2,
+			mY + Camera::Instance()->CameraY2() + mpOuter->height/2, 0, 10);
 		 return;
 	}
 
 	float spd = Length * SPEED;
-	
 	float xa = dx / Length;
 	float ya = dy / Length;
 
@@ -66,18 +68,16 @@ void Totem::Update(const int& rDeltaTime, int x, int y, bool isAnimated)
 	{ 
 		mpFlash->SetPos(FPoint(mX + mpOuter->width/2, mY + mpOuter->height/2)); 
 		mpFlash->Update(); 
-		ya = 1;
-		spd = 100;
 	}
-
+	if (!mDet)
+	{
 	mX += (xa * (spd * (rDeltaTime / 1000.f)));
 	mY += (ya * (spd * (rDeltaTime / 1000.f)));
+	}
 }
 
 void Totem::Draw(SDL_Surface *pDest)
 {
-	if (mDisable) return;
-
 	Shared::DrawSurface(mX+15, mY+5, mpInner->pSurface, pDest, &mpInner->pClips[mClip]);
     Shared::DrawSurface(mX, mY, mpOuter->pSurface, pDest);
 	mpFlash->Draw(pDest);
@@ -96,7 +96,7 @@ float Totem::GetVertical()
 SDL_Rect Totem::GetBounds()
 {
 	SDL_Rect temp = { mX, mY, mpOuter->width, mpOuter->height };
-	return !mDisable ? temp : SDL_Rect();
+	return !mDet ? temp : SDL_Rect();
 }
 
 void Totem::ResetPos(int x, int y)
@@ -108,12 +108,15 @@ void Totem::ResetPos(int x, int y)
 void Totem::TakeHit()
 {
 	mpFlash->Reset();
-	CPlayState::Instance()->mpPlayer->Knockback(0,1,200);
-	if (mHealth < 1) {
-		mDet = true;
-		mDetTimer.Start();
-		//SFX::PlaySoundResource("totem_det");
-		}
-	else 
-		mHealth--;
+	if (!mDet)
+	{
+		CPlayState::Instance()->mpPlayer->Knockback(0,1,30);
+		if (mHealth < 1) {
+			mDet = true;
+			mDetTimer.Start();
+			//SFX::PlaySoundResource("totem_det");
+			}
+		else 
+			mHealth--;
+	}
 }

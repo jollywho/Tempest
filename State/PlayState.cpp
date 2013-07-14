@@ -163,7 +163,7 @@ void CPlayState::Update(const int& rDeltaTime)
 	{
 		if (mAlpha < 255) 
 		{
-			if (mFadeTimer.GetTicks() > 10) 
+			if (mFadeTimer.GetTicks() > 30) 
 			{
 				mAlpha+=5;
 				mFadeTimer.Start(); 

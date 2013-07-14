@@ -32,11 +32,6 @@ void Zown::TakeHit(int dmg)
 void Zown::Init()
 {
 	printf("Zown initialize\n");
-	Explosion::AddExplosionInfo("Zown", "green_small1.png", 1, 0);
-	Explosion::AddExplosionInfo("Zown", "green_small1.png", 1, 200, -50);
-	Explosion::AddExplosionInfo("Zown", "green_small1.png", 1, 200, 50);
-	Explosion::AddExplosionInfo("Zown", "green_small1.png", 5, 500, 50, 50);
-	Explosion::AddExplosionInfo("Zown", "green_small1.png", 5, 1200, 50, -50);
 }
 
 void Zown::Cleanup()

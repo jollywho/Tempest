@@ -1,5 +1,5 @@
 #include "EnemyBullet.h"
-#include <list>
+#include <vector>
 #include "Engine/SpriteResource.h"
 #include "State/Playstate.h"
 #include "Game/Camera.h"
@@ -44,13 +44,18 @@ void EnemyBullet::DetectCollision()
 	if (CPlayState::Instance()->mpPlayer->IsExploding()) 
 		return;
 
-    std::list<Totem*>& bounds = CPlayState::Instance()->mpPlayer->GetWpn()->GetTotems();
+    std::vector<Totem*>& bounds = CPlayState::Instance()->mpPlayer->GetWpn()->GetTotems();
 	for (auto it = bounds.begin(); it != bounds.end(); it++)
-		if (IsCollision((*it)->GetBounds()))
-		{ 
-			(*it)->TakeHit(); 
-			return; 
+	{
+		if (!(*it)->IsDisabled())
+			{
+			if (IsCollision((*it)->GetBounds()))
+			{ 
+				(*it)->TakeHit(); 
+				return; 
+			}
 		}
+	}
 		
 	if (IsCollision(CPlayState::Instance()->mpPlayer->GetBounds().rect)) { CPlayState::Instance()->mpPlayer->TakeHit(); return; }
 }

@@ -52,14 +52,17 @@ void MType::MinorAttack(std::list<PlayerBullet*>& pl_bulletlist)
 		SFX::PlaySoundResource("attack");
 		
 		pl_bulletlist.push_back(new PlayerBullet(wpn_pos.x, wpn_pos.y, 180+mov, rot_divs));
-		for (auto it = totem_list.begin(); it != std::next(totem_list.begin(), level); it++)
+		for (auto it = totem_list.begin(); it != totem_list.end(); it++)
 		{
-			int x = (*it)->GetMiddle();
-			int y = (*it)->GetVertical();
-			for (int i=4; i<10; i+=2)
+			if (!(*it)->IsDisabled())
 			{
-				pl_bulletlist.push_back(new PlayerBullet(x+(i*2), y+(i*2), 180+(i*2)+mov,rot_divs));
-				pl_bulletlist.push_back(new PlayerBullet(x-(i*2), y+(i*2), 180-(i*2)+mov,rot_divs));
+				int x = (*it)->GetMiddle();
+				int y = (*it)->GetVertical();
+				for (int i=4; i<10; i+=2)
+				{
+					pl_bulletlist.push_back(new PlayerBullet(x+(i*2), y+(i*2), 180+(i*2)+mov,rot_divs));
+					pl_bulletlist.push_back(new PlayerBullet(x-(i*2), y+(i*2), 180-(i*2)+mov,rot_divs));
+				}
 			}
 		}
 	}
@@ -73,14 +76,17 @@ void MType::MajorAttack(std::list<PlayerBullet*>& pl_bulletlist)
 		SFX::PlaySoundResource("attack");
 		
 		pl_bulletlist.push_back(new PlayerBullet(wpn_pos.x, wpn_pos.y, 180+mov,rot_divs));
-		for (auto it = totem_list.begin(); it != std::next(totem_list.begin(), level); it++)
+		for (auto it = totem_list.begin(); it != totem_list.end(); it++)
 		{
-			int x = (*it)->GetMiddle();
-			int y = (*it)->GetVertical();
-			for (int i=2; i<10; i+=2)
+			if (!(*it)->IsDisabled())
 			{
-				pl_bulletlist.push_back(new PlayerBullet(x+(i*2), y+(i*2), 180+(i)+mov,rot_divs));
-				pl_bulletlist.push_back(new PlayerBullet(x-(i*2), y+(i*2), 180-(i)+mov,rot_divs));
+				int x = (*it)->GetMiddle();
+				int y = (*it)->GetVertical();
+				for (int i=2; i<10; i+=2)
+				{
+					pl_bulletlist.push_back(new PlayerBullet(x+(i*2), y+(i*2), 180+(i)+mov,rot_divs));
+					pl_bulletlist.push_back(new PlayerBullet(x-(i*2), y+(i*2), 180-(i)+mov,rot_divs));
+				}
 			}
 		}
 	}
@@ -110,21 +116,24 @@ void MType::StopAttack()
 
 void MType::Update(const int& rDeltaTime)
 {
-	for (auto it = totem_list.begin(); it != std::next(totem_list.begin(), level); it++)
+	for (auto it = totem_list.begin(); it != totem_list.end(); it++)
 	{
-       (*it)->Update(rDeltaTime, wpn_pos.x, wpn_pos.y, !wpn_timer.IsPaused());
+		(*it)->Update(rDeltaTime, wpn_pos.x, wpn_pos.y, !wpn_timer.IsPaused());
     }
 	Shared::CheckClip(mShotAnimTimer, mShotAnimClip, mpShotAnim->interval, mpShotAnim->maxClips, 0);
 }
 
 void MType::Draw(SDL_Surface *pDest)
 {
-	for (auto it = totem_list.begin(); it != std::next(totem_list.begin(), level); it++)
+	for (auto it = totem_list.begin(); it != totem_list.end(); it++)
 	{
-		if (!wpn_timer.IsPaused())
-			Shared::DrawSurface((*it)->GetMiddle() - mpShotAnim->width/2, (*it)->GetVertical()- mpShotAnim->height/4,
-				mpShotAnim->pSurface, pDest, &mpShotAnim->pClips[mShotAnimClip]);
-        (*it)->Draw(pDest);
+		if (!(*it)->IsDisabled())
+		{
+			if (!wpn_timer.IsPaused())
+				Shared::DrawSurface((*it)->GetMiddle() - mpShotAnim->width/2, (*it)->GetVertical() - mpShotAnim->height/4,
+					mpShotAnim->pSurface, pDest, &mpShotAnim->pClips[mShotAnimClip]);
+			(*it)->Draw(pDest);
+		}
     }
 	if (!wpn_timer.IsPaused())
 		Shared::DrawSurface(wpn_pos.x - mpShotAnim->width/2, wpn_pos.y - mpShotAnim->height/2,

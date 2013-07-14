@@ -192,8 +192,8 @@ void CIntroState::Draw(SDL_Surface* pDest)
 	Shared::DrawSurface(0, mBorderTop, mpBorderTop, pDest);
 	Shared::DrawSurface(0, mBorderBot, mpBorderBot, pDest);
 
-	Shared::DrawSurface(mBorderLeft, 0, mpBorderLeft, pDest);
-	Shared::DrawSurface(mBorderRight, 0, mpBorderRight, pDest);
+	//Shared::DrawSurface(mBorderLeft, 0, mpBorderLeft, pDest);
+	//Shared::DrawSurface(mBorderRight, 0, mpBorderRight, pDest);
 
 	if (mpPanel != NULL)
 		mpPanel->DrawTop(pDest);
