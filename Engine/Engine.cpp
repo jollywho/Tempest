@@ -47,6 +47,7 @@ void CEngine::Init()
 	atexit( SDL_Quit );
  
 	// initialize SDL's subsystems - in this case, only video.
+	SDL_putenv("SDL_VIDEO_CENTERED=center");
 	if ( SDL_Init( SDL_INIT_VIDEO ) < 0 ) 
 	{
 		fprintf( stderr, "Unable to initialize SDL: %s\n", SDL_GetError() );

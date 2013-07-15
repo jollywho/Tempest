@@ -19,30 +19,19 @@ Move::~Move()
 
 void Move::Update(Enemy& enemy, Uint32 deltaTicks)
 {
-	if (enemy.IsHit())
-	{
-		enemy.MoveTo(Point(0,0));
-		mNext =  true;
-	}
+	Straight(enemy, deltaTicks);
+	mNext =  true;
 }
 
-void Move::ToTarget()
+void Move::Straight(Enemy& enemy, Uint32 deltaTicks)
 {
-	/*
-	float dx = (mDestx) - (mX);
-	float dy = (mDesty) - (mY);
+	SDL_Rect temp = enemy.GetBounds();
+	float dx = (mDestx) - (temp.x);
+	float dy = (mDesty) - (temp.y);
 	double Length = sqrt(pow(dx, 2) + pow(dy, 2));
-	
-	float xa = dx / Length;
-	float ya = dy / Length;
-	
-	if (mDir == 1)
+	if (Length > 50)
 	{
-		xa = xa * cos(mAngle);
-		ya = ya * sin(mAngle);
+		dx =  dx / Length; dy = dy /Length;
+		enemy.Movement(dx * (mSpeed * (deltaTicks/1000.f)), dy * (mSpeed * (deltaTicks/1000.f)));
 	}
-	
-	mX += (xa * (mSpeed * (rDeltaTime / 1000.f)));
-	mY += (ya * (mSpeed * (rDeltaTime / 1000.f)));
-	*/
 }

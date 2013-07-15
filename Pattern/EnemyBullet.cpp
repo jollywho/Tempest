@@ -36,7 +36,6 @@ EnemyBullet::EnemyBullet(std::string id, float x, float y, int angle, int ch_tim
 
 EnemyBullet::~EnemyBullet()
 {
-
 }
 
 void EnemyBullet::DetectCollision()
@@ -56,7 +55,6 @@ void EnemyBullet::DetectCollision()
 			}
 		}
 	}
-		
 	if (IsCollision(CPlayState::Instance()->mpPlayer->GetBounds().rect)) { CPlayState::Instance()->mpPlayer->TakeHit(); return; }
 }
 

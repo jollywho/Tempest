@@ -55,22 +55,22 @@ void PlayerBullet::DetectCollision()
 		{
 			SDL_Rect enemybounds = (*it)->GetBounds();
 			
-			float tx = enemybounds.x - mOffset.x;
-			if (tx > TOO_FAR) return;
-			float ty = enemybounds.y - mOffset.y;
-			if (ty > TOO_FAR) return;
-			int dx = tx + enemybounds.w/2 - mOffset.w/2;
-			int dy = tx + enemybounds.h/2 - mOffset.h/2;
-
-			int radii = enemybounds.w/2 + mOffset.w/4;
-			if ( ( dx * dx )  + ( dy * dy ) < radii * radii ) 
+			int dx = enemybounds.x + enemybounds.w/2 - mOffset.x + mOffset.w/2;
+			if (dx < 50) 
 			{
-				
-					(*it)->TakeHit(1);
-					mClip = 0;
-					mClipTimer.Start();
-					mExplode = true;
-					return;
+				int dy = enemybounds.y + enemybounds.h/2 - mOffset.y + mOffset.h/2;
+				if (dy < 50)
+				{
+					int radii = enemybounds.w/2 + mOffset.w/4;
+					if ( ( dx * dx )  + ( dy * dy ) < radii * radii ) 
+					{
+						(*it)->TakeHit(1);
+						mClip = 0;
+						mClipTimer.Start();
+						mExplode = true;
+						return;
+					}
+				}
 			}
 		}
     }

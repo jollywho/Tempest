@@ -36,10 +36,8 @@ protected:
 	bool mDelete;
 	bool mAir;
 	bool mHit;
-	float mX; 
-	float mY;
+	FPoint mPos;
 	Point mVel;
-	Point mDest;
 	
 	bool Explode(bool isDelete);
 	bool CheckHealth();
@@ -59,7 +57,7 @@ public:
 	void FlashRed(SDL_Surface* pSurface, SDL_Rect* pTargetClips);
     void FlashClear();
 	bool CheckBounds();
-	void MoveTo(Point p);
+	void Movement(const float& x, const float& y);
 
     bool RequestDelete() { return mDelete; };
 	bool IsExploding() { return mExplode; }

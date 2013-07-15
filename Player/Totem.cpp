@@ -10,12 +10,17 @@ Totem::Totem(int ux, int uy, int sx, int sy)
 {
 	mpInner = &SpriteResource::RequestResource("Player", "totem_inner");
 	mpOuter = &SpriteResource::RequestResource("Player", "totem");
+	mpFrame = Shared::LoadImage("Image/Player/totem_frame.png");
+	mpHealth = Shared::LoadImage("Image/Player/totem_health.png");
 	mpFlash = new NSprite(ux, uy, &SpriteResource::RequestResource("Player", "totem_flash"), true, false);
 
 	mShift.x = sx - mpOuter->width/2; mShift.y = sy - mpOuter->height/2;
 	mUnshift.x = ux - mpOuter->width/2; mUnshift.y = uy - mpOuter->height/2;
+	mHealthBox.x = 0; mHealthBox.y = 0;
+	mHealthBox.w = 48; mHealthBox.h = 5;
 
-	mHealth = 5;
+	mShowHealth = false;
+	mHealth = MAX_HEALTH;
 	mClip = 0;
 	mClipTimer.Start();
 	mPull = false;
@@ -25,7 +30,8 @@ Totem::Totem(int ux, int uy, int sx, int sy)
 
 Totem::~Totem()
 {
-	//cleanup
+	SDL_FreeSurface(mpFrame);
+	SDL_FreeSurface(mpHealth);
 }
 
 void Totem::ReleaseTotems()
@@ -59,6 +65,11 @@ void Totem::Update(const int& rDeltaTime, int x, int y, bool isAnimated)
 			mY + Camera::Instance()->CameraY2() + mpOuter->height/2, 0, 10);
 		 return;
 	}
+	if (mHealthTimer.GetTicks() > 600)
+	{
+		mHealthTimer.Stop();
+		mShowHealth = false;
+	}
 
 	float spd = Length * SPEED;
 	float xa = dx / Length;
@@ -81,6 +92,11 @@ void Totem::Draw(SDL_Surface *pDest)
 	Shared::DrawSurface(mX+15, mY+5, mpInner->pSurface, pDest, &mpInner->pClips[mClip]);
     Shared::DrawSurface(mX, mY, mpOuter->pSurface, pDest);
 	mpFlash->Draw(pDest);
+	if (mShowHealth)
+	{
+		Shared::DrawSurface(mX+7, mY+5, mpFrame, pDest);
+		Shared::DrawSurface(mX+7, mY+5, mpHealth, pDest, &mHealthBox);
+	}
 }
 
 float Totem::GetMiddle()
@@ -119,4 +135,7 @@ void Totem::TakeHit()
 		else 
 			mHealth--;
 	}
+	mShowHealth = true;
+	mHealthTimer.Start();
+	mHealthBox.w = ((float)mHealth / (float)MAX_HEALTH) * MAX_WIDTH;
 }

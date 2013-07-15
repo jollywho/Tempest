@@ -14,7 +14,6 @@ Zown::Zown(int x, int y, std::list<Action*>& actions) : Enemy("zown", x, y, acti
     rot = 0; attackCount = 0;
 	attack_Timer.Start();
 	mVel = Point(0,0);
-	mDest = Point(0,0);
 }
 
 Zown::~Zown()
@@ -81,12 +80,9 @@ void Zown::Update(Uint32 deltaTicks)
     if (attack_Timer.GetTicks() > 480)
         Attack();
 	Shared::CheckClip(mClipTimer, mClip, mpInfo->interval, mpInfo->maxClips, 0);
-	
-	mX += mVel.x * (deltaTicks/1000.f);
-	mY += mVel.y * (deltaTicks/1000.f);
 
-    mHitbox.x = mX ;
-    mHitbox.y = mY ;
+    mHitbox.x = mPos.x;
+    mHitbox.y = mPos.y;
 }
 
 void Zown::Draw(SDL_Surface *pDest)

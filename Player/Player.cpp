@@ -25,7 +25,7 @@ Player::Player()
 	mShift = false; mAttack = false; mBomb = false;
 	mExplode = false; mInvuln = false;
 
-	mX = WINDOW_WIDTH/2;
+	mX = WINDOW_WIDTH/2 - ANGEL_SIZE/2;
 	SetWeaponType(M_type);
 }
 

@@ -9,20 +9,26 @@ class NSprite;
 class Totem
 {
 private:
+	static const int MAX_WIDTH = 48;
+	static const int MAX_HEALTH = 50;
 	SpriteInfo* mpInner;
 	SpriteInfo* mpOuter;
 	NSprite*  mpFlash;
+	SDL_Surface* mpFrame;
+	SDL_Surface* mpHealth;
 	int mHealth;
     int mClip;
     Timer mClipTimer;
 	Timer mDetTimer;
+	Timer mHealthTimer;
 	static const int SPEED = 5;
-
+	SDL_Rect mHealthBox;
 	float mX; float mY;
 	Point mShift;
 	Point mUnshift;
 	Point mTarget;
 
+	bool mShowHealth;
 	bool mUnset;
 	bool mPull;
 	bool mDet;

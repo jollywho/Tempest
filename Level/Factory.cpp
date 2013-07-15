@@ -14,11 +14,17 @@ std::istream& operator >> (std::istream& is, AttackData& data)
 	is >> data.del >> data.bulletId >> data.speed >> data.rot >> data.interval; return is;}
 
 std::istream& operator >> (std::istream& is, MoveData& data)
-{is >> data.del >> data.move_type >> data.speed >> data.dest_x 
-	>> data.dest_y >> data.dir_type; return is;}
+{
+	is >> data.del >> data.move_type >> data.speed >> data.dest_x 
+		>> data.dest_y >> data.dir_type; 
+	return is;
+}
 
 std::istream& operator >> (std::istream& is, NoiseData& data)
-{is >> data.del >> data.id >> data.is_music; return is; }
+{
+	is >> data.del >> data.id >> data.is_music;
+	return is;
+}
 
 std::istream& operator >> (std::istream& is, EnData& data)
 {

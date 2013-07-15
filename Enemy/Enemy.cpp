@@ -28,10 +28,10 @@ Enemy::Enemy(std::string id, int x, int y, std::list<Action*>& actions)
     mExplode = false;
     mHit = false;
 	mClip = 0;
-	mX = x - mpInfo->width/2; 
-	mY = y - mpInfo->height/2;
-	mHitbox.x = mX; 
-	mHitbox.y = mY;
+	mPos.x = x - mpInfo->width/2; 
+	mPos.y = y - mpInfo->height/2;
+	mHitbox.x = mPos.x; 
+	mHitbox.y = mPos.y;
 	mHitbox.w = mpInfo->width; 
 	mHitbox.h = mpInfo->height;
 
@@ -106,7 +106,7 @@ void Enemy::FlashClear()
 
 bool Enemy::CheckBounds()
 {
-	if( mY + mpInfo->height - Camera::Instance()->CameraY2() > 0 )
+	if( mPos.y + mpInfo->height - Camera::Instance()->CameraY2() > 0 )
 	{
 		return true;
 	}
@@ -116,11 +116,9 @@ bool Enemy::CheckBounds()
 	}
 }
 
-void Enemy::MoveTo(Point p)
+void Enemy::Movement(const float& x, const float& y)
 {
-	mDest = p;
-	mVel.x = ((rand() % 100) - 50);
-	mVel.y = -10 * (rand() % 10);
+	mPos.x += x; mPos.y += y;
 }
 
 bool Enemy::Explode(bool del)
@@ -140,16 +138,16 @@ bool Enemy::CheckHealth()
 	if (mHealth <= 0)
 	{
 		if (mBombupSpawn)
-			CPlayState::Instance()->item_list.push_back(new Bombup(mX + mpInfo->width/2, mY + mpInfo->height/2, 0));
+			CPlayState::Instance()->item_list.push_back(new Bombup(mPos.x + mpInfo->width/2, mPos.y + mpInfo->height/2, 0));
 		else if (mPowerupSpawn)
-			CPlayState::Instance()->item_list.push_back(new Powerup(mX + mpInfo->width/2, mY + mpInfo->height/2, 0));
+			CPlayState::Instance()->item_list.push_back(new Powerup(mPos.x + mpInfo->width/2, mPos.y + mpInfo->height/2, 0));
 		else
 		{
 			for (int i=0; i<=mMaxHealth; i+=25)
 				CPlayState::Instance()->item_list.push_back(
-				new Gem(mX + rand() % mpInfo->width, mY + mpInfo->height/2, 25));
+				new Gem(mPos.x + rand() % mpInfo->width, mPos.y + mpInfo->height/2, 25));
 		}
-		Explosion::RequestExplosion(mId, mX + mpInfo->width/2, mY + mpInfo->height/2, 0, 10);
+		Explosion::RequestExplosion(mId, mPos.x + mpInfo->width/2, mPos.y + mpInfo->height/2, 0, 10);
 		SFX::PlaySoundResource("explode_light1");
 		mExplode = true;
 	}
@@ -158,7 +156,7 @@ bool Enemy::CheckHealth()
 
 void Enemy::DetectCollision()
 {
-	if( mY - Camera::Instance()->CameraY2() > GAME_BOUNDS_HEIGHT)
+	if( mPos.y - Camera::Instance()->CameraY2() > GAME_BOUNDS_HEIGHT)
 	{
 		mDelete = true;
 		return;
