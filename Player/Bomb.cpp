@@ -25,15 +25,10 @@ void Bomb::Start(int x, int y)
 	mX = x - mpSprite->width/2 + Camera::Instance()->CameraX();
 	mY = y - mpSprite->height*2 + Camera::Instance()->CameraY2();
 
-	/* Always have bomb visible on screen */
-	//todo: have bomb movement and wall collision
-	//issue: camera throws these values off
 	SFX::PlaySoundResource("bomb");
 	Camera::Instance()->StartShake(4);
 	if (mX < GAME_BANNER_WIDTH) mX = GAME_BANNER_WIDTH + 20;
 	if (mX + mpSprite->width > GAME_LEVEL_WIDTH) mX = GAME_LEVEL_WIDTH - mpSprite->width - 20;
-	//if (mY < GAME_UI_TOP) mY = GAME_UI_TOP + 20;
-	//if (mY + sprite->height > GAME_UI_BOTTOM) mY = GAME_UI_BOTTOM - sprite->height - 20;
 
 	mActive = true;
 	mClip = 0;

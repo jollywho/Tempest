@@ -13,6 +13,7 @@ private:
 	std::string mSpriteId;
 	int mInterval;
 	Timer mTimer;
+	int mCount;
 public:
 	Attack(bool del, std::string bullet_id, int speed, int rot, int interval);
 	~Attack();

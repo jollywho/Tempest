@@ -17,9 +17,11 @@ public:
 	Action(bool del, int loops);
 	virtual ~Action(){};
 	virtual void Update(Enemy& enemy, Uint32 deltaTicks){};
-	bool RequestNext() { mLoops > 0 ? mLoops-- : mNext = true; return mNext; };
+	inline bool RequestNext() { 
+		mLoops != -1 && mLoops > 0 ? mLoops--, mNext = true : 0; 
+		return mNext; };
 	bool RequestDelete() { return mDel; };
-	bool IsLoopAction() { return mLoops ? 1 : 0; };
+	bool IsLoopAction() { return mLoops > 0 ? 1 : 0; };
 	int ActionCount() { return mLoops; };
 };
 

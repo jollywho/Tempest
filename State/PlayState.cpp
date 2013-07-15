@@ -96,7 +96,7 @@ void CPlayState::UpdateList(std::list<T>& rList, const int& rDeltaTime)
 		else
 		{
 			(*it)->Update(rDeltaTime);
-			it++;
+			++it;
 		}
 	}
 }
@@ -104,7 +104,7 @@ void CPlayState::UpdateList(std::list<T>& rList, const int& rDeltaTime)
 template <class T>
 void CPlayState::DrawList(std::list<T>& rList, SDL_Surface* pDest)
 {
-	for (auto it = rList.begin(); it != rList.end(); it++)
+	for (auto it = rList.begin(); it != rList.end(); ++it)
 	{
 		(*it)->Draw(pDest);
 	}

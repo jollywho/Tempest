@@ -3,7 +3,7 @@
 #include "State/PlayState.h"
 
 Move::Move(bool del, int move_type, int speed, int dest_x, int dest_y, int dir_type)
-	: Action(del, 0)
+	: Action(del, -1)
 {
 	mMoveType = (Moves)move_type;
 	mSpeed = speed;
@@ -19,11 +19,10 @@ Move::~Move()
 
 void Move::Update(Enemy& enemy, Uint32 deltaTicks)
 {
-	Straight(enemy, deltaTicks);
-	mNext =  true;
+	mNext = Straight(enemy, deltaTicks);
 }
 
-void Move::Straight(Enemy& enemy, Uint32 deltaTicks)
+bool Move::Straight(Enemy& enemy, Uint32 deltaTicks)
 {
 	SDL_Rect temp = enemy.GetBounds();
 	float dx = (mDestx) - (temp.x);
@@ -33,5 +32,8 @@ void Move::Straight(Enemy& enemy, Uint32 deltaTicks)
 	{
 		dx =  dx / Length; dy = dy /Length;
 		enemy.Movement(dx * (mSpeed * (deltaTicks/1000.f)), dy * (mSpeed * (deltaTicks/1000.f)));
+		return false;
 	}
+	if (Length < 5) 
+		return true;
 }

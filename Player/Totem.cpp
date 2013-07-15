@@ -12,6 +12,7 @@ Totem::Totem(int ux, int uy, int sx, int sy)
 	mpOuter = &SpriteResource::RequestResource("Player", "totem");
 	mpFrame = Shared::LoadImage("Image/Player/totem_frame.png");
 	mpHealth = Shared::LoadImage("Image/Player/totem_health.png");
+	mpWarning = Shared::LoadImage("Image/Player/totem_warning.png");
 	mpFlash = new NSprite(ux, uy, &SpriteResource::RequestResource("Player", "totem_flash"), true, false);
 
 	mShift.x = sx - mpOuter->width/2; mShift.y = sy - mpOuter->height/2;
@@ -32,6 +33,7 @@ Totem::~Totem()
 {
 	SDL_FreeSurface(mpFrame);
 	SDL_FreeSurface(mpHealth);
+	SDL_FreeSurface(mpWarning);
 }
 
 void Totem::ReleaseTotems()
@@ -82,8 +84,8 @@ void Totem::Update(const int& rDeltaTime, int x, int y, bool isAnimated)
 	}
 	if (!mDet)
 	{
-	mX += (xa * (spd * (rDeltaTime / 1000.f)));
-	mY += (ya * (spd * (rDeltaTime / 1000.f)));
+		mX += (xa * (spd * (rDeltaTime / 1000.f)));
+		mY += (ya * (spd * (rDeltaTime / 1000.f)));
 	}
 }
 
@@ -96,6 +98,7 @@ void Totem::Draw(SDL_Surface *pDest)
 	{
 		Shared::DrawSurface(mX+7, mY+5, mpFrame, pDest);
 		Shared::DrawSurface(mX+7, mY+5, mpHealth, pDest, &mHealthBox);
+		if (mHealth < 10) Shared::DrawSurface(mX+7, mY+5, mpWarning, pDest, &mHealthBox);
 	}
 }
 
@@ -130,10 +133,13 @@ void Totem::TakeHit()
 		if (mHealth < 1) {
 			mDet = true;
 			mDetTimer.Start();
-			//SFX::PlaySoundResource("totem_det");
+			SFX::PlaySoundResource("totem_hit");
 			}
 		else 
+		{
 			mHealth--;
+			SFX::PlaySoundResource("totem_hit");
+		}
 	}
 	mShowHealth = true;
 	mHealthTimer.Start();

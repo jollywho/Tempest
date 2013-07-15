@@ -6,6 +6,7 @@ Action::Action()
 {
 	mDel = false;
 	mNext = false;
+	mLoops = -1;
 }
 
 Action::Action(bool del, int loops)

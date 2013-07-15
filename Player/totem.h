@@ -16,6 +16,7 @@ private:
 	NSprite*  mpFlash;
 	SDL_Surface* mpFrame;
 	SDL_Surface* mpHealth;
+	SDL_Surface* mpWarning;
 	int mHealth;
     int mClip;
     Timer mClipTimer;
