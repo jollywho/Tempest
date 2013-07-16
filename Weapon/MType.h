@@ -4,6 +4,7 @@
 #include "Weapon.h"
 
 struct SpriteInfo;
+class NSprite;
 
 class MType : public Weapon 
 {
@@ -19,8 +20,10 @@ public:
 	void StopAttack();
 	void Shift();
 	void Unshift();
+	bool TakeHit();
 private:
 	SpriteInfo* mpShotAnim;
+	NSprite* mpSlash;
 	int mShotAnimClip;
 	Timer mShotAnimTimer;
 	float mov;

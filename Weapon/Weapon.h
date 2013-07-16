@@ -27,14 +27,15 @@ public:
 	virtual void Unshift() = 0;
 	virtual void SetPos(int x, int y, int mv) = 0;
 	virtual void ResetPos(int x, int y) = 0;
-	virtual void LevelUp() { if (level < MAX_TOTEMS) level++; }
-	std::vector<Totem*>& GetTotems() { return totem_list; }
+	inline void LevelUp() { if (level < MAX_TOTEMS) level++; }
+	virtual bool TakeHit() = 0;
 protected:
 	Timer wpn_timer;
 	int minor_speed;
 	int major_speed;
 	bool is_shift;
 	int level;
+	int mHealth;
 	int rot_divs;
 	std::vector<Totem*> totem_list;
 };

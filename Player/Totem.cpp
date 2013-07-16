@@ -77,11 +77,9 @@ void Totem::Update(const int& rDeltaTime, int x, int y, bool isAnimated)
 	float xa = dx / Length;
 	float ya = dy / Length;
 
-	if (!mpFlash->IsDone()) 
-	{ 
-		mpFlash->SetPos(FPoint(mX + mpOuter->width/2, mY + mpOuter->height/2)); 
-		mpFlash->Update(); 
-	}
+	mpFlash->SetPos(FPoint(mX + mpOuter->width/2, mY + mpOuter->height/2)); 
+
+	if (!mpFlash->IsDone()) { mpFlash->Update(); }
 	if (!mDet)
 	{
 		mX += (xa * (spd * (rDeltaTime / 1000.f)));

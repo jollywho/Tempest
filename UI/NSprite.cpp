@@ -37,6 +37,7 @@ void NSprite::SetPos(FPoint& rCenter)
 
 void NSprite::Update()
 {
+	if (mDone) return;
 	if (mReverse)
 	{
 		if (mClipTimer.GetTicks() > mpInfo->interval)
@@ -50,8 +51,8 @@ void NSprite::Update()
 	}
 	else if (mStop && !mDone)
 	{
-		mDone = mClip >= mpInfo->maxClips? true: false;
 		Shared::CheckClip(mClipTimer, mClip, mpInfo->interval, mpInfo->maxClips, mpInfo->maxClips);
+		mDone = mClip >= mpInfo->maxClips? true: false;
 	}
 	else
 		Shared::CheckClip(mClipTimer, mClip, mpInfo->interval, mpInfo->maxClips, 0);
@@ -59,6 +60,7 @@ void NSprite::Update()
 
 void NSprite::Draw(SDL_Surface *pDest)
 {
+	if (mDone) return;
 	Shared::DrawSurface(mPos.x, mPos.y, mpInfo->pSurface, pDest, &mpInfo->pClips[mClip]);
 }
 

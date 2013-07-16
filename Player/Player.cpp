@@ -76,8 +76,7 @@ void Player::KeyInput(const KeyStruct& rKeys)
 
 void Player::HandleMovement(const int& rDeltaTime)
 {
-	if (mShift && mSpeed > SPEED_SLOW) mSpeed-=rDeltaTime;
-	if (!mShift && mSpeed < SPEED_NORMAL) mSpeed+=rDeltaTime;
+	if (mSpeed < SPEED_NORMAL) mSpeed+=rDeltaTime;
 
 	float vx = left + right; float vy = up + down;
 	float length = sqrtf((vx * vx) + (vy * vy));
@@ -146,7 +145,7 @@ void Player::UpdateExploding(const int& rDeltaTime)
 
 void Player::UpdateLocked(const int& rDeltaTime)
 {
-	mSpeed = SPEED_SLOW;
+	mSpeed = SPEED_RECOVERY;
 	up = -1;
 	if (mY < GAME_UI_BOTTOM)
 	{
@@ -222,12 +221,15 @@ void Player::TakeHit()
 {
 	if (!mInvuln && !mExplode)
 	{
-		KeyInput(KeyStruct());
-		mExplode = true;
-		mpExplosion->Reset();
-		mpExplosion->SetPos(FPoint(mX + ANGEL_SIZE/2, mY + ANGEL_SIZE/2));
-		mspBomb->BulletWipe();
-		GameScore::Instance()->DecreaseLives();
+		if (!mspWpn->TakeHit())
+		{
+			KeyInput(KeyStruct());
+			mExplode = true;
+			mpExplosion->Reset();
+			mpExplosion->SetPos(FPoint(mX + ANGEL_SIZE/2, mY + ANGEL_SIZE/2));
+			mspBomb->BulletWipe();
+			GameScore::Instance()->DecreaseLives();
+		}
 	}
 }
 

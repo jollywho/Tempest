@@ -6,16 +6,19 @@
 #include "Player/Totem.h"
 //#include "Beam.h"
 #include "PlayerBullet.h"
+#include "UI/NSprite.h"
 
 MType::MType()
 {
 	printf("MType Crated\n");
 	wpn_timer.Start();
 	level = MAX_TOTEMS;
-	totem_list.push_back(new Totem(40,90, 40,-50));
+	mHealth = 200;
+	mpSlash = new NSprite(0,0, &SpriteResource::RequestResource("Player", "slash"), true);
+	totem_list.push_back(new Totem(40,90, -40,-50));
 	totem_list.push_back(new Totem(-40,90,-40,-50));
-	totem_list.push_back(new Totem(80,80, 10,-60));
-	totem_list.push_back(new Totem(-80,80,-10,-60));
+	totem_list.push_back(new Totem(80,80, -40,-50));
+	totem_list.push_back(new Totem(-80,80,-40,-50));
 	mpShotAnim = &SpriteResource::RequestResource("Player", "shot");
 	rot_divs = 2;
 	PlayerBullet::Init("m_type", "conc_explode");
@@ -29,6 +32,7 @@ MType::~MType()
 	printf("MType Deleted\n");
 	for (auto it = totem_list.begin(); it != totem_list.end(); it++)
 		delete (*it);
+	delete mpSlash;
 }
 
 void MType::SetPos(int x, int y, int mv)
@@ -73,8 +77,14 @@ void MType::MajorAttack(std::list<PlayerBullet*>& pl_bulletlist)
 	if (wpn_timer.GetTicks() > major_speed || wpn_timer.IsPaused())
 	{
 		wpn_timer.Start(); 	mShotAnimClip = 0; mShotAnimTimer.Start();
+
+		if (mpSlash->IsDone())
+		{
 		SFX::PlaySoundResource("attack");
-		
+		mpSlash->Reset();
+		SFX::PlaySoundResource("slash");
+		SFX::PlaySoundResource("slash_hit");
+		}
 		pl_bulletlist.push_back(new PlayerBullet(wpn_pos.x, wpn_pos.y, 180+mov,rot_divs));
 		for (auto it = totem_list.begin(); it != totem_list.end(); it++)
 		{
@@ -114,17 +124,28 @@ void MType::StopAttack()
 		wpn_timer.Pause();
 }
 
+bool MType::TakeHit()
+{
+	--mHealth;
+	for (auto it = totem_list.begin(); it != totem_list.end(); it++)
+		if (!(*it)->IsDisabled()) { (*it)->TakeHit(); return true; }
+	return false;
+}
+
 void MType::Update(const int& rDeltaTime)
 {
 	for (auto it = totem_list.begin(); it != totem_list.end(); it++)
 	{
 		(*it)->Update(rDeltaTime, wpn_pos.x, wpn_pos.y, !wpn_timer.IsPaused());
     }
+	mpSlash->SetPos(FPoint(wpn_pos.x-12, wpn_pos.y));
+	mpSlash->Update();
 	Shared::CheckClip(mShotAnimTimer, mShotAnimClip, mpShotAnim->interval, mpShotAnim->maxClips, 0);
 }
 
 void MType::Draw(SDL_Surface *pDest)
 {
+	mpSlash->Draw(pDest);
 	for (auto it = totem_list.begin(); it != totem_list.end(); it++)
 	{
 		if (!(*it)->IsDisabled())
