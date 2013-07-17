@@ -19,8 +19,8 @@ Demo - downup enter from under intro panels
 Some type of selector using icons
 
 */
-FPoint HIDE_POINT = FPoint(-500, -500);
-FPoint START_POINT = FPoint(WINDOW_WIDTH/2, WINDOW_HEIGHT/2);
+Point HIDE_POINT = Point(-500, -500);
+Point START_POINT = Point(WINDOW_WIDTH/2, WINDOW_HEIGHT/2);
 
 ModeSelectPanel::ModeSelectPanel()
 {

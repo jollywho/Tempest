@@ -26,49 +26,41 @@ const int GAME_UI_MODE_X = 550;
 const int GAME_UI_MODE_Y = 10;
 const int MAX_TOTEMS = 4;
 
-const float DEG_TO_RAD_f = 0.017453292519943295769236907684886f;
-
 struct Point
-{
-  int x;
-  int y;
-  Point(){}
-  Point(int ax, int ay): x(ax), y(ay) {}
-};
-
-struct FPoint
 {
   float x;
   float y;
-  FPoint(){}
-  FPoint(float ax, float ay): x(ax), y(ay) {}
+  Point(){}
+  Point(float ax, float ay): x(ax), y(ay) {}
+};
+
+struct HitBox
+{
+    SDL_Rect rect;
+    int wm;
+    int hm;
+	HitBox(int x, int y, int w, int h) : rect(), wm(w/2), hm(h/2) 
+	{
+		rect.x = x; rect.y = y;
+		rect.w = w; rect.h = h;
+	}
 };
 
 struct KeyStruct
 {
-	bool left;
-	bool right;
-	bool up;
-	bool down;
-	bool z;
-	bool x;
-	bool enter;
-	bool shift;
-	bool esc;
-	bool none;
-	KeyStruct() { 
-		std::fill(&left, &none+1, false); }
-};
-
-struct Rect
-{
-	SDL_Rect rect;
-	Rect(int x, int y, int w, int h) { 
-		rect.x = x;
-		rect.y = y;
-		rect.w = w;
-		rect.h = h;
-	}
+    bool left;
+    bool right;
+    bool up;
+    bool down;
+    bool z;
+    bool x;
+    bool enter;
+    bool shift;
+    bool esc;
+    bool none;
+    bool space;
+    KeyStruct() { 
+        std::fill(&left, &space+1, false); }
 };
 
 class Shared

@@ -138,7 +138,7 @@ void MType::Update(const int& rDeltaTime)
 	{
 		(*it)->Update(rDeltaTime, wpn_pos.x, wpn_pos.y, !wpn_timer.IsPaused());
     }
-	mpSlash->SetPos(FPoint(wpn_pos.x-12, wpn_pos.y));
+	mpSlash->SetPos(Point(wpn_pos.x-12, wpn_pos.y));
 	mpSlash->Update();
 	Shared::CheckClip(mShotAnimTimer, mShotAnimClip, mpShotAnim->interval, mpShotAnim->maxClips, 0);
 }

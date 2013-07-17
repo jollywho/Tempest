@@ -23,8 +23,8 @@ public:
 
     void Draw(SDL_Surface *pDest);
 
-    Rect& GetBounds();
-    Rect& GetOuterBounds();
+    HitBox& GetBounds();
+    HitBox& GetOuterBounds();
 	Point GetCenter();
 	void TakeHit();
 	void Knockback(float xv, float yv, int force);
@@ -44,7 +44,7 @@ private:
 	void UpdateLocked(const int& rDeltaTime);
 	static Weapon* mspWpn;
 	static Bomb* mspBomb;
-	int mSpeed;
+	float mSpeed;
     float mov;
 	int mKForce;
 	int left, right, up, down;

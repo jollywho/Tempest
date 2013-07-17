@@ -76,34 +76,37 @@ void Player::KeyInput(const KeyStruct& rKeys)
 
 void Player::HandleMovement(const int& rDeltaTime)
 {
-	if (mSpeed < SPEED_NORMAL) mSpeed+=rDeltaTime;
+    float vx = left + right; float vy = up + down;
+    float length = sqrtf((vx * vx) + (vy * vy));
 
-	float vx = left + right; float vy = up + down;
-	float length = sqrtf((vx * vx) + (vy * vy));
-	if (length>0.0f)
-	{
-		vx=(left+right)/length;
-		vy=(up+down)/length;
-	}
-	if (mKnockbackTimer.IsStarted()) 
-	{
-		vx = mKx; 
-		vy = mKy; 
-		if (mKnockbackTimer.GetTicks() > mKForce) {
-			mKnockbackTimer.Stop(); }
-	}
-	mX += (vx * mSpeed) * (rDeltaTime/1000.f);
-	mY += (vy * mSpeed) * (rDeltaTime/1000.f);
+    if (vy == 0 && vx == 0 && mSpeed > 200) 
+		mSpeed-=rDeltaTime/2.f;
+    else if ((vy != 0 || vx != 0) && mSpeed < SPEED_NORMAL) 
+		mSpeed+=rDeltaTime/2.f;
 
-	if (!mLocked && !mExplode)
-	{
-		if (mX < GAME_BANNER_WIDTH) mX = GAME_BANNER_WIDTH;
-		if (mX + ANGEL_SIZE > GAME_BOUNDS_WIDTH) mX = GAME_BOUNDS_WIDTH - ANGEL_SIZE;
-		if (mY < GAME_UI_TOP) mY = GAME_UI_TOP;
-		if (mY + ANGEL_SIZE > GAME_UI_BOTTOM) mY = GAME_UI_BOTTOM - ANGEL_SIZE;
-	}
+    if (length>0.0f)
+    {
+        vx/=length;
+        vy/=length;
+    }
+    if (mKnockbackTimer.IsStarted()) 
+    {
+        vx = mKx; 
+        vy = mKy; 
+        if (mKnockbackTimer.GetTicks() > mKForce) {
+            mKnockbackTimer.Stop(); mKForce = 0; }
+    }
+    mX += (vx * mSpeed) * (rDeltaTime/1000.f);
+    mY += (vy * mSpeed) * (rDeltaTime/1000.f);
+
+    if (!mLocked && !mExplode)
+    {
+        if (mX < GAME_BANNER_WIDTH) mX = GAME_BANNER_WIDTH;
+        if (mX + ANGEL_SIZE > GAME_BOUNDS_WIDTH) mX = GAME_BOUNDS_WIDTH - ANGEL_SIZE;
+        if (mY < GAME_UI_TOP) mY = GAME_UI_TOP;
+        if (mY + ANGEL_SIZE > GAME_UI_BOTTOM) mY = GAME_UI_BOTTOM - ANGEL_SIZE;
+    }
 }
-
 void Player::HandleAttacks(const int& rDeltaTime)
 {
 	mspWpn->SetPos(mX + ANGEL_SIZE/2, mY, 0);
@@ -171,8 +174,8 @@ void Player::Update(const int& rDeltaTime)
 
 	HandleMovement(rDeltaTime);
 
-	FPoint center_point = FPoint(mX + ANGEL_SIZE/2, mY + ANGEL_SIZE/2);
-	FPoint hit_point = FPoint(mX + ANGEL_SIZE/2, mY + HITBOX_SIZE*1.5);
+	Point center_point = Point(mX + ANGEL_SIZE/2, mY + ANGEL_SIZE/2);
+	Point hit_point = Point(mX + ANGEL_SIZE/2, mY + HITBOX_SIZE*1.5);
 	mpAngel->SetPos(center_point);
 	mpBooster->SetPos(center_point);
 	mpWings->SetPos(center_point);
@@ -202,14 +205,14 @@ void Player::Draw(SDL_Surface *pDest)
 		mpWings->Draw(pDest);
 }
 
-Rect& Player::GetBounds()
+HitBox& Player::GetBounds()
 {
-    return mpHitbox->Bounds();
+    return mpHitbox->GetBounds();
 }
 
-Rect& Player::GetOuterBounds()
+HitBox& Player::GetOuterBounds()
 {
-	return mpAngel->Bounds();
+	return mpAngel->GetBounds();
 }
 
 Point Player::GetCenter()
@@ -226,7 +229,7 @@ void Player::TakeHit()
 			KeyInput(KeyStruct());
 			mExplode = true;
 			mpExplosion->Reset();
-			mpExplosion->SetPos(FPoint(mX + ANGEL_SIZE/2, mY + ANGEL_SIZE/2));
+			mpExplosion->SetPos(Point(mX + ANGEL_SIZE/2, mY + ANGEL_SIZE/2));
 			mspBomb->BulletWipe();
 			GameScore::Instance()->DecreaseLives();
 		}

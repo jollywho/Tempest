@@ -12,7 +12,7 @@ private:
 	SpriteInfo* mpInfo;
 
 	int mClip;
-	FPoint mPos;
+	HitBox mBounds;
 	Timer mClipTimer;
 
 	int mDir;
@@ -27,9 +27,9 @@ public:
     void Draw(SDL_Surface *pDest);
 	void Reset();
 
-	void SetPos(FPoint& rCenter);
+	void SetPos(Point& rCenter);
 	bool IsDone() { return mDone; }
-	Rect& Bounds();
+	HitBox& GetBounds() { return mBounds; }
 };
 
 

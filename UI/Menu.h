@@ -26,7 +26,7 @@ public:
 private:
     std::vector<MenuItem*> menuList;
     int mMaxItems;
-    FPoint mSelector;
+    Point mSelector;
 	TTF_Font* mpFont;
 	int mSelectedindex;
 	SpriteInfo* mpInfo;

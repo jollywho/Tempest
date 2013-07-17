@@ -13,7 +13,7 @@ public:
 	~EnemyBullet();
     void DetectCollision();
     void Destroy();
-	bool IsCollision(SDL_Rect obj);
+	bool IsCollision(HitBox& obj);
 
 	void Update(const int& rDeltaTime);
 	void Draw(SDL_Surface *pDest);

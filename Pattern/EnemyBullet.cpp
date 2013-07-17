@@ -42,21 +42,21 @@ void EnemyBullet::DetectCollision()
 {
 	if (CPlayState::Instance()->mpPlayer->IsExploding()) 
 		return;
-	if (IsCollision(CPlayState::Instance()->mpPlayer->GetBounds().rect)) { CPlayState::Instance()->mpPlayer->TakeHit(); return; }
+	if (IsCollision(CPlayState::Instance()->mpPlayer->GetBounds())) { CPlayState::Instance()->mpPlayer->TakeHit(); return; }
 }
 
-bool EnemyBullet::IsCollision(SDL_Rect obj)
+bool EnemyBullet::IsCollision(HitBox& obj)
 {
-    float dx = (obj.x + obj.w/2) - (mX - Camera::Instance()->CameraX()  + mpRotInfo->width/2);
+    float dx = (obj.rect.x + obj.wm) - (mX - Camera::Instance()->CameraX()  + mpRotInfo->width/2);
 	if (dx > 200) 
 		return false;
-    float dy = (obj.y + obj.h/2) - (mY - Camera::Instance()->CameraY2() + mpRotInfo->height/2);
+    float dy = (obj.rect.y + obj.hm) - (mY - Camera::Instance()->CameraY2() + mpRotInfo->height/2);
 	if (dy > 200)
 		return false;
 
 	double Length = sqrt(pow(dx, 2) + pow(dy, 2));
 
-	int radii = obj.w/2 + mpRotInfo->width/4;
+	int radii = obj.wm + mpRotInfo->width/4;
 	if ( ( dx * dx )  + ( dy * dy ) < radii * radii )  {
 		mExplode = true;
 		return true; }

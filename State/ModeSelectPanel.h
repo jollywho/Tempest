@@ -22,7 +22,7 @@ private:
 	SDL_Surface* mpTitle;
 	NSprite* mpMode;
 	Menu* mpMenu;
-	FPoint mMode;
+	Point mMode;
 };
  
 

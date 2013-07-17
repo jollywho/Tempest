@@ -36,7 +36,7 @@ protected:
 	bool mDelete;
 	bool mAir;
 	bool mHit;
-	FPoint mPos;
+	Point mPos;
 	Point mVel;
 	
 	bool Explode(bool isDelete);

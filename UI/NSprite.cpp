@@ -2,9 +2,10 @@
 #include "Engine/SpriteResource.h"
 
 NSprite::NSprite(float x, float y, SpriteInfo* pInfo, bool doesStop, bool isReverse)
+	: mBounds(x, y, pInfo->width, pInfo->height)
 {
-	mPos.x = x - pInfo->width/2; 
-	mPos.y = y - pInfo->height/2;
+	mBounds.rect.x = x - pInfo->width/2; 
+	mBounds.rect.y = y - pInfo->height/2;
 
 	mpInfo = pInfo;
 	mDir = -1;
@@ -29,10 +30,10 @@ void NSprite::Reset()
 	mClipTimer.Start();
 }
 
-void NSprite::SetPos(FPoint& rCenter)
+void NSprite::SetPos(Point& rCenter)
 {
-	mPos.x = rCenter.x - mpInfo->width/2; 
-	mPos.y = rCenter.y - mpInfo->height/2;
+	mBounds.rect.x = rCenter.x - mpInfo->width/2; 
+	mBounds.rect.y = rCenter.y - mpInfo->height/2;
 }
 
 void NSprite::Update()
@@ -61,10 +62,5 @@ void NSprite::Update()
 void NSprite::Draw(SDL_Surface *pDest)
 {
 	if (mDone) return;
-	Shared::DrawSurface(mPos.x, mPos.y, mpInfo->pSurface, pDest, &mpInfo->pClips[mClip]);
-}
-
-Rect& NSprite::Bounds()
-{
-	return Rect(mPos.x, mPos.y, mpInfo->width, mpInfo->height);
+	Shared::DrawSurface(mBounds.rect.x, mBounds.rect.y, mpInfo->pSurface, pDest, &mpInfo->pClips[mClip]);
 }
