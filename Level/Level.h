@@ -16,12 +16,10 @@ public:
     void Update(const int& rDeltaTime);
     void Draw(SDL_Surface *pDest);
 	int LevelEnd() { return mLevelEnd; }
-
-
-
 	void LoadEnemies(std::list<Enemy*>& rList);
 protected:
 	std::list<Enemy*> enemy_cache;
+	std::list<Enemy*>::iterator mReader;
 	Layer* mpEnd;
 	Layer* mpTop;
 	int mLevelEnd;

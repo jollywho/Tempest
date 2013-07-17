@@ -92,6 +92,12 @@ void CMyEngine::KeyDown(const int& rKeyEnum)
 	case SDLK_x:
 		mKeys.x = true;
 		break;
+	case SDLK_LCTRL:
+		mKeys.ctrl = true;
+		break;
+	case SDLK_SPACE:
+		mKeys.space = true;
+		break;
     }
 	mpStates.back()->KeyInput(mKeys);
 }
@@ -126,6 +132,12 @@ void CMyEngine::KeyUp(const int& rKeyEnum)
 		break;
 	case SDLK_x:
 		mKeys.x = false;
+		break;
+	case SDLK_LCTRL:
+		mKeys.ctrl = false;
+		break;
+	case SDLK_SPACE:
+		mKeys.space = false;
 		break;
 	}
 	mpStates.back()->KeyInput(mKeys);

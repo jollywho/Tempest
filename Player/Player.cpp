@@ -4,6 +4,7 @@
 #include "State/playstate.h"
 #include "Weapon/MType.h"
 #include "Game/GameScore.h"
+#include "Engine/SFX.h"
 
 Bomb* Player::mspBomb;
 Weapon* Player::mspWpn;
@@ -18,12 +19,14 @@ Player::Player()
 	mpZone = new NSprite(0,0, &SpriteResource::RequestResource("Player", "zone"));
 	mpExplosion = new NSprite(0,0, &SpriteResource::RequestResource("Player", "player_explosion"), true);
 	mpWings = new NSprite(0,0, &SpriteResource::RequestResource("Player", "invuln_wings"));
+	mpDash = new NSprite(0,0, &SpriteResource::RequestResource("Player", "dash"), true);
 
 	mSpeed = SPEED_NORMAL;
-    mov = 0;
+    mov = 0; mKForce = 0;
 	left = 0; right = 0; up = 0; down = 0;
 	mShift = false; mAttack = false; mBomb = false;
-	mExplode = false; mInvuln = false;
+	mExplode = false; mInvuln = false; mDash = false;
+	mDashReq = false; mSlash = false;
 
 	mX = WINDOW_WIDTH/2 - ANGEL_SIZE/2;
 	SetWeaponType(M_type);
@@ -72,6 +75,10 @@ void Player::KeyInput(const KeyStruct& rKeys)
 	else mAttack = false;
 	if (rKeys.x) mBomb = true;
 	else mBomb = false;
+	if (rKeys.ctrl)  mDashReq = true;
+	else mDashReq = false;
+	if (rKeys.space) mSlash = true;
+	else mSlash = false;
 }
 
 void Player::HandleMovement(const int& rDeltaTime)
@@ -84,6 +91,18 @@ void Player::HandleMovement(const int& rDeltaTime)
     else if ((vy != 0 || vx != 0) && mSpeed < SPEED_NORMAL) 
 		mSpeed+=rDeltaTime/2.f;
 
+	if (mDashReq)
+	{
+		if (!mDash)
+		{
+			Knockback(vx,vy,320);
+			SFX::PlaySoundResource("dash");
+			mpDash->Reset();
+			mDashReq = false;
+			mDash = true;
+			mSpeed = 1000;
+		}
+	}
     if (length>0.0f)
     {
         vx/=length;
@@ -94,7 +113,7 @@ void Player::HandleMovement(const int& rDeltaTime)
         vx = mKx; 
         vy = mKy; 
         if (mKnockbackTimer.GetTicks() > mKForce) {
-            mKnockbackTimer.Stop(); mKForce = 0; }
+            mKnockbackTimer.Stop(); mKForce = 0; mSpeed = 200; }
     }
     mX += (vx * mSpeed) * (rDeltaTime/1000.f);
     mY += (vy * mSpeed) * (rDeltaTime/1000.f);
@@ -112,11 +131,16 @@ void Player::HandleAttacks(const int& rDeltaTime)
 	mspWpn->SetPos(mX + ANGEL_SIZE/2, mY, 0);
 	if (mAttack)
 	{
-		if (mShift)	mspWpn->MajorAttack(CPlayState::Instance()->pl_bulletlist);
-		else		mspWpn->MinorAttack(CPlayState::Instance()->pl_bulletlist);
+		mspWpn->MinorAttack(CPlayState::Instance()->pl_bulletlist);
 	}
 	else
 		mspWpn->StopAttack();
+
+	if (mSlash) 
+	{ 
+		mspWpn->MajorAttack(CPlayState::Instance()->pl_bulletlist);
+		mSlash = false; 
+	}
 
 	if (mShift)mspWpn->Shift();
 	else mspWpn->Unshift();
@@ -171,16 +195,19 @@ void Player::Update(const int& rDeltaTime)
 	mpHitbox->Update();
 	mpZone->Update();
 	mpWings->Update();
+	mpDash->Update();
 
 	HandleMovement(rDeltaTime);
 
+	if (mpDash->IsDone()) mDash = false;
 	Point center_point = Point(mX + ANGEL_SIZE/2, mY + ANGEL_SIZE/2);
-	Point hit_point = Point(mX + ANGEL_SIZE/2, mY + HITBOX_SIZE*1.5);
+	Point boost_point = Point(mX + ANGEL_SIZE/2, mY + ANGEL_SIZE);
 	mpAngel->SetPos(center_point);
-	mpBooster->SetPos(center_point);
+	mpBooster->SetPos(boost_point);
 	mpWings->SetPos(center_point);
 	mpZone->SetPos(center_point);
-	mpHitbox->SetPos(hit_point);
+	mpHitbox->SetPos(center_point);
+	mpDash->SetPos(boost_point);
 
 	HandleAttacks(rDeltaTime);
 }
@@ -201,6 +228,8 @@ void Player::Draw(SDL_Surface *pDest)
 	mpAngel->Draw(pDest);
 	mpHitbox->Draw(pDest);
 
+	if (mDash)
+		mpDash->Draw(pDest);
 	if (mInvuln)
 		mpWings->Draw(pDest);
 }
@@ -238,11 +267,11 @@ void Player::TakeHit()
 
 void Player::Knockback(float xv, float yv, int force)
 {
-	if (mShift)
+	if (mShift || mDashReq)
 	{
-		mKForce = force;
+		mKForce += force;
 		xv == 0 ? mKx = 0 : mKx = xv/abs(xv);
-		mKy = yv < 0 ? -1: 1;
+		yv == 0 ? mKy = 0 : mKy = yv/abs(yv);
 		mKnockbackTimer.Start();
 	}
 }

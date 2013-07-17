@@ -24,20 +24,19 @@ Level::Level()
 	GameScore::Instance()->ResetLevel();
 	
 	Factory::ReadFile("Script/level_01.dat", enemy_cache);
+	mReader = enemy_cache.begin();
 }
 
 //Load onscreen enemies from the cache to the active list.
 void Level::LoadEnemies(std::list<Enemy*>& rList)
 {
-	for (auto it = enemy_cache.begin(); it != enemy_cache.end();)
+	if (!enemy_cache.empty())
 	{
-		if ((*it)->CheckBounds())
+		if ((*mReader)->CheckBounds())
 		{
-			rList.push_back((*it));
-			it = enemy_cache.erase(it);
+			rList.push_back((*mReader));
+			mReader = enemy_cache.erase(mReader);
 		}
-		else
-			it++;
 	}
 }
 

@@ -48,11 +48,12 @@ private:
     float mov;
 	int mKForce;
 	int left, right, up, down;
-	bool mShift; bool mAttack; bool mBomb;
+	bool mShift; bool mAttack; bool mSlash;
+	bool mBomb; bool mDash; bool mDashReq;
     static const int SPEED_NORMAL = 400;
 	static const int SPEED_RECOVERY = 220;
-	static const int HITBOX_SIZE = 20;
-	static const int ANGEL_SIZE = 64;
+	static const int HITBOX_SIZE = 30;
+	static const int ANGEL_SIZE = 128;
 	static const int INVULN_DURATION = 3000;
 
 	bool mExplode;
@@ -64,6 +65,7 @@ private:
     float mX; float mY;
 	float mKx; float mKy;
 
+	NSprite* mpDash;
 	NSprite* mpAngel;
 	NSprite* mpBooster;
 	NSprite* mpHitbox;

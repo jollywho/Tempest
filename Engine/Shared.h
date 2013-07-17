@@ -58,6 +58,7 @@ struct KeyStruct
     bool shift;
     bool esc;
     bool none;
+	bool ctrl;
     bool space;
     KeyStruct() { 
         std::fill(&left, &space+1, false); }
