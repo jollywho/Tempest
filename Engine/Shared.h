@@ -26,6 +26,9 @@ const int GAME_UI_MODE_X = 550;
 const int GAME_UI_MODE_Y = 10;
 const int MAX_TOTEMS = 4;
 
+const int SHOP_OFFSET_X = 140;
+const int SHOP_OFFSET_Y = 110;
+
 struct Point
 {
   float x;
@@ -59,6 +62,7 @@ struct KeyStruct
     bool esc;
     bool none;
 	bool ctrl;
+	bool tilde;
     bool space;
     KeyStruct() { 
         std::fill(&left, &space+1, false); }

@@ -13,6 +13,7 @@ std::istream& operator >> (std::istream& is, Resource::Sprite& data)
 	is >> data.id >> data.filename >> data.width >> data.height >> data.inteval
 		>> data.maxClips >> data.vert; return is;
 }
+
 std::istream& operator >> (std::istream& is, Resource::RotSprite& data)
 {
 	is >> data.id >> data.filename >> data.width >> data.height

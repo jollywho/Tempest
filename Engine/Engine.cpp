@@ -8,6 +8,7 @@
 #include "State/PollState.h"
 #include "State/PauseState.h"
 #include "State/ContinueState.h"
+#include "State/ShopState.h"
 
 /** Default constructor. **/
 CEngine::CEngine()
@@ -91,6 +92,9 @@ CGameState* CEngine::StateInstance(State id)
 			break;
 		case State::Pause:
 			return CPauseState::Instance();
+			break;
+		case State::Shop:
+			return CShopState::Instance();
 			break;
 		case State::Continue:
 			return CContinueState::Instance();

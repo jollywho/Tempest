@@ -18,6 +18,7 @@ namespace States
 		Pause,
 		Continue,
 		Gameover,
+		Shop,
 	};
 }
 typedef States::State State;

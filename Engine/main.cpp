@@ -98,6 +98,9 @@ void CMyEngine::KeyDown(const int& rKeyEnum)
 	case SDLK_SPACE:
 		mKeys.space = true;
 		break;
+	case SDLK_BACKQUOTE:
+		mKeys.tilde = true;
+		break;
     }
 	mpStates.back()->KeyInput(mKeys);
 }
@@ -138,6 +141,9 @@ void CMyEngine::KeyUp(const int& rKeyEnum)
 		break;
 	case SDLK_SPACE:
 		mKeys.space = false;
+		break;
+	case SDLK_BACKQUOTE:
+		mKeys.tilde = false;
 		break;
 	}
 	mpStates.back()->KeyInput(mKeys);

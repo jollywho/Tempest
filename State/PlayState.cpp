@@ -139,6 +139,7 @@ void CPlayState::KeyInput(const KeyStruct& rKeys)
 	if (rKeys.enter && rKeys.shift) PushState(State::Continue);
 	if (rKeys.enter && !rKeys.shift) mExit = true;
 	if (rKeys.esc) PushState(State::Pause);
+	if (rKeys.tilde) PushState(State::Shop);
 }
 
 void CPlayState::Update(const int& rDeltaTime)
