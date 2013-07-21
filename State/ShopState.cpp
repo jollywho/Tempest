@@ -1,10 +1,8 @@
 #include "ShopState.h"
-#include "Engine/Shared.h"
-#include "Engine/FontResource.h"
-#include "Engine/SpriteResource.h"
-#include "Game/Gamescore.h"
 #include "Game/Interface.h"
-#include "playstate.h"
+#include "Engine/SpriteResource.h"
+#include "PlayState.h"
+#include "Engine/ResourceLoader.h"
 #include "Shop/Shop.h"
 
 CShopState CShopState::mShopstate;
@@ -13,6 +11,7 @@ void CShopState::Init()
 {
 	printf("CShopState initialize\n");
 	ClearRequest();
+	ResourceLoader::ReadFile("Shop");
 	mpScreen =  SDL_DisplayFormatAlpha(SDL_GetVideoSurface());
 	mpBanner = IMG_Load("Image/UI/shop_banner.png");
 	mpShop = new Shop();
@@ -23,6 +22,7 @@ void CShopState::Cleanup()
 	printf("CShopState Cleanup\n");
 	SDL_FreeSurface(mpScreen);
 	SDL_FreeSurface(mpBanner);
+	delete mpShop;
 }
 
 void CShopState::Pause()
@@ -38,6 +38,8 @@ void CShopState::Resume()
 void CShopState::KeyInput(const KeyStruct& rKeys)
 {
 	if (rKeys.tilde) { PopState(); }
+	mpShop->KeyInput(rKeys);
+	if (rKeys.mouse_left) printf("%i,%i\n", rKeys.mouse_x, rKeys.mouse_y);
 }
 
 void CShopState::Update(const int& rDeltaTime) 

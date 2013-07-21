@@ -36,11 +36,14 @@ public:
 	~Node();
 	void Update(Uint32 deltaTicks);
 	void Draw(SDL_Surface *pDest);
-	void BranchTo(std::string id);
 	void SetEnable(bool enable) { mEnable = enable; }
 	unsigned int GetPrice() { return mpItem->GetPrice(); }
-	Point& GetTPoint() { return Point(mData.row, mData.col); }
+	void SetPaths(std::vector<Line*>& lines) { mPaths = lines; }
+	Point& GetTPoint() { return Point(mData.col, mData.row); }
+	Point& GetPoint() { return mPos; }
 	std::vector<std::string>& GetRequirements() { return mData.req; }
+	std::vector<std::string>& GetBuilds() { return mData.build; }
+	std::string ItemName() { return mpItem->GetName(); }
 };
 
 

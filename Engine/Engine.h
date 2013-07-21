@@ -100,6 +100,10 @@ public:
 		@param iKeyEnum The key number.
 	**/
 	virtual void KeyDown		(const int& rKeyEnum) {}
+
+	virtual void MouseDown		(const int& rKeyEnum) {}
+	virtual void MouseUp		(const int& rKeyEnum) {}
+	virtual void MouseMove		(const int& rMotionX, const int& rMotionY) {}
  
 	void		SetTitle	(const char* pTitle);
 	const char* 	GetTitle	();

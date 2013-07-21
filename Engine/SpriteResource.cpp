@@ -28,11 +28,11 @@ void SpriteResource::AddTexture(std::string dirname, std::string id, std::string
 {
 	if (mResources.find(std::make_pair(dirname, id)) == mResources.end())
 	{
-		SpriteInfo* temp = new SpriteInfo();
+		TextureInfo* temp = new TextureInfo();
 		temp->pSurface = Shared::LoadImage("Image/" + dirname + "/" + filename);
 		temp->width = width;
 		temp->height = height;
-		mResources.insert(std::make_pair(std::make_pair(dirname, id), temp));
+		mTxResources.insert(std::make_pair(std::make_pair(dirname, id), temp));
 		printf("Texture Added: %s\n", filename.c_str());
 	}
 }

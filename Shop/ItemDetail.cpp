@@ -15,5 +15,5 @@ ItemDetail::~ItemDetail()
 
 void ItemDetail::Draw(SDL_Surface *pDest, Point& p)
 {
-	Shared::DrawSurface(p.x + 5, p.y + 5, mpIcon, pDest);
+	Shared::DrawSurface(p.x + 6, p.y + 5, mpIcon, pDest);
 }

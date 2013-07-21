@@ -42,7 +42,6 @@ namespace Resource
 		int pivotY;
 		int rotInterval;
 	};
-	struct Font {std::string id; std::string filename;};
 	struct Sound{std::string id; std::string filename;};
 	struct Music{std::string id; std::string filename;};
 
@@ -78,7 +77,6 @@ enum Resx
 std::istream& operator >> (std::istream& is, Resource::Texture& data);
 std::istream& operator >> (std::istream& is, Resource::Sprite& data);
 std::istream& operator >> (std::istream& is, Resource::RotSprite& data);
-std::istream& operator >> (std::istream& is, Resource::Font& data);
 std::istream& operator >> (std::istream& is, Resource::Sound& data);
 std::istream& operator >> (std::istream& is, Resource::Music& data);
 std::istream& operator >> (std::istream& is, Resource::Explosion& data);

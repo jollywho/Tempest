@@ -7,6 +7,7 @@
 struct ItemData
 {
 	std::string id;
+	std::string full_name;
 	unsigned int atk; 			//000
 	unsigned int mag;			//000
 	unsigned int hp;			//0000
@@ -29,6 +30,7 @@ public:
 	void Draw(SDL_Surface *pDest, Point& p);
 	std::string& GetName() { return mData.id; }
 	unsigned int GetPrice() { return mData.price; }
+	ItemData& GetData() { return mData; }
 };
 std::istream& operator >> (std::istream& is, ItemData& data);
 

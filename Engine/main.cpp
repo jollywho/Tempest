@@ -15,6 +15,9 @@ public:
  
 	void KeyUp  	    (const int& iKeyEnum);
 	void KeyDown	    (const int& iKeyEnum);
+	void MouseDown		(const int& rKeyEnum);
+	void MouseUp		(const int& rKeyEnum);
+	void MouseMove		(const int& rMotionX, const int& rMotionY);
  
 	void WindowInactive();
 	void WindowActive();
@@ -146,6 +149,41 @@ void CMyEngine::KeyUp(const int& rKeyEnum)
 		mKeys.tilde = false;
 		break;
 	}
+	mpStates.back()->KeyInput(mKeys);
+}
+
+void CMyEngine::MouseDown(const int& rKeyEnum) 
+{
+	switch (rKeyEnum)
+	{
+	case SDL_BUTTON_LEFT:
+		mKeys.mouse_left = true;
+		break;
+	case SDL_BUTTON_RIGHT:
+		mKeys.mouse_right = true;
+		break;
+	}
+	mpStates.back()->KeyInput(mKeys);
+}
+
+void CMyEngine::MouseUp(const int& rKeyEnum)
+{
+	switch (rKeyEnum)
+	{
+	case SDL_BUTTON_LEFT:
+		mKeys.mouse_left = false;
+		break;
+	case SDL_BUTTON_RIGHT:
+		mKeys.mouse_right = false;
+		break;
+	}
+	mpStates.back()->KeyInput(mKeys);
+}
+
+void CMyEngine::MouseMove(const int& rMotionX, const int& rMotionY)
+{
+	mKeys.mouse_x = rMotionX;
+	mKeys.mouse_y = rMotionY;
 	mpStates.back()->KeyInput(mKeys);
 }
  

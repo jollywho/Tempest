@@ -35,7 +35,15 @@ struct Point
   float y;
   Point(){}
   Point(float ax, float ay): x(ax), y(ay) {}
+  Point operator-(Point op2)
+  {
+	this->x -= op2.x;
+	this->y -= op2.y;
+	return *this;
+  };
 };
+
+
 
 struct HitBox
 {
@@ -51,6 +59,10 @@ struct HitBox
 
 struct KeyStruct
 {
+	int mouse_x;
+	int mouse_y;
+	bool mouse_left;
+	bool mouse_right;
     bool left;
     bool right;
     bool up;
@@ -65,7 +77,7 @@ struct KeyStruct
 	bool tilde;
     bool space;
     KeyStruct() { 
-        std::fill(&left, &space+1, false); }
+        std::fill(&mouse_left, &space+1, false); }
 };
 
 class Shared

@@ -71,7 +71,7 @@ void CEngine::Init()
 	}
 
 	SFX::Init();
-	SDL_ShowCursor(0);
+	//SDL_ShowCursor(0);
 	AdditionalInit();
 }
 
@@ -214,6 +214,18 @@ void CEngine::DoInput()
  
 		case SDL_KEYUP:
 			KeyUp( event.key.keysym.sym );
+			break;
+
+		case SDL_MOUSEBUTTONDOWN:
+			MouseDown( event.button.button);
+			break;
+
+		case SDL_MOUSEBUTTONUP:
+			MouseUp( event.button.button);
+			break;
+
+		case SDL_MOUSEMOTION:
+			MouseMove(event.motion.x, event.motion.y);
 			break;
  
 		case SDL_QUIT:

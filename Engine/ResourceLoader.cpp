@@ -21,9 +21,6 @@ std::istream& operator >> (std::istream& is, Resource::RotSprite& data)
 		>> data.destWidth >> data.destHeight >> data.pivotX
 		>> data.pivotY >> data.rotInterval; return is;
 }
-	
-std::istream& operator >> (std::istream& is, Resource::Font& data)
-{ is >> data.id >> data.filename; return is; }
 
 std::istream& operator >> (std::istream& is, Resource::Sound& data)
 { is >> data.id >> data.filename; return is;}
@@ -75,8 +72,6 @@ void ResourceLoader::ReadFile(std::string dir, std::string file_name)
 					SpriteResource::AddRotationResource(msDir, rs.id, rs.filename, rs.width, rs.height, rs.interval, rs.maxClips, rs.start,
 						rs.end, rs.destWidth, rs.destHeight, rs.pivotX, rs.pivotY, rs.rotInterval);
 				}
-
-				//font
 				if (meta == "Sound")
 				{
 					Resource::Sound sd;
