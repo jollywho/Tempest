@@ -75,9 +75,9 @@ void Player::KeyInput(const KeyStruct& rKeys)
 	else mAttack = false;
 	if (rKeys.x) mBomb = true;
 	else mBomb = false;
-	if (rKeys.ctrl)  mDashReq = true;
+	if (rKeys.space)  mDashReq = true;
 	else mDashReq = false;
-	if (rKeys.space) mSlash = true;
+	if (rKeys.c) mSlash = true;
 	else mSlash = false;
 }
 
@@ -129,18 +129,18 @@ void Player::HandleMovement(const int& rDeltaTime)
 void Player::HandleAttacks(const int& rDeltaTime)
 {
 	mspWpn->SetPos(mX + ANGEL_SIZE/2, mY, 0);
-	if (mAttack)
+	if (mSlash) 
+	{ 
+		mspWpn->MajorAttack(CPlayState::Instance()->pl_bulletlist);
+		mSlash = false;
+		mspWpn->StopAttack();
+	}
+	else if (mAttack)
 	{
 		mspWpn->MinorAttack(CPlayState::Instance()->pl_bulletlist);
 	}
 	else
 		mspWpn->StopAttack();
-
-	if (mSlash) 
-	{ 
-		mspWpn->MajorAttack(CPlayState::Instance()->pl_bulletlist);
-		mSlash = false; 
-	}
 
 	if (mShift)mspWpn->Shift();
 	else mspWpn->Unshift();

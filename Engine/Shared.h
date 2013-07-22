@@ -69,6 +69,7 @@ struct KeyStruct
     bool down;
     bool z;
     bool x;
+	bool c;
     bool enter;
     bool shift;
     bool esc;

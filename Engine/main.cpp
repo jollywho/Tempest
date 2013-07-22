@@ -95,6 +95,9 @@ void CMyEngine::KeyDown(const int& rKeyEnum)
 	case SDLK_x:
 		mKeys.x = true;
 		break;
+	case SDLK_c:
+		mKeys.c = true;
+		break;
 	case SDLK_LCTRL:
 		mKeys.ctrl = true;
 		break;
@@ -138,6 +141,9 @@ void CMyEngine::KeyUp(const int& rKeyEnum)
 		break;
 	case SDLK_x:
 		mKeys.x = false;
+		break;
+	case SDLK_c:
+		mKeys.c = false;
 		break;
 	case SDLK_LCTRL:
 		mKeys.ctrl = false;

@@ -50,6 +50,7 @@ void MType::ResetPos(int x, int y)
 
 void MType::MinorAttack(std::list<PlayerBullet*>& pl_bulletlist) 
 {		
+	if (!mpSlash->IsDone()) return;
 	if (wpn_timer.GetTicks() > minor_speed  || wpn_timer.IsPaused())
 	{
 		wpn_timer.Start(); 	mShotAnimClip = 0; mShotAnimTimer.Start();
@@ -74,31 +75,12 @@ void MType::MinorAttack(std::list<PlayerBullet*>& pl_bulletlist)
 
 void MType::MajorAttack(std::list<PlayerBullet*>& pl_bulletlist) 
 { 						
-	if (wpn_timer.GetTicks() > major_speed || wpn_timer.IsPaused())
+	if (mpSlash->IsDone())
 	{
-		wpn_timer.Start(); 	mShotAnimClip = 0; mShotAnimTimer.Start();
-
-		if (mpSlash->IsDone())
-		{
 		SFX::PlaySoundResource("attack");
 		mpSlash->Reset();
 		SFX::PlaySoundResource("slash");
 		SFX::PlaySoundResource("slash_hit");
-		}
-		pl_bulletlist.push_back(new PlayerBullet(wpn_pos.x, wpn_pos.y, 180+mov,rot_divs));
-		for (auto it = totem_list.begin(); it != totem_list.end(); it++)
-		{
-			if (!(*it)->IsDisabled())
-			{
-				int x = (*it)->GetMiddle();
-				int y = (*it)->GetVertical();
-				for (int i=2; i<10; i+=2)
-				{
-					pl_bulletlist.push_back(new PlayerBullet(x+(i*2), y+(i*2), 180+(i)+mov,rot_divs));
-					pl_bulletlist.push_back(new PlayerBullet(x-(i*2), y+(i*2), 180-(i)+mov,rot_divs));
-				}
-			}
-		}
 	}
 }
 
