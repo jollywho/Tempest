@@ -3,18 +3,20 @@
 #define ITEMDETAIL_H
 
 #include "Engine/Shared.h"
+#include <vector>
+
+struct ItemProperty
+{
+	std::string name;
+	unsigned int value;
+};
 
 struct ItemData
 {
 	std::string id;
 	std::string full_name;
-	unsigned int atk; 			//000
-	unsigned int mag;			//000
-	unsigned int hp;			//0000
-	unsigned int range;			//000
-	unsigned int wind;			//00%
-	unsigned int atkSpd;		//00%
-	unsigned int price;			//000
+	int price;
+	std::vector<ItemProperty> properties;
 };
 
 class ItemDetail
@@ -32,7 +34,6 @@ public:
 	unsigned int GetPrice() { return mData.price; }
 	ItemData& GetData() { return mData; }
 };
-std::istream& operator >> (std::istream& is, ItemData& data);
 
 #endif
 

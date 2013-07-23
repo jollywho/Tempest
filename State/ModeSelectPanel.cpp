@@ -61,7 +61,8 @@ void ModeSelectPanel::KeyInput(const KeyStruct& rKeys)
 	else
 	{
 		if (rKeys.esc || rKeys.x) mBack = true;
-		if (rKeys.z)
+		if (1)
+		//if (rKeys.z) debug
 		{
 			mMode = START_POINT;
 			delete mpMode;

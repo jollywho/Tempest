@@ -4,9 +4,11 @@
 Line::Line(Point p, int dir)
 {
 	if (dir == 0)
-		mpSurface = &SpriteResource::RequestTextureResource("Shop", "line_vertical");
+		mpSurface = &SpriteResource::RequestTextureResource("Shop",
+			"line_vertical");
 	else
-		mpSurface = &SpriteResource::RequestTextureResource("Shop", "line_horizontal");
+		mpSurface = &SpriteResource::RequestTextureResource("Shop",
+			"line_horizontal");
 	mPos = p;
 }
 

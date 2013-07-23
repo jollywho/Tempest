@@ -30,7 +30,8 @@ PlayerSelectPanel::~PlayerSelectPanel()
 void PlayerSelectPanel::KeyInput(const KeyStruct& rKeys)
 {
 	if (rKeys.esc || rKeys.x) mBack = true;
-	if (rKeys.z)
+	if (1)
+	//if (rKeys.z) debug
 	{
 		mForward = true;
 	}

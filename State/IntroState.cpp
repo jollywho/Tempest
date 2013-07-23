@@ -86,7 +86,8 @@ void CIntroState::KeyInput(const KeyStruct& rKeys)
 			else  
 				mpMenu->SetIndex(mpMenu->Count());
 		}
-		if (rKeys.z)
+		if (1)
+		//if (rKeys.z) debug
 		{
 			mpMenu->Select();
 			if (mpMenu->GetIndex() == 1) { mpPanel = new ModeSelectPanel(); }

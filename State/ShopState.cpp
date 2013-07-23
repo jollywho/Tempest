@@ -14,7 +14,7 @@ void CShopState::Init()
 	ResourceLoader::ReadFile("Shop");
 	mpScreen =  SDL_DisplayFormatAlpha(SDL_GetVideoSurface());
 	mpBanner = IMG_Load("Image/UI/shop_banner.png");
-	mpShop = new Shop();
+	mpShop = new Shop(Point(SHOP_OFFSET_X, SHOP_OFFSET_Y), Point(SHOP_OFFSET_X + 1000, SHOP_OFFSET_Y));
 }
 
 void CShopState::Cleanup()

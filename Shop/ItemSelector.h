@@ -13,11 +13,14 @@ class ItemSelector
 {
 private:
 	bool mSelection;
+	bool mInsufficient;
+	SDL_Rect mPropBox;
 	TextureInfo* mpTexture;
 	TextureInfo* mpFont;
 	Point mPos;
 	std::string mTar;
 	NFont* mpText;
+	std::string mInsf;
 	std::string mTitle;
 	std::string mPrice;
 	std::string mDmg;
@@ -30,6 +33,7 @@ public:
     void Draw(SDL_Surface *pDest);
 	void MoveSelector(Node& n, ItemDetail& d);
 	void Reset() { mSelection = false; }
+	void Insufficient() { mInsufficient = true; }
 	std::string Branch() { return mTar; }
 };
  
