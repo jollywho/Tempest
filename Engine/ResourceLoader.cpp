@@ -1,5 +1,6 @@
 #include "ResourceLoader.h"
 #include "SpriteResource.h"
+#include "FontResource.h"
 #include "SFX.h"
 #include "Pattern/Explosion.h"
 
@@ -23,6 +24,9 @@ std::istream& operator >> (std::istream& is, Resource::RotSprite& data)
 }
 
 std::istream& operator >> (std::istream& is, Resource::Sound& data)
+{ is >> data.id >> data.filename; return is;}
+
+std::istream& operator >> (std::istream& is, Resource::Font& data)
 { is >> data.id >> data.filename; return is;}
 
 std::istream& operator >> (std::istream& is, Resource::Music& data)
@@ -77,6 +81,12 @@ void ResourceLoader::ReadFile(std::string dir, std::string file_name)
 					Resource::Sound sd;
 					file >> sd;
 					SFX::AddSoundResource(sd.id, sd.filename);
+				}
+				if (meta == "Font")
+				{
+					Resource::Font ft;
+					file >> ft;
+					FontResource::AddFont(ft.id, ft.filename);
 				}
 				//music
 				if (meta == "Explosion")

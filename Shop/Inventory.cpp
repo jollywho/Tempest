@@ -5,19 +5,21 @@
 std::map<int, ItemDetail*> Inventory::mItems;
 int Inventory::mMoney;
 
-Inventory::Inventory(Point& p)
+Inventory::Inventory()
 {
-	mpBorder = &SpriteResource::RequestTextureResource("Shop", "node");
-	Point origin = Point(WINDOW_WIDTH/2 - mpBorder->width/2, 
+	/*
+	Point origin = Point(WINDOW_WIDTH/2 - mpItem->width/2, 
 		WINDOW_HEIGHT - mpBorder->height);
 
 	for (int i=0; i< INV_SIZE; ++i)
-		mpPoints[i] = Point(origin.x + (mpBorder->width * i), origin.y);
+		mpPoints[i] = Point(origin.x + (mpItem->width * i), origin.y);
+
+	*/
 }
 
 Inventory::~Inventory()
 {
-	delete mpBorder;
+	//delete mpItem;
 }
 
 bool Inventory::AddItem(ItemDetail& d)
@@ -41,7 +43,6 @@ void Inventory::Draw(SDL_Surface *pDest)
 	int i = 0;
 	for (auto it = mItems.begin(); it != mItems.end(); ++it, ++i)
 	{
-		Shared::DrawSurface(mpPoints[i].x, mpPoints[i].y, mpBorder->pSurface, pDest);
 		it->second->Draw(pDest, mpPoints[i]);
 	}
 }

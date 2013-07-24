@@ -1,6 +1,6 @@
 #include "Quartz.h"
 #include "Engine/SpriteResource.h"
-#include "Game/Interface.h"
+#include "UI/Interface.h"
 #include "Game/Gamescore.h"
 #include "Game/Camera.h"
 #include "State/playstate.h"

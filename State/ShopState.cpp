@@ -1,5 +1,5 @@
 #include "ShopState.h"
-#include "Game/Interface.h"
+#include "UI/Interface.h"
 #include "Engine/SpriteResource.h"
 #include "PlayState.h"
 #include "Engine/ResourceLoader.h"
@@ -11,7 +11,6 @@ void CShopState::Init()
 {
 	printf("CShopState initialize\n");
 	ClearRequest();
-	ResourceLoader::ReadFile("Shop");
 	mpScreen =  SDL_DisplayFormatAlpha(SDL_GetVideoSurface());
 	mpBanner = IMG_Load("Image/UI/shop_banner.png");
 	mpShop = new Shop(Point(SHOP_OFFSET_X, SHOP_OFFSET_Y), Point(SHOP_OFFSET_X + 1000, SHOP_OFFSET_Y));

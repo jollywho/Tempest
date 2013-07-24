@@ -1,11 +1,12 @@
-#include "Pollstate.h"
+#include "PollState.h"
 #include "Engine/Shared.h"
 #include "Engine/FontResource.h"
 #include "Engine/SpriteResource.h"
 #include "Game/Gamescore.h"
-#include "Game/Interface.h"
+#include "UI/NSprite.h"
+#include "UI/Interface.h"
 #include "Sprig.h"
-#include "playstate.h"
+#include "PlayState.h"
 
 CPollState CPollState::mIntroState;
 

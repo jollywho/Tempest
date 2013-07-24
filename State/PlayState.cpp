@@ -1,7 +1,7 @@
 #include "playstate.h"
 #include <sprig.h>
 #include "Game/Camera.h"
-#include "Game/Interface.h"
+#include "UI/Interface.h"
 #include "Level/Level.h"
 #include "Enemy/Enemy.h"
 #include "UI/ScoreMSG.h"
@@ -24,6 +24,7 @@ void CPlayState::Init()
 	mAlpha = 255;
 
 	ResourceLoader::ReadFile("Item");
+	ResourceLoader::ReadFile("Shop");
 	ResourceLoader::ReadFile("Enemy");
 	ResourceLoader::ReadFile("Attack");
 	ResourceLoader::ReadFile("Explosion");
@@ -58,6 +59,7 @@ void CPlayState::Cleanup()
 	delete mpInterface;
 	delete mpPlayer;
 	SpriteResource::ClearResourceDir("Item");
+	SpriteResource::ClearResourceDir("Shop");
 	SpriteResource::ClearResourceDir("Enemy");
 	SpriteResource::ClearResourceDir("Attack");
 	SpriteResource::ClearResourceDir("Explosion");

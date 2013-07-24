@@ -14,10 +14,9 @@ private:
 	static std::map<int, ItemDetail*> mItems;
 	static const int INV_SIZE = 4;
 	Point mpPoints[INV_SIZE];
-	TextureInfo* mpBorder;
 	static int mMoney;
 public:
-	Inventory(Point& p);
+	Inventory();
 	~Inventory();
 	static bool AddItem(ItemDetail& d);
 	static int& GetMoney() { return mMoney; }

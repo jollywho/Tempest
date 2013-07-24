@@ -1,7 +1,7 @@
 #include "Item.h"
 #include "Engine/SpriteResource.h"
 #include "State/playstate.h"
-#include "Game/Interface.h"
+#include "UI/Interface.h"
 #include "Game/Camera.h"
 #include "Player/Player.h"
 

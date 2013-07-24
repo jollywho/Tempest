@@ -1,7 +1,7 @@
 #include "ScoreMSG.h"
 #include "Game/Camera.h"
 #include "State/playstate.h"
-#include "Game/Interface.h"
+#include "UI/Interface.h"
 #include "Player/Player.h"
 #include "Game/Gamescore.h"
 #include "Engine/SFX.h"

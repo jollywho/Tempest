@@ -2,7 +2,7 @@
 #include "Gem.h"
 #include "Engine/SpriteResource.h"
 #include "State/playstate.h"
-#include "Game/Interface.h"
+#include "UI/Interface.h"
 #include "Player/Player.h"
 #include "Game/GameScore.h"
 #include "Game/Camera.h"

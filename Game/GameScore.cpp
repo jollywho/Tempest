@@ -157,7 +157,7 @@ void GameScore::ResetGame()
 {
 	g_continues = 3;
 	prevBonus = 1000;
-    g_score = 0;
+    g_score = 500000;
 	ResetLevel();
 	ResetSpawn();
 	//todo: relink
