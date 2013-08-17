@@ -12,6 +12,7 @@ struct TextureInfo;
 class NSprite;
 class Inventory;
 class Title;
+class HealthBar;
 
 class Interface
 {
@@ -37,17 +38,16 @@ private:
 	char mHiScoreStr[30];
 	char mGemStr[30];
 	char mCoinStr[30];
-	
-	/* Textures */
-	TextureInfo* mpUI;
 
     /* Icons */
 	NSprite* mpMode;
 	NSprite* mpPlayer;
 	NSprite* mpHigh;
-	NSprite* mpHealth;
-	NSprite* mpLeft;
-	NSprite* mpRight;
+
+	HealthBar* mpManaLeft;
+	HealthBar* mpManaRight;
+	HealthBar* mpHealth;
+	HealthBar* mpShield;
 public:
     Interface();
     ~Interface();

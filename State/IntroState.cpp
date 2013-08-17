@@ -18,8 +18,6 @@ void CIntroState::Init()
 
 	mpBorderTop = Shared::LoadImage("Image/UI/intro_border_top.png");
 	mpBorderBot =  Shared::LoadImage("Image/UI/intro_border_bot.png");
-	mpBorderLeft = Shared::LoadImage("Image/UI/ui_border_left.png");
-	mpBorderRight = Shared::LoadImage("Image/UI/ui_border_right.png");
 
 	mAlpha = 255;
 
@@ -55,8 +53,6 @@ void CIntroState::Cleanup()
 	SDL_FreeSurface(mpBackgroundSurface);
 	SDL_FreeSurface(mpBorderTop);
 	SDL_FreeSurface(mpBorderBot);
-	SDL_FreeSurface(mpBorderLeft);
-	SDL_FreeSurface(mpBorderRight);
 	if (mpPanel != NULL) {
 		delete mpPanel;
 		mpPanel = NULL;

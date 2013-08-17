@@ -52,8 +52,8 @@ private:
 	bool mBomb; bool mDash; bool mDashReq;
     static const int SPEED_NORMAL = 400;
 	static const int SPEED_RECOVERY = 220;
-	static const int HITBOX_SIZE = 30;
-	static const int ANGEL_SIZE = 128;
+	static const int HITBOX_SIZE = 10;
+	static const int ANGEL_SIZE = 64;
 	static const int INVULN_DURATION = 3000;
 
 	bool mExplode;

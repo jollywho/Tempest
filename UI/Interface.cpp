@@ -5,6 +5,7 @@
 #include "NSprite.h"
 #include "Shop/Inventory.h"
 #include "Title.h"
+#include "HealthBar.h"
 
 Interface::Interface() 
 {
@@ -23,14 +24,10 @@ Interface::Interface()
 	mpHigh = new NSprite(WINDOW_WIDTH * 0.75 + max_score_width/2, GAME_UI_MODE_Y, 
 		&SpriteResource::RequestResource("UI", "high_title"), false);
 
-	mpUI = &SpriteResource::RequestTextureResource("UI", "ui_bottom");
-	mUI = Point(WINDOW_WIDTH/2 - mpUI->width/2, WINDOW_HEIGHT - mpUI->height);
-	mpHealth = new NSprite(WINDOW_WIDTH/2, WINDOW_HEIGHT-mpUI->height-6,
-		&SpriteResource::RequestResource("UI", "ui_bottom_health"), false);
-	mpLeft = new NSprite(mpHealth->GetBounds().rect.x - 15, WINDOW_HEIGHT-26,
-		&SpriteResource::RequestResource("UI", "end_left"), false);
-	mpRight = new NSprite(mpHealth->GetBounds().rect.x + mpUI->width + 17, WINDOW_HEIGHT-26,
-		&SpriteResource::RequestResource("UI", "end_right"), false);
+	mpManaLeft = new HealthBar("ui_left", "mana_left", Point(0, WINDOW_HEIGHT), true);
+	mpManaRight = new HealthBar("ui_right", "mana_right", Point(WINDOW_WIDTH, WINDOW_HEIGHT), true);
+	mpHealth = new HealthBar("ui_bottom", "health_left", Point(890, WINDOW_HEIGHT), true);
+	mpShield = new HealthBar("ui_bottom", "shield_right", Point(890, WINDOW_HEIGHT), false);
 
 	mScore.x = GAME_BANNER_WIDTH;
 	mScore.y = mpRedFont->pFont->getHeight("99") + 6;
@@ -63,34 +60,39 @@ void Interface::Update(const int& rDeltaTime)
 
 void Interface::Draw(SDL_Surface *pDest)
 {
+	mpHealth->Draw(pDest);
+	mpShield->Draw(pDest);
+	mpManaLeft->Draw(pDest);
+	mpManaRight->Draw(pDest);
 	mpRedFont->pFont->draw(mScore.x, mScore.y, mScoreStr);
 	mpRedFont->pFont->draw(mHiScore.x, mHiScore.y, mHiScoreStr);
 	mpRedFont->pFont->draw(mGem.x, mGem.y, mGemStr);
 	mpRedFont->pFont->draw(mCoin.x, mCoin.y, mCoinStr);
     DrawIcons(pDest);
-	Shared::DrawSurface(mUI.x, mUI.y, mpUI->pSurface, pDest);
 	mpInv->Draw(pDest);
 	mpTitle->Draw(pDest);
 }
 
 void Interface::UpdateIcons()
 {
+	mpHealth->Update();
+	mpShield->Update();
+	mpManaLeft->Update();
+	mpManaRight->Update();
 	mpMode->Update();
 	mpPlayer->Update();
 	mpHigh->Update();
-	mpLeft->Update();
-	mpRight->Update();
-	mpHealth->Update();
 }
 
 void Interface::DrawIcons(SDL_Surface *pDest)
 {
+	mpHealth->Draw(pDest);
+	mpShield->Draw(pDest);
+	mpManaLeft->Draw(pDest);
+	mpManaRight->Draw(pDest);
 	mpMode->Draw(pDest);
 	mpPlayer->Draw(pDest);
 	mpHigh->Draw(pDest);
-	mpLeft->Draw(pDest);
-	mpRight->Draw(pDest);
-	mpHealth->Draw(pDest);
 }
 
 void Interface::ActivateHub()

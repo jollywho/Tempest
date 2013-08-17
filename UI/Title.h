@@ -23,6 +23,7 @@ private:
 	bool mDone;
 	Point mPos;
 	Timer mTimer;
+	Timer mFinTimer;
 	NFont mpFont[5];
 	SDL_Surface* mspSurfaceFade[5];
 public:

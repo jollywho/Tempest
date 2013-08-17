@@ -34,23 +34,28 @@ Title::~Title()
 void Title::Update(const int& rDeltaTime)
 {
 	if (mDone) return;
-	if (mTimer.GetTicks() > 120)
+	if (mLength < mMaxLength) 
 	{
-		mLength++;
-		for (int i=0; i < mLength; i++)
+		if (mTimer.GetTicks() > 90)
 		{
-			if (mChars[i].fade < 3)
+			mLength++;
+			for (int i=0; i < mLength+1; i++)
 			{
-				mChars[i].fade++;
+				if (mChars[i].fade < 3)
+				{
+					mChars[i].fade++;
+				}
 			}
+			if (mChars[mLength].ch[0] == '\n')
+				mTimer.SetTicks(120);
+			else
+				mTimer.Start();
 		}
-		if (mChars[mLength].ch[0] == '\n')
-			mTimer.SetTicks(120);
-		else
-			mTimer.Start();
 	}
-	if (mLength > mMaxLength)
-		mDone = true;
+	else {
+		if (!mFinTimer.IsStarted()) mFinTimer.Start();
+		if (mFinTimer.GetTicks() > 800) mDone = true;
+	}
 }
 
 void Title::Draw(SDL_Surface *pDest)

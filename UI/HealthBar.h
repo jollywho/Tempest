@@ -5,24 +5,42 @@
 #include "Engine/Shared.h"
 
 struct SpriteInfo;
+struct TextureInfo;
+class NSprite;
 
-//this is a member of Boss and sends signals to the game Interface
-//		when it activates/ deactivates.
-//todo: NSprite explosion once on 0 hp event
-//todo: NSprite effect on hp loss (burning right edge or sparkle)
+//UI Object for displaying a % value with some fancy animation.
 class HealthBar
 {
 private:
-	static const int MAX_BAR_WIDTH = 475;
-	SpriteInfo* mpHpBar;
-	bool mHpBarActive;
-	Point mHpBar;
-    Timer mHpBarTimer;
+	int MAX_BAR_WIDTH;
+	int MAX_VALUE;
+	SpriteInfo* mpInfo;
+	TextureInfo* mpBorder;
+	NSprite* mpMarker;
+	NSprite* mpExplosion;
+	
+	bool mBorder;
+
+	int mVal;
+	int mClip;
+	int mRecRate;
+	int mDir;
+	int mDrainDir;
+	SDL_Rect mBarLevel;
+	Point mPos;
+    Timer mClipTimer;
+	Timer mRecTimer;
 	double mHpBarTarget;
 public:
-    HealthBar();
+	//id_t: Texture border
+	//id_s: Sprite bar
+	//p:  Location
+	//u_border: Enable drawing border
+    explicit HealthBar(std::string id_t, std::string id_s, Point& p, bool draw_border);
     ~HealthBar();
-    void Update(const int& rDeltaTime);
+    void Update();
     void Draw(SDL_Surface *pDest);
+	void SetValue(int& val) { mVal = val; }
+	void SetRecRate(int& val) { mRecRate = val; }
 };
 #endif

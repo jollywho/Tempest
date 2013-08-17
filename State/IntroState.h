@@ -46,8 +46,6 @@ private:
 
 	SDL_Surface* mpBorderTop;
 	SDL_Surface* mpBorderBot;
-	SDL_Surface* mpBorderLeft;
-	SDL_Surface* mpBorderRight;
 
 	Decor* mpDecorList[50];
 
