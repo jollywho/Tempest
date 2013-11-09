@@ -1,3 +1,24 @@
+/* Tempest - C++ Danmakufu Game for SDL
+*
+*  Copyright (C) 2013 Kevin Vollmer.
+*  
+*  This program is free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*  
+*  This program is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*  
+*  You should have received a copy of the GNU General Public License along
+*  with this program; if not, write to the Free Software Foundation, Inc.,
+*  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*  
+ÅÅ*  Kevin Vollmer <works.kvollmer@gmail.com>
+*
+*/
 #include "scorepanel.h"
 #include <sstream>
 #include "Engine/NFont.h"
@@ -42,9 +63,9 @@ ScorePanel::~ScorePanel()
 	delete mpMode;
 }
 
-void ScorePanel::KeyInput(const KeyStruct& rKeys)
+void ScorePanel::KeyInput(const SDL_Event& rEvent)
 {
-	if (rKeys.left)
+	if (rEvent.key.keysym.sym == SDLK_LEFT)
 	{
 		exit = true; 
 		selChange = -1;
@@ -52,7 +73,7 @@ void ScorePanel::KeyInput(const KeyStruct& rKeys)
 		if (modeSelection - 1 < 1) selChange = +2;
 		if (modeSelection - 1 > 3) selChange = -2;	
 	}
-	if (rKeys.right)
+	if (rEvent.key.keysym.sym == SDLK_RIGHT)
 	{
 		exit = true;
 		selChange = 1;
@@ -60,7 +81,7 @@ void ScorePanel::KeyInput(const KeyStruct& rKeys)
 		if (modeSelection + 1 < 1) selChange = +2;
 		if (modeSelection + 1 > 3) selChange = -2;
 	}
-	if (rKeys.x)
+	if (rEvent.key.keysym.sym == SDLK_x)
 		mBack = true;
 }
 
@@ -107,11 +128,11 @@ void ScorePanel::Update(const int& rDeltaTime)
 	}
 }
 
-void ScorePanel::Draw(SDL_Surface* pDest) 
+void ScorePanel::Draw(SDL_Surface* pdest) 
 {
 	for (int i=0; i<4; i++)
 	{
-		Shared::DrawSurface(bannerList[i].x, bannerList[i].y, banner, pDest);
+		Shared::DrawSurface(bannerList[i].x, bannerList[i].y, banner, pdest);
 		ScoreIO::ScoreData temp = ScoreIO::SaveScore::GetScores(GameScore::GetModeEquivalent(modeSelection), i+1);
 		DrawMsg(bannerList[i].scoreX(), bannerList[i].scoreY(), temp.value);
 		DrawMsg(bannerList[i].rankX(), bannerList[i].rankY(), temp.rank);
@@ -120,12 +141,12 @@ void ScorePanel::Draw(SDL_Surface* pDest)
 	}
 }
 
-void ScorePanel::DrawTop(SDL_Surface* pDest)
+void ScorePanel::DrawTop(SDL_Surface* pdest)
 {
-	Shared::DrawSurface(0,1, mpTitle, pDest);
+	Shared::DrawSurface(0,1, mpTitle, pdest);
 
 	if (!enter && !exit)
-		mpMode->Draw(pDest);
+		mpMode->Draw(pdest);
 }
 
 void ScorePanel::DrawMsg(int centerX, int centerY, int value)

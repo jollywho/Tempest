@@ -1,3 +1,24 @@
+/* Tempest - C++ Danmakufu Game for SDL
+*
+*  Copyright (C) 2013 Kevin Vollmer.
+*  
+*  This program is free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*  
+*  This program is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*  
+*  You should have received a copy of the GNU General Public License along
+*  with this program; if not, write to the Free Software Foundation, Inc.,
+*  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*  
+ÅÅ*  Kevin Vollmer <works.kvollmer@gmail.com>
+*
+*/
 #pragma once
 #ifndef ENGINE_H
 #define ENGINE_H
@@ -11,43 +32,29 @@ namespace States
 {
 	enum State
 	{
-		Intro,
-		Play,
-		Poll,
-		Name,
-		Pause,
-		Continue,
-		Gameover,
-		Shop,
+		INTRO,
+		PLAY,
+		POLL,
+		NAME,
+		PAUSE,
+		CONTINUE,
+		GAMEOVER,
+		SHOP,
 	};
 }
 typedef States::State State;
 
-/** The base engine class. **/
 class CEngine 
 {
 private:
- 
-	/** Window width **/
 	int mWidth;
-	/** Window height **/
 	int mHeight;
- 
-	/** Has quit been called? **/
 	bool mQuit;
- 
-	/** The title of the window **/
 	const char* mpTitle;
- 
-	/** Screen surface **/
 	SDL_Surface* mpScreen;
- 
-	/** Is the window minimized? **/
 	bool mMinimized;
-
 	Uint32 mPrevTime;
 	Timer mDelta;
-
 protected:
 	void DoInput();
 	void DoThink();
@@ -57,11 +64,10 @@ protected:
 	void DoStateChange(States::State id);
 	void DoStatePush(States::State id);
 	void DoStatePop();
-	
 	void SetSize(const int& rWidth, const int& rHeight);
 
 	std::vector<CGameState*> mpStates;
-	KeyStruct mKeys;
+	SDL_Event mEvent;
 public:
 	CEngine();
 	virtual ~CEngine();
@@ -69,48 +75,18 @@ public:
 	void Init();
 	void Start();
  
-	/** OVERLOADED - Data that should be initialized when the application starts. **/
-	virtual void AdditionalInit	() {}
+	virtual void AdditionalInit() {}
+	virtual void Think(const int& rDeltaTime) {}
+	virtual void Render(SDL_Surface* pdest) {}
+	virtual void End() {}
+	virtual void WindowActive() {}
+	virtual void WindowInactive() {}
+	void SetTitle(const char* pTitle);
+	const char* GetTitle();
  
-	/** OVERLOADED - All the games calculation and updating. 
-		@param deltaTime The time in milliseconds elapsed since the function was called last.
-	**/
-	virtual void Think		( const int& rDeltaTime ) {}
-	/** OVERLOADED - All the games rendering. 
-		@param pDestSurface The main screen surface.
-	**/
-	virtual void Render		( SDL_Surface* pDest ) {}
- 
-	/** OVERLOADED - Allocated data that should be cleaned up. **/
-	virtual void End		() {}
- 
-	/** OVERLOADED - Window is active again. **/
-	virtual void WindowActive	() {}
- 
-	/** OVERLOADED - Window is inactive. **/
-	virtual void WindowInactive	() {}
- 
- 
-	/** OVERLOADED - Keyboard key has been released.
-		@param iKeyEnum The key number.
-	**/
-	virtual void KeyUp		(const int& rKeyEnum) {}
- 
-	/** OVERLOADED - Keyboard key has been pressed.
-		@param iKeyEnum The key number.
-	**/
-	virtual void KeyDown		(const int& rKeyEnum) {}
-
-	virtual void MouseDown		(const int& rKeyEnum) {}
-	virtual void MouseUp		(const int& rKeyEnum) {}
-	virtual void MouseMove		(const int& rMotionX, const int& rMotionY) {}
- 
-	void		SetTitle	(const char* pTitle);
-	const char* 	GetTitle	();
- 
-	SDL_Surface* 	GetSurface	();
-	CGameState*		StateInstance(State id);
-	int 		GetFPS		();
+	SDL_Surface* GetSurface();
+	CGameState*	StateInstance(State id);
+	int GetFPS();
 };
  
 #endif // ENGINE_H

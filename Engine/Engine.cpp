@@ -1,3 +1,24 @@
+/* Tempest - C++ Danmakufu Game for SDL
+*
+*  Copyright (C) 2013 Kevin Vollmer.
+*  
+*  This program is free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*  
+*  This program is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*  
+*  You should have received a copy of the GNU General Public License along
+*  with this program; if not, write to the Free Software Foundation, Inc.,
+*  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*  
+ÅÅ*  Kevin Vollmer <works.kvollmer@gmail.com>
+*
+*/
 #include "Engine.h"
 #include "SDL_ttf.h"
 #include "Engine/SFX.h"
@@ -71,32 +92,29 @@ void CEngine::Init()
 	}
 
 	SFX::Init();
-	//SDL_ShowCursor(0);
 	AdditionalInit();
 }
 
 CGameState* CEngine::StateInstance(State id)
 {
-	printf("--STATE CHANGE--\n");
-	mKeys = KeyStruct();
 	switch(id)
 	{
-		case State::Intro:
+		case State::INTRO:
 			return CIntroState::Instance();
 			break;
-		case State::Play:
+		case State::PLAY:
 			return CPlayState::Instance();
 			break;
-		case State::Poll:
+		case State::POLL:
 			return CPollState::Instance();
 			break;
-		case State::Pause:
+		case State::PAUSE:
 			return CPauseState::Instance();
 			break;
-		case State::Shop:
+		case State::SHOP:
 			return CShopState::Instance();
 			break;
-		case State::Continue:
+		case State::CONTINUE:
 			return CContinueState::Instance();
 			break;
 		default:
@@ -204,30 +222,9 @@ void CEngine::DoInput()
 	// Poll for events, and handle the ones we care about.
 	SDL_Event event;
 	while ( SDL_PollEvent( &event ) ) 
-	{
+	{	
 		switch ( event.type ) 
 		{
-		case SDL_KEYDOWN:
- 
-			KeyDown( event.key.keysym.sym );
-			break;
- 
-		case SDL_KEYUP:
-			KeyUp( event.key.keysym.sym );
-			break;
-
-		case SDL_MOUSEBUTTONDOWN:
-			MouseDown( event.button.button);
-			break;
-
-		case SDL_MOUSEBUTTONUP:
-			MouseUp( event.button.button);
-			break;
-
-		case SDL_MOUSEMOTION:
-			MouseMove(event.motion.x, event.motion.y);
-			break;
- 
 		case SDL_QUIT:
 			mQuit = true;
 			break;
@@ -244,6 +241,7 @@ void CEngine::DoInput()
 			}
 			break;
 		} // switch
+	mpStates.back()->KeyInput(event);
 	} // while (handling input)
 }
  

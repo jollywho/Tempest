@@ -1,3 +1,24 @@
+/* Tempest - C++ Danmakufu Game for SDL
+*
+*  Copyright (C) 2013 Kevin Vollmer.
+*  
+*  This program is free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*  
+*  This program is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*  
+*  You should have received a copy of the GNU General Public License along
+*  with this program; if not, write to the Free Software Foundation, Inc.,
+*  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*  
+ÅÅ*  Kevin Vollmer <works.kvollmer@gmail.com>
+*
+*/
 #include "ItemSelector.h"
 #include <locale>
 #include "Engine/SpriteResource.h"
@@ -23,7 +44,7 @@ ItemSelector::~ItemSelector()
 	delete mpFont;
 }
 
-void ItemSelector::Update(Uint32 deltaTicks)
+void ItemSelector::Update(Uint32 delta_ticks)
 {
 
 }
@@ -45,11 +66,11 @@ void ItemSelector::MoveSelector(Node& n, ItemDetail& d)
 		}
 }
 
-void ItemSelector::Draw(SDL_Surface *pDest)
+void ItemSelector::Draw(SDL_Surface *pdest)
 {
 	if (mSelection)
 	{
-		Shared::DrawSurface(mPos.x, mPos.y, mpTexture->pSurface, pDest,
+		Shared::DrawSurface(mPos.x, mPos.y, mpTexture->pSurface, pdest,
 			&mPropBox);
 		mpText->draw(mPos.x, mPos.y, mTitle.c_str());
 		mpText->draw(mPos.x + 50, mPos.y + 20, mPrice.c_str());

@@ -1,3 +1,24 @@
+/* Tempest - C++ Danmakufu Game for SDL
+*
+*  Copyright (C) 2013 Kevin Vollmer.
+*  
+*  This program is free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*  
+*  This program is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*  
+*  You should have received a copy of the GNU General Public License along
+*  with this program; if not, write to the Free Software Foundation, Inc.,
+*  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*  
+ÅÅ*  Kevin Vollmer <works.kvollmer@gmail.com>
+*
+*/
 #include "Player.h"
 #include "Engine/SpriteResource.h"
 #include "UI/NSprite.h"
@@ -23,7 +44,6 @@ Player::Player()
 
 	mSpeed = SPEED_NORMAL;
     mov = 0; mKForce = 0;
-	left = 0; right = 0; up = 0; down = 0;
 	mShift = false; mAttack = false; mBomb = false;
 	mExplode = false; mInvuln = false; mDash = false;
 	mDashReq = false; mSlash = false;
@@ -58,32 +78,45 @@ Player::~Player()
 	printf("Player Deleted\n");
 }
 
-void Player::KeyInput(const KeyStruct& rKeys)
+void Player::KeyInput(const SDL_Event& rEvent)
 {
 	if (mExplode || mLocked) return;
-	if (rKeys.up) up = -1;
-	else up = 0;
-	if (rKeys.down) down = 1;
-	else down = 0;
-	if (rKeys.left) left = -1;
-	else left = 0;
-	if (rKeys.right) right = 1;
-	else right = 0;
-	if (rKeys.shift) mShift = true;
-	else mShift = false;
-	if (rKeys.z) mAttack = true;
-	else mAttack = false;
-	if (rKeys.x) mBomb = true;
-	else mBomb = false;
-	if (rKeys.space)  mDashReq = true;
-	else mDashReq = false;
-	if (rKeys.c) mSlash = true;
-	else mSlash = false;
+
+	if (rEvent.type == SDL_KEYDOWN)
+	{
+		switch(rEvent.key.keysym.sym)
+		{
+			case SDLK_UP: mDir.up = -1; break;
+			case SDLK_DOWN: mDir.down = 1; break;
+			case SDLK_LEFT: mDir.left = -1; break;
+			case SDLK_RIGHT: mDir.right = 1; break;
+			case SDLK_LSHIFT: mShift = true; break;
+			case SDLK_z: mAttack = true; break;
+			case SDLK_x: mBomb = true; break;
+			case SDLK_SPACE: mDash = true; break;
+			case SDLK_c: mSlash = true; break;
+		}
+	}
+	else if (rEvent.type == SDL_KEYUP)
+	{
+		switch(rEvent.key.keysym.sym)
+		{
+			case SDLK_UP: mDir.up = 0; break;
+			case SDLK_DOWN: mDir.down = 0; break;
+			case SDLK_LEFT: mDir.left = 0; break;
+			case SDLK_RIGHT: mDir.right = 0; break;
+			case SDLK_LSHIFT: mShift = false; break;
+			case SDLK_z: mAttack = false; break;
+			case SDLK_x: mBomb = false; break;
+			case SDLK_SPACE: mDash = false; break;
+			case SDLK_c: mSlash = false; break;
+		}
+	}
 }
 
 void Player::HandleMovement(const int& rDeltaTime)
 {
-    float vx = left + right; float vy = up + down;
+    float vx = mDir.left + mDir.right; float vy = mDir.up + mDir.down;
     float length = sqrtf((vx * vx) + (vy * vy));
 
     if (vy == 0 && vx == 0 && mSpeed > 200) 
@@ -173,11 +206,11 @@ void Player::UpdateExploding(const int& rDeltaTime)
 void Player::UpdateLocked(const int& rDeltaTime)
 {
 	mSpeed = SPEED_RECOVERY;
-	up = -1;
+	mDir.up = -1;
 	if (mY < GAME_UI_BOTTOM)
 	{
 		mLocked = false;
-		up = 0;
+		mDir.up = 0;
 	}
 }
 
@@ -212,26 +245,26 @@ void Player::Update(const int& rDeltaTime)
 	HandleAttacks(rDeltaTime);
 }
 
-void Player::Draw(SDL_Surface *pDest)
+void Player::Draw(SDL_Surface *pdest)
 {
 	if (mExplode)
 	{
-		mpExplosion->Draw(pDest);
+		mpExplosion->Draw(pdest);
 		return;
 	}
 
 	if (mShift)
-		mpZone->Draw(pDest);
-	mspWpn->Draw(pDest);
-	mspBomb->Draw(pDest);
-	mpBooster->Draw(pDest);
-	mpAngel->Draw(pDest);
-	mpHitbox->Draw(pDest);
+		mpZone->Draw(pdest);
+	mspWpn->Draw(pdest);
+	mspBomb->Draw(pdest);
+	mpBooster->Draw(pdest);
+	mpAngel->Draw(pdest);
+	mpHitbox->Draw(pdest);
 
 	if (mDash)
-		mpDash->Draw(pDest);
+		mpDash->Draw(pdest);
 	if (mInvuln)
-		mpWings->Draw(pDest);
+		mpWings->Draw(pdest);
 }
 
 HitBox& Player::GetBounds()
@@ -255,7 +288,8 @@ void Player::TakeHit()
 	{
 		if (!mspWpn->TakeHit())
 		{
-			KeyInput(KeyStruct());
+			SDL_Event temp;	//empty event
+			KeyInput(temp);	//flush actions
 			mExplode = true;
 			mpExplosion->Reset();
 			mpExplosion->SetPos(Point(mX + ANGEL_SIZE/2, mY + ANGEL_SIZE/2));

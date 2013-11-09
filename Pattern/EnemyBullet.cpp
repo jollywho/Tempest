@@ -1,3 +1,24 @@
+/* Tempest - C++ Danmakufu Game for SDL
+*
+*  Copyright (C) 2013 Kevin Vollmer.
+*  
+*  This program is free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*  
+*  This program is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*  
+*  You should have received a copy of the GNU General Public License along
+*  with this program; if not, write to the Free Software Foundation, Inc.,
+*  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*  
+ÅÅ*  Kevin Vollmer <works.kvollmer@gmail.com>
+*
+*/
 #include "EnemyBullet.h"
 #include <vector>
 #include "Engine/SpriteResource.h"
@@ -110,16 +131,16 @@ void EnemyBullet::Update( const int& rDeltaTime )
     CheckBounds();
 }
 
-void EnemyBullet::Draw(SDL_Surface* pDest)
+void EnemyBullet::Draw(SDL_Surface* pdest)
 { 
     if (!mExplode)
     {
         Camera::Instance()->DrawSurface(mX - mpRotInfo->width/2, mY - mpRotInfo->height/2,
-			mpRotInfo->pSurface[mClip][mAngle], pDest, NULL);
+			mpRotInfo->pSurface[mClip][mAngle], pdest, NULL);
     }
     else
     {
         Camera::Instance()->DrawSurface(mX + (mpRotInfo->width/4 - mspExpInfo->width/4), mY + (mpRotInfo->height/4 - mspExpInfo->height/4), 
-			mspExpInfo->pSurface, pDest, &mspExpInfo->pClips[mClip]);
+			mspExpInfo->pSurface, pdest, &mspExpInfo->pClips[mClip]);
     }
 }

@@ -1,3 +1,24 @@
+/* Tempest - C++ Danmakufu Game for SDL
+*
+*  Copyright (C) 2013 Kevin Vollmer.
+*  
+*  This program is free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*  
+*  This program is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*  
+*  You should have received a copy of the GNU General Public License along
+*  with this program; if not, write to the Free Software Foundation, Inc.,
+*  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*  
+ÅÅ*  Kevin Vollmer <works.kvollmer@gmail.com>
+*
+*/
 #pragma once
 #ifndef ENEMY_H
 #define ENEMY_H
@@ -49,11 +70,11 @@ public:
     static void Init();
     static void Cleanup();
 
-	virtual void Update(Uint32 deltaTicks) = 0;
-    virtual void Draw(SDL_Surface *pDest) = 0;
+	virtual void Update(Uint32 delta_ticks) = 0;
+    virtual void Draw(SDL_Surface *pdest) = 0;
 	virtual void TakeHit(int dmg) = 0;
 
-	void Decide(Uint32 deltaTicks);
+	void Decide(Uint32 delta_ticks);
 	void FlashRed(SDL_Surface* pSurface, SDL_Rect* pTargetClips);
     void FlashClear();
 	bool CheckBounds();

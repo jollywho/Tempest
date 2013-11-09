@@ -1,3 +1,24 @@
+/* Tempest - C++ Danmakufu Game for SDL
+*
+*  Copyright (C) 2013 Kevin Vollmer.
+*  
+*  This program is free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*  
+*  This program is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*  
+*  You should have received a copy of the GNU General Public License along
+*  with this program; if not, write to the Free Software Foundation, Inc.,
+*  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*  
+ÅÅ*  Kevin Vollmer <works.kvollmer@gmail.com>
+*
+*/
 #include "Enemy.h"
 #include "Game/Camera.h"
 #include "Engine/SpriteResource.h"
@@ -56,7 +77,7 @@ void Enemy::Cleanup()
     SDL_FreeSurface(mspHitSurface);
 }
 
-void Enemy::Decide(Uint32 deltaTicks)
+void Enemy::Decide(Uint32 delta_ticks)
 {
 	if (mActions.size() < 1) return;
 
@@ -70,7 +91,7 @@ void Enemy::Decide(Uint32 deltaTicks)
         for (int i=0; i < max; i++)
         {
             mDo = std::next(mActions.begin(), + i);
-            (*mDo)->Update(*this, deltaTicks);
+            (*mDo)->Update(*this, delta_ticks);
             counter += (*mDo)->RequestNext();
             if (counter > max)
             {
@@ -79,7 +100,7 @@ void Enemy::Decide(Uint32 deltaTicks)
         }
     }
     else
-        (*mDo)->Update(*this, deltaTicks);
+        (*mDo)->Update(*this, delta_ticks);
 }
 
 void Enemy::FlashRed(SDL_Surface* en_surface, SDL_Rect* targetClip)
@@ -163,7 +184,6 @@ void Enemy::DetectCollision()
 	}
 
 	SDL_Rect pl_mpHitbox = CPlayState::Instance()->mpPlayer->GetBounds().rect;
-
 	
 	if (mHitbox.x + mHitbox.w > pl_mpHitbox.x  && 
         mHitbox.x < pl_mpHitbox.x + pl_mpHitbox.w  && 

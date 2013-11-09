@@ -1,3 +1,24 @@
+/* Tempest - C++ Danmakufu Game for SDL
+*
+*  Copyright (C) 2013 Kevin Vollmer.
+*  
+*  This program is free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*  
+*  This program is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*  
+*  You should have received a copy of the GNU General Public License along
+*  with this program; if not, write to the Free Software Foundation, Inc.,
+*  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*  
+ÅÅ*  Kevin Vollmer <works.kvollmer@gmail.com>
+*
+*/
 #include "PollState.h"
 #include "Engine/Shared.h"
 #include "Engine/FontResource.h"
@@ -71,10 +92,10 @@ void CPollState::Resume()
 	printf("CPollState Resume\n");
 }
 
-void CPollState::KeyInput(const KeyStruct& rKeys)
+void CPollState::KeyInput(const SDL_Event& rEvent)
 {
 	if (mExit) return;
-	if (rKeys.z)
+	if (rEvent.key.keysym.sym == SDLK_z)
 	{
 		if (!mSkip)
 			mSkip = true;
@@ -145,13 +166,13 @@ void CPollState::Reset(Tally& rItem)
 	rItem.totalStr.str("0");
 }
 
-bool CPollState::TickCounter(Tally& rItem, int counterType, int countLeft)
+bool CPollState::TickCounter(Tally& rItem, int counterType, int countleft)
 {
-	int decrement = countLeft > 5 ? 5: 1;
+	int decrement = countleft > 5 ? 5: 1;
 	rItem.visible = true;
 	if (mSkip)
-		decrement = countLeft;
-	if (countLeft >= 1)
+		decrement = countleft;
+	if (countleft >= 1)
 	{
 		GameScore::Instance()->IncreaseScore(rItem.value * decrement);
 		GameScore::Instance()->DecreaseCounter(decrement, counterType);
@@ -167,36 +188,36 @@ bool CPollState::TickCounter(Tally& rItem, int counterType, int countLeft)
 		return true;
 }
 
-void CPollState::Draw(SDL_Surface* pDest) 
+void CPollState::Draw(SDL_Surface* pdest) 
 {
-	Shared::DrawSurface(0, 0, mpBackground, pDest);
+	Shared::DrawSurface(0, 0, mpBackground, pdest);
 
-	Shared::DrawSurface(banner_left_pos.x, banner_left_pos.y, banner_side, pDest);
-	Shared::DrawSurface(banner_right_pos.x, banner_right_pos.y, banner_side, pDest);
-	Shared::DrawSurface(banner_middle_pos.x, banner_middle_pos.y, banner_middle, pDest);
+	Shared::DrawSurface(banner_left_pos.x, banner_left_pos.y, banner_side, pdest);
+	Shared::DrawSurface(banner_right_pos.x, banner_right_pos.y, banner_side, pdest);
+	Shared::DrawSurface(banner_middle_pos.x, banner_middle_pos.y, banner_middle, pdest);
 
 	if (mGem.visible)
 	{
 		mpFont->pFont->draw(banner_left_pos.x + 20, 180, mGem.countStr.str().c_str());
 		mpFont->pFont->draw(banner_right_pos.x + 20, 180, mGem.totalStr.str().c_str());
-		mpGem->Draw(pDest);
+		mpGem->Draw(pdest);
 	}
 	if (mCoin.visible) 
 	{
 		mpFont->pFont->draw(banner_left_pos.x + 20, 300, mCoin.countStr.str().c_str());
 		mpFont->pFont->draw(banner_right_pos.x + 20, 300, mCoin.totalStr.str().c_str());
-		mpCoin->Draw(pDest);
+		mpCoin->Draw(pdest);
 	}
 	if (mQuartz.visible)
 	{
 		mpFont->pFont->draw(banner_left_pos.x + 20, 400, mQuartz.countStr.str().c_str());
 		mpFont->pFont->draw(banner_right_pos.x + 20, 400, mQuartz.totalStr.str().c_str());
-		mpQuartz->Draw(pDest);
+		mpQuartz->Draw(pdest);
 	}
 	if (mReady && !mExit)
-		mpReady->Draw(pDest);
+		mpReady->Draw(pdest);
 	
-	SPG_RectFilledBlend(pDest, GAME_BANNER_WIDTH, 0, GAME_BOUNDS_WIDTH, WINDOW_HEIGHT, 16777215, mAlpha);
+	SPG_RectFilledBlend(pdest, GAME_BANNER_WIDTH, 0, GAME_BOUNDS_WIDTH, WINDOW_HEIGHT, 16777215, mAlpha);
 
-	CPlayState::Instance()->mpInterface->Draw(pDest);
+	CPlayState::Instance()->mpInterface->Draw(pdest);
 }

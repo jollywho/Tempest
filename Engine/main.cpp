@@ -1,3 +1,24 @@
+/* Tempest - C++ Danmakufu Game for SDL
+*
+*  Copyright (C) 2013 Kevin Vollmer.
+*  
+*  This program is free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*  
+*  This program is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*  
+*  You should have received a copy of the GNU General Public License along
+*  with this program; if not, write to the Free Software Foundation, Inc.,
+*  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*  
+ÅÅ*  Kevin Vollmer <works.kvollmer@gmail.com>
+*
+*/
 #include "Engine.h"
 #include <stdlib.h>
 #include "State/Gamestate.h"
@@ -10,18 +31,17 @@ class CMyEngine: public CEngine
 {
 public:
 	void AdditionalInit ();
-	void Think	    ( const int& rDeltaTime );
-	void Render	    ( SDL_Surface* pDest );
+	void Think( const int& rDeltaTime);
+	void Render(SDL_Surface* pdest);
  
-	void KeyUp  	    (const int& iKeyEnum);
-	void KeyDown	    (const int& iKeyEnum);
-	void MouseDown		(const int& rKeyEnum);
-	void MouseUp		(const int& rKeyEnum);
-	void MouseMove		(const int& rMotionX, const int& rMotionY);
+	void KeyUp(const int& iKeyEnum);
+	void KeyDown(const int& iKeyEnum);
+	void MouseDown(const int& rKeyEnum);
+	void MouseUp(const int& rKeyEnum);
+	void MouseMove(const int& rMotionX, const int& rMotionY);
  
 	void WindowInactive();
 	void WindowActive();
- 
 	void End();
 };
  
@@ -43,12 +63,11 @@ int main(int argc, char* argv[])  // <- this must match exactly, since SDL rewri
  
 void CMyEngine::AdditionalInit()
 {
-	// Load up additional data2
 	ResourceLoader::ReadFile("UI");
 	ResourceLoader::ReadFile("Font");
 
 	ScoreIO::SaveScore::LoadScores();
-	DoStateChange(State::Intro);
+	DoStateChange(State::INTRO);
 }
  
 void CMyEngine::Think( const int& rDeltaTime )
@@ -56,138 +75,9 @@ void CMyEngine::Think( const int& rDeltaTime )
 	mpStates.back()->Update(rDeltaTime);
 }
  
-void CMyEngine::Render( SDL_Surface* pDest )
+void CMyEngine::Render( SDL_Surface* pdest )
 {
-	mpStates.back()->Draw(pDest);
-}
- 
-void CMyEngine::KeyDown(const int& rKeyEnum)
-{        
-    switch (rKeyEnum)
-    {
-	case SDLK_ESCAPE:
-		mKeys.esc = true;
-		break;
-    case SDLK_LEFT:
-		mKeys.left = true;
-		break;
-    case SDLK_RIGHT:
-		mKeys.right = true;
-		break;
-    case SDLK_UP:
-		mKeys.up = true;
-		break;
-    case SDLK_DOWN:
-		mKeys.down = true;
-		break;
-	case SDLK_RETURN:
-		mKeys.enter = true;
-		break;
-	case SDLK_LSHIFT:
-		mKeys.shift = true;
-		break;
-	case SDLK_z:
-		mKeys.z = true;
-		break;
-	case SDLK_x:
-		mKeys.x = true;
-		break;
-	case SDLK_c:
-		mKeys.c = true;
-		break;
-	case SDLK_LCTRL:
-		mKeys.ctrl = true;
-		break;
-	case SDLK_SPACE:
-		mKeys.space = true;
-		break;
-	case SDLK_BACKQUOTE:
-		mKeys.tilde = true;
-		break;
-    }
-	mpStates.back()->KeyInput(mKeys);
-}
-
-void CMyEngine::KeyUp(const int& rKeyEnum)
-{
-	switch (rKeyEnum)
-	{
-	case SDLK_ESCAPE:
-		mKeys.esc = false;
-		break;
-    case SDLK_LEFT:
-		mKeys.left = false;
-		break;
-    case SDLK_RIGHT:
-		mKeys.right = false;
-		break;
-    case SDLK_UP:
-		mKeys.up = false;
-		break;
-    case SDLK_DOWN:
-		mKeys.down = false;
-		break;
-	case SDLK_RETURN:
-		mKeys.enter = false;
-		break;
-	case SDLK_LSHIFT:
-		mKeys.shift = false;
-		break;
-	case SDLK_z:
-		mKeys.z = false;
-		break;
-	case SDLK_x:
-		mKeys.x = false;
-		break;
-	case SDLK_c:
-		mKeys.c = false;
-		break;
-	case SDLK_LCTRL:
-		mKeys.ctrl = false;
-		break;
-	case SDLK_SPACE:
-		mKeys.space = false;
-		break;
-	case SDLK_BACKQUOTE:
-		mKeys.tilde = false;
-		break;
-	}
-	mpStates.back()->KeyInput(mKeys);
-}
-
-void CMyEngine::MouseDown(const int& rKeyEnum) 
-{
-	switch (rKeyEnum)
-	{
-	case SDL_BUTTON_LEFT:
-		mKeys.mouse_left = true;
-		break;
-	case SDL_BUTTON_RIGHT:
-		mKeys.mouse_right = true;
-		break;
-	}
-	mpStates.back()->KeyInput(mKeys);
-}
-
-void CMyEngine::MouseUp(const int& rKeyEnum)
-{
-	switch (rKeyEnum)
-	{
-	case SDL_BUTTON_LEFT:
-		mKeys.mouse_left = false;
-		break;
-	case SDL_BUTTON_RIGHT:
-		mKeys.mouse_right = false;
-		break;
-	}
-	mpStates.back()->KeyInput(mKeys);
-}
-
-void CMyEngine::MouseMove(const int& rMotionX, const int& rMotionY)
-{
-	mKeys.mouse_x = rMotionX;
-	mKeys.mouse_y = rMotionY;
-	mpStates.back()->KeyInput(mKeys);
+	mpStates.back()->Draw(pdest);
 }
  
 void CMyEngine::WindowInactive()
@@ -199,7 +89,6 @@ void CMyEngine::WindowActive()
 {
 	// Un-pause game
 }
- 
  
 void CMyEngine::End()
 {

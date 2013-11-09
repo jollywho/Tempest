@@ -1,3 +1,24 @@
+/* Tempest - C++ Danmakufu Game for SDL
+*
+*  Copyright (C) 2013 Kevin Vollmer.
+*  
+*  This program is free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*  
+*  This program is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*  
+*  You should have received a copy of the GNU General Public License along
+*  with this program; if not, write to the Free Software Foundation, Inc.,
+*  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*  
+ÅÅ*  Kevin Vollmer <works.kvollmer@gmail.com>
+*
+*/
 #include "continuestate.h"
 #include "UI/NSprite.h"
 #include "Engine/FontResource.h"
@@ -49,16 +70,16 @@ void CContinueState::Cleanup()
 	delete mpCounter;
 }
 
-void CContinueState::KeyInput(const KeyStruct& rKeys)
+void CContinueState::KeyInput(const SDL_Event& rEvent)
 {
-	if (rKeys.z)
+	if (rEvent.key.keysym.sym == SDLK_z)
 	{
 		mpMenu->Select();
 		if (mpMenu->GetIndex() == 1) { PopState(); }
-		if (mpMenu->GetIndex() == 2) { ChangeState(State::Intro); } //todo: gameoverstate
+		if (mpMenu->GetIndex() == 2) { ChangeState(State::INTRO); } //todo: gameoverstate
 	}
-	if (rKeys.down) mpMenu->MoveIndex(1);
-	else if (rKeys.up) mpMenu->MoveIndex(-1);
+	if (rEvent.key.keysym.sym == SDLK_DOWN) mpMenu->MoveIndex(1);
+	else if (rEvent.key.keysym.sym == SDLK_UP) mpMenu->MoveIndex(-1);
 }
 
 void CContinueState::Update(const int& rDeltaTime)
@@ -75,13 +96,13 @@ void CContinueState::Update(const int& rDeltaTime)
 	}
 }
 
-void CContinueState::Draw(SDL_Surface* pDest)
+void CContinueState::Draw(SDL_Surface* pdest)
 {
-	Shared::DrawSurface(GAME_BANNER_WIDTH, 0, mpScreen, pDest, &mScreenBounds);
-	SPG_RectFilledBlend(pDest, GAME_BANNER_WIDTH, 0, GAME_BOUNDS_WIDTH, GAME_BOUNDS_HEIGHT, 0, mAlpha);
-	mpMenu->Draw(pDest);
-	Shared::DrawSurface(WINDOW_WIDTH/2 - 225, 150, mpContTitle, pDest);
-	Shared::DrawSurface(WINDOW_WIDTH/2 - 98, 200, mpContCount, pDest);
-	mpTitle->Draw(pDest);
-	mpCounter->Draw(pDest);
+	Shared::DrawSurface(GAME_BANNER_WIDTH, 0, mpScreen, pdest, &mScreenBounds);
+	SPG_RectFilledBlend(pdest, GAME_BANNER_WIDTH, 0, GAME_BOUNDS_WIDTH, GAME_BOUNDS_HEIGHT, 0, mAlpha);
+	mpMenu->Draw(pdest);
+	Shared::DrawSurface(WINDOW_WIDTH/2 - 225, 150, mpContTitle, pdest);
+	Shared::DrawSurface(WINDOW_WIDTH/2 - 98, 200, mpContCount, pdest);
+	mpTitle->Draw(pdest);
+	mpCounter->Draw(pdest);
 }

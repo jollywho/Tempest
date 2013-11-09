@@ -1,4 +1,3 @@
-
 // Define this here or in your project settings if you want to use the SDL_ttf features.
 //#define NFONT_USE_TTF
 
@@ -65,7 +64,7 @@ all copies or substantial portions of the Software.
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+AUTHORS OR COPYright HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
@@ -193,7 +192,7 @@ public:
     // Drawing
     SDL_Rect draw(int x, int y, const char* formatted_text, ...) const;
     SDL_Rect drawCenter(int x, int y, const char* formatted_text, ...) const;
-    SDL_Rect drawRight(int x, int y, const char* formatted_text, ...) const;
+    SDL_Rect drawright(int x, int y, const char* formatted_text, ...) const;
     SDL_Rect drawPos(int x, int y, NFont::AnimFn posFn, const char* text, ...) const;
     SDL_Rect drawAll(int x, int y, NFont::AnimFn allFn, const char* text, ...) const;
     

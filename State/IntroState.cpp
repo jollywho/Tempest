@@ -1,3 +1,24 @@
+/* Tempest - C++ Danmakufu Game for SDL
+*
+*  Copyright (C) 2013 Kevin Vollmer.
+*  
+*  This program is free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*  
+*  This program is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*  
+*  You should have received a copy of the GNU General Public License along
+*  with this program; if not, write to the Free Software Foundation, Inc.,
+*  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*  
+ÅÅ*  Kevin Vollmer <works.kvollmer@gmail.com>
+*
+*/
 #include "IntroState.h"
 #include "Engine/Shared.h"
 #include "UI/Menu.h"
@@ -34,7 +55,7 @@ void CIntroState::Init()
 
 	mBackground.x = 0; mBackground2.x = -1280;
 	mBorderTop = -42; mBorderBot = WINDOW_HEIGHT;
-	mBorderLeft = -160; mBorderRight = WINDOW_WIDTH;
+	mBorderleft = -160; mBorderright = WINDOW_WIDTH;
 
 	mExit = false; 
 	mEnter = true; 
@@ -64,16 +85,16 @@ void CIntroState::Back()
 	printf("CIntroState Return\n"); //todo delete
 }
 
-void CIntroState::KeyInput(const KeyStruct& rKeys)
+void CIntroState::KeyInput(const SDL_Event& rEvent)
 {
 	if (mExit) return;
 	if (mpPanel != NULL) 
 	{
-		mpPanel->KeyInput(rKeys);
+		mpPanel->KeyInput(rEvent);
 	}
 	else
 	{
-		if (rKeys.esc)
+		if (rEvent.key.keysym.sym == SDLK_ESCAPE)
 		{
 			if (mpMenu->GetIndex() == mpMenu->Count())
 			{
@@ -83,7 +104,7 @@ void CIntroState::KeyInput(const KeyStruct& rKeys)
 				mpMenu->SetIndex(mpMenu->Count());
 		}
 		if (1)
-		//if (rKeys.z) debug
+		//if (rEvent.z) debug
 		{
 			mpMenu->Select();
 			if (mpMenu->GetIndex() == 1) { mpPanel = new ModeSelectPanel(); }
@@ -91,8 +112,8 @@ void CIntroState::KeyInput(const KeyStruct& rKeys)
 			if (mpMenu->GetIndex() == 4) { mpPanel = new OptionPanel(); }
 			if (mpMenu->GetIndex() == 5) { SDL_Event event_quit; event_quit.type = SDL_QUIT;  SDL_PushEvent(&event_quit); }
 		}
-		if (rKeys.down) mpMenu->MoveIndex(1);
-		else if (rKeys.up) mpMenu->MoveIndex(-1);
+		if (rEvent.key.keysym.sym == SDLK_DOWN) mpMenu->MoveIndex(1);
+		else if (rEvent.key.keysym.sym == SDLK_UP) mpMenu->MoveIndex(-1);
 	}
 }
 
@@ -151,10 +172,10 @@ void CIntroState::Update(const int& rDeltaTime)
 	}
 	if (mExit)
 	{
-		if (mSpan && mBorderLeft < 0)
+		if (mSpan && mBorderleft < 0)
 		{
-			mBorderLeft+=2;
-			mBorderRight-=2;
+			mBorderleft+=2;
+			mBorderright-=2;
 			mBorderTop-=2;
 			mBorderBot+=2;
 		}
@@ -167,31 +188,31 @@ void CIntroState::Update(const int& rDeltaTime)
 			} 
 		}
 		else
-			ChangeState(State::Play);
+			ChangeState(State::PLAY);
 	}
 }
 
-void CIntroState::Draw(SDL_Surface* pDest) 
+void CIntroState::Draw(SDL_Surface* pdest) 
 {
-	Shared::DrawSurface(mBackground.x, 0, mpBackgroundSurface, pDest);
-	Shared::DrawSurface(mBackground2.x, 0, mpBackgroundSurface, pDest);
+	Shared::DrawSurface(mBackground.x, 0, mpBackgroundSurface, pdest);
+	Shared::DrawSurface(mBackground2.x, 0, mpBackgroundSurface, pdest);
 
 	for(int i=0; i<50; i++)
-		mpDecorList[i]->Draw(pDest);
+		mpDecorList[i]->Draw(pdest);
 
 	if (mpPanel == NULL && !mExit)
-		mpMenu->Draw(pDest);
+		mpMenu->Draw(pdest);
 	else
-		mpPanel->Draw(pDest);
+		mpPanel->Draw(pdest);
 	
-	SPG_RectFilledBlend(pDest,0,0,WINDOW_WIDTH,WINDOW_HEIGHT, 0, mAlpha);
+	SPG_RectFilledBlend(pdest,0,0,WINDOW_WIDTH,WINDOW_HEIGHT, 0, mAlpha);
 
-	Shared::DrawSurface(0, mBorderTop, mpBorderTop, pDest);
-	Shared::DrawSurface(0, mBorderBot, mpBorderBot, pDest);
+	Shared::DrawSurface(0, mBorderTop, mpBorderTop, pdest);
+	Shared::DrawSurface(0, mBorderBot, mpBorderBot, pdest);
 
-	//Shared::DrawSurface(mBorderLeft, 0, mpBorderLeft, pDest);
-	//Shared::DrawSurface(mBorderRight, 0, mpBorderRight, pDest);
+	//Shared::DrawSurface(mBorderleft, 0, mpBorderleft, pdest);
+	//Shared::DrawSurface(mBorderright, 0, mpBorderright, pdest);
 
 	if (mpPanel != NULL)
-		mpPanel->DrawTop(pDest);
+		mpPanel->DrawTop(pdest);
 }

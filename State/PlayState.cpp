@@ -1,3 +1,24 @@
+/* Tempest - C++ Danmakufu Game for SDL
+*
+*  Copyright (C) 2013 Kevin Vollmer.
+*  
+*  This program is free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*  
+*  This program is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*  
+*  You should have received a copy of the GNU General Public License along
+*  with this program; if not, write to the Free Software Foundation, Inc.,
+*  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*  
+ÅÅ*  Kevin Vollmer <works.kvollmer@gmail.com>
+*
+*/
 #include "playstate.h"
 #include <sprig.h>
 #include "Game/Camera.h"
@@ -104,11 +125,11 @@ void CPlayState::UpdateList(std::list<T>& rList, const int& rDeltaTime)
 }
 
 template <class T>
-void CPlayState::DrawList(std::list<T>& rList, SDL_Surface* pDest)
+void CPlayState::DrawList(std::list<T>& rList, SDL_Surface* pdest)
 {
 	for (auto it = rList.begin(); it != rList.end(); ++it)
 	{
-		(*it)->Draw(pDest);
+		(*it)->Draw(pdest);
 	}
 }
 
@@ -134,14 +155,14 @@ void CPlayState::NewLevel()
 
 }
 
-void CPlayState::KeyInput(const KeyStruct& rKeys)
+void CPlayState::KeyInput(const SDL_Event& rEvent)
 {
-	mpPlayer->KeyInput(rKeys);
-	//if (rKeys.enter) mExit = true;
-	if (rKeys.enter && rKeys.shift) PushState(State::Continue);
-	if (rKeys.enter && !rKeys.shift) mExit = true;
-	if (rKeys.esc) PushState(State::Pause);
-	if (rKeys.tilde) PushState(State::Shop);
+	mpPlayer->KeyInput(rEvent);
+	//if (rEvent.enter) mExit = true;
+	if (rEvent.key.keysym.sym == SDLK_KP_ENTER && rEvent.key.keysym.sym == SDLK_LSHIFT) PushState(State::CONTINUE);
+	if (rEvent.key.keysym.sym == SDLK_KP_ENTER && ! rEvent.key.keysym.sym == SDLK_LSHIFT) mExit = true;
+	if (rEvent.key.keysym.sym == SDLK_ESCAPE) PushState(State::PAUSE);
+	if (rEvent.key.keysym.sym == SDLK_BACKQUOTE) PushState(State::SHOP);
 }
 
 void CPlayState::Update(const int& rDeltaTime)
@@ -173,7 +194,7 @@ void CPlayState::Update(const int& rDeltaTime)
 			} 
 		}
 		else
-			PushState(State::Poll);
+			PushState(State::POLL);
 	}
 	Camera::Instance()->Update(mpPlayer->GetOuterBounds().rect.x, rDeltaTime);
 	mpLevel->Update(rDeltaTime);
@@ -198,24 +219,24 @@ void CPlayState::Update(const int& rDeltaTime)
 	mpInterface->Update(rDeltaTime);
 }
 
-void CPlayState::Draw(SDL_Surface* pDest)
+void CPlayState::Draw(SDL_Surface* pdest)
 {
-	mpLevel->Draw(pDest);
+	mpLevel->Draw(pdest);
 
-	DrawList(enemy_list, pDest);
-	DrawList(pl_bulletlist, pDest);
+	DrawList(enemy_list, pdest);
+	DrawList(pl_bulletlist, pdest);
 	
 	if (mExit || mReturn)
-		SPG_RectFilledBlend(pDest,GAME_BANNER_WIDTH,0,GAME_BOUNDS_WIDTH,WINDOW_HEIGHT, 16777215, mAlpha);
+		SPG_RectFilledBlend(pdest,GAME_BANNER_WIDTH,0,GAME_BOUNDS_WIDTH,WINDOW_HEIGHT, 16777215, mAlpha);
 	if (mEnter)
-		SPG_RectFilledBlend(pDest,GAME_BANNER_WIDTH,0,GAME_BOUNDS_WIDTH,WINDOW_HEIGHT, 0, mAlpha);
+		SPG_RectFilledBlend(pdest,GAME_BANNER_WIDTH,0,GAME_BOUNDS_WIDTH,WINDOW_HEIGHT, 0, mAlpha);
 
-	mpPlayer->Draw(pDest);
-	DrawList(explosion_list, pDest);
-	DrawList(en_bulletlist, pDest);
-	DrawList(item_list, pDest);
-	DrawList(score_list, pDest);
+	mpPlayer->Draw(pdest);
+	DrawList(explosion_list, pdest);
+	DrawList(en_bulletlist, pdest);
+	DrawList(item_list, pdest);
+	DrawList(score_list, pdest);
 
-	mpInterface->Draw(pDest);
+	mpInterface->Draw(pdest);
 	
 }

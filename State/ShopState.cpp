@@ -1,3 +1,24 @@
+/* Tempest - C++ Danmakufu Game for SDL
+*
+*  Copyright (C) 2013 Kevin Vollmer.
+*  
+*  This program is free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*  
+*  This program is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*  
+*  You should have received a copy of the GNU General Public License along
+*  with this program; if not, write to the Free Software Foundation, Inc.,
+*  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*  
+ÅÅ*  Kevin Vollmer <works.kvollmer@gmail.com>
+*
+*/
 #include "ShopState.h"
 #include "UI/Interface.h"
 #include "Engine/SpriteResource.h"
@@ -34,11 +55,11 @@ void CShopState::Resume()
 	printf("CShopState Resume\n");
 }
 
-void CShopState::KeyInput(const KeyStruct& rKeys)
+void CShopState::KeyInput(const SDL_Event& rEvent)
 {
-	if (rKeys.tilde) { PopState(); }
-	mpShop->KeyInput(rKeys);
-	if (rKeys.mouse_left) printf("%i,%i\n", rKeys.mouse_x, rKeys.mouse_y);
+	if (rEvent.key.keysym.sym == SDLK_BACKQUOTE) { PopState(); }
+	mpShop->KeyInput(rEvent);
+	if (rEvent.button.button == SDL_BUTTON_LEFT) printf("%i,%i\n", rEvent.motion.x, rEvent.motion.y);
 }
 
 void CShopState::Update(const int& rDeltaTime) 
@@ -47,11 +68,11 @@ void CShopState::Update(const int& rDeltaTime)
 	CPlayState::Instance()->mpInterface->Update(rDeltaTime);
 }
 
-void CShopState::Draw(SDL_Surface* pDest) 
+void CShopState::Draw(SDL_Surface* pdest) 
 {
-	Shared::DrawSurface(0, 0, mpScreen, pDest);
-	Shared::DrawSurface(SHOP_OFFSET_X, SHOP_OFFSET_Y, mpBanner, pDest);
-	mpShop->Draw(pDest);
+	Shared::DrawSurface(0, 0, mpScreen, pdest);
+	Shared::DrawSurface(SHOP_OFFSET_X, SHOP_OFFSET_Y, mpBanner, pdest);
+	mpShop->Draw(pdest);
 
-	CPlayState::Instance()->mpInterface->Draw(pDest);
+	CPlayState::Instance()->mpInterface->Draw(pdest);
 }

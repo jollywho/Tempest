@@ -1,3 +1,24 @@
+/* Tempest - C++ Danmakufu Game for SDL
+*
+*  Copyright (C) 2013 Kevin Vollmer.
+*  
+*  This program is free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*  
+*  This program is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*  
+*  You should have received a copy of the GNU General Public License along
+*  with this program; if not, write to the Free Software Foundation, Inc.,
+*  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*  
+ÅÅ*  Kevin Vollmer <works.kvollmer@gmail.com>
+*
+*/
 #include "Totem.h"
 #include "Engine/SpriteResource.h"
 #include "UI/NSprite.h"
@@ -87,16 +108,16 @@ void Totem::Update(const int& rDeltaTime, int x, int y, bool isAnimated)
 	}
 }
 
-void Totem::Draw(SDL_Surface *pDest)
+void Totem::Draw(SDL_Surface *pdest)
 {
-	Shared::DrawSurface(mX+15, mY+5, mpInner->pSurface, pDest, &mpInner->pClips[mClip]);
-    Shared::DrawSurface(mX, mY, mpOuter->pSurface, pDest);
-	mpFlash->Draw(pDest);
+	Shared::DrawSurface(mX+15, mY+5, mpInner->pSurface, pdest, &mpInner->pClips[mClip]);
+    Shared::DrawSurface(mX, mY, mpOuter->pSurface, pdest);
+	mpFlash->Draw(pdest);
 	if (mShowHealth)
 	{
-		Shared::DrawSurface(mX+7, mY+5, mpFrame, pDest);
-		Shared::DrawSurface(mX+7, mY+5, mpHealth, pDest, &mHealthBox);
-		if (mHealth < 10) Shared::DrawSurface(mX+7, mY+5, mpWarning, pDest, &mHealthBox);
+		Shared::DrawSurface(mX+7, mY+5, mpFrame, pdest);
+		Shared::DrawSurface(mX+7, mY+5, mpHealth, pdest, &mHealthBox);
+		if (mHealth < 10) Shared::DrawSurface(mX+7, mY+5, mpWarning, pdest, &mHealthBox);
 	}
 }
 

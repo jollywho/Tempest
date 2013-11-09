@@ -1,3 +1,24 @@
+/* Tempest - C++ Danmakufu Game for SDL
+*
+*  Copyright (C) 2013 Kevin Vollmer.
+*  
+*  This program is free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*  
+*  This program is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*  
+*  You should have received a copy of the GNU General Public License along
+*  with this program; if not, write to the Free Software Foundation, Inc.,
+*  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*  
+ÅÅ*  Kevin Vollmer <works.kvollmer@gmail.com>
+*
+*/
 #include "Quartz.h"
 #include "Engine/SpriteResource.h"
 #include "UI/Interface.h"
@@ -24,7 +45,7 @@ Quartz::~Quartz()
 	}
 }
 
-void Quartz::Update(Uint32 deltaTicks)
+void Quartz::Update(Uint32 delta_ticks)
 {
 	if (pickedup) mDelete = true;
 	Shared::CheckClip(mClipTimer, mClip, 50, mpInfo->maxClips, 0);
@@ -44,13 +65,13 @@ void Quartz::Update(Uint32 deltaTicks)
 		float xa = dx / Length;
 		float ya = dy / Length;
 		yvel+=mAccelTimer.GetTicks()/50;
-		mX += (xa * (yvel * (deltaTicks / 1000.f)));
-		mY += (ya * (yvel * (deltaTicks / 1000.f)));
+		mX += (xa * (yvel * (delta_ticks / 1000.f)));
+		mY += (ya * (yvel * (delta_ticks / 1000.f)));
 		CheckCollision();
 	}
 	else
 	{
-		mY += (yvel * (deltaTicks / 1000.f));
+		mY += (yvel * (delta_ticks / 1000.f));
 	}
 	mOffset.x = mX;
     mOffset.y = mY;
@@ -60,8 +81,8 @@ void Quartz::Update(Uint32 deltaTicks)
 		mDelete = true;
 }
 
-void Quartz::Draw(SDL_Surface *pDest)
+void Quartz::Draw(SDL_Surface *pdest)
 {
     Camera::Instance()->DrawSurface(mOffset.x, mOffset.y,
-        mpInfo->pSurface, pDest, &mpInfo->pClips[mClip]);
+        mpInfo->pSurface, pdest, &mpInfo->pClips[mClip]);
 }

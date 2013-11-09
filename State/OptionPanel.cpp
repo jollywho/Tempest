@@ -1,3 +1,24 @@
+/* Tempest - C++ Danmakufu Game for SDL
+*
+*  Copyright (C) 2013 Kevin Vollmer.
+*  
+*  This program is free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*  
+*  This program is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*  
+*  You should have received a copy of the GNU General Public License along
+*  with this program; if not, write to the Free Software Foundation, Inc.,
+*  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*  
+ÅÅ*  Kevin Vollmer <works.kvollmer@gmail.com>
+*
+*/
 #include "OptionPanel.h"
 #include "Engine/NFont.h"
 #include "UI/Menu.h"
@@ -54,10 +75,10 @@ OptionPanel::~OptionPanel()
 	delete mpMenu;
 }
 
-void OptionPanel::KeyInput(const KeyStruct& rKeys)
+void OptionPanel::KeyInput(const SDL_Event& rEvent)
 {
-	if (rKeys.esc) mBack = true;
-	if (rKeys.z)
+	if (rEvent.key.keysym.sym == SDLK_ESCAPE) mBack = true;
+	if (rEvent.key.keysym.sym == SDLK_z)
 	{
 		mpMenu->Select();
 		if (mpMenu->GetIndex() == 1) {  }
@@ -67,8 +88,8 @@ void OptionPanel::KeyInput(const KeyStruct& rKeys)
 		if (mpMenu->GetIndex() == 5) {  }
 		if (mpMenu->GetIndex() == 6) { mBack = true; }
 	}
-	if (rKeys.down) mpMenu->MoveIndex(1);
-	else if (rKeys.up) mpMenu->MoveIndex(-1);
+	if (rEvent.key.keysym.sym == SDLK_DOWN) mpMenu->MoveIndex(1);
+	else if (rEvent.key.keysym.sym == SDLK_UP) mpMenu->MoveIndex(-1);
 }
 
 void OptionPanel::Update(const int& rDeltaTime) 
@@ -76,13 +97,13 @@ void OptionPanel::Update(const int& rDeltaTime)
 	mpMenu->Update(rDeltaTime, 255);
 }
 
-void OptionPanel::Draw(SDL_Surface* pDest) 
+void OptionPanel::Draw(SDL_Surface* pdest) 
 {
-	mpMenu->Draw(pDest);
+	mpMenu->Draw(pdest);
 
-	Shared::DrawSurface(mBgmFrame.x,mBgmFrame.y,mpFrame,pDest);
-	Shared::DrawSurface(mBgmSelector.x,mBgmSelector.y,mpSelector,pDest);
+	Shared::DrawSurface(mBgmFrame.x,mBgmFrame.y,mpFrame,pdest);
+	Shared::DrawSurface(mBgmSelector.x,mBgmSelector.y,mpSelector,pdest);
 
-	Shared::DrawSurface(mSfxFrame.x,mSfxFrame.y,mpFrame,pDest);
-	Shared::DrawSurface(mSfxSelector.x,mSfxSelector.y,mpSelector,pDest);
+	Shared::DrawSurface(mSfxFrame.x,mSfxFrame.y,mpFrame,pdest);
+	Shared::DrawSurface(mSfxSelector.x,mSfxSelector.y,mpSelector,pdest);
 }

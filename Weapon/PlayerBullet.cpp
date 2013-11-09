@@ -1,3 +1,24 @@
+/* Tempest - C++ Danmakufu Game for SDL
+*
+*  Copyright (C) 2013 Kevin Vollmer.
+*  
+*  This program is free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*  
+*  This program is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*  
+*  You should have received a copy of the GNU General Public License along
+*  with this program; if not, write to the Free Software Foundation, Inc.,
+*  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*  
+ÅÅ*  Kevin Vollmer <works.kvollmer@gmail.com>
+*
+*/
 #include "PlayerBullet.h"
 #include "State/playstate.h"
 #include "Engine/SpriteResource.h"
@@ -102,15 +123,15 @@ void PlayerBullet::Update(const int& rDeltaTime)
 	mOffset.y = mY;
 }
 
-void PlayerBullet::Draw(SDL_Surface *pDest)
+void PlayerBullet::Draw(SDL_Surface *pdest)
 { 
     if (!mExplode)
     {
-        Camera::Instance()->Instance()->DrawSurface(mOffset.x - mOffset.w/2, mOffset.y-mOffset.h/2, mpInfo->pSurface[0][mAngle], pDest, NULL);
+        Camera::Instance()->Instance()->DrawSurface(mOffset.x - mOffset.w/2, mOffset.y-mOffset.h/2, mpInfo->pSurface[0][mAngle], pdest, NULL);
     }
     else
     {
         Camera::Instance()->Instance()->DrawSurface(mOffset.x + (mOffset.w/4 - _expInfo->width/4), mOffset.y + (mOffset.h/4 - _expInfo->height/4), 
-			_expInfo->pSurface, pDest, &_expInfo->pClips[mClip]);
+			_expInfo->pSurface, pdest, &_expInfo->pClips[mClip]);
     }
 }

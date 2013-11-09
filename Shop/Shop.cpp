@@ -1,3 +1,24 @@
+/* Tempest - C++ Danmakufu Game for SDL
+*
+*  Copyright (C) 2013 Kevin Vollmer.
+*  
+*  This program is free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*  
+*  This program is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*  
+*  You should have received a copy of the GNU General Public License along
+*  with this program; if not, write to the Free Software Foundation, Inc.,
+*  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*  
+ÅÅ*  Kevin Vollmer <works.kvollmer@gmail.com>
+*
+*/
 #include "Shop.h"
 #include <fstream>
 #include "Engine/SpriteResource.h"
@@ -46,9 +67,9 @@ Shop::Shop(Point& s, Point& e) : MAX_PAGES(3), mClick(false), mDClick(false)
 	ReadItemFile();
 	ReadNodeFile();
 	mpSelector = new ItemSelector();
-	mpPageLeft = new NSprite(s.x + 45, s.y + 45,
+	mpPageleft = new NSprite(s.x + 45, s.y + 45,
 		&SpriteResource::RequestResource("Shop", "page_left"));
-	mpPageRight = new NSprite(e.x - 45, e.y + 45,
+	mpPageright = new NSprite(e.x - 45, e.y + 45,
 		&SpriteResource::RequestResource("Shop", "page_right"));
 	FindItem("flamesword").SetEnable(true);
 }
@@ -205,14 +226,14 @@ void Shop::Purchase(Node& d)
 		mpSelector->Insufficient();
 }
 
-void Shop::KeyInput(const KeyStruct& rKeys)
+void Shop::KeyInput(const SDL_Event& rEvent)
 {
-	mHover = Point(rKeys.mouse_x, rKeys.mouse_y);
-	if (!mClick && rKeys.mouse_left) { mClick = true; mClickTimer.Start(); }
+	mHover = Point(rEvent.motion.x, rEvent.motion.y);
+	if (!mClick && rEvent.button.button == SDL_BUTTON_LEFT) { mClick = true; mClickTimer.Start(); }
 	else if (mClick && mClickTimer.GetTicks() < 100) { mDClick = true; }
 	else { mClickTimer.Start(); mClick = false; mDClick = false; }
-	if (rKeys.left) ChangePage(-1);
-	if (rKeys.right) ChangePage(1);
+	if (rEvent.key.keysym.sym == SDLK_LEFT) ChangePage(-1);
+	if (rEvent.key.keysym.sym == SDLK_RIGHT) ChangePage(1);
 }
 
 void Shop::ChangePage(int dir)
@@ -223,7 +244,7 @@ void Shop::ChangePage(int dir)
 	mPage > MAX_PAGES ? mPage = 1 : 0;
 }
 
-void Shop::Update(Uint32 deltaTicks)
+void Shop::Update(Uint32 delta_ticks)
 {
 	mpSelector->Reset();
 	for (auto it = mTree.begin(); it != mTree.end(); it++) 
@@ -244,18 +265,18 @@ void Shop::Update(Uint32 deltaTicks)
 	}
 	if (mClick)
 	{
-		if (IsCollisionR(mpPageLeft->GetBounds())) ChangePage(-1);
-		if (IsCollisionR(mpPageRight->GetBounds())) ChangePage(1);
+		if (IsCollisionR(mpPageleft->GetBounds())) ChangePage(-1);
+		if (IsCollisionR(mpPageright->GetBounds())) ChangePage(1);
 	}
 }
 
-void Shop::Draw(SDL_Surface *pDest)
+void Shop::Draw(SDL_Surface *pdest)
 {
 	for (auto it = mTree.begin(); it != mTree.end(); it++)
-		if (it->first.first == mPage) { it->second->Draw(pDest); }
-	mpSelector->Draw(pDest);
-	mpPageLeft->Draw(pDest);
-	mpPageRight->Draw(pDest);
+		if (it->first.first == mPage) { it->second->Draw(pdest); }
+	mpSelector->Draw(pdest);
+	mpPageleft->Draw(pdest);
+	mpPageright->Draw(pdest);
 }
 
 

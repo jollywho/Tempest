@@ -24,7 +24,7 @@ all copies or substantial portions of the Software.
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+AUTHORS OR COPYright HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
@@ -792,7 +792,7 @@ SDL_Rect NFont::drawCenter(int x, int y, const char* formatted_text, ...) const
     return drawToSurface(x - getWidth("%s", s)/2, y, s);
 }
 
-SDL_Rect NFont::drawRight(int x, int y, const char* formatted_text, ...) const
+SDL_Rect NFont::drawright(int x, int y, const char* formatted_text, ...) const
 {
     if(formatted_text == NULL)
         return makeRect(x, y, 0, 0);

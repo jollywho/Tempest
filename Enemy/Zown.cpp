@@ -1,3 +1,24 @@
+/* Tempest - C++ Danmakufu Game for SDL
+*
+*  Copyright (C) 2013 Kevin Vollmer.
+*  
+*  This program is free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*  
+*  This program is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*  
+*  You should have received a copy of the GNU General Public License along
+*  with this program; if not, write to the Free Software Foundation, Inc.,
+*  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*  
+ÅÅ*  Kevin Vollmer <works.kvollmer@gmail.com>
+*
+*/
 #include "Zown.h"
 #include "Engine/SpriteResource.h"
 #include "Game/Camera.h"
@@ -11,8 +32,8 @@ Zown::Zown(int x, int y, std::list<Action*>& actions) : Enemy("zown", x, y, acti
 	mHealth = 50;
 	mMaxHealth = 50;
 	mAir = true;
-    rot = 0; attackCount = 0;
-	attack_Timer.Start();
+    mRot = 0; mAtkCount = 0;
+	mAtkTimer.Start();
 	mVel = Point(0,0);
 }
 
@@ -41,16 +62,16 @@ void Zown::Cleanup()
 void Zown::Attack()
 {
 	//CPlayState::Instance()->en_bulletlist.push_back(new ERotBullet(mX + mpInfo->width/2, mY + mpInfo->height, 0, "Arrow.png"));
-	attack_Timer.Start();
+	mAtkTimer.Start();
 
 
-	attackCount++;
+	mAtkCount++;
 	
-	if (attackCount > 3) attackCount = 1;
+	if (mAtkCount > 3) mAtkCount = 1;
 
-	rot += .4;
-	if (rot > M_PI)
-		rot = 0;
+	mRot += .4;
+	if (mRot > M_PI)
+		mRot = 0;
 	
 	/*
 	for (double i=0-rot; i<=M_PI/2+rot - .4; i+= .4 )
@@ -66,18 +87,18 @@ void Zown::Attack()
 			-x*100, y * 100, "LargeRed.png"));
     }
 	*/
-    attack_Timer.Start();
+    mAtkTimer.Start();
 
 }
 
-void Zown::Update(Uint32 deltaTicks)
+void Zown::Update(Uint32 delta_ticks)
 {
-	Decide(deltaTicks);
+	Decide(delta_ticks);
 	if (Explode(true)) return;
 	if (CheckHealth()) return;
 	DetectCollision();
 
-    if (attack_Timer.GetTicks() > 480)
+    if (mAtkTimer.GetTicks() > 480)
         Attack();
 	Shared::CheckClip(mClipTimer, mClip, mpInfo->interval, mpInfo->maxClips, 0);
 
@@ -85,14 +106,14 @@ void Zown::Update(Uint32 deltaTicks)
     mHitbox.y = mPos.y;
 }
 
-void Zown::Draw(SDL_Surface *pDest)
+void Zown::Draw(SDL_Surface *pdest)
 {
 	if (mExplode) return;
 
     if (mHit)
         Camera::Instance()->DrawSurface(mHitbox.x, mHitbox.y,
-            mpCopySurface, pDest, &mpInfo->pClips[mClip]);
+            mpCopySurface, pdest, &mpInfo->pClips[mClip]);
     else
         Camera::Instance()->DrawSurface(mHitbox.x, mHitbox.y,
-            mpInfo->pSurface, pDest, &mpInfo->pClips[mClip]);
+            mpInfo->pSurface, pdest, &mpInfo->pClips[mClip]);
 }
