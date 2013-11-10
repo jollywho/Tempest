@@ -28,20 +28,20 @@
 class Zown : public Enemy
 {
 	REGISTER(Zown);
-private:
-    Timer mAtkTimer;
-    double mRot;
-	int mAtkCount;
 public:
     explicit Zown(int x, int y, std::list<Action*>& actions);
     ~Zown();
     void Attack();
     void Update(Uint32 delta_ticks);
     void Draw(SDL_Surface *pdest);
+	void TakeHit(int dmg);
+
     static void Init();
     static void Cleanup();
-    void TakeHit(int dmg);
+private:
+    Timer mAtkTimer;
+    double mRot;
+	int mAtkCount;
 };
-
 
 #endif

@@ -29,30 +29,26 @@ struct SpriteInfo;
 
 class NSprite
 {
+public:
+	explicit NSprite(float x, float y, SpriteInfo* pInfo, bool doesStop = false, bool isReverse = false);
+    ~NSprite();
+    void Update();
+    void Draw(SDL_Surface *pdest);
+	void Reset();
+	void SetPos(Point& rCenter);
+
+	bool IsDone() {return mDone;}
+	HitBox& GetBounds() {return mBounds;}
 private:
 	SpriteInfo* mpInfo;
-
 	int mClip;
 	HitBox mBounds;
 	Timer mClipTimer;
-
 	int mDir;
 	bool mStop; 
 	bool mReverse; 
 	bool mDone;
-public:
-	explicit NSprite(float x, float y, SpriteInfo* pInfo, bool doesStop=false, bool isReverse=false);
-    ~NSprite();
-
-    void Update();
-    void Draw(SDL_Surface *pdest);
-	void Reset();
-
-	void SetPos(Point& rCenter);
-	bool IsDone() { return mDone; }
-	HitBox& GetBounds() { return mBounds; }
 };
-
 
 #endif
 

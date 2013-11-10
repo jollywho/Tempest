@@ -29,18 +29,17 @@ struct SpriteInfo;
 
 class Decor
 {
+public:
+	Decor();
+	void Update(int delta_ticks);
+    void Draw(SDL_Surface *pdest);
 private:
 	SpriteInfo* mpInfo;
 	float mX; float mY;
 	int mClip;
 	Timer mClipTimer;
-	bool show;
-public:
-	Decor();
-	void Update(int delta_ticks);
-    void Draw(SDL_Surface *pdest);
+	bool mShow;
 };
-
 
 #endif
 

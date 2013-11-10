@@ -35,7 +35,7 @@ MType::MType()
 	wpn_timer.Start();
 	level = MAX_TOTEMS;
 	mHealth = 200;
-	mpSlash = new NSprite(0,0, &SpriteResource::RequestResource("Player", "slash"), true);
+	mpSlash = new NSprite(0, 0, &SpriteResource::RequestResource("Player", "slash"), true);
 	totem_list.push_back(new Totem(40,90, -40,-50));
 	totem_list.push_back(new Totem(-40,90,-40,-50));
 	totem_list.push_back(new Totem(80,80, -40,-50));
@@ -84,7 +84,7 @@ void MType::MinorAttack(std::list<PlayerBullet*>& pl_bulletlist)
 			{
 				int x = (*it)->GetMiddle();
 				int y = (*it)->GetVertical();
-				for (int i=4; i<10; i+=2)
+				for (int i =4; i<10; i+= 2)
 				{
 					pl_bulletlist.push_back(new PlayerBullet(x+(i*2), y+(i*2), 180+(i*2)+mov,rot_divs));
 					pl_bulletlist.push_back(new PlayerBullet(x-(i*2), y+(i*2), 180-(i*2)+mov,rot_divs));
@@ -131,7 +131,7 @@ bool MType::TakeHit()
 {
 	--mHealth;
 	for (auto it = totem_list.begin(); it != totem_list.end(); it++)
-		if (!(*it)->IsDisabled()) { (*it)->TakeHit(); return true; }
+		if (!(*it)->IsDisabled()) { (*it)->TakeHit(); return true;}
 	return false;
 }
 
@@ -154,12 +154,12 @@ void MType::Draw(SDL_Surface *pdest)
 		if (!(*it)->IsDisabled())
 		{
 			if (!wpn_timer.IsPaused())
-				Shared::DrawSurface((*it)->GetMiddle() - mpShotAnim->width/2, (*it)->GetVertical() - mpShotAnim->height/4,
+				Shared::DrawSurface((*it)->GetMiddle() - mpShotAnim->width / 2, (*it)->GetVertical() - mpShotAnim->height/4,
 					mpShotAnim->pSurface, pdest, &mpShotAnim->pClips[mShotAnimClip]);
 			(*it)->Draw(pdest);
 		}
     }
 	if (!wpn_timer.IsPaused())
-		Shared::DrawSurface(wpn_pos.x - mpShotAnim->width/2, wpn_pos.y - mpShotAnim->height/2,
+		Shared::DrawSurface(wpn_pos.x - mpShotAnim->width / 2, wpn_pos.y - mpShotAnim->height / 2,
 			mpShotAnim->pSurface, pdest, &mpShotAnim->pClips[mShotAnimClip]);
 }

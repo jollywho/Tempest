@@ -41,8 +41,9 @@ public:
 	void Select();
 	void MoveIndex(int direction);
 	void Menu::SetIndex(int index);
-	int GetIndex() { return mSelectedindex; }
-	int Count() { return mMaxItems; }
+
+	int GetIndex() {return mSelectedindex;}
+	int Count() {return mMaxItems;}
 	Point GetFontSize(char& msg);
 private:
     std::vector<MenuItem*> menuList;
@@ -56,7 +57,5 @@ private:
 	bool mClick;
 	void MoveSelector(SDL_Rect& bounds);
 };
- 
-
 
 #endif

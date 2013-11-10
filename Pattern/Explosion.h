@@ -40,28 +40,29 @@ struct ExplosionInfo
 
 class Explosion
 {
-private:
-	SpriteInfo* info;
-	int clip;
-	int detTime;
-	Timer clip_Timer;
-	int altInterval;
-	float xVal; float yVal;
-	float xVel; float yVel;
-	bool started;
-	bool m_delete;
-	static std::map<std::string, std::list<ExplosionInfo>> explosions;
 public:
 	Explosion(int x, int y, int xv, int yv, ExplosionInfo nfo);
-    static void ClearList();
     void Update(Uint32 delta_ticks);
-    void Draw(SDL_Surface *dest);
-	bool RequestDelete() { return m_delete; };
-	static void AddExplosionInfo(std::string expId, std::string spriteId, int magnitude, 
-		int delay, int offsetX=0, int offsetY=0, bool residue=false);
-	static void RequestExplosion(std::string expId, int x, int y, int xv, int yv);
-};
+    void Draw(SDL_Surface *pdest);
 
+	static void ClearList();
+	static void AddExplosionInfo(std::string expId, std::string spriteId, int magnitude, 
+		int delay, int offsetX= 0, int offsetY = 0, bool residue = false);
+	static void RequestExplosion(std::string expId, int x, int y, int xv, int yv);
+
+	bool RequestDelete() {return mDelete;};
+private:
+	SpriteInfo* mpInfo;
+	int mClip;
+	int mDetTime;
+	Timer mClipTimer;
+	int mAltInterval;
+	float mX; float mY;
+	float mXVel; float mYVel;
+	bool mStarted;
+	bool mDelete;
+	static std::map<std::string, std::list<ExplosionInfo>> msExplosions;
+};
 
 #endif
 

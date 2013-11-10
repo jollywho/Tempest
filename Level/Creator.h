@@ -31,7 +31,6 @@ class Creator
 public:
 	Creator(const std::string& classname);
 	virtual ~Creator() {};
-
 	virtual Enemy* create(int x, int y, std::list<Action*>& actions) = 0;
 };
 

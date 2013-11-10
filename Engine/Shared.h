@@ -69,7 +69,7 @@ struct HitBox
     SDL_Rect rect;
     int wm;
     int hm;
-	HitBox(int x, int y, int w, int h) : rect(), wm(w/2), hm(h/2) 
+	HitBox(int x, int y, int w, int h) : rect(), wm(w / 2), hm(h / 2) 
 	{
 		rect.x = x; rect.y = y;
 		rect.w = w; rect.h = h;
@@ -79,26 +79,20 @@ struct HitBox
 class Shared
 {
 public:
-	static SDL_Surface* LoadImage( std::string filename, bool colorKey = false );
-
-	static void DrawSurface( int x, int y, SDL_Surface* pSource, SDL_Surface* pdest, SDL_Rect* pClips = NULL );
-
+	static SDL_Surface* LoadImage(std::string filename, bool colorKey = false);
+	static void DrawSurface(int x, int y, SDL_Surface* pSource, SDL_Surface* pdest,
+		SDL_Rect* pClips = NULL);
 	static void CheckClip(Timer &rTimer, int &rClip, int interval, int maxClip, int reset);
-
-	static void SetFrames(SDL_Rect* pClips, int maxClips, int width, int height, int y=0);
-
+	static void SetFrames(SDL_Rect* pClips, int maxClips, int width, int height, int y = 0);
 	static void SetVertFrames(SDL_Rect* pClips, int maxClips, int width, int height);
-    
 	static SDL_Surface* CropSurface(SDL_Surface* pSrc, int x, int y, int width, int height);
-
-	static void SetRotationFrames(SDL_Rect* pClips, SDL_Surface* pSrc, int maxClips, int width, int height,
-		SDL_Surface*** pdest, int startAngle, int endAngle, int destWidth, int destHeight, int pivotX, int pivotY, int rotInterval=10);
-
-	static void DeleteRotationFrames(SDL_Surface*** pSrc, int maxClips, int startAngle, int endAngle, int rotInterval=10);
-
+	static void SetRotationFrames(SDL_Rect* pClips, SDL_Surface* pSrc, int maxClips,
+		int width, int height, SDL_Surface*** pdest, int startAngle, int endAngle,
+		int destWidth, int destHeight, int pivotX, int pivotY, int rotInterval = 10);
+	static void DeleteRotationFrames(SDL_Surface*** pSrc, int maxClips, int startAngle,
+		int endAngle, int rotInterval = 10);
 	static int Mod(int a, int b);
-
-	static double Distance( int x1, int y1, int x2, int y2 );
+	static double Distance(int x1, int y1, int x2, int y2);
 };
 
 

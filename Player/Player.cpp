@@ -34,13 +34,13 @@ Player::Player()
 {
 	printf("Player Created\n");
 
-	mpAngel = new NSprite(0,0, &SpriteResource::RequestResource("Player", "angel"));
-	mpHitbox = new NSprite(0,0, &SpriteResource::RequestResource("Player", "hitbox"));
-	mpBooster = new NSprite(0,0, &SpriteResource::RequestResource("Player", "booster"));
-	mpZone = new NSprite(0,0, &SpriteResource::RequestResource("Player", "zone"));
-	mpExplosion = new NSprite(0,0, &SpriteResource::RequestResource("Player", "player_explosion"), true);
-	mpWings = new NSprite(0,0, &SpriteResource::RequestResource("Player", "invuln_wings"));
-	mpDash = new NSprite(0,0, &SpriteResource::RequestResource("Player", "dash"), true);
+	mpAngel = new NSprite(0, 0, &SpriteResource::RequestResource("Player", "angel"));
+	mpHitbox = new NSprite(0, 0, &SpriteResource::RequestResource("Player", "hitbox"));
+	mpBooster = new NSprite(0, 0, &SpriteResource::RequestResource("Player", "booster"));
+	mpZone = new NSprite(0, 0, &SpriteResource::RequestResource("Player", "zone"));
+	mpExplosion = new NSprite(0, 0, &SpriteResource::RequestResource("Player", "player_explosion"), true);
+	mpWings = new NSprite(0, 0, &SpriteResource::RequestResource("Player", "invuln_wings"));
+	mpDash = new NSprite(0, 0, &SpriteResource::RequestResource("Player", "dash"), true);
 
 	mSpeed = SPEED_NORMAL;
     mov = 0; mKForce = 0;
@@ -48,7 +48,7 @@ Player::Player()
 	mExplode = false; mInvuln = false; mDash = false;
 	mDashReq = false; mSlash = false;
 
-	mX = WINDOW_WIDTH/2 - ANGEL_SIZE/2;
+	mX = WINDOW_WIDTH / 2 - ANGEL_SIZE / 2;
 	SetWeaponType(M_type);
 }
 
@@ -57,13 +57,14 @@ void Player::Spawn()
 	mInvuln = true;
 	mLocked = true;
     mY = GAME_BOUNDS_HEIGHT + 200;
-	mspWpn->ResetPos(mX + ANGEL_SIZE/2, mY);
+	mspWpn->ResetPos(mX + ANGEL_SIZE / 2, mY);
 	mInvulnTimer.Start();
 }
 
 void Player::SetWeaponType(WeaponType type)
 {
-	if (type == M_type)mspWpn = new MType();
+	if (type == M_type)
+		mspWpn = new MType();
 
 	mspBomb = new Bomb();
 }
@@ -120,15 +121,15 @@ void Player::HandleMovement(const int& rDeltaTime)
     float length = sqrtf((vx * vx) + (vy * vy));
 
     if (vy == 0 && vx == 0 && mSpeed > 200) 
-		mSpeed-=rDeltaTime/2.f;
+		mSpeed -= rDeltaTime / 2.f;
     else if ((vy != 0 || vx != 0) && mSpeed < SPEED_NORMAL) 
-		mSpeed+=rDeltaTime/2.f;
+		mSpeed+=rDeltaTime / 2.f;
 
 	if (mDashReq)
 	{
 		if (!mDash)
 		{
-			Knockback(vx,vy,320);
+			Knockback(vx, vy, 320);
 			SFX::PlaySoundResource("dash");
 			mpDash->Reset();
 			mDashReq = false;
@@ -136,7 +137,7 @@ void Player::HandleMovement(const int& rDeltaTime)
 			mSpeed = 1000;
 		}
 	}
-    if (length>0.0f)
+    if (length > 0)
     {
         vx/=length;
         vy/=length;
@@ -146,22 +147,26 @@ void Player::HandleMovement(const int& rDeltaTime)
         vx = mKx; 
         vy = mKy; 
         if (mKnockbackTimer.GetTicks() > mKForce) {
-            mKnockbackTimer.Stop(); mKForce = 0; mSpeed = 200; }
+            mKnockbackTimer.Stop(); mKForce = 0; mSpeed = 200;}
     }
-    mX += (vx * mSpeed) * (rDeltaTime/1000.f);
-    mY += (vy * mSpeed) * (rDeltaTime/1000.f);
+    mX += (vx * mSpeed) * (rDeltaTime / 1000.f);
+    mY += (vy * mSpeed) * (rDeltaTime / 1000.f);
 
     if (!mLocked && !mExplode)
     {
-        if (mX < GAME_BANNER_WIDTH) mX = GAME_BANNER_WIDTH;
-        if (mX + ANGEL_SIZE > GAME_BOUNDS_WIDTH) mX = GAME_BOUNDS_WIDTH - ANGEL_SIZE;
-        if (mY < GAME_UI_TOP) mY = GAME_UI_TOP;
-        if (mY + ANGEL_SIZE > GAME_UI_BOTTOM) mY = GAME_UI_BOTTOM - ANGEL_SIZE;
+        if (mX < GAME_BANNER_WIDTH) 
+			mX = GAME_BANNER_WIDTH;
+        if (mX + ANGEL_SIZE > GAME_BOUNDS_WIDTH)
+			mX = GAME_BOUNDS_WIDTH - ANGEL_SIZE;
+        if (mY < GAME_UI_TOP)
+			mY = GAME_UI_TOP;
+        if (mY + ANGEL_SIZE > GAME_UI_BOTTOM)
+			mY = GAME_UI_BOTTOM - ANGEL_SIZE;
     }
 }
 void Player::HandleAttacks(const int& rDeltaTime)
 {
-	mspWpn->SetPos(mX + ANGEL_SIZE/2, mY, 0);
+	mspWpn->SetPos(mX + ANGEL_SIZE / 2, mY, 0);
 	if (mSlash) 
 	{ 
 		mspWpn->MajorAttack(CPlayState::Instance()->pl_bulletlist);
@@ -175,14 +180,16 @@ void Player::HandleAttacks(const int& rDeltaTime)
 	else
 		mspWpn->StopAttack();
 
-	if (mShift)mspWpn->Shift();
-	else mspWpn->Unshift();
+	if (mShift)
+		mspWpn->Shift();
+	else
+		mspWpn->Unshift();
 
 	if (mBomb && !mspBomb->IsActive()) 
 	{
 		if (GameScore::Instance()->DecreaseBombups())
 		{
-			mspBomb->Start(mX + ANGEL_SIZE/2, mY);
+			mspBomb->Start(mX + ANGEL_SIZE / 2, mY);
 			mInvuln = true;
 			mInvulnTimer.Start();
 		}
@@ -233,8 +240,8 @@ void Player::Update(const int& rDeltaTime)
 	HandleMovement(rDeltaTime);
 
 	if (mpDash->IsDone()) mDash = false;
-	Point center_point = Point(mX + ANGEL_SIZE/2, mY + ANGEL_SIZE/2);
-	Point boost_point = Point(mX + ANGEL_SIZE/2, mY + ANGEL_SIZE);
+	Point center_point = Point(mX + ANGEL_SIZE / 2, mY + ANGEL_SIZE / 2);
+	Point boost_point = Point(mX + ANGEL_SIZE / 2, mY + ANGEL_SIZE);
 	mpAngel->SetPos(center_point);
 	mpBooster->SetPos(boost_point);
 	mpWings->SetPos(center_point);
@@ -255,6 +262,7 @@ void Player::Draw(SDL_Surface *pdest)
 
 	if (mShift)
 		mpZone->Draw(pdest);
+
 	mspWpn->Draw(pdest);
 	mspBomb->Draw(pdest);
 	mpBooster->Draw(pdest);
@@ -279,7 +287,7 @@ HitBox& Player::GetOuterBounds()
 
 Point Player::GetCenter()
 {
-	return Point(mX + ANGEL_SIZE/2, mY + ANGEL_SIZE/2);
+	return Point(mX + ANGEL_SIZE / 2, mY + ANGEL_SIZE / 2);
 }
 
 void Player::TakeHit()
@@ -292,7 +300,7 @@ void Player::TakeHit()
 			KeyInput(temp);	//flush actions
 			mExplode = true;
 			mpExplosion->Reset();
-			mpExplosion->SetPos(Point(mX + ANGEL_SIZE/2, mY + ANGEL_SIZE/2));
+			mpExplosion->SetPos(Point(mX + ANGEL_SIZE / 2, mY + ANGEL_SIZE / 2));
 			mspBomb->BulletWipe();
 			GameScore::Instance()->DecreaseLives();
 		}
@@ -304,8 +312,8 @@ void Player::Knockback(float xv, float yv, int force)
 	if (mShift || mDashReq)
 	{
 		mKForce += force;
-		xv == 0 ? mKx = 0 : mKx = xv/abs(xv);
-		yv == 0 ? mKy = 0 : mKy = yv/abs(yv);
+		xv == 0 ? mKx = 0 : mKx = xv / abs(xv);
+		yv == 0 ? mKy = 0 : mKy = yv / abs(yv);
 		mKnockbackTimer.Start();
 	}
 }

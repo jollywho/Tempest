@@ -44,6 +44,24 @@ struct NodeData
 
 class Node
 {
+public:
+	Node(NodeData data, ItemDetail* item);
+	~Node();
+	void Update(Uint32 delta_ticks);
+	void Draw(SDL_Surface *pdest);
+	void SetEnable(bool enable) { mEnable = enable;}
+	void Click(bool state) { mClick = state;}
+	void SetPaths(std::vector<Line*>& lines) { mPaths = lines;}
+
+	unsigned int GetPrice() {return mpItem->GetPrice();}
+	Point& GetTPoint() {return Point(mData.col, mData.row);}
+	Point& GetPoint() {return mPos;}
+	bool HasBranched() {return mBranched;}
+	bool IsClick() {return mClick;}
+	bool IsEnabled() {return mEnable;}
+	std::vector<std::string>& GetRequirements() {return mData.req;}
+	std::vector<std::string>& GetBuilds() {return mData.build;}
+	std::string ItemName() {return mpItem->GetName();}
 private:
 	NodeData mData;
 	ItemDetail* mpItem;
@@ -54,25 +72,7 @@ private:
 	bool mClick;
 	Point mPos;
 	static const int SIZE = 48;
-public:
-	Node(NodeData data, ItemDetail* item);
-	~Node();
-	void Update(Uint32 delta_ticks);
-	void Draw(SDL_Surface *pdest);
-	void SetEnable(bool enable) { mEnable = enable; }
-	void Click(bool state) { mClick = state; }
-	unsigned int GetPrice() { return mpItem->GetPrice(); }
-	void SetPaths(std::vector<Line*>& lines) { mPaths = lines; }
-	Point& GetTPoint() { return Point(mData.col, mData.row); }
-	Point& GetPoint() { return mPos; }
-	bool HasBranched() { return mBranched; }
-	bool IsClick() { return mClick; }
-	bool IsEnabled() { return mEnable; }
-	std::vector<std::string>& GetRequirements() { return mData.req; }
-	std::vector<std::string>& GetBuilds() { return mData.build; }
-	std::string ItemName() { return mpItem->GetName(); }
 };
-
 
 #endif
 

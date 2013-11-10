@@ -29,6 +29,20 @@ class NSprite;
 
 class Totem
 {
+public:
+    Totem::Totem(int ux, int uy, int sx, int sy); //todo: extra parameter for color of totem
+	Totem::~Totem();
+    void Update(const int& rDeltaTime, int x, int y, bool isAnimated);
+	void Draw(SDL_Surface* pdest);
+    void PullTotems();
+    void ReleaseTotems();
+	void ResetPos(int x, int y);
+	void TakeHit();
+
+	bool IsDisabled() {return mDisable;}
+	float GetMiddle();
+    float GetVertical();
+	SDL_Rect GetBounds();
 private:
 	static const int MAX_WIDTH = 48;
 	static const int MAX_HEALTH = 50;
@@ -55,23 +69,6 @@ private:
 	bool mPull;
 	bool mDet;
 	bool mDisable;
-public:
-    Totem::Totem(int ux, int uy, int sx, int sy); //todo: extra parameter for color of totem
-	Totem::~Totem();
-    void Update( const int& rDeltaTime, int x, int y, bool isAnimated);
-	void Draw(SDL_Surface* pdest);
-
-    void PullTotems();
-    void ReleaseTotems();
-
-    float GetMiddle();
-    float GetVertical();
-	SDL_Rect GetBounds();
-
-	bool IsDisabled() { return mDisable; }
-
-	void ResetPos(int x, int y);
-	void TakeHit();
 };
 
 #endif

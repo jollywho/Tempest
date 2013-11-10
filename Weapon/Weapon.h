@@ -39,6 +39,7 @@ enum WeaponType
 class Weapon 
 {
 public:
+	inline void LevelUp() { if (level < MAX_TOTEMS) level++;}
 	virtual void Update(const int& rDeltaTime) = 0;
 	virtual void Draw(SDL_Surface *pdest) = 0;
 	virtual void MajorAttack(std::list<PlayerBullet*>& pl_bulletlist) = 0;
@@ -48,7 +49,6 @@ public:
 	virtual void Unshift() = 0;
 	virtual void SetPos(int x, int y, int mv) = 0;
 	virtual void ResetPos(int x, int y) = 0;
-	inline void LevelUp() { if (level < MAX_TOTEMS) level++; }
 	virtual bool TakeHit() = 0;
 protected:
 	Timer wpn_timer;

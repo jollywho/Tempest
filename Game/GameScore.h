@@ -27,71 +27,58 @@
 class GameScore
 {
 public:
-	static GameScore* Instance() {
-		return &g_GameScore;
-	}
-    static const int MAX_BOMBS = 6;
-    static const int MAX_LIVES = 6;
-
 	void ResetGame();
 	void ResetLevel();
 	void ResetSpawn();
-	
+	void SetMode(int mode);
 	void IncreaseScore(int value);
-	unsigned long long GetScore() { return g_score; }
-	
-	int GetBombs() { return mBombs; }
 	void IncreaseBombups();
 	bool DecreaseBombups();
-
 	void DecreaseCounter(int decrement, int type);
-
-	int GetLives() { return g_lives; }
 	void IncreaseLives();
 	void DecreaseLives();
-
-	int GetContinues() { return g_continues; }
 	void DecreaseContinues();
-
-	int GetCoinCount() { return mCoins; }
 	void IncreaseCoinCount();
-
-	int GetQuartzCount() { return mQuartz; }
 	void IncreaseQuartzCount();
-
-	int GetGemCount() { return mGems; }
 	void IncreaseGemCount();
+	void IncreaseBonus() {mBonus++;}
 
-	//unsigned long GetBonus() { return g_bonus; }
-	unsigned long GetBonus() { return 1; }
-	void IncreaseBonus() { g_bonus++; }
+	static GameScore* Instance() {return &g_GameScore;}
+    static const int MAX_BOMBS = 6;
+    static const int MAX_LIVES = 6;
+	std::string GetModeString(bool fileFormat = false);
+	static std::string GetModeEquivalent(int mode, bool fileFormat = false);
 
-	std::string GetModeString(bool fileFormat=false);
-	static std::string GetModeEquivalent(int mode, bool fileFormat=false);
-	void SetMode(int mode);
-
+	int GetBombs() {return mBombs;}
+	int GetQuartzCount() {return mQuartz;}
+	int GetGemCount() {return mGems;}
+	int GetCoinCount() {return mCoins;}
+	int GetLives() {return mLives;}
+	int GetContinues() {return mContinues;}
+	unsigned long GetBonus() {return 1;}
+	unsigned long long GetScore() {return mScore;}
 private:
+
 	enum Mode
 	{
-		Normal = 50,
-		Ultra = 100,
-		Insane = 200,
+		NORMAL = 50,
+		ULTRA = 100,
+		INSANE = 200,
 	};
+
 	static GameScore g_GameScore;
 
-	Mode g_mode;
-    unsigned long long g_score;
-
+	Mode mGMode;
+    unsigned long long mScore;
 	int mCoins;
 	int mBombs;
 	int mLives;
 	int mQuartz;
 	int mGems;
 	
-	unsigned long long prevBonus;
-	int g_lives;
-	int g_continues;
-	unsigned long g_bonus;
+	unsigned long long mPrevBonus;
+	int mContinues;
+	unsigned long mBonus;
 };
 
 

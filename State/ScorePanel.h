@@ -33,15 +33,14 @@ class ScoreBanner
 public:
 	ScoreBanner(){};
 	int x; int y;
-	int scoreX()	{ return x + 225; }
-	int scoreY()	{ return y + 48; }
-
-	int rankX()		{ return x + 120; }
-	int rankY()		{ return y + 85; }
-	int nameX()		{ return x + 225; }
-	int nameY()		{ return y + 85; }
-	int stageX()	{ return x + 335; }
-	int stageY()	{ return y + 85; }
+	int scoreX()	{return x + 225;}
+	int scoreY()	{return y + 48;}
+	int rankX()		{return x + 120;}
+	int rankY()		{return y + 85;}
+	int nameX()		{return x + 225;}
+	int nameY()		{return y + 85;}
+	int stageX()	{return x + 335;}
+	int stageY()	{return y + 85;}
 };
 
 class ScorePanel : public Panel
@@ -49,7 +48,6 @@ class ScorePanel : public Panel
 public:
 	ScorePanel();
 	~ScorePanel();
-
 	void KeyInput(const SDL_Event& rEvent);
 	void Update(const int& rDeltaTime);
 	void Draw(SDL_Surface* pdest);

@@ -32,12 +32,13 @@ class PlayerBullet : public Bullet
 public:
     explicit PlayerBullet(float x, float y, int angle, int rots);
 	virtual ~PlayerBullet(){}
-	
+
 	static void Init();
+	static void Init(std::string id, std::string expId);
+
+    void DetectCollision();
 	void Update(const int& rDeltaTime);
 	void Draw(SDL_Surface *pdest);
-    static void Init(std::string id, std::string expId);
-    void DetectCollision();
 	void CheckBounds(Point camera_pos);
 private:
 	static const int TOO_FAR = 50;

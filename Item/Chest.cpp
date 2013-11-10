@@ -32,13 +32,14 @@ Chest::Chest(int x, int y, int value) : Item(x, y, value, "Chest")
 {
 	mAir = false;
     mDelete = false;
-	opened = false;
+	mOpened = false;
 	mClip = 0;
-	spawnCount = 0;
+	mSpawnCount = 0;
 }
 
 Chest::~Chest() 
 {
+
 }
 
 void Chest::Update(Uint32 delta_ticks)
@@ -48,17 +49,17 @@ void Chest::Update(Uint32 delta_ticks)
 	{
 		Shared::CheckClip(mClipTimer, mClip, 50, mpInfo->maxClips, mpInfo->maxClips-1);
 
-		if (mClip == mpInfo->maxClips-1 && !opened) 
+		if (mClip == mpInfo->maxClips-1 && !mOpened) 
 		{ 
-			opened = true;
-			spawn_Timer.Start();
+			mOpened = true;
+			mSpawnTimer.Start();
 		}
-
-		if (spawnCount < 10 && spawn_Timer.GetTicks() > 100)
+		
+		if (mSpawnCount < 10 && mSpawnTimer.GetTicks() > 100)
 		{
-			spawn_Timer.Start();
-			CPlayState::Instance()->item_list.push_back(new Gem(mX + mpInfo->width/2, mY, 825));
-			spawnCount++;
+			mSpawnTimer.Start();
+			CPlayState::Instance()->item_list.push_back(new Gem(mX + mpInfo->width / 2, mY, 825));
+			mSpawnCount++;
 		}
 	}
     

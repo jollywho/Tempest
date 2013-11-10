@@ -33,9 +33,10 @@ public:
     ~Bomb();
     void Update(const int& rDeltaTime);
 	void Draw(SDL_Surface* dest);
-    bool IsActive() { return mActive; };
 	void Start(int x, int y);
 	void BulletWipe();
+
+	bool IsActive() {return mActive;};
 private:
     Timer dps_timer;
 	Timer mClipTimer;
@@ -43,7 +44,6 @@ private:
 	static SpriteInfo* mpSprite;
 	int mClip;
 	int mX; int mY;
-
 };
 
 #endif

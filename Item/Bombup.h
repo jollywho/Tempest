@@ -26,15 +26,14 @@
 
 class Bombup : public Item
 {
-private:
-	SpriteInfo* mpPickup;
 public:
 	Bombup(int x, int y, int value);
     ~Bombup();
     void Update(Uint32 delta_ticks);
     void Draw(SDL_Surface *pdest);
+private:
+	SpriteInfo* mpPickup;
 };
-
 
 #endif
 

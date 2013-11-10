@@ -56,8 +56,8 @@ void Gem::Update(Uint32 delta_ticks)
 	Shared::CheckClip(mClipTimer, mClip, 50, mpInfo->maxClips, 0);
 
 	SDL_Rect playerbox = CPlayState::Instance()->mpPlayer->GetOuterBounds().rect;
-    float dx = (playerbox.x + playerbox.w/2) - (mOffset.x - Camera::Instance()->CameraX()  + mOffset.w/2);
-    float dy = (playerbox.y + playerbox.h/2) - (mOffset.y + mOffset.h/2);
+    float dx = (playerbox.x + playerbox.w / 2) - (mOffset.x - Camera::Instance()->CameraX()  + mOffset.w / 2);
+    float dy = (playerbox.y + playerbox.h / 2) - (mOffset.y + mOffset.h / 2);
 	double Length = sqrt(pow(dx, 2) + pow(dy, 2));
 
 	if (Length > 0.1f && Length < 200 && !mLockedOn)
@@ -66,21 +66,21 @@ void Gem::Update(Uint32 delta_ticks)
 		mAccelTimer.Start();
 	}
 
-	if (CPlayState::Instance()->mpPlayer->IsExploding() )
+	if (CPlayState::Instance()->mpPlayer->IsExploding())
 		mLockedOn = false;
 
 	if ((mLockedOn) && mDurationTimer.GetTicks() > 600)
 	{
 		float xa = dx / Length;
 		float ya = dy / Length;
-		yvel+=mAccelTimer.GetTicks()/50;
+		yvel += mAccelTimer.GetTicks() / 50;
 		mX += (xa * (yvel * (delta_ticks / 1000.f)));
 		mY += (ya * (yvel * (delta_ticks / 1000.f)));
 		CheckCollision();
 	}
 	else
 	{
-		if (mDurationTimer.GetTicks() > 200) yvel+= 500 * delta_ticks/1000.f;
+		if (mDurationTimer.GetTicks() > 200) yvel += 500 * delta_ticks / 1000.f;
 		mY += (yvel * (delta_ticks / 1000.f));
 	}
 	mOffset.x = mX;

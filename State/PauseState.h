@@ -34,21 +34,15 @@ class CPauseState : public CGameState
 public:
 	void Init();
 	void Cleanup();
-
 	void Pause();
 	void Resume();
-
 	void KeyInput(const SDL_Event& rEvent);
 	void Update(const int& rDeltaTime);
 	void Draw(SDL_Surface* pdest);
 
-	static CPauseState* Instance() {
-		return &mPauseState;
-	}
-
+	static CPauseState* Instance() {return &mPauseState;}
 protected:
-	CPauseState() { }
-
+	CPauseState() {}
 private:
 	static CPauseState mPauseState;
     int mAlpha;

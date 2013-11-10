@@ -69,9 +69,6 @@ struct RotationInfo
 	}
 };
 
-/*
-Static image interface class for storing and using images as sprites.
-*/
 class SpriteResource
 {
 public:
@@ -80,7 +77,7 @@ public:
 	static TextureInfo& RequestTextureResource(std::string dirname, std::string id);
 
 	static void AddResource(std::string dirname, std::string id, std::string filename,
-		int width, int height, int interval, int maxClips, bool vert=false);
+		int width, int height, int interval, int maxClips, bool vert = false);
 	
 	static void AddTexture(std::string dirname, std::string id, std::string filename,
 		int width, int height);
@@ -88,7 +85,7 @@ public:
 	static void AddRotationResource(std::string dirname, std::string id, std::string filename,
 		int width, int height, int interval, int maxClips,
 		int start, int end, int destWidth, int destHeight, 
-		int pivotX, int pivotY, int rotInterval=10);
+		int pivotX, int pivotY, int rotInterval = 10);
 
 	static void ClearAllResources();
 	static void ClearResourceDir(std::string dirname);

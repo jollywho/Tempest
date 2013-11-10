@@ -51,8 +51,8 @@ bool Move::Straight(Enemy& enemy, Uint32 delta_ticks)
 	double Length = sqrt(pow(dx, 2) + pow(dy, 2));
 	if (Length > 50)
 	{
-		dx =  dx / Length; dy = dy /Length;
-		enemy.Movement(dx * (mSpeed * (delta_ticks/1000.f)), dy * (mSpeed * (delta_ticks/1000.f)));
+		dx =  dx / Length; dy = dy / Length;
+		enemy.Movement(dx * (mSpeed * (delta_ticks / 1000.f)), dy * (mSpeed * (delta_ticks / 1000.f)));
 		return false;
 	}
 	if (Length < 5) 

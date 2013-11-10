@@ -40,20 +40,20 @@ OptionPanel::OptionPanel()
 
 	int h = mpFont->getHeight("BGM");
 	int w = mpFont->getWidth("BGM");
-	int menuheight = WINDOW_HEIGHT/2 - (h * 6)/2 - 84; //offset by top and bottom banners
-	mAlignX = WINDOW_WIDTH/2 - w*2.5;
+	int menuheight = WINDOW_HEIGHT / 2 - (h * 6) / 2 - 84; //offset by top and bottom banners
+	mAlignX = WINDOW_WIDTH / 2 - w * 2.5;
 
 	/* Frames */
-	mBgmFrame.x = mAlignX + w*2;
-	mBgmFrame.y = 140 - ( FRAME_HEIGHT/2);
-	mSfxFrame.x = mAlignX + w*2;
-	mSfxFrame.y = 200 - ( FRAME_HEIGHT/2);
+	mBgmFrame.x = mAlignX + w * 2;
+	mBgmFrame.y = 140 - (FRAME_HEIGHT / 2);
+	mSfxFrame.x = mAlignX + w * 2;
+	mSfxFrame.y = 200 - (FRAME_HEIGHT / 2);
 
-	mBgmSelector.y = mBgmFrame.y + (FRAME_HEIGHT/2 - SELECTOR_HEIGHT/2);
-	mSfxSelector.y = mSfxFrame.y + (FRAME_HEIGHT/2 - SELECTOR_HEIGHT/2);
+	mBgmSelector.y = mBgmFrame.y + (FRAME_HEIGHT / 2 - SELECTOR_HEIGHT / 2);
+	mSfxSelector.y = mSfxFrame.y + (FRAME_HEIGHT / 2 - SELECTOR_HEIGHT / 2);
 
-	mBgmSelector.x = mBgmFrame.x + (((double)SFX::BgmVolume(0)/MIX_MAX_VOLUME)*235);
-	mSfxSelector.x = mSfxFrame.x + (((double)SFX::SfxVolume(0)/MIX_MAX_VOLUME)*235);
+	mBgmSelector.x = mBgmFrame.x + (((double)SFX::BgmVolume(0) / MIX_MAX_VOLUME) * 235);
+	mSfxSelector.x = mSfxFrame.x + (((double)SFX::SfxVolume(0) / MIX_MAX_VOLUME) * 235);
 
 	mpMenu = new Menu();
 	mpMenu->AddItem(mAlignX, 140, "BGM");
@@ -86,7 +86,7 @@ void OptionPanel::KeyInput(const SDL_Event& rEvent)
 		if (mpMenu->GetIndex() == 3) {  }
 		if (mpMenu->GetIndex() == 4) {  }
 		if (mpMenu->GetIndex() == 5) {  }
-		if (mpMenu->GetIndex() == 6) { mBack = true; }
+		if (mpMenu->GetIndex() == 6) { mBack = true;}
 	}
 	if (rEvent.key.keysym.sym == SDLK_DOWN) mpMenu->MoveIndex(1);
 	else if (rEvent.key.keysym.sym == SDLK_UP) mpMenu->MoveIndex(-1);

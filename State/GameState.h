@@ -30,41 +30,40 @@ class CGameState
 public:
 	virtual void Init() = 0;
 	virtual void Cleanup() = 0;
-
 	virtual void Pause() = 0;
 	virtual void Resume() = 0;
-
 	virtual void KeyInput(const SDL_Event& rEvent) = 0;
 	virtual void Update(const int& rDeltaTime) = 0;
 	virtual void Draw(SDL_Surface* dest) = 0;
 
-	void ClearRequest() { 
+	void ClearRequest()
+	{ 
 		mStateChange = false; 
 		mStatePush = false;
 		mStatePop = false;
 	}
-
-	void ChangeState(States::State id) {
+	void ChangeState(States::State id)
+	{
 		mRequestedState = id;
 		mStateChange = true;
 	}
-
-	void PushState(States::State id) {
+	void PushState(States::State id)
+	{
 		mRequestedState = id;
 		mStatePush = true;
 	}
-
-	void PopState()	{ 
+	void PopState()
+	{ 
 		mStatePop = true; 
 	}
 
-	bool IsStateChange() { return mStateChange; }
-	bool IsStatePush() { return mStatePush; }
-	bool IsStatePop() { return mStatePop; }
+	bool IsStateChange() {return mStateChange;}
+	bool IsStatePush() {return mStatePush;}
+	bool IsStatePop() {return mStatePop;}
 
-	States::State RequestedState() { return mRequestedState; }
+	States::State RequestedState() {return mRequestedState;}
 protected:
-   	CGameState() { }
+   	CGameState() {}
 private:
 	States::State mRequestedState;
 	bool mStateChange;

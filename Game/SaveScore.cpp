@@ -21,7 +21,7 @@
 */
 #include "SaveScore.h"
 
-std::ostream& operator << ( std::ostream& ins, const ScoreIO::ScoreData& data )
+std::ostream& operator << (std::ostream& ins, const ScoreIO::ScoreData& data)
 {
 	ins << data.mode << std::endl;
 	ins << data.rank << std::endl;
@@ -54,15 +54,15 @@ namespace ScoreIO
 
 		if (!file.is_open())
 		{
-			std::cout<<"Error: opening file 'Scores.dat'."<<std::endl;
-			std::cout<<"Created: new 'Scores.dat'."<<std::endl;
+			printf("Error: opening file 'Scores.dat'.\n");
+			printf("Creating new 'Scores.dat'.\n");
 			file.open(filename.c_str(), std::ios_base::in | std::ios_base::trunc);
 			GenerateDefaults();
 			SaveScores();
 		}
 		else
 		{
-			while ( file >> data )
+			while (file >> data)
 				scores.insert(std::make_pair(std::make_pair(data.mode, data.rank), data));
 		}
 		file.close();
@@ -74,7 +74,7 @@ namespace ScoreIO
 		file.open("Scores.dat", std::ofstream::out);
 		if (!file.is_open())
 		{
-			std::cout<<"Error: opening file 'Scores.dat'."<<std::endl;
+			printf("Error: opening file 'Scores.dat'.\n");
 			return 1;
 		}
 
@@ -93,7 +93,7 @@ namespace ScoreIO
 		if (it != scores.end())
 			temp = it->second;
 		else
-			std::cout<<"Error retrieving score data: "<< mode << " " << rank << std::endl;
+			printf("Error retrieving score data: %s, %s\n", mode, rank);
 		return temp;
 	}
 
@@ -132,7 +132,7 @@ namespace ScoreIO
 		ScoreData ultra_default =	{"Ultra", 1, 5, 500000, "BBBBBBBB"};
 		ScoreData insane_default =	{"Insane", 1, 4, 900000, "CCCCCCCC"};
 
-		for (int i=0; i < 5; i++)
+		for (int i = 0; i < 5; i++)
 		{
 			scores.insert(std::make_pair(std::make_pair(normal_default.mode, normal_default.rank), normal_default));
 			scores.insert(std::make_pair(std::make_pair(ultra_default.mode, ultra_default.rank), ultra_default));
@@ -142,4 +142,4 @@ namespace ScoreIO
 			insane_default.rank++; insane_default.value -= 4999;
 		}
 	}
-}
+} //namespace ScoreIO

@@ -34,10 +34,10 @@ class Enemy;
 class Creator;
 class Action;
 
-struct ActionData { bool del; int loops; };
-struct AttackData { bool del; std::string bulletId; int speed; int rot; int interval; };
-struct MoveData { bool del; int move_type; int speed; int dest_x; int dest_y; int dir_type; };
-struct NoiseData { bool del; std::string id; bool is_music; };
+struct ActionData { bool del; int loops;};
+struct AttackData { bool del; std::string bulletId; int speed; int rot; int interval;};
+struct MoveData { bool del; int move_type; int speed; int dest_x; int dest_y; int dir_type;};
+struct NoiseData { bool del; std::string id; bool is_music;};
 
 struct EnData
 {
@@ -55,14 +55,15 @@ public:
 	static void registerit(const std::string& classname, Creator* creator);
 	static void Factory::ReadFile(std::string dir, std::list<Enemy*>& cache);
 private:
-	
 	static std::map<std::string, Creator*>& get_table();
 };
+
 std::istream& operator >> (std::istream& is, EnData& data);
 std::istream& operator >> (std::istream& is, ActionData& data);
 std::istream& operator >> (std::istream& is, AttackData& data);
 std::istream& operator >> (std::istream& is, MoveData& data);
 std::istream& operator >> (std::istream& is, NoiseData& data);
+
 #define REGISTER(classname) \
 	private: \
 	static const CreatorImpl<classname> creator;

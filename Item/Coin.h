@@ -26,15 +26,14 @@
 
 class Coin : public Item
 {
-private:
-	Timer mAccelTimer;
 public:
 	Coin(int x, int y, int value);
     ~Coin();
     void Update(Uint32 delta_ticks);
     void Draw(SDL_Surface *pdest);
+private:
+	Timer mAccelTimer;
 };
-
 
 #endif
 

@@ -33,7 +33,8 @@ public:
     void Draw(SDL_Surface *pdest);
 	void Update(Uint32 delta_ticks, float spd);
 	void Start();
-	bool IsDone() { return mDone; }
+
+	bool IsDone() {return mDone;}
 private:
 	SDL_Rect mBounds;
     SDL_Surface* mpSurface;

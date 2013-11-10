@@ -29,8 +29,8 @@ Decor::Decor()
 	mY = rand() % WINDOW_WIDTH;
 	
 	mClip = rand() % mpInfo->maxClips-1;
-	if (mClip == 0) show = true;
-	else show = false;
+	if (mClip == 0) mShow = true;
+	else mShow = false;
 	mClipTimer.Start();
 }
 
@@ -42,14 +42,14 @@ void Decor::Update(int delta_ticks)
 		mX = rand() % WINDOW_WIDTH;
 		mY = rand() % WINDOW_WIDTH;
 		mClip = rand() % 2;
-		if (mClip == 0) show = true;
-		else show = false;
+		if (mClip == 0) mShow = true;
+		else mShow = false;
 	}
-	mY += 50 * (delta_ticks/1000.f);
+	mY += 50 * (delta_ticks / 1000.f);
 }
 
 void Decor::Draw(SDL_Surface *pdest)
 {
-	if (show)
+	if (mShow)
 		Shared::DrawSurface(mX, mY, mpInfo->pSurface, pdest, &mpInfo->pClips[mClip]);
 }

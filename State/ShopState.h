@@ -31,25 +31,20 @@ class FontInfo;
 class NSprite;
 class Shop;
 
-
 class CShopState : public CGameState
 {
 public:
 	void Init();
 	void Cleanup();
-
 	void Pause();
 	void Resume();
-
 	void KeyInput(const SDL_Event& rEvent);
 	void Update(const int& rDeltaTime);
 	void Draw(SDL_Surface* pdest);
 
-	static CShopState* Instance() {
-		return &mShopstate;
-	}
+	static CShopState* Instance() {return &mShopstate;}
 protected:
-	CShopState() { }
+	CShopState() {}
 private:
 	static CShopState mShopstate;
 	Shop* mpShop;

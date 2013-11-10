@@ -42,9 +42,8 @@ public:
 	void DrawTop(SDL_Surface* pdest);
 private:
 	std::list<PlayerBullet*> mpBulletList;
-	SDL_Surface* mpTitle;
 	int mIndex;
-
+	SDL_Surface* mpTitle;
 	NSprite* mpPlayer;
 };
  

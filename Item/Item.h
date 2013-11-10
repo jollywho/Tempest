@@ -27,9 +27,6 @@
 
 struct SpriteInfo;
 
-//todo: bonus shroud
-//todo: merge receive frame with message surface
-//		(expand from center)
 class Item
 {
 public:
@@ -38,14 +35,14 @@ public:
     static void Init();
     static void Cleanup();
     bool mDelete;
-    bool RequestDelete() { return mDelete; };
+    bool RequestDelete() {return mDelete;};
 	virtual void Update(Uint32 delta_ticks){};
 	virtual void Draw(SDL_Surface *pdest){};
     void CheckCollision();
 	void CheckWallCollision(double w, double h);
 	bool CheckOffscreen(double x, double y, double h);
 	static void SetBonus(int val);
-	bool Air() { return mAir; }
+	bool Air() {return mAir;}
 protected:
     int mClip;
     SDL_Rect mOffset;
@@ -60,5 +57,6 @@ protected:
 	int mSpawnSide;
 	static SDL_Surface* smpPickupFrameInfo;
 };
+
 #endif
 

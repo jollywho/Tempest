@@ -51,8 +51,8 @@ EnemyBullet::EnemyBullet(std::string id, float x, float y, int angle, int ch_tim
 	mExplode = CPlayState::Instance()->mpPlayer->IsBombActive();
 	mpRotInfo = &SpriteResource::RequestRotationResource("Attack", id);
 	mspExpInfo = &SpriteResource::RequestResource("Attack","enemy_bullet_explode");
-	mX = mX - mpRotInfo->width/2;
-    mY = mY - mpRotInfo->height/2;
+	mX = mX - mpRotInfo->width / 2;
+    mY = mY - mpRotInfo->height / 2;
 }
 
 EnemyBullet::~EnemyBullet()
@@ -63,24 +63,24 @@ void EnemyBullet::DetectCollision()
 {
 	if (CPlayState::Instance()->mpPlayer->IsExploding()) 
 		return;
-	if (IsCollision(CPlayState::Instance()->mpPlayer->GetBounds())) { CPlayState::Instance()->mpPlayer->TakeHit(); return; }
+	if (IsCollision(CPlayState::Instance()->mpPlayer->GetBounds())) { CPlayState::Instance()->mpPlayer->TakeHit(); return;}
 }
 
 bool EnemyBullet::IsCollision(HitBox& obj)
 {
-    float dx = (obj.rect.x + obj.wm) - (mX - Camera::Instance()->CameraX()  + mpRotInfo->width/2);
+    float dx = (obj.rect.x + obj.wm) - (mX - Camera::Instance()->CameraX()  + mpRotInfo->width / 2);
 	if (dx > 200) 
 		return false;
-    float dy = (obj.rect.y + obj.hm) - (mY - Camera::Instance()->CameraY2() + mpRotInfo->height/2);
+    float dy = (obj.rect.y + obj.hm) - (mY - Camera::Instance()->CameraY2() + mpRotInfo->height / 2);
 	if (dy > 200)
 		return false;
 
 	double Length = sqrt(pow(dx, 2) + pow(dy, 2));
 
 	int radii = obj.wm + mpRotInfo->width/4;
-	if ( ( dx * dx )  + ( dy * dy ) < radii * radii )  {
+	if ((dx * dx)  + (dy * dy) < radii * radii)  {
 		mExplode = true;
-		return true; }
+		return true;}
 	else
 		return false;
 }
@@ -89,31 +89,31 @@ void EnemyBullet::Destroy()
 {
 	//only active bullets when bombed spawn coins
     if (!mExplode)
-        CPlayState::Instance()->item_list.push_back(new Coin(mX + mpRotInfo->width/2, mY + mpRotInfo->height/2, 25));
+        CPlayState::Instance()->item_list.push_back(new Coin(mX + mpRotInfo->width / 2, mY + mpRotInfo->height / 2, 25));
      mExplode = true;
 }
 
 void EnemyBullet::CheckBounds()
 {
-	if( mX + mpRotInfo->width - Camera::Instance()->CameraX() < GAME_BANNER_WIDTH )
+	if(mX + mpRotInfo->width - Camera::Instance()->CameraX() < GAME_BANNER_WIDTH)
 	{
 		mDelete = true;
 	}
-	else if( mX - Camera::Instance()->CameraX() > GAME_LEVEL_WIDTH )
+	else if(mX - Camera::Instance()->CameraX() > GAME_LEVEL_WIDTH)
 	{
 		mDelete = true;
 	}
-	if( mY + mpRotInfo->height - Camera::Instance()->CameraY2() < 0 )
+	if(mY + mpRotInfo->height - Camera::Instance()->CameraY2() < 0)
 	{
 		mDelete = true;
 	}
-	else if( mY - Camera::Instance()->CameraY2() > GAME_BOUNDS_HEIGHT )
+	else if(mY - Camera::Instance()->CameraY2() > GAME_BOUNDS_HEIGHT)
 	{
 		mDelete = true;
 	}
 }
 
-void EnemyBullet::Update( const int& rDeltaTime )
+void EnemyBullet::Update(const int& rDeltaTime)
 {
     if (!mExplode)
     {
@@ -125,8 +125,8 @@ void EnemyBullet::Update( const int& rDeltaTime )
 		if (mClip == mspExpInfo->maxClips - 1) mDelete = true;
 		Shared::CheckClip(mClipTimer, mClip, mspExpInfo->interval, mspExpInfo->maxClips,0);
 	}
-	mX += (xvel * ( rDeltaTime / 1000.f ));
-	mY += (yvel * ( rDeltaTime / 1000.f ));
+	mX += (xvel * (rDeltaTime / 1000.f));
+	mY += (yvel * (rDeltaTime / 1000.f));
 
     CheckBounds();
 }
@@ -135,7 +135,7 @@ void EnemyBullet::Draw(SDL_Surface* pdest)
 { 
     if (!mExplode)
     {
-        Camera::Instance()->DrawSurface(mX - mpRotInfo->width/2, mY - mpRotInfo->height/2,
+        Camera::Instance()->DrawSurface(mX - mpRotInfo->width / 2, mY - mpRotInfo->height / 2,
 			mpRotInfo->pSurface[mClip][mAngle], pdest, NULL);
     }
     else

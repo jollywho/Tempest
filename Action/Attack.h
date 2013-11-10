@@ -27,6 +27,10 @@
 
 class Attack : public Action
 {
+public:
+	Attack(bool del, std::string bullet_id, int speed, int rot, int interval);
+	~Attack();
+	void Update(Enemy& enemy, Uint32 delta_ticks);
 private:
 	std::string mBulletId;
 	int mSpeed;
@@ -35,10 +39,6 @@ private:
 	int mInterval;
 	Timer mTimer;
 	int mCount;
-public:
-	Attack(bool del, std::string bullet_id, int speed, int rot, int interval);
-	~Attack();
-	void Update(Enemy& enemy, Uint32 delta_ticks);
 };
 
 

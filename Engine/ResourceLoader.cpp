@@ -28,7 +28,7 @@
 std::string ResourceLoader::msDir;
 
 std::istream& operator >> (std::istream& is, Resource::Texture& data)
-{	is >> data.id >> data.filename >> data.width >> data.height; return is; }
+{	is >> data.id >> data.filename >> data.width >> data.height; return is;}
 
 std::istream& operator >> (std::istream& is, Resource::Sprite& data)
 {
@@ -55,7 +55,7 @@ std::istream& operator >> (std::istream& is, Resource::Music& data)
 
 std::istream& operator >> (std::istream& is, Resource::Explosion& data)
 {	is >> data.id >> data.spriteId >> data.magnitude >> data.delay >> data.offsetX
-		 >> data.offsetY >> data.residue; return is; }
+		 >> data.offsetY >> data.residue; return is;}
 
 void ResourceLoader::ReadFile(std::string dir, std::string file_name)
 {
@@ -67,8 +67,8 @@ void ResourceLoader::ReadFile(std::string dir, std::string file_name)
     file.open(filename.c_str(), std::ios_base::in);
 
     if (!file.is_open()) {
-        std::cout<<"***Error: opening file: " << file_name << "***\n"<<std::endl;
-        return; }
+        printf("***Error: opening file: %s ***\n", file_name);
+        return;}
 
     while (!file.eof())
     {
@@ -84,13 +84,13 @@ void ResourceLoader::ReadFile(std::string dir, std::string file_name)
 					file >> tx;
 					SpriteResource::AddTexture(msDir, tx.id, tx.filename, tx.width, tx.height);
 				}
-				if (meta =="Sprite")
+				if (meta == "Sprite")
 				{
 					Resource::Sprite sp;
 					file >> sp;
 					SpriteResource::AddResource(msDir, sp.id, sp.filename, sp.width, sp.height, sp.inteval, sp.maxClips, sp.vert);
 				}
-				if (meta =="RotSprite")
+				if (meta == "RotSprite")
 				{
 					Resource::RotSprite rs;
 					file >> rs;

@@ -26,17 +26,16 @@
 
 class Chest : public Item
 {
-private:
-	int spawnCount;
-	Timer spawn_Timer;
-	bool opened;
 public:
 	Chest(int x, int y, int value);
     ~Chest();
     void Update(Uint32 delta_ticks);
     void Draw(SDL_Surface *pdest);
+private:
+	int mSpawnCount;
+	Timer mSpawnTimer;
+	bool mOpened;
 };
-
 
 #endif
 

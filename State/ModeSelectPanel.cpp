@@ -41,7 +41,7 @@ Some type of selector using icons
 
 */
 Point HIDE_POINT = Point(-500, -500);
-Point START_POINT = Point(WINDOW_WIDTH/2, WINDOW_HEIGHT/2);
+Point START_POINT = Point(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 
 ModeSelectPanel::ModeSelectPanel()
 {
@@ -54,16 +54,17 @@ ModeSelectPanel::ModeSelectPanel()
 	mpMode = new NSprite(HIDE_POINT.x, HIDE_POINT.y, &SpriteResource::RequestResource("UI", "mode_normal"), false, true);
 	mpPanel = NULL;
 	mpMenu = new Menu();
-	//
-    mpMenu->AddItem(WINDOW_WIDTH/2, 200, "Normal");
-	mpMenu->AddItem(WINDOW_WIDTH/2, 260, "Ultra");
-    mpMenu->AddItem(WINDOW_WIDTH/2, 320, "Insane");
+
+    mpMenu->AddItem(WINDOW_WIDTH / 2, 200, "Normal");
+	mpMenu->AddItem(WINDOW_WIDTH / 2, 260, "Ultra");
+    mpMenu->AddItem(WINDOW_WIDTH / 2, 320, "Insane");
 }
 
 ModeSelectPanel::~ModeSelectPanel()
 {
 	printf("-ModeSelectPanel Deleted-\n");
-	if (mpPanel != NULL) {
+	if (mpPanel != NULL)
+	{
 		delete mpPanel;
 		mpPanel = NULL;
 	}
@@ -88,7 +89,8 @@ void ModeSelectPanel::KeyInput(const SDL_Event& rEvent)
 			mMode = START_POINT;
 			delete mpMode;
 			mpMode = new NSprite(mMode.x, mMode.y, 
-					&SpriteResource::RequestResource("UI", GameScore::GetModeEquivalent(mpMenu->GetIndex(), true)), false, true);
+					&SpriteResource::RequestResource("UI", GameScore::GetModeEquivalent(mpMenu->GetIndex(),
+					true)), false, true);
 
 			GameScore::Instance()->SetMode(mpMenu->GetIndex());
 			mpPanel = new PlayerSelectPanel(); mpMenu->Reset();
@@ -114,7 +116,7 @@ void ModeSelectPanel::Update(const int& rDeltaTime)
 		else
 			mpPanel->Update(rDeltaTime);
 
-		if (mMode.y > GAME_UI_MODE_Y) mMode.y -= 300 * rDeltaTime/1000.f;
+		if (mMode.y > GAME_UI_MODE_Y) mMode.y -= 300 * rDeltaTime / 1000.f;
 		else mMode.y = GAME_UI_MODE_Y;
 			
 		mpMode->SetPos(mMode);

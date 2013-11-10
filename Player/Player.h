@@ -44,18 +44,19 @@ public:
     ~Player();
 	void Spawn();
     void KeyInput(const SDL_Event& rEvent);
-    void Update( const int& rDeltaTime);
+    void Update(const int& rDeltaTime);
     void Draw(SDL_Surface *pdest);
-    HitBox& GetBounds();
-    HitBox& GetOuterBounds();
-	Point GetCenter();
+	void WeaponLevelUp();
 	void TakeHit();
 	void Knockback(float xv, float yv, int force);
 	static void SetWeaponType(WeaponType type);
-	bool IsExploding() { return mExplode; }
+
+    HitBox& GetBounds();
+    HitBox& GetOuterBounds();
+	Point GetCenter();
+	bool IsExploding() {return mExplode;}
 	bool IsBombActive();
-	void WeaponLevelUp();
-	Weapon* GetWpn() { return mspWpn; }
+	Weapon* GetWpn() {return mspWpn;}
 private:
 	void HandleMovement(const int& rDeltaTime);
 	void HandleAttacks(const int& rDeltaTime);

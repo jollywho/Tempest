@@ -48,12 +48,12 @@ private:
 public:
 	ItemDetail(ItemData data);
 	~ItemDetail();
-	
 	void Update(Uint32 delta_ticks);
 	void Draw(SDL_Surface *pdest, Point& p);
-	std::string& GetName() { return mData.id; }
-	unsigned int GetPrice() { return mData.price; }
-	ItemData& GetData() { return mData; }
+
+	std::string& GetName() {return mData.id;}
+	unsigned int GetPrice() {return mData.price;}
+	ItemData& GetData() {return mData;}
 };
 
 #endif

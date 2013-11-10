@@ -26,16 +26,15 @@
 
 class Quartz : public Item
 {
-private:
-	Timer mAccelTimer;
-	bool mLockedOn;
 public:
 	Quartz(int x, int y, int value);
     ~Quartz();
     void Update(Uint32 delta_ticks);
     void Draw(SDL_Surface *pdest);
+private:
+	Timer mAccelTimer;
+	bool mLockedOn;
 };
-
 
 #endif
 

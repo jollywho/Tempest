@@ -37,10 +37,17 @@ std::istream& operator >> (std::istream& is, NodeData& data)
 
 	is >> data.page >> data.id >> data.row >> data.col >> data.price
 		>> req_size >> build_size;
-	for (size_t i=0; i<req_size; i++) 
-		{ is >> name; data.req.push_back(name); }
-	for (size_t i=0; i<build_size; i++) 
-		{ is >> name; data.build.push_back(name); }
+
+	for (size_t i = 0; i < req_size; i++)
+	{ 
+		is >> name;
+		data.req.push_back(name);
+	}
+	for (size_t i = 0; i < build_size; i++)
+	{ 
+		is >> name;
+		data.build.push_back(name);
+	}
 	return is;
 }
 
@@ -56,8 +63,11 @@ std::istream& operator >> (std::istream& is, ItemData& data)
 	ItemProperty property;
 	
 	is >> data.id >> data.full_name >> data.price >> property_count;
-	for (size_t i=0; i<property_count; i++) 
-		{ is >> property; data.properties.push_back(property); }
+	for (size_t i = 0; i < property_count; i++)
+	{
+		is >> property;
+		data.properties.push_back(property);
+	}
 	return is;
 }
 
@@ -67,10 +77,12 @@ Shop::Shop(Point& s, Point& e) : MAX_PAGES(3), mClick(false), mDClick(false)
 	ReadItemFile();
 	ReadNodeFile();
 	mpSelector = new ItemSelector();
+
 	mpPageleft = new NSprite(s.x + 45, s.y + 45,
 		&SpriteResource::RequestResource("Shop", "page_left"));
 	mpPageright = new NSprite(e.x - 45, e.y + 45,
 		&SpriteResource::RequestResource("Shop", "page_right"));
+
 	FindItem("flamesword").SetEnable(true);
 }
 
@@ -81,12 +93,14 @@ void Shop::ReadItemFile()
 	filename.insert(0, "Script/");
     file.open(filename.c_str(), std::ios_base::in);
 
-    if (!file.is_open()) {
+    if (!file.is_open())
+	{
         printf("***Error: opening file: %s ***\n", filename);
-        return; }
+        return;
+	}
 
     while (!file.eof())
-    {
+	{
 		ItemData data;
 		file >> data;
 		mItems.insert(std::make_pair(data.id, new ItemDetail(data)));
@@ -101,12 +115,14 @@ void Shop::ReadNodeFile()
 	filename.insert(0, "Script/");
     file.open(filename.c_str(), std::ios_base::in);
 
-    if (!file.is_open()) {
+    if (!file.is_open())
+	{
         printf("***Error: opening file: %s ***\n", filename);
-        return; }
+        return;
+	}
 
     while (!file.eof())
-    {
+	{
 		NodeData data;
 		file >> data;
 		mTree.insert(std::make_pair(std::make_pair(data.page, data.id),
@@ -118,7 +134,7 @@ void Shop::ReadNodeFile()
 std::vector<Node*> Shop::GetBranches(std::vector<std::string> builds)
 {
 	std::vector<Node*> temp;
-	for (auto it = mTree.begin(); it != mTree.end(); ++it)
+	for (auto it = mTree.begin(); it != mTree.end(); ++it) 
 	{
 		if (std::find(builds.begin(), builds.end(),
 			it->second->ItemName()) != builds.end())
@@ -144,10 +160,15 @@ ItemDetail& Shop::FindDetail(std::string id)
 void Shop::BranchTo(std::string id)
 {
 	if (id == "") return;
+
+	bool direction;
 	Node& start = FindItem(id);
-	if (start.HasBranched()) return;
+
+	if (start.HasBranched()) 
+		return;
+
 	Point bottom = start.GetPoint();
-	bottom.x = bottom.x + 48/2;
+	bottom.x = bottom.x + 48 / 2;
 	bottom.y = bottom.y + 48;
 	std::vector<Node*>& builds = GetBranches(start.GetBuilds());
 	std::vector<Line*> paths;
@@ -155,26 +176,27 @@ void Shop::BranchTo(std::string id)
 	bottom.y += 24;
 	Point lefting = bottom;
 	Point righting = bottom;
-	bool direction;
+	
+
 	for (auto it = builds.begin(); it != builds.end(); ++it)
 	{
 		(*it)->SetEnable(true);
 		int left = (int)(*it)->GetTPoint().x - (int)start.GetTPoint().x;
-		//if left > 0 do lefting; else do righting
-		for (int i=0; i<left*2; ++i) //lefting
+		for (int i = 0; i < left * 2; ++i) //lefting
 		{
 			direction = true;
 			lefting.x += -24;
 			paths.push_back(new Line(lefting, 1));
 		}
+
 		int right = (int)start.GetTPoint().x - (int)(*it)->GetTPoint().x;
-		// if right > 0 do lefting; else do righting
-		for (int i=0; i<right*2; ++i) //righting
+		for (int i = 0; i < right * 2; ++i) //righting
 		{ 
 			direction = false;
 			paths.push_back(new Line(righting, 1));
 			righting.x += 24; //first element is already right-aligned
 		}
+
 		if (direction)
 			paths.push_back(new Line(lefting, 0));
 		else
@@ -206,6 +228,7 @@ int Shop::ItemCost(Node& n, int money)
 	int tally = 0;
 	std::vector<std::string> req_items = n.GetRequirements();
 	std::map<int ,ItemDetail*> inv_items = Inventory::Items();
+
 	for (auto it = inv_items.begin(); it != inv_items.end(); it++)
 	{
 		if (std::find(req_items.begin(), req_items.end(),
@@ -229,11 +252,23 @@ void Shop::Purchase(Node& d)
 void Shop::KeyInput(const SDL_Event& rEvent)
 {
 	mHover = Point(rEvent.motion.x, rEvent.motion.y);
-	if (!mClick && rEvent.button.button == SDL_BUTTON_LEFT) { mClick = true; mClickTimer.Start(); }
-	else if (mClick && mClickTimer.GetTicks() < 100) { mDClick = true; }
-	else { mClickTimer.Start(); mClick = false; mDClick = false; }
-	if (rEvent.key.keysym.sym == SDLK_LEFT) ChangePage(-1);
-	if (rEvent.key.keysym.sym == SDLK_RIGHT) ChangePage(1);
+	if (!mClick && rEvent.button.button == SDL_BUTTON_LEFT) 
+	{
+		mClick = true;
+		mClickTimer.Start();
+	}
+	else if (mClick && mClickTimer.GetTicks() < 100)
+		mDClick = true;
+	else 
+	{ 
+		mClickTimer.Start();
+		mClick = false;
+		mDClick = false;
+	}
+	if (rEvent.key.keysym.sym == SDLK_LEFT)
+		ChangePage(-1);
+	if (rEvent.key.keysym.sym == SDLK_RIGHT)
+		ChangePage(1);
 }
 
 void Shop::ChangePage(int dir)
@@ -253,8 +288,10 @@ void Shop::Update(Uint32 delta_ticks)
 		{
 			if (!it->second->IsEnabled())
 				continue;
+
 			mpSelector->MoveSelector(*it->second,
 				FindDetail(it->second->ItemName()));
+
 			if (it->second->IsClick()) 
 				Purchase(*it->second);
 			if (mDClick)
@@ -273,7 +310,9 @@ void Shop::Update(Uint32 delta_ticks)
 void Shop::Draw(SDL_Surface *pdest)
 {
 	for (auto it = mTree.begin(); it != mTree.end(); it++)
-		if (it->first.first == mPage) { it->second->Draw(pdest); }
+		if (it->first.first == mPage)
+			it->second->Draw(pdest);
+
 	mpSelector->Draw(pdest);
 	mpPageleft->Draw(pdest);
 	mpPageright->Draw(pdest);

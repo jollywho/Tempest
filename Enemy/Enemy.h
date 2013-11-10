@@ -32,6 +32,28 @@ class Action;
 
 class Enemy
 {
+public:
+    explicit Enemy(std::string id, int x, int y, std::list<Action*>& actions);
+	~Enemy();
+	void Decide(Uint32 delta_ticks);
+	void FlashRed(SDL_Surface* pSurface, SDL_Rect* pTargetClips);
+    void FlashClear();
+	
+	void Movement(const float& x, const float& y);
+
+    static void Init();
+    static void Cleanup();
+
+	virtual void Update(Uint32 delta_ticks) = 0;
+    virtual void Draw(SDL_Surface *pdest) = 0;
+	virtual void TakeHit(int dmg) = 0;
+
+	bool CheckBounds();
+    bool RequestDelete() {return mDelete;}
+	bool IsExploding() {return mExplode;}
+	bool IsAir() {return mAir;}
+	bool IsHit() {return mHit;}
+	SDL_Rect GetBounds() {return mHitbox;};
 protected:
 	SpriteInfo* mpInfo;
     SDL_Rect mHitbox;
@@ -63,28 +85,6 @@ protected:
 	bool Explode(bool isDelete);
 	bool CheckHealth();
 	void DetectCollision();
-public:
-    explicit Enemy(std::string id, int x, int y, std::list<Action*>& actions);
-	~Enemy();
-
-    static void Init();
-    static void Cleanup();
-
-	virtual void Update(Uint32 delta_ticks) = 0;
-    virtual void Draw(SDL_Surface *pdest) = 0;
-	virtual void TakeHit(int dmg) = 0;
-
-	void Decide(Uint32 delta_ticks);
-	void FlashRed(SDL_Surface* pSurface, SDL_Rect* pTargetClips);
-    void FlashClear();
-	bool CheckBounds();
-	void Movement(const float& x, const float& y);
-
-    bool RequestDelete() { return mDelete; };
-	bool IsExploding() { return mExplode; }
-	bool IsAir() { return mAir; }
-	bool IsHit() { return mHit; }
-	SDL_Rect GetBounds() { return mHitbox; };
-	
 };
+
 #endif

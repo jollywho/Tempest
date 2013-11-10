@@ -35,23 +35,25 @@ class CIntroState : public CGameState
 public:
 	void Init();
 	void Cleanup();
-
 	void Pause() {}
 	void Resume() {}
 	void Back();
-
 	void KeyInput(const SDL_Event& rEvent);
 	void Update(const int& rDeltaTime);
 	void Draw(SDL_Surface* pdest);
 
-	static CIntroState* Instance() {
-		return &mIntroState;
-	}
+	static CIntroState* Instance() {return &mIntroState;}
 protected:
-	CIntroState() { }
+	CIntroState() {}
 	void MenuAction();
 private:
 	static CIntroState mIntroState;
+	bool mEnter; 
+	bool mExit; 
+	bool mFadeout; 
+	bool mSpan;
+
+	Decor* mpDecorList[50];
     Menu* mpMenu;
 	Panel* mpPanel;
 	SDL_Surface* mpBackgroundSurface;
@@ -67,13 +69,6 @@ private:
 
 	SDL_Surface* mpBorderTop;
 	SDL_Surface* mpBorderBot;
-
-	Decor* mpDecorList[50];
-
-	bool mEnter; 
-	bool mExit; 
-	bool mFadeout; 
-	bool mSpan;
 };
 
 #endif

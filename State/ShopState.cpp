@@ -57,7 +57,7 @@ void CShopState::Resume()
 
 void CShopState::KeyInput(const SDL_Event& rEvent)
 {
-	if (rEvent.key.keysym.sym == SDLK_BACKQUOTE) { PopState(); }
+	if (rEvent.key.keysym.sym == SDLK_BACKQUOTE) { PopState();}
 	mpShop->KeyInput(rEvent);
 	if (rEvent.button.button == SDL_BUTTON_LEFT) printf("%i,%i\n", rEvent.motion.x, rEvent.motion.y);
 }

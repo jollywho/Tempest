@@ -32,8 +32,8 @@ Node::Node(NodeData data, ItemDetail* item) :
 	mBranched = false;
 	mClick = false;
 	mpBorder = &SpriteResource::RequestTextureResource("Shop", "node");
-	mPos = Point((WINDOW_WIDTH/2 - SIZE/2) + mData.col * SIZE,
-		(SHOP_OFFSET_Y + SIZE/2) + mData.row * SIZE);
+	mPos = Point((WINDOW_WIDTH / 2 - SIZE / 2) + mData.col * SIZE,
+		(SHOP_OFFSET_Y + SIZE / 2) + mData.row * SIZE);
 }
 
 Node::~Node()

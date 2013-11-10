@@ -42,16 +42,16 @@ void CIntroState::Init()
 
 	mAlpha = 255;
 
-	for(int i=0; i<50; i++)
+	for(int i = 0; i < 50; i++)
 		mpDecorList[i] = new Decor();
 
     mpMenu = new Menu();
-	//
-    mpMenu->AddItem(WINDOW_WIDTH/2, 200, "New Game");
-    mpMenu->AddItem(WINDOW_WIDTH/2, 260, "Stage Jump");
-	mpMenu->AddItem(WINDOW_WIDTH/2, 320, "Results");
-    mpMenu->AddItem(WINDOW_WIDTH/2, 380, "Options");
-    mpMenu->AddItem(WINDOW_WIDTH/2, 440, "Exit");
+
+    mpMenu->AddItem(WINDOW_WIDTH / 2, 200, "New Game");
+    mpMenu->AddItem(WINDOW_WIDTH / 2, 260, "Stage Jump");
+	mpMenu->AddItem(WINDOW_WIDTH / 2, 320, "Results");
+    mpMenu->AddItem(WINDOW_WIDTH / 2, 380, "Options");
+    mpMenu->AddItem(WINDOW_WIDTH / 2, 440, "Exit");
 
 	mBackground.x = 0; mBackground2.x = -1280;
 	mBorderTop = -42; mBorderBot = WINDOW_HEIGHT;
@@ -69,12 +69,14 @@ void CIntroState::Cleanup()
 {
 	printf("CIntroState Cleanup\n");
     delete mpMenu;
-	for(int i=0; i<50; i++)
+	for(int i = 0; i < 50; i++)
 		delete mpDecorList[i];
+
 	SDL_FreeSurface(mpBackgroundSurface);
 	SDL_FreeSurface(mpBorderTop);
 	SDL_FreeSurface(mpBorderBot);
-	if (mpPanel != NULL) {
+	if (mpPanel != NULL)
+	{
 		delete mpPanel;
 		mpPanel = NULL;
 	}
@@ -107,10 +109,10 @@ void CIntroState::KeyInput(const SDL_Event& rEvent)
 		//if (rEvent.z) debug
 		{
 			mpMenu->Select();
-			if (mpMenu->GetIndex() == 1) { mpPanel = new ModeSelectPanel(); }
-			if (mpMenu->GetIndex() == 3) { mpPanel = new ScorePanel(); }
-			if (mpMenu->GetIndex() == 4) { mpPanel = new OptionPanel(); }
-			if (mpMenu->GetIndex() == 5) { SDL_Event event_quit; event_quit.type = SDL_QUIT;  SDL_PushEvent(&event_quit); }
+			if (mpMenu->GetIndex() == 1) { mpPanel = new ModeSelectPanel();}
+			if (mpMenu->GetIndex() == 3) { mpPanel = new ScorePanel();}
+			if (mpMenu->GetIndex() == 4) { mpPanel = new OptionPanel();}
+			if (mpMenu->GetIndex() == 5) { SDL_Event event_quit; event_quit.type = SDL_QUIT;  SDL_PushEvent(&event_quit);}
 		}
 		if (rEvent.key.keysym.sym == SDLK_DOWN) mpMenu->MoveIndex(1);
 		else if (rEvent.key.keysym.sym == SDLK_UP) mpMenu->MoveIndex(-1);
@@ -143,7 +145,7 @@ void CIntroState::Update(const int& rDeltaTime)
 	}
 
 	mpMenu->Update(rDeltaTime, mAlpha);
-	for(int i=0; i<50; i++)
+	for(int i = 0; i < 50; i++)
 		mpDecorList[i]->Update(rDeltaTime);
 
 	mBackground.x += 1; mBackground2.x += 1;
@@ -156,8 +158,8 @@ void CIntroState::Update(const int& rDeltaTime)
 	{
 		if (!mSpan && mBorderTop < 0)
 		{
-			mBorderTop+=2;
-			mBorderBot-=2;
+			mBorderTop += 2;
+			mBorderBot -= 2;
 		}
 		else if (mAlpha > 0) 
 		{
@@ -174,16 +176,16 @@ void CIntroState::Update(const int& rDeltaTime)
 	{
 		if (mSpan && mBorderleft < 0)
 		{
-			mBorderleft+=2;
-			mBorderright-=2;
-			mBorderTop-=2;
-			mBorderBot+=2;
+			mBorderleft += 2;
+			mBorderright -= 2;
+			mBorderTop -= 2;
+			mBorderBot += 2;
 		}
 		else if (mFadeout && mAlpha < 255) 
 		{
 			if (mFadeTimer.GetTicks() > 10) 
 			{
-				mAlpha+=5;
+				mAlpha += 5;
 				mFadeTimer.Start(); 
 			} 
 		}
@@ -197,7 +199,7 @@ void CIntroState::Draw(SDL_Surface* pdest)
 	Shared::DrawSurface(mBackground.x, 0, mpBackgroundSurface, pdest);
 	Shared::DrawSurface(mBackground2.x, 0, mpBackgroundSurface, pdest);
 
-	for(int i=0; i<50; i++)
+	for(int i = 0; i < 50; i++)
 		mpDecorList[i]->Draw(pdest);
 
 	if (mpPanel == NULL && !mExit)
@@ -205,7 +207,7 @@ void CIntroState::Draw(SDL_Surface* pdest)
 	else
 		mpPanel->Draw(pdest);
 	
-	SPG_RectFilledBlend(pdest,0,0,WINDOW_WIDTH,WINDOW_HEIGHT, 0, mAlpha);
+	SPG_RectFilledBlend(pdest, 0, 0, WINDOW_WIDTH,WINDOW_HEIGHT, 0, mAlpha);
 
 	Shared::DrawSurface(0, mBorderTop, mpBorderTop, pdest);
 	Shared::DrawSurface(0, mBorderBot, mpBorderBot, pdest);

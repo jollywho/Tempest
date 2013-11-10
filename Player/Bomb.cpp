@@ -38,18 +38,21 @@ Bomb::Bomb()
 
 Bomb::~Bomb()
 {
-	//anything done here?
+
 }
 
 void Bomb::Start(int x, int y)
 {
-	mX = x - mpSprite->width/2 + Camera::Instance()->CameraX();
+	mX = x - mpSprite->width / 2 + Camera::Instance()->CameraX();
 	mY = y - mpSprite->height*2 + Camera::Instance()->CameraY2();
 
 	SFX::PlaySoundResource("bomb");
 	Camera::Instance()->StartShake(4);
-	if (mX < GAME_BANNER_WIDTH) mX = GAME_BANNER_WIDTH + 20;
-	if (mX + mpSprite->width > GAME_LEVEL_WIDTH) mX = GAME_LEVEL_WIDTH - mpSprite->width - 20;
+
+	if (mX < GAME_BANNER_WIDTH)
+		mX = GAME_BANNER_WIDTH + 20;
+	if (mX + mpSprite->width > GAME_LEVEL_WIDTH)
+		mX = GAME_LEVEL_WIDTH - mpSprite->width - 20;
 
 	mActive = true;
 	mClip = 0;
@@ -67,7 +70,7 @@ void Bomb::Update(const int& rDeltaTime)
 {
 	if (!mActive) return;
 	
-	if (mClip == mpSprite->maxClips/2)
+	if (mClip == mpSprite->maxClips / 2)
 		SFX::PlaySoundResource("bomb2");
 	Shared::CheckClip(mClipTimer, mClip, mpSprite->interval, mpSprite->maxClips, mpSprite->maxClips);
 	if (mClip >= mpSprite->maxClips) mActive = false;
@@ -85,6 +88,7 @@ void Bomb::Update(const int& rDeltaTime)
 
 void Bomb::Draw(SDL_Surface *pdest)
 {
-	if (!mActive) return;
+	if (!mActive)
+		return;
 	Camera::Instance()->DrawSurface(mX, mY, mpSprite->pSurface, pdest, &mpSprite->pClips[mClip]);
 }

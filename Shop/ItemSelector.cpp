@@ -34,7 +34,7 @@ ItemSelector::ItemSelector()
 	mpText = new NFont(SDL_GetVideoSurface(), mpFont->pSurface);
 	mInsf = "I f\nn u\ns n\nu d\nf s\nf\ni\nc\ni\ne\nn\nt";
 	mPropBox.x = 0; mPropBox.y = 0;
-	mPropBox.w = mpTexture->width; mPropBox.h = mpTexture->height/2;
+	mPropBox.w = mpTexture->width; mPropBox.h = mpTexture->height / 2;
 }
 
 ItemSelector::~ItemSelector()
@@ -59,7 +59,7 @@ void ItemSelector::MoveSelector(Node& n, ItemDetail& d)
 	mpDetail = &d.GetData();
 	mTitle = mpDetail->full_name;
 	mPrice = std::to_string(mpDetail->price);
-	mDmg = ""; mPropBox.h = mpTexture->height/2;
+	mDmg = ""; mPropBox.h = mpTexture->height / 2;
 	for (auto it = d.GetData().properties.begin(); it != d.GetData().properties.end(); ++it) {
 		mDmg += "+" + std::to_string(it->value) + it->name + "\n";
 		mPropBox.h += mpFont->height;

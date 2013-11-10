@@ -41,11 +41,10 @@ void CPauseState::Init()
 	mAlpha = 0;
 
     mpMenu = new Menu();
-	//
-    mpMenu->AddItem(WINDOW_WIDTH/2, 200, "Return");
-    mpMenu->AddItem(WINDOW_WIDTH/2, 260, "Options");
-	mpMenu->AddItem(WINDOW_WIDTH/2, 320, "Quit to Menu");
-    mpMenu->AddItem(WINDOW_WIDTH/2, 380, "Exit Game");
+    mpMenu->AddItem(WINDOW_WIDTH / 2, 200, "Return");
+    mpMenu->AddItem(WINDOW_WIDTH / 2, 260, "Options");
+	mpMenu->AddItem(WINDOW_WIDTH / 2, 320, "Quit to Menu");
+    mpMenu->AddItem(WINDOW_WIDTH / 2, 380, "Exit Game");
 
 	mEnter = true; 
 	mFadeout = false; 
@@ -57,7 +56,8 @@ void CPauseState::Init()
 void CPauseState::Cleanup()
 {
 	printf("CPauseState Cleanup\n");
-	if (mpPanel != NULL) {
+	if (mpPanel != NULL)
+	{
 		delete mpPanel;
 		mpPanel = NULL;
 	}
@@ -87,10 +87,10 @@ void CPauseState::KeyInput(const SDL_Event& rEvent)
 		if (rEvent.key.keysym.sym == SDLK_z)
 		{
 			mpMenu->Select();
-			if (mpMenu->GetIndex() == 1) { PopState(); }
-			if (mpMenu->GetIndex() == 2) { mpPanel = new OptionPanel(); mpMenu->Reset(); }
-			if (mpMenu->GetIndex() == 3) { ChangeState(State::INTRO); }
-			if (mpMenu->GetIndex() == 4) { SDL_Event event_quit; event_quit.type = SDL_QUIT;  SDL_PushEvent(&event_quit); }
+			if (mpMenu->GetIndex() == 1) { PopState();}
+			if (mpMenu->GetIndex() == 2) { mpPanel = new OptionPanel(); mpMenu->Reset();}
+			if (mpMenu->GetIndex() == 3) { ChangeState(State::INTRO);}
+			if (mpMenu->GetIndex() == 4) { SDL_Event event_quit; event_quit.type = SDL_QUIT;  SDL_PushEvent(&event_quit);}
 		}
 		if (rEvent.key.keysym.sym == SDLK_DOWN) mpMenu->MoveIndex(1);
 		else if (rEvent.key.keysym.sym == SDLK_UP) mpMenu->MoveIndex(-1);
@@ -114,7 +114,7 @@ void CPauseState::Update(const int& rDeltaTime)
 	mpMenu->Update(rDeltaTime, mAlpha);
 	if (mFadeTimer.GetTicks() > 10)
 	{
-		if (mAlpha < 100) mAlpha+=5;
+		if (mAlpha < 100) mAlpha += 5;
 		mFadeTimer.Start();
 	}
 }

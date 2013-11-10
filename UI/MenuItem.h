@@ -27,26 +27,26 @@
 
 class MenuItem
 {
+public:
+    explicit MenuItem(int indx, int x, int y, char& msg, TTF_Font& font);
+    ~MenuItem();
+    void Move(float x, float y);
+    void Update(Uint32 delta_ticks, int mAlpha, int indx);
+    void Draw(SDL_Surface* pdest);
+    void DrawSurface(int x, int y, SDL_Surface* pSource, SDL_Surface* pdest, SDL_Rect* pClip);
+
+    SDL_Rect GetBounds() {return mOffset;}
+	int Index() {return mIndex;}
 private:
 	TTF_Font* mpFont;
     SDL_Surface* mpOuterSurface;
     SDL_Surface* mpInnerSurface;
     SDL_Rect mOffset;
     Timer mClipTimer;
-    bool selected;
-    int prev;
-    char* text;
-public:
-    int index;
-    explicit MenuItem(int indx, int x, int y, char& msg, TTF_Font& font);
-    ~MenuItem();
-    void Move(float x, float y);
-    void Update(Uint32 delta_ticks, int mAlpha, int indx);
-    void Draw(SDL_Surface *pdest);
-    void DrawSurface( int x, int y, SDL_Surface* pSource, SDL_Surface* pdest, SDL_Rect* pClip );
-    SDL_Rect GetBounds() { return mOffset; }
+    bool mSelected;
+    int mPrev;
+	int mIndex;
+    char* mpText;
 };
-
-
 
 #endif

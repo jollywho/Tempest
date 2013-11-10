@@ -89,7 +89,7 @@ Uint32 NFont::getPixel(SDL_Surface *Surface, int x, int y)  // No Alpha?
             return *((Uint8*)Surface->pixels + y * Surface->pitch + x);
             break;
         case 2:
-            return *((Uint16*)Surface->pixels + y * Surface->pitch/2 + x);
+            return *((Uint16*)Surface->pixels + y * Surface->pitch / 2 + x);
             break;
         case 3:
             // Endian-correct, but slower
@@ -655,7 +655,7 @@ SDL_Rect NFont::drawToSurfacePos(int x, int y, NFont::AnimFn posFn) const
     data.charPos = charPos;
     data.charWidth = charWidth;
     data.maxX = maxPos;
-    data.dirtyRect = makeRect(x,y,0,0);
+    data.dirtyRect = makeRect(x,y, 0,0);
 
     data.index = -1;
     data.letterNum = 0;
@@ -672,7 +672,7 @@ SDL_Rect NFont::drawToSurfacePos(int x, int y, NFont::AnimFn posFn) const
     SDL_Rect srcRect, dstRect, copyS, copyD;
     
     if(c == NULL || src == NULL || dest == NULL)
-        return makeRect(x,y,0,0);
+        return makeRect(x,y, 0,0);
     
     srcRect.y = baseline - ascent;
     srcRect.h = dstRect.h = height;
@@ -775,7 +775,7 @@ SDL_Rect NFont::drawCenter(int x, int y, const char* formatted_text, ...) const
         if(*c == '\n')
         {
             *c = '\0';
-            drawToSurface(x - getWidth("%s", str)/2, y, str);
+            drawToSurface(x - getWidth("%s", str) / 2, y, str);
             *c = '\n';
             c++;
             str = c;
@@ -789,7 +789,7 @@ SDL_Rect NFont::drawCenter(int x, int y, const char* formatted_text, ...) const
     delete[] del;
 	delete s;
     
-    return drawToSurface(x - getWidth("%s", s)/2, y, s);
+    return drawToSurface(x - getWidth("%s", s) / 2, y, s);
 }
 
 SDL_Rect NFont::drawright(int x, int y, const char* formatted_text, ...) const

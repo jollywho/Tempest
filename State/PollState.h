@@ -35,19 +35,16 @@ class CPollState : public CGameState
 public:
 	void Init();
 	void Cleanup();
-
 	void Pause();
 	void Resume();
-
 	void KeyInput(const SDL_Event& rEvent);
 	void Update(const int& rDeltaTime);
 	void Draw(SDL_Surface* pdest);
 
-	static CPollState* Instance() {
-		return &mIntroState;
-	}
+	static CPollState* Instance() {return &mIntroState;}
 protected:
-	CPollState() { }
+	CPollState() {}
+
 	struct Tally
 	{
 		bool visible;
@@ -59,6 +56,7 @@ protected:
 		std::stringstream countStr;
 		std::stringstream totalStr;
 	};
+
 	bool TickCounter(Tally& rItem, int counterType, int countleft);
 	void Reset(Tally& rItem);
 private:

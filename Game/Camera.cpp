@@ -38,8 +38,7 @@ void Camera::Reset()
 {
 	msX = -50;
 	msY = GAMESCREEN_HEIGHT;
-	msSpeed = 0;
-	//msSpeed = CAMERA_NORMAL;
+	msSpeed = CAMERA_NORMAL;
 	msAccel = false;
 }
 
@@ -59,7 +58,6 @@ void Camera::StartShake(int magnitude)
 
 void Camera::JumpToEnd()
 {
-	//mY = CPlayState::level->levelend;
 	msY += 800;
 }
 
@@ -69,7 +67,7 @@ void Camera::Update(int playerX, Uint32 delta_ticks)
 	if (msAccel && msSpeed < CAMERA_FAST) 
 		msSpeed += .05f;
 
-	msX = ((playerX - GAME_BANNER_WIDTH)/480.f) * 160.f;
+	msX = ((playerX - GAME_BANNER_WIDTH) / 480.f) * 160.f;
 	
 	int max = CPlayState::Instance()->mpLevel->LevelEnd();
 	if (msY >= max)
@@ -77,7 +75,9 @@ void Camera::Update(int playerX, Uint32 delta_ticks)
 
 	if (msShake)
 	{
-		msX += ((rand() % (msShakeMagnitude * msShakeModifier)) - (msShakeMagnitude * msShakeModifier)) * (delta_ticks/1000.f);
+		msX += ((rand() % (msShakeMagnitude * msShakeModifier)) -
+			(msShakeMagnitude * msShakeModifier)) *
+			(delta_ticks / 1000.f);
 		msShakeCount++;
 		msShakeModifier = msShakeMax - msShakeCount + 1;
 		if (msShakeCount > msShakeMax)
@@ -88,10 +88,10 @@ void Camera::Update(int playerX, Uint32 delta_ticks)
 	msY2 = max-msY;
 }
 
-void Camera::DrawSurface( int x, int y, SDL_Surface* pSource, SDL_Surface* pdest, SDL_Rect* pClips )
+void Camera::DrawSurface(int x, int y, SDL_Surface* pSource, SDL_Surface* pdest, SDL_Rect* pClips)
 {
     SDL_Rect offset;
     offset.x = x - (Sint16)msX;
     offset.y = y - (Sint16)msY2;
-    SDL_BlitSurface(pSource, pClips, pdest, &offset );
+    SDL_BlitSurface(pSource, pClips, pdest, &offset);
 }

@@ -32,11 +32,8 @@ Level::Level()
 {
     printf("Level01 initialize\n");
 
-	/* initialize enemies used for this level */
-
-	/* Create layers used for this level */
 	mpBackground = Shared::LoadImage("Image/Levels/level02.png");
-	mpTopSurface = Shared::LoadImage("Image/Levels/fog.png");
+	mpTopSurface = Shared::LoadImage("Image/Levels/raindrops.png");
 	mpTop = new Layer(mpTopSurface, 720, 0);
 	mpTop->Start();
 
@@ -48,7 +45,6 @@ Level::Level()
 	mReader = enemy_cache.begin();
 }
 
-//Load onscreen enemies from the cache to the active list.
 void Level::LoadEnemies(std::list<Enemy*>& rList)
 {
 	if (!enemy_cache.empty())
@@ -68,13 +64,13 @@ Level::~Level()
 	SDL_FreeSurface(mpTopSurface);
 	for (auto it = enemy_cache.begin(); it != enemy_cache.end();) {
         delete (*it);
-        it++; }
+        it++;}
 	enemy_cache.clear();
 }
 
 void Level::Update(const int& rDeltaTime)
 {
-	mpTop->Update(rDeltaTime, Camera::Instance()->CameraSpeed()*3);
+	mpTop->Update(rDeltaTime, Camera::Instance()->CameraSpeed() * 3);
 	mBounds.x = Camera::Instance()->CameraX();
 	mBounds.y = Camera::Instance()->CameraY2() - WINDOW_HEIGHT;
 }

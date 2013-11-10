@@ -118,7 +118,8 @@ void SpriteResource::ClearAllResources()
 	}
 }
 
-void SpriteResource::AddRotationResource(std::string dirname, std::string id, std::string filename,
+void SpriteResource::AddRotationResource(std::string dirname,
+	std::string id, std::string filename,
 	int width, int height, int interval, int maxClips, 
 	int start, int end, int destWidth, int destHeight, 
 	int pivotX, int pivotY, int rotInterval)

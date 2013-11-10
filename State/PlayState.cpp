@@ -173,7 +173,7 @@ void CPlayState::Update(const int& rDeltaTime)
 		{
 			if (mFadeTimer.GetTicks() > 10) 
 			{
-				mAlpha-=5;
+				mAlpha -= 5;
 				mFadeTimer.Start(); 
 			} 
 		}
@@ -189,7 +189,7 @@ void CPlayState::Update(const int& rDeltaTime)
 		{
 			if (mFadeTimer.GetTicks() > 30) 
 			{
-				mAlpha+=5;
+				mAlpha += 5;
 				mFadeTimer.Start(); 
 			} 
 		}
@@ -227,9 +227,9 @@ void CPlayState::Draw(SDL_Surface* pdest)
 	DrawList(pl_bulletlist, pdest);
 	
 	if (mExit || mReturn)
-		SPG_RectFilledBlend(pdest,GAME_BANNER_WIDTH,0,GAME_BOUNDS_WIDTH,WINDOW_HEIGHT, 16777215, mAlpha);
+		SPG_RectFilledBlend(pdest,GAME_BANNER_WIDTH, 0,GAME_BOUNDS_WIDTH,WINDOW_HEIGHT, 16777215, mAlpha);
 	if (mEnter)
-		SPG_RectFilledBlend(pdest,GAME_BANNER_WIDTH,0,GAME_BOUNDS_WIDTH,WINDOW_HEIGHT, 0, mAlpha);
+		SPG_RectFilledBlend(pdest,GAME_BANNER_WIDTH, 0,GAME_BOUNDS_WIDTH,WINDOW_HEIGHT, 0, mAlpha);
 
 	mpPlayer->Draw(pdest);
 	DrawList(explosion_list, pdest);
@@ -238,5 +238,4 @@ void CPlayState::Draw(SDL_Surface* pdest)
 	DrawList(score_list, pdest);
 
 	mpInterface->Draw(pdest);
-	
 }

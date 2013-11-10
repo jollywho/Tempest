@@ -46,28 +46,6 @@ typedef States::State State;
 
 class CEngine 
 {
-private:
-	int mWidth;
-	int mHeight;
-	bool mQuit;
-	const char* mpTitle;
-	SDL_Surface* mpScreen;
-	bool mMinimized;
-	Uint32 mPrevTime;
-	Timer mDelta;
-protected:
-	void DoInput();
-	void DoThink();
-	void DoRender();
-	void DoRequest();
- 
-	void DoStateChange(States::State id);
-	void DoStatePush(States::State id);
-	void DoStatePop();
-	void SetSize(const int& rWidth, const int& rHeight);
-
-	std::vector<CGameState*> mpStates;
-	SDL_Event mEvent;
 public:
 	CEngine();
 	virtual ~CEngine();
@@ -86,7 +64,28 @@ public:
  
 	SDL_Surface* GetSurface();
 	CGameState*	StateInstance(State id);
-	int GetFPS();
+protected:
+	void DoInput();
+	void DoThink();
+	void DoRender();
+	void DoRequest();
+ 
+	void DoStateChange(States::State id);
+	void DoStatePush(States::State id);
+	void DoStatePop();
+	void SetSize(const int& rWidth, const int& rHeight);
+
+	std::vector<CGameState*> mpStates;
+	SDL_Event mEvent;
+private:
+	int mWidth;
+	int mHeight;
+	bool mQuit;
+	const char* mpTitle;
+	SDL_Surface* mpScreen;
+	bool mMinimized;
+	Uint32 mPrevTime;
+	Timer mDelta;
 };
  
 #endif // ENGINE_H

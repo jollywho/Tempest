@@ -29,10 +29,10 @@ int Inventory::mMoney;
 Inventory::Inventory()
 {
 	/*
-	Point origin = Point(WINDOW_WIDTH/2 - mpItem->width/2, 
+	Point origin = Point(WINDOW_WIDTH / 2 - mpItem->width / 2, 
 		WINDOW_HEIGHT - mpBorder->height);
 
-	for (int i=0; i< INV_SIZE; ++i)
+	for (int i = 0; i< INV_SIZE; ++i)
 		mpPoints[i] = Point(origin.x + (mpItem->width * i), origin.y);
 
 	*/
@@ -47,7 +47,7 @@ bool Inventory::AddItem(ItemDetail& d)
 {
 	auto it = mItems.end();
 	if (it->first < INV_SIZE) {
-		mItems.insert(std::make_pair(it->first+1, new ItemDetail(d)));
+		mItems.insert(std::make_pair(it->first + 1, new ItemDetail(d)));
 		return true;
 		}
 	else

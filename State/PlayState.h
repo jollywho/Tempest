@@ -40,21 +40,15 @@ class CPlayState : public CGameState
 public:
 	void Init();
 	void Cleanup();
-
 	void Pause();
 	void Resume();
-
 	void KeyInput(const SDL_Event& rEvent);
 	void Update(const int& rDeltaTime);
 	void Draw(SDL_Surface* dest);
-
     void ClearObjects();
-
 	void NewLevel();
 
-	static CPlayState* Instance() {
-		return &mPlayState;
-	}
+	static CPlayState* Instance() {return &mPlayState;}
 
 	bool mExit;
 	bool mEnter;
@@ -66,12 +60,12 @@ public:
 	std::list<Item*> item_list;
 	std::list<ScoreMSG*> score_list;
 	std::list<Explosion*> explosion_list;
-	//explosionlist
+
 	Player* mpPlayer;
 	Level* mpLevel;
 	Interface* mpInterface;
 protected:
-	CPlayState() { }
+	CPlayState() {}
     ~CPlayState();
 
 	template <class T>

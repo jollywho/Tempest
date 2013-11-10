@@ -29,16 +29,17 @@ struct TextureInfo;
 
 class Line
 {
-private:
-	int mDir;
-	Point mPos;
-	TextureInfo* mpSurface;
 public:
 	Line(Point p, int dir);
 	~Line(){};
 	void Update(Uint32 delta_ticks);
 	void Draw(SDL_Surface *pdest);
-	Point& GetPos() { return mPos; }
+
+	Point& GetPos() {return mPos;}
+private:
+	int mDir;
+	Point mPos;
+	TextureInfo* mpSurface;
 };
 
 #endif

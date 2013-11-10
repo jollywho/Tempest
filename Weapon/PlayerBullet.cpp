@@ -50,8 +50,8 @@ PlayerBullet::PlayerBullet(float x, float y, int angle, int rots) :
 	
 	mOffset.w = mpInfo->width;
     mOffset.h = mpInfo->height;
-    mX = x - mpInfo->width/2 + Camera::Instance()->Instance()->CameraX();
-    mY = y - mpInfo->height/2 + Camera::Instance()->Instance()->CameraY2();
+    mX = x - mpInfo->width / 2 + Camera::Instance()->Instance()->CameraX();
+    mY = y - mpInfo->height / 2 + Camera::Instance()->Instance()->CameraY2();
 	mOffset.x = mX;
     mOffset.y = mY;
     mClipTimer.Start();
@@ -76,14 +76,14 @@ void PlayerBullet::DetectCollision()
 		{
 			SDL_Rect enemybounds = (*it)->GetBounds();
 			
-			int dx = enemybounds.x + enemybounds.w/2 - mOffset.x + mOffset.w/2;
+			int dx = enemybounds.x + enemybounds.w / 2 - mOffset.x + mOffset.w / 2;
 			if (dx < 50) 
 			{
-				int dy = enemybounds.y + enemybounds.h/2 - mOffset.y + mOffset.h/2;
+				int dy = enemybounds.y + enemybounds.h / 2 - mOffset.y + mOffset.h / 2;
 				if (dy < 50)
 				{
-					int radii = enemybounds.w/2 + mOffset.w/4;
-					if ( ( dx * dx )  + ( dy * dy ) < radii * radii ) 
+					int radii = enemybounds.w / 2 + mOffset.w/4;
+					if ((dx * dx)  + (dy * dy) < radii * radii) 
 					{
 						(*it)->TakeHit(1);
 						mClip = 0;
@@ -100,7 +100,7 @@ void PlayerBullet::DetectCollision()
 void PlayerBullet::CheckBounds(Point camera_pos)
 {
 	//all player bullets are north directional and only need one bounds check
-	if( mOffset.y + mOffset.h - camera_pos.y < 0)
+	if(mOffset.y + mOffset.h - camera_pos.y < 0)
 		mDelete = true;
 }
 void PlayerBullet::Update(const int& rDeltaTime)
@@ -108,14 +108,14 @@ void PlayerBullet::Update(const int& rDeltaTime)
     if (!mExplode)
     {
 		Shared::CheckClip(mClipTimer, mClip, mpInfo->interval, mpInfo->maxClips,0);
-		mY += (yvel * ( rDeltaTime / 1000.f ));
-		mX += (xvel * ( rDeltaTime / 1000.f ));
+		mY += (yvel * (rDeltaTime / 1000.f));
+		mX += (xvel * (rDeltaTime / 1000.f));
 		CheckBounds(Point(Camera::Instance()->Instance()->Camera::Instance()->CameraX(), Camera::Instance()->Instance()->CameraY2()));
     }
     else
     {
-		mOffset.x = mOffset.x + (mOffset.w/2 - _expInfo->width/2);
-        mOffset.y = mOffset.y + (mOffset.h/2 - _expInfo->height/2);
+		mOffset.x = mOffset.x + (mOffset.w / 2 - _expInfo->width / 2);
+        mOffset.y = mOffset.y + (mOffset.h / 2 - _expInfo->height / 2);
 		if (mClip >= _expInfo->maxClips - 1) mDelete = true;
 		Shared::CheckClip(mClipTimer, mClip, _expInfo->interval, _expInfo->maxClips, 0);
 	}
@@ -127,7 +127,7 @@ void PlayerBullet::Draw(SDL_Surface *pdest)
 { 
     if (!mExplode)
     {
-        Camera::Instance()->Instance()->DrawSurface(mOffset.x - mOffset.w/2, mOffset.y-mOffset.h/2, mpInfo->pSurface[0][mAngle], pdest, NULL);
+        Camera::Instance()->Instance()->DrawSurface(mOffset.x - mOffset.w / 2, mOffset.y-mOffset.h / 2, mpInfo->pSurface[0][mAngle], pdest, NULL);
     }
     else
     {

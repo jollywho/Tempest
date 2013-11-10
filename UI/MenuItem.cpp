@@ -38,45 +38,45 @@ MenuItem::~MenuItem()
 MenuItem::MenuItem(int indx, int x, int y, char& msg, TTF_Font& font)
 {
 	mpFont = &font;
-    text = &msg;
+    mpText = &msg;
     TTF_SetFontOutline(mpFont, 1);
     mpOuterSurface = TTF_RenderText_Blended(mpFont, &msg, color);
     TTF_SetFontOutline(mpFont, 0);
     mpInnerSurface = TTF_RenderText_Blended(mpFont, &msg, color2);
 
 	int w = 0; int h = 0;
-	TTF_SizeText(mpFont, text, &w, &h);
+	TTF_SizeText(mpFont, mpText, &w, &h);
 	mOffset.w = w; mOffset.h = h;
-	mOffset.x = x-w/2; mOffset.y = y-h/2;
+	mOffset.x = x-w / 2; mOffset.y = y-h / 2;
 
-    selected = false;
-    index = indx; //static counter increment each time
-    prev = 0;
+    mSelected = false;
+    mIndex = indx; //static counter increment each time
+    mPrev = 0;
     mClipTimer.Start();
 }
 
 void MenuItem::Update(Uint32 delta_ticks, int mAlpha, int indx)
 {
-    if (prev != indx)
+    if (mPrev != indx)
     {
-        prev = indx;
-        if (index == indx)
+        mPrev = indx;
+        if (mIndex == indx)
         {
             SDL_FreeSurface(mpOuterSurface);
             SDL_FreeSurface(mpInnerSurface);
             TTF_SetFontOutline(mpFont, 1);
-            mpOuterSurface = TTF_RenderText_Blended(mpFont, text, color);
+            mpOuterSurface = TTF_RenderText_Blended(mpFont, mpText, color);
             TTF_SetFontOutline(mpFont, 0);
-            mpInnerSurface = TTF_RenderText_Blended(mpFont, text, selColor);
+            mpInnerSurface = TTF_RenderText_Blended(mpFont, mpText, selColor);
         }
         else
         {
             SDL_FreeSurface(mpOuterSurface);
             SDL_FreeSurface(mpInnerSurface);
             TTF_SetFontOutline(mpFont, 1);
-            mpOuterSurface = TTF_RenderText_Blended(mpFont, text, color);
+            mpOuterSurface = TTF_RenderText_Blended(mpFont, mpText, color);
             TTF_SetFontOutline(mpFont, 0);
-            mpInnerSurface = TTF_RenderText_Blended(mpFont, text, color2);
+            mpInnerSurface = TTF_RenderText_Blended(mpFont, mpText, color2);
         }
     }
 

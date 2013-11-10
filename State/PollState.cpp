@@ -41,12 +41,12 @@ void CPollState::Init()
 	mpFont = &FontResource::RequestFont("bobble_red");
 
 	/* Banners */
-	banner_middle_pos.x = WINDOW_WIDTH/2 - 112/2;
+	banner_middle_pos.x = WINDOW_WIDTH / 2 - 112 / 2;
 	banner_middle_pos.y = WINDOW_HEIGHT;
 	banner_left_pos.x = GAME_BANNER_WIDTH - 116;
-	banner_left_pos.y = WINDOW_HEIGHT/2 - 412/2;
+	banner_left_pos.y = WINDOW_HEIGHT / 2 - 412 / 2;
 	banner_right_pos.x = GAME_BOUNDS_WIDTH;
-	banner_right_pos.y = WINDOW_HEIGHT/2 - 412/2;
+	banner_right_pos.y = WINDOW_HEIGHT / 2 - 412 / 2;
 	mAlpha = 255;
 	banner_speed = 12;
 
@@ -59,10 +59,10 @@ void CPollState::Init()
 	mQuartz.value = 100;
 
 	/* NSprite */
-	mpGem = new NSprite(WINDOW_WIDTH/2, 50 + 140, &SpriteResource::RequestResource("Item", "gem"));
-	mpCoin = new NSprite(WINDOW_WIDTH/2, 50 + 250, &SpriteResource::RequestResource("Item", "coin"));
-	mpQuartz = new NSprite(WINDOW_WIDTH/2, 50 + 370, &SpriteResource::RequestResource("Item", "quartz"));
-	mpReady = new NSprite(WINDOW_WIDTH/2, 50 + 480, &SpriteResource::RequestResource("UI", "poll_ready_banner"));
+	mpGem = new NSprite(WINDOW_WIDTH / 2, 50 + 140, &SpriteResource::RequestResource("Item", "gem"));
+	mpCoin = new NSprite(WINDOW_WIDTH / 2, 50 + 250, &SpriteResource::RequestResource("Item", "coin"));
+	mpQuartz = new NSprite(WINDOW_WIDTH / 2, 50 + 370, &SpriteResource::RequestResource("Item", "quartz"));
+	mpReady = new NSprite(WINDOW_WIDTH / 2, 50 + 480, &SpriteResource::RequestResource("UI", "poll_ready_banner"));
 
 	mExit = false; mReady = false;
 	mEnter = true; mFadeout = false; mSkip = false;
@@ -112,7 +112,7 @@ void CPollState::Update(const int& rDeltaTime)
 		{
 			if (mFadeTimer.GetTicks() > 10) 
 			{
-				mAlpha-=5;
+				mAlpha -= 5;
 				mFadeTimer.Start(); 
 			} 
 		}
@@ -122,11 +122,11 @@ void CPollState::Update(const int& rDeltaTime)
 		}
 		if (banner_left_pos.x < banner_middle_pos.x - 102) //offset to overlap
 		{
-			banner_left_pos.x+=banner_speed/4;
-			banner_right_pos.x-=banner_speed/4;
+			banner_left_pos.x+=banner_speed / 4;
+			banner_right_pos.x-=banner_speed / 4;
 		}
 		else
-			if (mAlpha <= 2 )
+			if (mAlpha <= 2)
 				mEnter = false;
 	}
 	else if (mExit)

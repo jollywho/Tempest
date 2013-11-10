@@ -46,8 +46,8 @@ void Attack::Update(Enemy& enemy, Uint32 delta_ticks)
 	{
 		mTimer.Start();
 		SDL_Rect rec = enemy.GetBounds();
-		rec.x += rec.w/2;
-		rec.y += rec.h/2;
+		rec.x += rec.w / 2;
+		rec.y += rec.h / 2;
 		CPlayState::Instance()->en_bulletlist.push_back(new EnemyBullet(mBulletId, rec.x, rec.y, mRot));
 		--mCount;
 	}

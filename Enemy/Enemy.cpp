@@ -49,14 +49,14 @@ Enemy::Enemy(std::string id, int x, int y, std::list<Action*>& actions)
     mExplode = false;
     mHit = false;
 	mClip = 0;
-	mPos.x = x - mpInfo->width/2; 
-	mPos.y = y - mpInfo->height/2;
+	mPos.x = x - mpInfo->width / 2; 
+	mPos.y = y - mpInfo->height / 2;
 	mHitbox.x = mPos.x; 
 	mHitbox.y = mPos.y;
 	mHitbox.w = mpInfo->width; 
 	mHitbox.h = mpInfo->height;
 
-	std::copy( actions.begin(), actions.end(), std::back_inserter( mActions ) );
+	std::copy(actions.begin(), actions.end(), std::back_inserter(mActions));
 	mDo = mActions.begin();
 }
 
@@ -64,7 +64,7 @@ Enemy::~Enemy()
 {
 	for (auto it = mActions.begin(); it != mActions.end();) {
     delete (*it);
-    it++; }
+    it++;}
 }
 
 void Enemy::Init()
@@ -81,14 +81,14 @@ void Enemy::Decide(Uint32 delta_ticks)
 {
 	if (mActions.size() < 1) return;
 
-    if ((*mDo)->RequestNext()) { ++mDo; }
-    if (mDo == mActions.end()) { mDo = mActions.begin(); }
+    if ((*mDo)->RequestNext()) { ++mDo;}
+    if (mDo == mActions.end()) { mDo = mActions.begin();}
 
 	if ((*mDo)->IsLoopAction())
     {
         int counter = 0;
         int max = (*mDo)->ActionCount();
-        for (int i=0; i < max; i++)
+        for (int i = 0; i < max; i++)
         {
             mDo = std::next(mActions.begin(), + i);
             (*mDo)->Update(*this, delta_ticks);
@@ -127,7 +127,7 @@ void Enemy::FlashClear()
 
 bool Enemy::CheckBounds()
 {
-	if( mPos.y + mpInfo->height - Camera::Instance()->CameraY2() > 0 )
+	if(mPos.y + mpInfo->height - Camera::Instance()->CameraY2() > 0)
 	{
 		return true;
 	}
@@ -159,16 +159,18 @@ bool Enemy::CheckHealth()
 	if (mHealth <= 0)
 	{
 		if (mBombupSpawn)
-			CPlayState::Instance()->item_list.push_back(new Bombup(mPos.x + mpInfo->width/2, mPos.y + mpInfo->height/2, 0));
+			CPlayState::Instance()->item_list.push_back(new Bombup(
+				mPos.x + mpInfo->width / 2, mPos.y + mpInfo->height / 2, 0));
 		else if (mPowerupSpawn)
-			CPlayState::Instance()->item_list.push_back(new Powerup(mPos.x + mpInfo->width/2, mPos.y + mpInfo->height/2, 0));
+			CPlayState::Instance()->item_list.push_back(new Powerup(
+				mPos.x + mpInfo->width / 2, mPos.y + mpInfo->height / 2, 0));
 		else
 		{
-			for (int i=0; i<=mMaxHealth; i+=25)
+			for (int i = 0; i <= mMaxHealth; i += 25)
 				CPlayState::Instance()->item_list.push_back(
-				new Gem(mPos.x + rand() % mpInfo->width, mPos.y + mpInfo->height/2, 25));
+					new Gem(mPos.x + rand() % mpInfo->width, mPos.y + mpInfo->height / 2, 25));
 		}
-		Explosion::RequestExplosion(mId, mPos.x + mpInfo->width/2, mPos.y + mpInfo->height/2, 0, 10);
+		Explosion::RequestExplosion(mId, mPos.x + mpInfo->width / 2, mPos.y + mpInfo->height / 2, 0, 10);
 		SFX::PlaySoundResource("explode_light1");
 		mExplode = true;
 	}
@@ -177,7 +179,7 @@ bool Enemy::CheckHealth()
 
 void Enemy::DetectCollision()
 {
-	if( mPos.y - Camera::Instance()->CameraY2() > GAME_BOUNDS_HEIGHT)
+	if(mPos.y - Camera::Instance()->CameraY2() > GAME_BOUNDS_HEIGHT)
 	{
 		mDelete = true;
 		return;

@@ -39,8 +39,8 @@ void CContinueState::Init()
 	mScreenBounds.w = GAMESCREEN_WIDTH;
 	mScreenBounds.h = GAMESCREEN_HEIGHT;
 	
-	mpTitle = new NSprite(WINDOW_WIDTH/2, 195, &SpriteResource::RequestResource("UI", "cont_title"), false, true);
-	mpCounter = new NSprite(WINDOW_WIDTH/2, 195 + 48, &SpriteResource::RequestResource("UI", "cont_counter"), true);
+	mpTitle = new NSprite(WINDOW_WIDTH / 2, 195, &SpriteResource::RequestResource("UI", "cont_title"), false, true);
+	mpCounter = new NSprite(WINDOW_WIDTH / 2, 195 + 48, &SpriteResource::RequestResource("UI", "cont_counter"), true);
 	mpContTitle = Shared::LoadImage("Image/UI/cont_title_frame.png");
 	mpContCount = Shared::LoadImage("Image/UI/cont_count_frame.png");
 
@@ -48,8 +48,8 @@ void CContinueState::Init()
 
 	/* Menu */
     mpMenu = new Menu();
-    mpMenu->AddItem(WINDOW_WIDTH/2, 320, "Yes");
-    mpMenu->AddItem(WINDOW_WIDTH/2, 380, "No");
+    mpMenu->AddItem(WINDOW_WIDTH / 2, 320, "Yes");
+    mpMenu->AddItem(WINDOW_WIDTH / 2, 380, "No");
 
 	mEnter = true; 
 	mFadeout = false; 
@@ -75,8 +75,8 @@ void CContinueState::KeyInput(const SDL_Event& rEvent)
 	if (rEvent.key.keysym.sym == SDLK_z)
 	{
 		mpMenu->Select();
-		if (mpMenu->GetIndex() == 1) { PopState(); }
-		if (mpMenu->GetIndex() == 2) { ChangeState(State::INTRO); } //todo: gameoverstate
+		if (mpMenu->GetIndex() == 1) { PopState();}
+		if (mpMenu->GetIndex() == 2) { ChangeState(State::INTRO);} //todo: gameoverstate
 	}
 	if (rEvent.key.keysym.sym == SDLK_DOWN) mpMenu->MoveIndex(1);
 	else if (rEvent.key.keysym.sym == SDLK_UP) mpMenu->MoveIndex(-1);
@@ -91,7 +91,7 @@ void CContinueState::Update(const int& rDeltaTime)
 		PopState();
 	if (mFadeTimer.GetTicks() > 10)
 	{
-		if (mAlpha < 100) mAlpha+=5;
+		if (mAlpha < 100) mAlpha += 5;
 		mFadeTimer.Start();
 	}
 }
@@ -101,8 +101,8 @@ void CContinueState::Draw(SDL_Surface* pdest)
 	Shared::DrawSurface(GAME_BANNER_WIDTH, 0, mpScreen, pdest, &mScreenBounds);
 	SPG_RectFilledBlend(pdest, GAME_BANNER_WIDTH, 0, GAME_BOUNDS_WIDTH, GAME_BOUNDS_HEIGHT, 0, mAlpha);
 	mpMenu->Draw(pdest);
-	Shared::DrawSurface(WINDOW_WIDTH/2 - 225, 150, mpContTitle, pdest);
-	Shared::DrawSurface(WINDOW_WIDTH/2 - 98, 200, mpContCount, pdest);
+	Shared::DrawSurface(WINDOW_WIDTH / 2 - 225, 150, mpContTitle, pdest);
+	Shared::DrawSurface(WINDOW_WIDTH / 2 - 98, 200, mpContCount, pdest);
 	mpTitle->Draw(pdest);
 	mpCounter->Draw(pdest);
 }

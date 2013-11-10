@@ -53,13 +53,33 @@ std::istream& operator >> (std::istream& is, EnData& data)
     std::string meta;
 
     is >> data.id >> data.originX >> data.originY >> size;
-    for (size_t i=0; i<size; i++)
+    for (size_t i = 0; i<size; i++)
     {
         is >> meta;
-		if (meta == "Action") 	{ ActionData act;	is >> act;	data.actions.push_back(new Action(act.del, act.loops));	}
-		if (meta == "Attack") 	{ AttackData atk;	is >> atk;	data.actions.push_back(new Attack(atk.del, atk.bulletId, atk.speed, atk.rot, atk.interval));	}
-		if (meta == "Move")		{ MoveData mv;	is >> mv;		data.actions.push_back(new Move(mv.del, mv.move_type, mv.speed, mv.dest_x, mv.dest_y, mv.dir_type));	}
-		if (meta == "Noise")	{ NoiseData ns;	is >> ns;		data.actions.push_back(new Noise(ns.del, ns.id, ns.is_music));	}	
+		if (meta == "Action")
+		{ 
+			ActionData act;	
+			is >> act;	
+			data.actions.push_back(new Action(act.del, act.loops));	
+		}
+		if (meta == "Attack")
+		{ 
+			AttackData atk;	
+			is >> atk;
+			data.actions.push_back(new Attack(atk.del, atk.bulletId, atk.speed, atk.rot, atk.interval));
+		}
+		if (meta == "Move")
+		{ 
+			MoveData mv;
+			is >> mv;
+			data.actions.push_back(new Move(mv.del, mv.move_type, mv.speed, mv.dest_x, mv.dest_y, mv.dir_type));
+		}
+		if (meta == "Noise")
+		{
+			NoiseData ns;
+			is >> ns;
+			data.actions.push_back(new Noise(ns.del, ns.id, ns.is_music));
+		}	
     }
     return is;
 }
@@ -93,8 +113,8 @@ void Factory::ReadFile(std::string filename, std::list<Enemy*>& cache)
     file.open(filename.c_str(), std::ios_base::in);
 
     if (!file.is_open()) {
-        std::cout<<"**Error: opening file: " + filename << " ***" << std::endl;
-        return; }
+        printf("**Error: opening file: %s***\n");
+        return;}
 
     while (!file.eof())
     {

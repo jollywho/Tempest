@@ -29,9 +29,15 @@ struct SpriteInfo;
 struct TextureInfo;
 class NSprite;
 
-//UI Object for displaying a % value with some fancy animation.
 class HealthBar
 {
+public:
+    explicit HealthBar(std::string id_t, std::string id_s, Point& p, bool draw_border);
+    ~HealthBar();
+    void Update();
+    void Draw(SDL_Surface *pdest);
+	void SetValue(int& val) {mVal = val;}
+	void SetRecRate(int& val) {mRecRate = val;}
 private:
 	int MAX_BAR_WIDTH;
 	int MAX_VALUE;
@@ -41,7 +47,6 @@ private:
 	NSprite* mpExplosion;
 	
 	bool mBorder;
-
 	int mVal;
 	int mClip;
 	int mRecRate;
@@ -52,16 +57,6 @@ private:
     Timer mClipTimer;
 	Timer mRecTimer;
 	double mHpBarTarget;
-public:
-	//id_t: Texture border
-	//id_s: Sprite bar
-	//p:  Location
-	//u_border: Enable drawing border
-    explicit HealthBar(std::string id_t, std::string id_s, Point& p, bool draw_border);
-    ~HealthBar();
-    void Update();
-    void Draw(SDL_Surface *pdest);
-	void SetValue(int& val) { mVal = val; }
-	void SetRecRate(int& val) { mRecRate = val; }
 };
+
 #endif

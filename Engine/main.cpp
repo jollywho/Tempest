@@ -31,7 +31,7 @@ class CMyEngine: public CEngine
 {
 public:
 	void AdditionalInit ();
-	void Think( const int& rDeltaTime);
+	void Think(const int& rDeltaTime);
 	void Render(SDL_Surface* pdest);
  
 	void KeyUp(const int& iKeyEnum);
@@ -50,13 +50,13 @@ int main(int argc, char* argv[])  // <- this must match exactly, since SDL rewri
 {
     CMyEngine Engine;
 	
-	Engine.SetTitle( "Loading..." );
+	Engine.SetTitle("Loading...");
 	Engine.Init();
 
-	Engine.SetTitle( "Tempest" );
+	Engine.SetTitle("Tempest");
 	Engine.Start();
  
-	Engine.SetTitle( "Quitting..." );
+	Engine.SetTitle("Quitting...");
  
 	return 0;
 }
@@ -70,12 +70,12 @@ void CMyEngine::AdditionalInit()
 	DoStateChange(State::INTRO);
 }
  
-void CMyEngine::Think( const int& rDeltaTime )
+void CMyEngine::Think(const int& rDeltaTime)
 {
 	mpStates.back()->Update(rDeltaTime);
 }
  
-void CMyEngine::Render( SDL_Surface* pdest )
+void CMyEngine::Render(SDL_Surface* pdest)
 {
 	mpStates.back()->Draw(pdest);
 }

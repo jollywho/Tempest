@@ -42,6 +42,11 @@ enum Direction
 
 class Move : public Action
 {
+public:
+	Move(bool del, int move_type, int speed, int dest_x, int dest_y, int dir_type);
+	~Move();
+	void Update(Enemy& enemy, Uint32 delta_ticks);
+	bool Straight(Enemy& enemy, Uint32 delta_ticks);
 private:
 	int mDestx;
 	int mDesty;
@@ -50,11 +55,6 @@ private:
 	Timer mTimer;
 	Direction mDir;
 	int mAngle;
-public:
-	Move(bool del, int move_type, int speed, int dest_x, int dest_y, int dir_type);
-	~Move();
-	void Update(Enemy& enemy, Uint32 delta_ticks);
-	bool Straight(Enemy& enemy, Uint32 delta_ticks);
 };
 
 

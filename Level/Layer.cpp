@@ -29,7 +29,8 @@ Layer::Layer(SDL_Surface* pSrc, int height, int startPos)
 	mHeight = height;
 	mStartY = startPos;
 	mOffset = 0;
-	mY = 0; mY2 = mY - height;
+	mY = 0; 
+	mY2 = mY - height;
 	mFixed = false; mDone = false;
 	mStarted = false;
 }
@@ -41,7 +42,8 @@ Layer::Layer(SDL_Surface* pSrc, int height, int startPos, int horizontalOffset)
 	mHeight = height;
 	mStartY = startPos;
 	mOffset = horizontalOffset;
-	mY = 0; mY2 = mY - height;
+	mY = 0; 
+	mY2 = mY - height;
 	mFixed = true; mDone = false;
 	mStarted = false;
 }
@@ -68,7 +70,7 @@ void Layer::Update(Uint32 delta_ticks, float spd)
 		mY += spd;
 		mY2 += spd;
 		if (mY >= GAME_BOUNDS_HEIGHT)
-			mY = mY2-mHeight;
+			mY = mY2 - mHeight;
 		if (mY2 >= GAME_BOUNDS_HEIGHT)
 			mY2 = mY-mHeight;
 		mBounds.y = 0;
@@ -82,12 +84,12 @@ void Layer::Draw(SDL_Surface *pdest)
 	if (mDone || !mStarted) return;
 	if (!mFixed)
 	{
-	Shared::DrawSurface(GAME_BANNER_WIDTH, (int)mY, mpSurface, pdest, &mBounds);
-	Shared::DrawSurface(GAME_BANNER_WIDTH, (int)mY2, mpSurface, pdest, &mBounds);
+		Shared::DrawSurface(GAME_BANNER_WIDTH, (int)mY, mpSurface, pdest, &mBounds);
+		Shared::DrawSurface(GAME_BANNER_WIDTH, (int)mY2, mpSurface, pdest, &mBounds);
 	}
 	else
 	{
-	Shared::DrawSurface(GAME_BANNER_WIDTH + mOffset, (int)mY, mpSurface, pdest, NULL);
-	Shared::DrawSurface(GAME_BANNER_WIDTH + mOffset, (int)mY2, mpSurface, pdest, NULL);
+		Shared::DrawSurface(GAME_BANNER_WIDTH + mOffset, (int)mY, mpSurface, pdest, NULL);
+		Shared::DrawSurface(GAME_BANNER_WIDTH + mOffset, (int)mY2, mpSurface, pdest, NULL);
 	}
 }

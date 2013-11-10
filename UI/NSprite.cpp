@@ -25,8 +25,8 @@
 NSprite::NSprite(float x, float y, SpriteInfo* pInfo, bool doesStop, bool isReverse)
 	: mBounds(x, y, pInfo->width, pInfo->height)
 {
-	mBounds.rect.x = x - pInfo->width/2; 
-	mBounds.rect.y = y - pInfo->height/2;
+	mBounds.rect.x = x - pInfo->width / 2; 
+	mBounds.rect.y = y - pInfo->height / 2;
 
 	mpInfo = pInfo;
 	mDir = -1;
@@ -53,8 +53,8 @@ void NSprite::Reset()
 
 void NSprite::SetPos(Point& rCenter)
 {
-	mBounds.rect.x = rCenter.x - mpInfo->width/2; 
-	mBounds.rect.y = rCenter.y - mpInfo->height/2;
+	mBounds.rect.x = rCenter.x - mpInfo->width / 2; 
+	mBounds.rect.y = rCenter.y - mpInfo->height / 2;
 }
 
 void NSprite::Update()
@@ -67,7 +67,7 @@ void NSprite::Update()
 			if (mClip > 0 && mClip < mpInfo->maxClips-1)
 				mClip+=mDir;
 			else {
-				mDir = mDir * -1; mClip+=mDir; }
+				mDir = mDir * -1; mClip+=mDir;}
 			mClipTimer.Start();
 		}
 	}

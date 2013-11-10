@@ -41,6 +41,7 @@ public:
 	void StopAttack();
 	void Shift();
 	void Unshift();
+
 	bool TakeHit();
 private:
 	SpriteInfo* mpShotAnim;

@@ -37,6 +37,14 @@ class HealthBar;
 
 class Interface
 {
+public:
+    Interface();
+    ~Interface();
+    void Update(const int& rDeltaTime);
+    void Draw(SDL_Surface *pdest);
+    void DrawIcons(SDL_Surface *pdest);
+	void ActivateHub();
+	void UpdateIcons();
 private:
 	/* Fonts */
 	FontInfo* mpRedFont;
@@ -69,13 +77,6 @@ private:
 	HealthBar* mpManaright;
 	HealthBar* mpHealth;
 	HealthBar* mpShield;
-public:
-    Interface();
-    ~Interface();
-    void Update(const int& rDeltaTime);
-    void Draw(SDL_Surface *pdest);
-    void DrawIcons(SDL_Surface *pdest);
-	void ActivateHub();
-	void UpdateIcons();
 };
+
 #endif

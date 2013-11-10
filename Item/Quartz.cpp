@@ -50,11 +50,11 @@ void Quartz::Update(Uint32 delta_ticks)
 	if (pickedup) mDelete = true;
 	Shared::CheckClip(mClipTimer, mClip, 50, mpInfo->maxClips, 0);
 	SDL_Rect playerbox = CPlayState::Instance()->mpPlayer->GetOuterBounds().rect;
-    float dx = (playerbox.x + playerbox.w/2) - (mOffset.x - Camera::Instance()->CameraX()  + mOffset.w/2);
-    float dy = (playerbox.y + playerbox.h/2) - (mOffset.y - Camera::Instance()->CameraY2() + mOffset.h/2);
-	double Length = sqrt(pow(dx, 2) + pow(dy, 2));
+    float dx = (playerbox.x + playerbox.w / 2) - (mOffset.x - Camera::Instance()->CameraX()  + mOffset.w / 2);
+    float dy = (playerbox.y + playerbox.h / 2) - (mOffset.y - Camera::Instance()->CameraY2() + mOffset.h / 2);
+	double length = sqrt(pow(dx, 2) + pow(dy, 2));
 
-	if (Length > 0.1f && Length < 100 && mDurationTimer.GetTicks() > 600 && !mLockedOn)
+	if (length > 0.1f && length < 100 && mDurationTimer.GetTicks() > 600 && !mLockedOn)
 	{
 		mLockedOn = true;
 		mAccelTimer.Start();
@@ -62,9 +62,9 @@ void Quartz::Update(Uint32 delta_ticks)
 
 	if (mLockedOn)
 	{
-		float xa = dx / Length;
-		float ya = dy / Length;
-		yvel+=mAccelTimer.GetTicks()/50;
+		float xa = dx / length;
+		float ya = dy / length;
+		yvel += mAccelTimer.GetTicks() / 50;
 		mX += (xa * (yvel * (delta_ticks / 1000.f)));
 		mY += (ya * (yvel * (delta_ticks / 1000.f)));
 		CheckCollision();

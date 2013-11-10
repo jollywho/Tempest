@@ -69,7 +69,7 @@ ScoreMSG::~ScoreMSG()
 
 void ScoreMSG::Init()
 {
-	for (int i=0; i<4; i++)
+	for (int i = 0; i<4; i++)
 	{
 		std::stringstream ss;
 		ss << "Font/GoldNoonFade"<< i << ".png";
@@ -81,7 +81,7 @@ void ScoreMSG::Init()
 
 void ScoreMSG::Cleanup()
 {
-	for (int i=0; i<4; i++)
+	for (int i = 0; i<4; i++)
 		SDL_FreeSurface(mspSurfaceFade[i]);
 }
 
@@ -90,7 +90,7 @@ void ScoreMSG::Update(Uint32 delta_ticks)
 	Shared::CheckClip(mClipTimer, mClip, 300 + msExtend, 3, 3);
 	mX += xvel * (delta_ticks/1000.f);
 	mY += yvel * (delta_ticks/1000.f);
-	if (mDurationTimer.GetTicks() > 800 + msExtend) { mDelete = true; }
+	if (mDurationTimer.GetTicks() > 800 + msExtend) { mDelete = true;}
 	if (mValue < msTallyTotal)
 	{
 		mValue++;

@@ -25,17 +25,17 @@
 #include "Engine/SpriteResource.h"
 #include "Level/Level.h"
 
-std::map<std::string, std::list<ExplosionInfo>> Explosion::explosions;
+std::map<std::string, std::list<ExplosionInfo>> Explosion::msExplosions;
 
 Explosion::Explosion(int x, int y, int xv, int yv, ExplosionInfo nfo)
 {
-	m_delete = false;
-	info = &SpriteResource::RequestResource("Explosion", nfo.spriteId);
-	xVal = x-info->width/2 + nfo.offsetX;
-	yVal = y-info->height/2 + nfo.offsetY;
-	xVel = xv; yVel = yv;
-	clip = 0;
-	detTime = nfo.delay;
+	mDelete = false;
+	mpInfo = &SpriteResource::RequestResource("Explosion", nfo.spriteId);
+	mX = x-mpInfo->width / 2 + nfo.offsetX;
+	mY = y-mpInfo->height / 2 + nfo.offsetY;
+	mXVel = xv; mYVel = yv;
+	mClip = 0;
+	mDetTime = nfo.delay;
 
 	if (nfo.magnitude > 4)
 		Camera::Instance()->StartShake(nfo.magnitude);
@@ -43,10 +43,10 @@ Explosion::Explosion(int x, int y, int xv, int yv, ExplosionInfo nfo)
 	//if (nfo.residue)
 	//	CPlayState::Instance()->mpLevel->objectList.push_back(new LayerObjbect(x, y));
 
-	if (detTime != 0)  started = false;
-	else started = true;
+	if (mDetTime != 0)  mStarted = false;
+	else mStarted = true;
 
-	clip_Timer.Start();
+	mClipTimer.Start();
 }
 
 void Explosion::AddExplosionInfo(std::string expId, std::string spriteId,
@@ -56,10 +56,10 @@ void Explosion::AddExplosionInfo(std::string expId, std::string spriteId,
 	ExplosionInfo data;
 	data.spriteId = spriteId; data.delay = delay; data.residue = residue;
 	data.offsetX = offsetX; data.offsetY = offsetY; data.magnitude = magnitude;
-	auto temp = explosions.find(expId);
-	if (temp == explosions.end()) {
+	auto temp = msExplosions.find(expId);
+	if (temp == msExplosions.end()) {
 		dataList.push_back(data);
-		explosions.insert(std::make_pair(expId,  dataList));
+		msExplosions.insert(std::make_pair(expId,  dataList));
 	}
 	else
 		temp->second.push_back(data);
@@ -68,7 +68,7 @@ void Explosion::AddExplosionInfo(std::string expId, std::string spriteId,
 void Explosion::RequestExplosion(std::string expId, int x, int y, int xv, int yv)
 {
 	printf("%s requested: \n", expId.c_str());
-	auto temp = explosions.find(expId)->second;
+	auto temp = msExplosions.find(expId)->second;
 	std::list<ExplosionInfo>::const_iterator it;
 	for (auto it = temp.begin(); it != temp.end(); it++)
 	{
@@ -79,25 +79,25 @@ void Explosion::RequestExplosion(std::string expId, int x, int y, int xv, int yv
 
 void Explosion::ClearList()
 {
-	explosions.clear();
+	msExplosions.clear();
 }
 
 void Explosion::Update(Uint32 delta_ticks)
 {
-	if (!started && clip_Timer.GetTicks() > detTime) {
-		started = true; clip_Timer.Start(); }
-	if (started)
+	if (!mStarted && mClipTimer.GetTicks() > mDetTime) {
+		mStarted = true; mClipTimer.Start();}
+	if (mStarted)
 	{
-		if (clip >= info->maxClips-1)
-			m_delete = true;
-		Shared::CheckClip(clip_Timer, clip, info->interval, info->maxClips, 0);
-		xVal += xVel * ( delta_ticks / 1000.f );
-		yVal += yVel * ( delta_ticks / 1000.f );
+		if (mClip >= mpInfo->maxClips-1)
+			mDelete = true;
+		Shared::CheckClip(mClipTimer, mClip, mpInfo->interval, mpInfo->maxClips, 0);
+		mX += mXVel * (delta_ticks / 1000.f);
+		mY += mYVel * (delta_ticks / 1000.f);
 	}
 }
 
-void Explosion::Draw(SDL_Surface *dest)
+void Explosion::Draw(SDL_Surface *pdest)
 {
-	if (started)
-		Camera::Instance()->DrawSurface(xVal, yVal, info->pSurface, dest, &info->pClips[clip]);
+	if (mStarted)
+		Camera::Instance()->DrawSurface(mX, mY, mpInfo->pSurface, pdest, &mpInfo->pClips[mClip]);
 }

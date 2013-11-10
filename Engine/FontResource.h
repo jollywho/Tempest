@@ -40,11 +40,11 @@ struct FontInfo
 
 class FontResource
 {
-private:
-	static std::map<std::string, FontInfo*> msFontResources;
 public:
 	static void AddFont(std::string id, std::string filename);
 	static FontInfo& RequestFont(std::string id);
+private:
+	static std::map<std::string, FontInfo*> msFontResources;
 };
 
 #endif // FONTRESOURCE_H

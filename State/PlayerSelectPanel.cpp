@@ -32,7 +32,7 @@ PlayerSelectPanel::PlayerSelectPanel()
 	printf("-PlayerSelectPanel Created-\n");
 	mBack = false; mForward = false;
 	ResourceLoader::ReadFile("Player");
-	mpPlayer = new NSprite(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, &SpriteResource::RequestResource("Player", "angel_1"));
+	mpPlayer = new NSprite(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, &SpriteResource::RequestResource("Player", "angel_1"));
 	mpTitle = Shared::LoadImage("Image/UI/select_player_title.png");
 	mIndex = 1;
 }
@@ -42,9 +42,11 @@ PlayerSelectPanel::~PlayerSelectPanel()
 	printf("-PlayerSelectPanel Deleted-\n");
 	delete mpPlayer;
 	SDL_FreeSurface(mpTitle);
-	for (auto it = mpBulletList.begin(); it != mpBulletList.end();) {
+	for (auto it = mpBulletList.begin(); it != mpBulletList.end();)
+	{
 		delete (*it);
-		it++; }
+		it++; 
+	}
 	mpBulletList.clear();
 }
 
@@ -52,7 +54,7 @@ void PlayerSelectPanel::KeyInput(const SDL_Event& rEvent)
 {
 	if (rEvent.key.keysym.sym == SDLK_ESCAPE || rEvent.key.keysym.sym == SDLK_x) mBack = true;
 	if (1)
-	//if (rEvent.key.keysym.sym == SDLK_z) debug
+	//if (rEvent.key.keysym.sym == SDLK_z) //debug
 	{
 		mForward = true;
 	}
@@ -66,7 +68,7 @@ void PlayerSelectPanel::KeyInput(const SDL_Event& rEvent)
 		std::stringstream angel_name;
 		angel_name << "angel_" << mIndex;
 		delete mpPlayer;
-		mpPlayer = new NSprite(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, 
+		mpPlayer = new NSprite(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, 
 			&SpriteResource::RequestResource("Player", angel_name.str()));
 	}
 }
@@ -97,5 +99,5 @@ void PlayerSelectPanel::Draw(SDL_Surface *pdest)
 void PlayerSelectPanel::DrawTop(SDL_Surface *pdest)
 {
 	if (!mForward)
-		Shared::DrawSurface(0,0, mpTitle, pdest);
+		Shared::DrawSurface(0, 0, mpTitle, pdest);
 }

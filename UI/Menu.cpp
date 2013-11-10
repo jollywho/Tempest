@@ -68,8 +68,8 @@ void Menu::Update(Uint32 delta_ticks, int alpha)
 
 void Menu::MoveSelector(SDL_Rect& bounds)
 {
-    mSelector.x = (bounds.x + bounds.w/2) - mpInfo->width/2;
-    mSelector.y = (bounds.y + bounds.h/2) - mpInfo->height/2;
+    mSelector.x = (bounds.x + bounds.w / 2) - mpInfo->width / 2;
+    mSelector.y = (bounds.y + bounds.h / 2) - mpInfo->height / 2;
 }
 
 void Menu::Draw(SDL_Surface *pdest)

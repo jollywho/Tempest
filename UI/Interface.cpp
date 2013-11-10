@@ -37,12 +37,12 @@ Interface::Interface()
 	mpTitle = new Title("FOREST OF WIND");
 
 	/* Scores */ //todo: get a fixed width font for scores
-	int max_score_width = mpRedFont->pFont->getWidth("123456789012345")/2;
-	mpMode = new NSprite(WINDOW_WIDTH/2, GAME_UI_MODE_Y, 
+	int max_score_width = mpRedFont->pFont->getWidth("123456789012345") / 2;
+	mpMode = new NSprite(WINDOW_WIDTH / 2, GAME_UI_MODE_Y, 
 		&SpriteResource::RequestResource("UI", GameScore::Instance()->GetModeString()), false, true);
-	mpPlayer = new NSprite(WINDOW_WIDTH * 0.25 - max_score_width/2, GAME_UI_MODE_Y, 
+	mpPlayer = new NSprite(WINDOW_WIDTH * 0.25 - max_score_width / 2, GAME_UI_MODE_Y, 
 		&SpriteResource::RequestResource("UI", "player_title"), false, true);
-	mpHigh = new NSprite(WINDOW_WIDTH * 0.75 + max_score_width/2, GAME_UI_MODE_Y, 
+	mpHigh = new NSprite(WINDOW_WIDTH * 0.75 + max_score_width / 2, GAME_UI_MODE_Y, 
 		&SpriteResource::RequestResource("UI", "high_title"), false);
 
 	mpManaleft = new HealthBar("ui_left", "mana_left", Point(0, WINDOW_HEIGHT), true);

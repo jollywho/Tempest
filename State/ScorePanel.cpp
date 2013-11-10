@@ -41,10 +41,10 @@ ScorePanel::ScorePanel()
 	right = WINDOW_WIDTH + 50;
 	exit = false; enter = true; mov = right;
 	
-	middle = WINDOW_WIDTH/2 - 451/2;
-	int spacer = WINDOW_HEIGHT/2 - (113*4)/2;
+	middle = WINDOW_WIDTH / 2 - 451 / 2;
+	int spacer = WINDOW_HEIGHT / 2 - (113*4) / 2;
 	dir = -20;
-	for (int i=0; i<=4; i++)
+	for (int i = 0; i <= 4; i++)
 	{
 		bannerList[i].x = right;
 		bannerList[i].y = spacer + (i * 113);
@@ -70,16 +70,16 @@ void ScorePanel::KeyInput(const SDL_Event& rEvent)
 		exit = true; 
 		selChange = -1;
 		dir = -20;
-		if (modeSelection - 1 < 1) selChange = +2;
-		if (modeSelection - 1 > 3) selChange = -2;	
+		if (modeSelection - 1 < 1) selChange = + 2;
+		if (modeSelection - 1 > 3) selChange = - 2;	
 	}
 	if (rEvent.key.keysym.sym == SDLK_RIGHT)
 	{
 		exit = true;
 		selChange = 1;
 		dir = 20;
-		if (modeSelection + 1 < 1) selChange = +2;
-		if (modeSelection + 1 > 3) selChange = -2;
+		if (modeSelection + 1 < 1) selChange = + 2;
+		if (modeSelection + 1 > 3) selChange = - 2;
 	}
 	if (rEvent.key.keysym.sym == SDLK_x)
 		mBack = true;
@@ -95,7 +95,7 @@ void ScorePanel::Update(const int& rDeltaTime)
 			mov += dir;
 			mov_timer.Start();
 		}
-		if ((dir < 0 && mov < -451) || (dir > 0 && mov > WINDOW_WIDTH) ) 
+		if ((dir < 0 && mov < -451) || (dir > 0 && mov > WINDOW_WIDTH)) 
 		{
 			if (dir > 0) mov = -451;
 			if (dir < 0) mov = WINDOW_WIDTH + 50;
@@ -103,7 +103,7 @@ void ScorePanel::Update(const int& rDeltaTime)
 			selChange = 0;
 			exit = false; enter = true;
 		}
-		for (int i=0; i<5; i++)
+		for (int i = 0; i < 5; i++)
 			bannerList[i].x = mov;
 	}
 	if (enter)
@@ -113,7 +113,7 @@ void ScorePanel::Update(const int& rDeltaTime)
 			mov += dir;
 			mov_timer.Start();
 		}
-		if ((dir > 0 && mov > WINDOW_WIDTH/2 - 451/2) || (dir < 0 && mov < WINDOW_WIDTH/2 - 451/2))
+		if ((dir > 0 && mov > WINDOW_WIDTH / 2 - 451 / 2) || (dir < 0 && mov < WINDOW_WIDTH / 2 - 451 / 2))
 		{
 			enter = false;
 			mov = middle;
@@ -123,14 +123,14 @@ void ScorePanel::Update(const int& rDeltaTime)
 					&SpriteResource::RequestResource("UI", GameScore::GetModeEquivalent(modeSelection, true) + ".png"), false, true);
 
 		}
-		for (int i=0; i<5; i++)
+		for (int i = 0; i<5; i++)
 			bannerList[i].x = mov;
 	}
 }
 
 void ScorePanel::Draw(SDL_Surface* pdest) 
 {
-	for (int i=0; i<4; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		Shared::DrawSurface(bannerList[i].x, bannerList[i].y, banner, pdest);
 		ScoreIO::ScoreData temp = ScoreIO::SaveScore::GetScores(GameScore::GetModeEquivalent(modeSelection), i+1);
@@ -143,7 +143,7 @@ void ScorePanel::Draw(SDL_Surface* pdest)
 
 void ScorePanel::DrawTop(SDL_Surface* pdest)
 {
-	Shared::DrawSurface(0,1, mpTitle, pdest);
+	Shared::DrawSurface(0, 1, mpTitle, pdest);
 
 	if (!enter && !exit)
 		mpMode->Draw(pdest);
@@ -156,7 +156,7 @@ void ScorePanel::DrawMsg(int centerX, int centerY, int value)
 	msg << value;
 	width = score_font->getWidth(msg.str().c_str());
 	height = score_font->getHeight(msg.str().c_str());
-	score_font->draw(centerX - width/2, centerY - height/2, msg.str().c_str());
+	score_font->draw(centerX - width / 2, centerY - height / 2, msg.str().c_str());
 }
 
 void ScorePanel::DrawMsg(int centerX, int centerY, std::string msg)
@@ -164,5 +164,5 @@ void ScorePanel::DrawMsg(int centerX, int centerY, std::string msg)
 	int width = 0; int height = 0;
 	width = score_font->getWidth(msg.c_str());
 	height = score_font->getHeight(msg.c_str());
-	score_font->draw(centerX - width/2, centerY - height/2, msg.c_str());
+	score_font->draw(centerX - width / 2, centerY - height / 2, msg.c_str());
 }

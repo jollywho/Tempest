@@ -79,23 +79,13 @@ namespace Resource
 	};
 }
 
-//Static image interface class for storing and using images as sprites.
 class ResourceLoader
 {
 public:
 	static void ReadFile(std::string dir, std::string file_name="resx.dat");
 	static std::string msDir;
 };
-enum Resx
-{
-	Texture = 1,
-	Sprite = 2,
-	RotSprite = 3,
-	Font = 4,
-	Sound = 5,
-	Music = 6,
-	Explosion = 7,
-};
+
 std::istream& operator >> (std::istream& is, Resource::Texture& data);
 std::istream& operator >> (std::istream& is, Resource::Sprite& data);
 std::istream& operator >> (std::istream& is, Resource::RotSprite& data);

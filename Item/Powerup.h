@@ -26,15 +26,14 @@
 
 class Powerup : public Item
 {
-private:
-	SpriteInfo* mpPickup;
 public:
 	Powerup(int x, int y, int value);
     ~Powerup();
     void Update(Uint32 delta_ticks);
     void Draw(SDL_Surface *pdest);
+private:
+	SpriteInfo* mpPickup;
 };
-
 
 #endif
 

@@ -25,7 +25,6 @@
 #include <list>
 #include "Engine/Engine.h"
 
-
 class Layer;
 class Enemy;
 
@@ -36,8 +35,9 @@ public:
 	~Level();
     void Update(const int& rDeltaTime);
     void Draw(SDL_Surface *pdest);
-	int LevelEnd() { return mLevelEnd; }
 	void LoadEnemies(std::list<Enemy*>& rList);
+
+	int LevelEnd() {return mLevelEnd;}
 protected:
 	std::list<Enemy*> enemy_cache;
 	std::list<Enemy*>::iterator mReader;
@@ -48,6 +48,5 @@ protected:
 	SDL_Surface* mpTopSurface;
 	SDL_Rect mBounds;
 };
-
 
 #endif

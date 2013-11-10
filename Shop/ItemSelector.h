@@ -32,6 +32,17 @@ struct ItemData;
 
 class ItemSelector
 {
+public:
+    ItemSelector();
+    ~ItemSelector();  
+    void Update(Uint32 delta_ticks);
+    void Draw(SDL_Surface *pdest);
+	void MoveSelector(Node& n, ItemDetail& d);
+	void Reset() {mSelection = false;}
+	void Insufficient() {mInsufficient = true;}
+
+	std::string Branch() {return mTar;}
+	ItemSelector AddItem(int x, int y, char* msg);
 private:
 	bool mSelection;
 	bool mInsufficient;
@@ -46,18 +57,6 @@ private:
 	std::string mPrice;
 	std::string mDmg;
 	ItemData* mpDetail;
-public:
-    ItemSelector();
-    ~ItemSelector();
-    ItemSelector AddItem(int x, int y, char* msg);
-    void Update(Uint32 delta_ticks);
-    void Draw(SDL_Surface *pdest);
-	void MoveSelector(Node& n, ItemDetail& d);
-	void Reset() { mSelection = false; }
-	void Insufficient() { mInsufficient = true; }
-	std::string Branch() { return mTar; }
 };
- 
-
 
 #endif

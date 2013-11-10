@@ -30,14 +30,16 @@
 class ScoreMSG
 {
 public:
+    ScoreMSG(int x, int y, int xDir, int value);
+    ~ScoreMSG();  
+
     static void Init();
     static void Cleanup();
-    ScoreMSG(int x, int y, int xDir, int value);
-    ~ScoreMSG();    
-    bool RequestDelete() { return mDelete; };
-	
+  
     void Update(Uint32 delta_ticks);
     void Draw(SDL_Surface *pdest);
+
+	bool RequestDelete() {return mDelete;};
 private:
 	static Timer msTallyTimer;
 	static int msTallyTotal;
@@ -53,7 +55,6 @@ private:
 	bool mDelete;
 	Timer mClipTimer;
 };
-
 
 #endif
 

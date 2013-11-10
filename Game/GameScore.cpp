@@ -28,23 +28,23 @@ GameScore GameScore::g_GameScore;
 
 void GameScore::IncreaseScore(int value)
 {
-    g_score += value;
-	if (g_score > prevBonus)
+    mScore += value;
+	if (mScore > mPrevBonus)
 	{
-		prevBonus *= 20;
+		mPrevBonus *= 20;
 		IncreaseLives();
 	}
 }
 void GameScore::IncreaseLives()
 {
-	if (g_lives < MAX_LIVES)
-		g_lives++;
+	if (mLives < MAX_LIVES)
+		mLives++;
 }
 
 void GameScore::IncreaseBombups()
 {
 	if (mBombs < MAX_BOMBS) {
-		mBombs++; }
+		mBombs++;}
 	else
 		IncreaseScore(5000);
 }
@@ -64,13 +64,13 @@ void GameScore::SetMode(int mode)
 	switch (mode)
 	{
 	case 1:
-		g_mode = Mode::Normal;
+		mGMode = Mode::NORMAL;
 		break;
 	case 2:
-		g_mode = Mode::Ultra;
+		mGMode = Mode::ULTRA;
 		break;
 	case 3:
-		g_mode = Mode::Insane;
+		mGMode = Mode::INSANE;
 		break;
 	}
 }
@@ -79,17 +79,17 @@ std::string GameScore::GetModeString(bool fileFormat)
 {
 	std::string prefix;
 	std::string suffix;
-	switch(g_mode)
+	switch(mGMode)
 	{
-	case Mode::Normal:
+	case Mode::NORMAL:
 		prefix = "Normal";
 		suffix = "normal";
 		break;
-	case Mode::Ultra:
+	case Mode::ULTRA:
 		prefix = "Ultra";
 		suffix = "ultra";
 		break;
-	case Mode::Insane:
+	case Mode::INSANE:
 		prefix = "Insane";
 		suffix = "insane";
 		break;
@@ -97,7 +97,7 @@ std::string GameScore::GetModeString(bool fileFormat)
 		suffix = "normal";
 		break;
 	}
-	return fileFormat? prefix : "mode_" + suffix;
+	return fileFormat ? prefix : "mode_" + suffix;
 }
 
 std::string GameScore::GetModeEquivalent(int mode, bool fileFormat)
@@ -123,14 +123,14 @@ std::string GameScore::GetModeEquivalent(int mode, bool fileFormat)
 		suffix = "normal";
 		break;
 	}
-	return fileFormat? ("mode_" +  suffix) : prefix;
+	return fileFormat ? ("mode_" +  suffix) : prefix;
 }
 
 void GameScore::DecreaseLives()
 {
 	mLives++;
-	if (g_lives > 0)
-		g_lives--;
+	if (mLives > 0)
+		mLives--;
 
 	//todo: relink
 	//else if (g_continues > 0)
@@ -141,8 +141,8 @@ void GameScore::DecreaseLives()
 
 void GameScore::DecreaseContinues()
 {
-	g_continues--;
-	g_score = 0;
+	mContinues--;
+	mScore = 0;
 	mCoins = 0;
 	mGems = 0;
 	mQuartz = 0;
@@ -167,18 +167,17 @@ void GameScore::DecreaseCounter(int decrement, int counter)
 		mQuartz -= decrement;
 		break;
 	}
-	
 }
 
-void GameScore::IncreaseCoinCount() { if (mCoins < 9999) mCoins++; }
-void GameScore::IncreaseQuartzCount() { mQuartz++; }
-void GameScore::IncreaseGemCount() { mGems++; }
+void GameScore::IncreaseCoinCount() { if (mCoins < 9999) mCoins++;}
+void GameScore::IncreaseQuartzCount() { mQuartz++;}
+void GameScore::IncreaseGemCount() { mGems++;}
 
 void GameScore::ResetGame()
 {
-	g_continues = 3;
-	prevBonus = 1000;
-    g_score = 500000;
+	mContinues = 3;
+	mPrevBonus = 1000;
+    mScore = 500000;
 	ResetLevel();
 	ResetSpawn();
 	//todo: relink
@@ -199,6 +198,6 @@ void GameScore::ResetLevel()
 void GameScore::ResetSpawn()
 {
 	mBombs = MAX_BOMBS;
-	g_lives = MAX_LIVES;
-	g_bonus = 0;
+	mLives = MAX_LIVES;
+	mBonus = 0;
 }

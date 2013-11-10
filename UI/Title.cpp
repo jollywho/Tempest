@@ -25,7 +25,7 @@
 Title::Title(const char* title)
 {
 	mStart = true; mDone = false;
-	for (int i=0; i<4; i++)
+	for (int i = 0; i<4; i++)
 	{
 		std::ostringstream ss;
 		ss << "Font/GoldNoonFadeRev"<< i << ".png";
@@ -34,7 +34,7 @@ Title::Title(const char* title)
 	}
 	mLength = 0;
 	mMaxLength = 0;
-	for (int i=0; title[i] != '\0'; i++)
+	for (int i = 0; title[i] != '\0'; i++)
 	{
 		mChars[i].fade = 0;
 		mChars[i].ch[0] = title[i];
@@ -47,7 +47,7 @@ Title::Title(const char* title)
 
 Title::~Title()
 {
-	for (int i=0; i<3; i++)
+	for (int i = 0; i<3; i++)
 		SDL_FreeSurface(mspSurfaceFade[i]);
 }
 
@@ -60,7 +60,7 @@ void Title::Update(const int& rDeltaTime)
 		if (mTimer.GetTicks() > 90)
 		{
 			mLength++;
-			for (int i=0; i < mLength+1; i++)
+			for (int i = 0; i < mLength+1; i++)
 			{
 				if (mChars[i].fade < 3)
 				{
@@ -82,7 +82,7 @@ void Title::Update(const int& rDeltaTime)
 void Title::Draw(SDL_Surface *pdest)
 {
 	if (mDone) return;
-	for (int i=0; i < mLength; i++)
+	for (int i = 0; i < mLength; i++)
 	{
 		mpFont[mChars[i].fade].draw(mPos.x, mPos.y + (20 * i), mChars[i].ch);
 	}

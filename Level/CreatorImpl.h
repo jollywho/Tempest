@@ -46,7 +46,7 @@ public:
 	CreatorImpl<T>(const std::string& classname) : Creator(classname) {}
 	virtual ~CreatorImpl<T>() {}
 
-	virtual Enemy* create(int x, int y, std::list<Action*>& actions) { return new T(x,y,actions); }
+	virtual Enemy* create(int x, int y, std::list<Action*>& actions) {return new T(x,y,actions);}
 };
 
 #endif //_CREATORIMPL_H_

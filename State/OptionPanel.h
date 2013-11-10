@@ -34,7 +34,6 @@ class OptionPanel : public Panel
 public:
 	OptionPanel();
 	~OptionPanel();
-
 	void KeyInput(const SDL_Event& rEvent);
 	void Update(const int& rDeltaTime);
 	void Draw(SDL_Surface* pdest);

@@ -30,22 +30,20 @@ const float CAMERA_FAST = 2.5f;
 class Camera
 {
 public:
-	float CameraSpeed() { return msSpeed; }
     void Update(int playerX, Uint32 deltaTime);
-	float CameraY2() { return msY2; }
-	float CameraY() { return msY; }
-	float CameraX() { return msX; }
     void JumpToStart();
     void JumpToEnd();
 	void Reset();
 	void MoveFast();
 	void StartShake(int magnitude);
-	void DrawSurface(int x, int y, SDL_Surface* pSource, SDL_Surface* destination, SDL_Rect* clip = NULL );
+	void DrawSurface(int x, int y, SDL_Surface* pSource, SDL_Surface* destination, SDL_Rect* clip = NULL);
 
-	static Camera* Instance() 
-	{
-        return &mCamera; 
-	}
+	static Camera* Instance() {return &mCamera;}
+
+	float CameraSpeed() {return msSpeed;}
+	float CameraY2() {return msY2;}
+	float CameraY() {return msY;}
+	float CameraX() {return msX;}
 private:
 	static Camera mCamera;
 	float msSpeed;

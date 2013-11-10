@@ -33,7 +33,6 @@ class ModeSelectPanel : public Panel
 public:
     ModeSelectPanel();
 	~ModeSelectPanel();
-
 	void KeyInput(const SDL_Event& rEvent);
 	void Update(const int& rDeltaTime);
 	void Draw(SDL_Surface* pdest);
@@ -45,6 +44,5 @@ private:
 	Menu* mpMenu;
 	Point mMode;
 };
- 
 
 #endif

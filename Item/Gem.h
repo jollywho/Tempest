@@ -26,16 +26,15 @@
 
 class Gem : public Item
 {
-private:
-	Timer mAccelTimer;
-	bool mLockedOn;
 public:
 	Gem(int x, int y, int value, bool autoLocked=false);
     ~Gem();
     void Update(Uint32 delta_ticks);
     void Draw(SDL_Surface *pdest);
+private:
+	Timer mAccelTimer;
+	bool mLockedOn;
 };
-
 
 #endif
 

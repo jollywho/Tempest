@@ -35,20 +35,15 @@ class CContinueState : public CGameState
 public:
 	void Init();
 	void Cleanup();
-
 	void Pause(){}
 	void Resume(){}
-
 	void KeyInput(const SDL_Event& rEvent);
 	void Update(const int& rDeltaTime);
 	void Draw(SDL_Surface* pdest);
 
-	static CContinueState* Instance() {
-		return &mContState;
-	}
-
+	static CContinueState* Instance() {return &mContState;}
 protected:
-	CContinueState() { }
+	CContinueState() {}
 private:
 	static CContinueState mContState;
     int mAlpha;

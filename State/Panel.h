@@ -24,9 +24,6 @@
 
 #include "Engine/Shared.h"
 
-/*
-Common panel interface base class
-*/
 class Panel
 {
 public:
@@ -35,8 +32,9 @@ public:
 	virtual void Update(const int& rDeltaTime) = 0;
 	virtual void Draw(SDL_Surface* pdest) = 0;
 	virtual void DrawTop(SDL_Surface* pdest) {}
-	bool Back() { return mBack; }
-	bool Forward() { return mForward; }
+
+	bool Back() {return mBack;}
+	bool Forward() {return mForward;}
 protected:
 	bool mBack;		//close request
 	bool mForward;	//forward state request
