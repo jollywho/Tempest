@@ -83,17 +83,23 @@ void CPauseState::KeyInput(const SDL_Event& rEvent)
 	}
 	else
 	{
-		if (rEvent.key.keysym.sym == SDLK_ESCAPE) PopState();
-		if (rEvent.key.keysym.sym == SDLK_z)
+		if (rEvent.type == SDL_KEYDOWN)
 		{
-			mpMenu->Select();
-			if (mpMenu->GetIndex() == 1) { PopState();}
-			if (mpMenu->GetIndex() == 2) { mpPanel = new OptionPanel(); mpMenu->Reset();}
-			if (mpMenu->GetIndex() == 3) { ChangeState(State::INTRO);}
-			if (mpMenu->GetIndex() == 4) { SDL_Event event_quit; event_quit.type = SDL_QUIT;  SDL_PushEvent(&event_quit);}
+			if (rEvent.key.keysym.sym == SDLK_ESCAPE) 
+				PopState();
+			if (rEvent.key.keysym.sym == SDLK_z)
+			{
+				mpMenu->Select();
+				if (mpMenu->GetIndex() == 1) { PopState();}
+				if (mpMenu->GetIndex() == 2) { mpPanel = new OptionPanel(); mpMenu->Reset();}
+				if (mpMenu->GetIndex() == 3) { ChangeState(State::INTRO);}
+				if (mpMenu->GetIndex() == 4) { SDL_Event event_quit; event_quit.type = SDL_QUIT;  SDL_PushEvent(&event_quit);}
+			}
+			if (rEvent.key.keysym.sym == SDLK_DOWN)
+				mpMenu->MoveIndex(1);
+			else if (rEvent.key.keysym.sym == SDLK_UP)
+				mpMenu->MoveIndex(-1);
 		}
-		if (rEvent.key.keysym.sym == SDLK_DOWN) mpMenu->MoveIndex(1);
-		else if (rEvent.key.keysym.sym == SDLK_UP) mpMenu->MoveIndex(-1);
 	}
 }
 

@@ -61,7 +61,7 @@ void Menu::Update(Uint32 delta_ticks, int alpha)
     for (auto it = menuList.begin(); it != menuList.end(); it++)
     {
         (*it)->Update(delta_ticks, alpha, mSelectedindex);
-        if ((*it)->index == mSelectedindex)
+        if ((*it)->Index() == mSelectedindex)
             MoveSelector((*it)->GetBounds());
     }
 }

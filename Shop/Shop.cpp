@@ -252,23 +252,26 @@ void Shop::Purchase(Node& d)
 void Shop::KeyInput(const SDL_Event& rEvent)
 {
 	mHover = Point(rEvent.motion.x, rEvent.motion.y);
-	if (!mClick && rEvent.button.button == SDL_BUTTON_LEFT) 
+	if (rEvent.type == SDL_MOUSEBUTTONDOWN)
 	{
-		mClick = true;
-		mClickTimer.Start();
+		if (!mClick && rEvent.button.button == SDL_BUTTON_LEFT) 
+		{
+			mClick = true;
+			mClickTimer.Start();
+		}
+		else if (mClick && mClickTimer.GetTicks() < 200)
+			mDClick = true;
+		else 
+		{ 
+			mClickTimer.Start();
+			mClick = false;
+			mDClick = false;
+		}
+		if (rEvent.key.keysym.sym == SDLK_LEFT)
+			ChangePage(-1);
+		if (rEvent.key.keysym.sym == SDLK_RIGHT)
+			ChangePage(1);
 	}
-	else if (mClick && mClickTimer.GetTicks() < 100)
-		mDClick = true;
-	else 
-	{ 
-		mClickTimer.Start();
-		mClick = false;
-		mDClick = false;
-	}
-	if (rEvent.key.keysym.sym == SDLK_LEFT)
-		ChangePage(-1);
-	if (rEvent.key.keysym.sym == SDLK_RIGHT)
-		ChangePage(1);
 }
 
 void Shop::ChangePage(int dir)

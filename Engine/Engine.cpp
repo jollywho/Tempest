@@ -180,12 +180,12 @@ void CEngine::Start()
 
 			Uint32 curr_time = SDL_GetTicks();
 			Uint32 elapsed_time = curr_time - mPrevTime;
-			//if(elapsed_time < 15)
-			//{
-				//SDL_Delay(15 - elapsed_time);
+			if(elapsed_time < 20)
+			{
+				SDL_Delay(20 - elapsed_time);
 				curr_time = SDL_GetTicks();
 				elapsed_time = curr_time - mPrevTime;
-			//}
+			}
 			mPrevTime = curr_time;
 		}
 	}

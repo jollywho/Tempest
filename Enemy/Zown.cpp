@@ -61,34 +61,12 @@ void Zown::Cleanup()
 
 void Zown::Attack()
 {
-	//CPlayState::Instance()->en_bulletlist.push_back(new ERotBullet(mX + mpInfo->width / 2, mY + mpInfo->height, 0, "Arrow.png"));
-	mAtkTimer.Start();
-
-
 	mAtkCount++;
-	
-	if (mAtkCount > 3) mAtkCount = 1;
-
+	if (mAtkCount > 3)
+		mAtkCount = 1;
 	mRot += .4;
 	if (mRot > M_PI)
 		mRot = 0;
-	
-	/*
-	for (double i = 0-rot; i<=M_PI / 2+rot - .4; i+= .4)
-    {
-        double x = cos(i);
-        double y = sin(i);
-        CPlayState::Instance()->en_bulletlist.push_back(new ERotBullet(atkgatset.x + GATE_WIDTH / 2,
-			atkgateLE.y + GATE_WIDTH / 2,
-			x*100, y * 100, "LargeRed.png"));
-
-		CPlayState::Instance()->en_bulletlist.push_back(new ERotBullet(atkgateRIt.x + GATE_WIDTH / 2,
-			atkgateRIGHset.y + GATE_WIDTH / 2,
-			-x*100, y * 100, "LargeRed.png"));
-    }
-	*/
-    mAtkTimer.Start();
-
 }
 
 void Zown::Update(Uint32 delta_ticks)

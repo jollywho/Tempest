@@ -158,11 +158,17 @@ void CPlayState::NewLevel()
 void CPlayState::KeyInput(const SDL_Event& rEvent)
 {
 	mpPlayer->KeyInput(rEvent);
-	//if (rEvent.enter) mExit = true;
-	if (rEvent.key.keysym.sym == SDLK_KP_ENTER && rEvent.key.keysym.sym == SDLK_LSHIFT) PushState(State::CONTINUE);
-	if (rEvent.key.keysym.sym == SDLK_KP_ENTER && ! rEvent.key.keysym.sym == SDLK_LSHIFT) mExit = true;
-	if (rEvent.key.keysym.sym == SDLK_ESCAPE) PushState(State::PAUSE);
-	if (rEvent.key.keysym.sym == SDLK_BACKQUOTE) PushState(State::SHOP);
+	if (rEvent.type == SDL_KEYDOWN)
+	{
+		if (rEvent.key.keysym.sym == SDLK_RETURN && rEvent.key.keysym.sym == SDLK_LSHIFT)
+			PushState(State::CONTINUE);
+		if (rEvent.key.keysym.sym == SDLK_RETURN && rEvent.key.keysym.sym != SDLK_LSHIFT)
+			mExit = true;
+		if (rEvent.key.keysym.sym == SDLK_ESCAPE)
+			PushState(State::PAUSE);
+		if (rEvent.key.keysym.sym == SDLK_BACKQUOTE)
+			PushState(State::SHOP);
+	}
 }
 
 void CPlayState::Update(const int& rDeltaTime)
