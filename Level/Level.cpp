@@ -33,7 +33,7 @@ Level::Level()
     printf("Level01 initialize\n");
 
 	mpBackground = Shared::LoadImage("Image/Levels/level02.png");
-	mpTopSurface = Shared::LoadImage("Image/Levels/raindrops.png");
+	mpTopSurface = Shared::LoadImage("Image/Levels/fog.png");
 	mpTop = new Layer(mpTopSurface, 720, 0);
 	mpTop->Start();
 

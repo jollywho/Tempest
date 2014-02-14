@@ -63,8 +63,6 @@ Interface::Interface()
 Interface::~Interface() 
 {    
 	printf("Interface Deleted\n");
-	delete mpRedFont;
-	delete mpRedFont;
 	//delete icons
 }
 

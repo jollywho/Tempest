@@ -46,9 +46,9 @@ void HealthBar::Update()
 	if (mClipTimer.GetTicks() > mpInfo->interval)
 	{ 
 		if (mClip > 0 && mClip < mpInfo->maxClips-1)
-			mClip+=mDir;
+			mClip += mDir;
 		else {
-			mDir *= -1; mClip+=mDir;}
+			mDir *= -1; mClip += mDir;}
 		mClipTimer.Start();
 	}
 	mpMarker->SetPos(Point(mPos.x, mPos.y));
