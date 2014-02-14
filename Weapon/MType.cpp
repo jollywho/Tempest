@@ -28,6 +28,7 @@
 //#include "Beam.h"
 #include "PlayerBullet.h"
 #include "UI/NSprite.h"
+#include "UI/Interface.h"
 
 MType::MType()
 {
@@ -46,6 +47,7 @@ MType::MType()
 	minor_speed = 90; major_speed = 90;
 	mShotAnimClip = 0;
 	mov = 0;
+	CPlayState::Instance()->mpInterface->SetMaxMana(200);
 }
 
 MType::~MType()
@@ -70,7 +72,8 @@ void MType::ResetPos(int x, int y)
 }
 
 void MType::MinorAttack(std::list<PlayerBullet*>& pl_bulletlist) 
-{		
+{	
+	if (!CPlayState::Instance()->mpInterface->SetMana(-1)) { StopAttack(); return; }
 	if (!mpSlash->IsDone()) return;
 	if (wpn_timer.GetTicks() > minor_speed  || wpn_timer.IsPaused())
 	{

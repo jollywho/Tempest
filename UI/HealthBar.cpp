@@ -34,17 +34,24 @@ HealthBar::HealthBar(std::string id_t, std::string id_s, Point& p, bool draw_bor
 	mLeftDir = left_dir;
 	//mpExplosion = new NSprite(0, 0, &SpriteResource::RequestResource("UI", "ui_explosion"), false, false);
 	mClip = 1; 
-	mRecRate = 0; 
+	mRecRate = 1; 
 	mDir = 1;
 	mPos.x = p.x;
 	if (draw_border) mPos.x = p.x - mpBorder->width;
 	if (mPos.x < 0) mPos.x = 0;
 	mPos.y = p.y - mpBorder->height;
 	mClipTimer.Start();
+	mRecTimer.Start();
 }
 HealthBar::~HealthBar() 
 {
 
+}
+
+void HealthBar::SetMaxVal(int& val)
+{
+	mVal = ((float)mVal / (float)MAX_VALUE) * val;
+	MAX_VALUE  = val;
 }
 
 void HealthBar::Update()
@@ -56,6 +63,13 @@ void HealthBar::Update()
 		else {
 			mDir *= -1; mClip += mDir;}
 		mClipTimer.Start();
+	}
+
+	if (mRecTimer.GetTicks() > 30)
+	{
+		mVal += mRecRate;
+		mVal > MAX_VALUE ? mVal = MAX_VALUE : 0;
+		mRecTimer.Start();
 	}
 
 	//todo: have nsprite on edge

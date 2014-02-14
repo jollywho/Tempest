@@ -36,10 +36,11 @@ public:
     ~HealthBar();
     void Update();
     void Draw(SDL_Surface *pdest);
-	void SetValue(int& val) {mVal += val;}
-	void SetRecRate(int& val) {mRecRate = val;}
-	
+	void SetValue(int& val) { mVal += val; }
+	void SetRecRate(int& val) { mRecRate = val; }
+	void SetMaxVal(int& val);
 	int GetVal() { return mVal; }
+
 private:
 	int MAX_BAR_WIDTH;
 	int MAX_VALUE;

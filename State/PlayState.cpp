@@ -55,10 +55,10 @@ void CPlayState::Init()
 	Item::Init();
 	ScoreMSG::Init();
 	
+	mpInterface = new Interface();
 	mpPlayer = new Player();
 	mpLevel = new Level();
-	mpInterface = new Interface();
-
+	
 	mpPlayer->Spawn();
 	mScanTimer.Start();
 	mFadeTimer.Start();

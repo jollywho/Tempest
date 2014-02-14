@@ -126,3 +126,16 @@ void Interface::SetHealth(int val)
 	else
 		mpHealth->SetValue(val);
 }
+
+bool Interface::SetMana(int val)
+{
+	if (mpManaleft->GetVal() > 0)
+	{
+		mpManaleft->SetValue(val);
+		return true;
+	}
+	else
+		return false;
+}
+
+void Interface::SetMaxMana(int val) { mpManaleft->SetMaxVal(val); }

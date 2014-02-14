@@ -46,10 +46,12 @@ public:
 	void ActivateHub();
 	void UpdateIcons();
 
-	void SetMana(int val);
+	bool SetMana(int val);
 	void SetHealth(int val);
 	void SetShield(int val);
 	void SetBomb(int val);
+
+	void SetMaxMana(int val);
 
 private:
 	/* Fonts */
