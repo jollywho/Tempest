@@ -45,6 +45,12 @@ public:
     void DrawIcons(SDL_Surface *pdest);
 	void ActivateHub();
 	void UpdateIcons();
+
+	void SetMana(int val);
+	void SetHealth(int val);
+	void SetShield(int val);
+	void SetBomb(int val);
+
 private:
 	/* Fonts */
 	FontInfo* mpRedFont;

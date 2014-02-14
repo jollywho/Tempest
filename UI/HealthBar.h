@@ -32,12 +32,14 @@ class NSprite;
 class HealthBar
 {
 public:
-    explicit HealthBar(std::string id_t, std::string id_s, Point& p, bool draw_border);
+    explicit HealthBar(std::string id_t, std::string id_s, Point& p, bool draw_border, bool left_dir);
     ~HealthBar();
     void Update();
     void Draw(SDL_Surface *pdest);
-	void SetValue(int& val) {mVal = val;}
+	void SetValue(int& val) {mVal += val;}
 	void SetRecRate(int& val) {mRecRate = val;}
+	
+	int GetVal() { return mVal; }
 private:
 	int MAX_BAR_WIDTH;
 	int MAX_VALUE;
@@ -46,6 +48,7 @@ private:
 	NSprite* mpMarker;
 	NSprite* mpExplosion;
 	
+	bool mLeftDir;
 	bool mBorder;
 	int mVal;
 	int mClip;

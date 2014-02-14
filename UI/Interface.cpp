@@ -45,10 +45,10 @@ Interface::Interface()
 	mpHigh = new NSprite(WINDOW_WIDTH * 0.75 + max_score_width / 2, GAME_UI_MODE_Y, 
 		&SpriteResource::RequestResource("UI", "high_title"), false);
 
-	mpManaleft = new HealthBar("ui_left", "mana_left", Point(0, WINDOW_HEIGHT), true);
-	mpManaright = new HealthBar("ui_right", "mana_right", Point(WINDOW_WIDTH, WINDOW_HEIGHT), true);
-	mpHealth = new HealthBar("ui_bottom", "health_left", Point(890, WINDOW_HEIGHT), true);
-	mpShield = new HealthBar("ui_bottom", "shield_right", Point(890, WINDOW_HEIGHT), false);
+	mpManaleft = new HealthBar("ui_left", "mana_left", Point(0, WINDOW_HEIGHT), true, true);
+	mpManaright = new HealthBar("ui_right", "mana_right", Point(WINDOW_WIDTH, WINDOW_HEIGHT), true, false);
+	mpHealth = new HealthBar("ui_bottom", "health_left", Point(890, WINDOW_HEIGHT), true, true);
+	mpShield = new HealthBar("ui_bottom", "shield_right", Point(733, WINDOW_HEIGHT), false, true);
 
 	mScore.x = GAME_BANNER_WIDTH;
 	mScore.y = mpRedFont->pFont->getHeight("99") + 6;
@@ -117,4 +117,12 @@ void Interface::DrawIcons(SDL_Surface *pdest)
 void Interface::ActivateHub()
 {
 	//initialize hub positions offscreen
+}
+
+void Interface::SetHealth(int val)
+{
+	if (mpShield->GetVal() > 0)
+		mpShield->SetValue(val);
+	else
+		mpHealth->SetValue(val);
 }

@@ -26,6 +26,7 @@
 #include "Engine/SFX.h"
 #include "Pattern/Explosion.h"
 #include "Game/Camera.h"
+#include "UI/Interface.h"
 
 Totem::Totem(int ux, int uy, int sx, int sy)
 {
@@ -162,6 +163,7 @@ void Totem::TakeHit()
 		else 
 		{
 			mHealth--;
+			CPlayState::Instance()->mpInterface->SetHealth(-1);
 			SFX::PlaySoundResource("totem_hit");
 		}
 	}

@@ -23,16 +23,22 @@
 #include "Engine/SpriteResource.h"
 #include "NSprite.h"
 
-HealthBar::HealthBar(std::string id_t, std::string id_s, Point& p, bool draw_border)
+HealthBar::HealthBar(std::string id_t, std::string id_s, Point& p, bool draw_border, bool left_dir)
 {
 	mBorder = draw_border;
 	mpBorder = &SpriteResource::RequestTextureResource("UI", id_t);
 	mpInfo = &SpriteResource::RequestResource("UI", id_s);
 	mpMarker = new NSprite(0, 0, &SpriteResource::RequestResource("UI", "marker"));
+	MAX_VALUE = 10;
+	mVal = MAX_VALUE;
+	mLeftDir = left_dir;
 	//mpExplosion = new NSprite(0, 0, &SpriteResource::RequestResource("UI", "ui_explosion"), false, false);
-	mVal = 0; mClip = 1; mRecRate = 0; mDir = 1;
-	p.x == 0 ? p.x = mpBorder->width : 0;
-	mPos.x = p.x - mpBorder->width;
+	mClip = 1; 
+	mRecRate = 0; 
+	mDir = 1;
+	mPos.x = p.x;
+	if (draw_border) mPos.x = p.x - mpBorder->width;
+	if (mPos.x < 0) mPos.x = 0;
 	mPos.y = p.y - mpBorder->height;
 	mClipTimer.Start();
 }
@@ -51,6 +57,17 @@ void HealthBar::Update()
 			mDir *= -1; mClip += mDir;}
 		mClipTimer.Start();
 	}
+
+	//todo: have nsprite on edge
+
+	for (int i = 0; i < mpInfo->maxClips; i++)
+	{
+		if (mLeftDir)
+			mpInfo->pClips[i].w = ((float)mVal / (float)MAX_VALUE) * mpInfo->width;
+		else
+			mpInfo->pClips[i].x = mpInfo->width - ((float)mVal / (float)MAX_VALUE) * mpInfo->width;
+	}
+
 	mpMarker->SetPos(Point(mPos.x, mPos.y));
 	mpMarker->Update();
 }
@@ -58,6 +75,7 @@ void HealthBar::Update()
 void HealthBar::Draw(SDL_Surface *pdest) 
 {
 	Shared::DrawSurface(mPos.x, mPos.y, mpInfo->pSurface, pdest, &mpInfo->pClips[mClip]);
+
 	if (mBorder)
 		Shared::DrawSurface(mPos.x, mPos.y, mpBorder->pSurface, pdest);
 	
