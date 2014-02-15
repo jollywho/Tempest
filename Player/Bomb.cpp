@@ -26,6 +26,7 @@
 #include "State/Playstate.h"
 #include "Pattern/EnemyBullet.h"
 #include "Enemy/Enemy.h"
+#include "UI/Interface.h"
 
 SpriteInfo* Bomb::mpSprite;
 
@@ -43,21 +44,26 @@ Bomb::~Bomb()
 
 void Bomb::Start(int x, int y)
 {
-	mX = x - mpSprite->width / 2 + Camera::Instance()->CameraX();
-	mY = y - mpSprite->height*2 + Camera::Instance()->CameraY2();
+	if (CPlayState::Instance()->mpInterface->GetBomb() > .8)
+	{
+		CPlayState::Instance()->mpInterface->SetMaxBomb((mpSprite->interval * mpSprite->maxClips)/60);
+		mX = x - mpSprite->width / 2 + Camera::Instance()->CameraX();
+		mY = y - mpSprite->height*2 + Camera::Instance()->CameraY2();
 
-	SFX::PlaySoundResource("bomb");
-	Camera::Instance()->StartShake(4);
+		SFX::PlaySoundResource("bomb");
+		Camera::Instance()->StartShake(4);
 
-	if (mX < GAME_BANNER_WIDTH)
-		mX = GAME_BANNER_WIDTH + 20;
-	if (mX + mpSprite->width > GAME_LEVEL_WIDTH)
-		mX = GAME_LEVEL_WIDTH - mpSprite->width - 20;
+		if (mX < GAME_BANNER_WIDTH)
+			mX = GAME_BANNER_WIDTH + 20;
+		if (mX + mpSprite->width > GAME_LEVEL_WIDTH)
+			mX = GAME_LEVEL_WIDTH - mpSprite->width - 20;
 
-	mActive = true;
-	mClip = 0;
-	dps_timer.Start();
-	mClipTimer.Start();
+		mActive = true;
+		mClip = 0;
+		dps_timer.Start();
+		mClipTimer.Start();
+		mDurTimer.Start();
+	}
 }
 
 void Bomb::BulletWipe()
@@ -69,11 +75,18 @@ void Bomb::BulletWipe()
 void Bomb::Update(const int& rDeltaTime)
 {
 	if (!mActive) return;
-	
+
+	if (mDurTimer.GetTicks() > 60)
+	{
+		if (!CPlayState::Instance()->mpInterface->SetBomb(-1))
+			mActive = false;
+		mDurTimer.Start();
+	}
+
 	if (mClip == mpSprite->maxClips / 2)
 		SFX::PlaySoundResource("bomb2");
-	Shared::CheckClip(mClipTimer, mClip, mpSprite->interval, mpSprite->maxClips, mpSprite->maxClips);
-	if (mClip >= mpSprite->maxClips) mActive = false;
+	Shared::CheckClip(mClipTimer, mClip, mpSprite->interval, mpSprite->maxClips, mpSprite->maxClips - 1);
+	//if (mClip >= mpSprite->maxClips) mActive = false;
 
 	for (auto it = CPlayState::Instance()->en_bulletlist.begin(); it != CPlayState::Instance()->en_bulletlist.end(); it++)
         (*it)->Destroy();

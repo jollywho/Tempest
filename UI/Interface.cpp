@@ -45,10 +45,13 @@ Interface::Interface()
 	mpHigh = new NSprite(WINDOW_WIDTH * 0.75 + max_score_width / 2, GAME_UI_MODE_Y, 
 		&SpriteResource::RequestResource("UI", "high_title"), false);
 
-	mpManaleft = new HealthBar("ui_left", "mana_left", Point(0, WINDOW_HEIGHT), true, true);
-	mpManaright = new HealthBar("ui_right", "mana_right", Point(WINDOW_WIDTH, WINDOW_HEIGHT), true, false);
+	mpMana = new HealthBar("ui_left", "mana_left", Point(0, WINDOW_HEIGHT), true, true);
+	mpBomb = new HealthBar("ui_right", "mana_right", Point(WINDOW_WIDTH, WINDOW_HEIGHT), true, false);
 	mpHealth = new HealthBar("ui_bottom", "health_left", Point(890, WINDOW_HEIGHT), true, true);
 	mpShield = new HealthBar("ui_bottom", "shield_right", Point(733, WINDOW_HEIGHT), false, true);
+
+	mpMana->SetRecRate(1);
+	mpBomb->SetRecRate(1);
 
 	mScore.x = GAME_BANNER_WIDTH;
 	mScore.y = mpRedFont->pFont->getHeight("99") + 6;
@@ -81,8 +84,8 @@ void Interface::Draw(SDL_Surface *pdest)
 {
 	mpHealth->Draw(pdest);
 	mpShield->Draw(pdest);
-	mpManaleft->Draw(pdest);
-	mpManaright->Draw(pdest);
+	mpMana->Draw(pdest);
+	mpBomb->Draw(pdest);
 	mpRedFont->pFont->draw(mScore.x, mScore.y, mScoreStr);
 	mpRedFont->pFont->draw(mHiScore.x, mHiScore.y, mHiScoreStr);
 	mpRedFont->pFont->draw(mGem.x, mGem.y, mGemStr);
@@ -96,8 +99,8 @@ void Interface::UpdateIcons()
 {
 	mpHealth->Update();
 	mpShield->Update();
-	mpManaleft->Update();
-	mpManaright->Update();
+	mpMana->Update();
+	mpBomb->Update();
 	mpMode->Update();
 	mpPlayer->Update();
 	mpHigh->Update();
@@ -107,8 +110,8 @@ void Interface::DrawIcons(SDL_Surface *pdest)
 {
 	mpHealth->Draw(pdest);
 	mpShield->Draw(pdest);
-	mpManaleft->Draw(pdest);
-	mpManaright->Draw(pdest);
+	mpMana->Draw(pdest);
+	mpBomb->Draw(pdest);
 	mpMode->Draw(pdest);
 	mpPlayer->Draw(pdest);
 	mpHigh->Draw(pdest);
@@ -129,13 +132,34 @@ void Interface::SetHealth(int val)
 
 bool Interface::SetMana(int val)
 {
-	if (mpManaleft->GetVal() > 0)
+	if (mpMana->GetVal() > 0)
 	{
-		mpManaleft->SetValue(val);
+		mpMana->SetValue(val);
 		return true;
 	}
 	else
 		return false;
 }
 
-void Interface::SetMaxMana(int val) { mpManaleft->SetMaxVal(val); }
+bool Interface::SetBomb(int val)
+{
+	if (mpBomb->GetVal() > 0)
+	{
+		mpBomb->SetRecRate(0);
+		mpBomb->SetValue(val);
+		return true;
+	}
+	else
+	{
+		mpBomb->SetRecRate(1);
+		return false;
+	}
+}
+
+float Interface::GetBomb()
+{
+	return mpBomb->GetPercent();
+}
+
+void Interface::SetMaxMana(int val) { mpMana->SetMaxVal(val); }
+void Interface::SetMaxBomb(int val) { mpBomb->SetMaxVal(val); }

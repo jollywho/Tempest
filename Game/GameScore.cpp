@@ -49,16 +49,6 @@ void GameScore::IncreaseBombups()
 		IncreaseScore(5000);
 }
 
-bool GameScore::DecreaseBombups()
-{
-	if (mBombs > 0) {
-		mBombs--;
-		return true; 
-	}
-	else
-		return false;
-}
-
 void GameScore::SetMode(int mode) 
 { 
 	switch (mode)

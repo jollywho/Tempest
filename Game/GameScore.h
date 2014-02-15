@@ -33,7 +33,6 @@ public:
 	void SetMode(int mode);
 	void IncreaseScore(int value);
 	void IncreaseBombups();
-	bool DecreaseBombups();
 	void DecreaseCounter(int decrement, int type);
 	void IncreaseLives();
 	void DecreaseLives();

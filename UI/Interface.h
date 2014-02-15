@@ -49,10 +49,11 @@ public:
 	bool SetMana(int val);
 	void SetHealth(int val);
 	void SetShield(int val);
-	void SetBomb(int val);
+	bool SetBomb(int val);
 
+	float GetBomb();
 	void SetMaxMana(int val);
-
+	void SetMaxBomb(int val);
 private:
 	/* Fonts */
 	FontInfo* mpRedFont;
@@ -81,8 +82,8 @@ private:
 	NSprite* mpPlayer;
 	NSprite* mpHigh;
 
-	HealthBar* mpManaleft;
-	HealthBar* mpManaright;
+	HealthBar* mpMana;
+	HealthBar* mpBomb;
 	HealthBar* mpHealth;
 	HealthBar* mpShield;
 };

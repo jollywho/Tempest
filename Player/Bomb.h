@@ -40,6 +40,7 @@ public:
 private:
     Timer dps_timer;
 	Timer mClipTimer;
+	Timer mDurTimer;
 	bool mActive;
 	static SpriteInfo* mpSprite;
 	int mClip;

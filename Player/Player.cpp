@@ -187,13 +187,13 @@ void Player::HandleAttacks(const int& rDeltaTime)
 
 	if (mBomb && !mspBomb->IsActive()) 
 	{
-		if (GameScore::Instance()->DecreaseBombups())
-		{
-			mspBomb->Start(mX + ANGEL_SIZE / 2, mY);
-			mInvuln = true;
-			mInvulnTimer.Start();
-		}
-		//else play fail.wav
+		mspBomb->Start(mX + ANGEL_SIZE / 2, mY);
+	}
+
+	if (mspBomb->IsActive())
+	{
+		mInvuln = true;
+		mInvulnTimer.Start();
 	}
 
 	mspWpn->Update(rDeltaTime);
